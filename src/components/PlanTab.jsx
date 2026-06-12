@@ -74,7 +74,7 @@ export function PlanTab(props) {
 
       {selected && (
         <div className="mb-3 px-4 py-2.5 rounded-full text-sm rise" style={{ background: "var(--berry-mist)", color: "var(--berry)", fontWeight: 700 }}>
-          Moving "{props.mealsById[plan.days[selected.d][selected.s]]?.name}" — tap any other slot to swap, or tap it again to cancel.
+          Moving "{props.mealsById[plan.days[selected.d][selected.s]]?.name || "an empty slot"}" — tap any other slot to swap, or tap it again to cancel.
         </div>
       )}
 

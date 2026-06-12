@@ -9,13 +9,23 @@ function excludedKeywords(prefs) {
   lc(prefs.allergyText).split(/[,;\n]+/).map((s) => s.trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
   (prefs.dislikes || []).forEach((d) => kws.push(...(DISLIKE_MAP[d] || [lc(d)])));
   lc(prefs.dislikeText).split(/[,;\n]+/).map((s) => s.trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
+  (prefs.bannedIngredients || []).map((b) => lc(b).trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
   return kws;
 }
-export function mealAllowed(meal, prefs, targets, slotType) {
-  if (meal.carbsG > capFor(slotType || meal.type, targets)) return false;
+// True when the meal contains anything excluded (allergies, dislike chips,
+// free-text dislikes, banned ingredients). Also the gate for AI output.
+export function violatesExclusions(meal, prefs) {
   const kws = excludedKeywords(prefs);
   const text = lc(meal.name) + " " + meal.ingredients.map((i) => lc(i.n)).join(" ");
-  if (kws.some((kw) => text.includes(kw))) return false;
+  return kws.some((kw) => text.includes(kw));
+}
+// Hard rules only: carb cap + exclusions. These are never relaxed.
+export function mealSafe(meal, prefs, targets, slotType) {
+  if (meal.carbsG > capFor(slotType || meal.type, targets)) return false;
+  return !violatesExclusions(meal, prefs);
+}
+export function mealAllowed(meal, prefs, targets, slotType) {
+  if (!mealSafe(meal, prefs, targets, slotType)) return false;
   if (prefs.cookTime === "Quick (<20 min)" && meal.prepMins > 20) return false;
   if (prefs.cookTime === "Moderate (20–40 min)" && meal.prepMins > 40) return false;
   return true;
@@ -28,15 +38,18 @@ function prefScore(meal, prefs) {
   if (meal.ingredients.some((i) => veg.some((v) => lc(i.n).includes(v.replace(/s$/, ""))))) s += 1;
   return s;
 }
-function candidatesFor(allMeals, slotType, prefs, targets) {
+export function candidatesFor(allMeals, slotType, prefs, targets) {
+  // Cook time is the only preference relaxed under scarcity. Allergies,
+  // dislikes, banned ingredients, and carb caps are never violated — a slot
+  // is left empty instead.
   let pool = allMeals.filter((m) => m.type === slotType && mealAllowed(m, prefs, targets, slotType));
-  if (!pool.length) pool = allMeals.filter((m) => m.type === slotType && m.carbsG <= capFor(slotType, targets));
-  if (!pool.length) pool = allMeals.filter((m) => m.type === slotType);
+  if (!pool.length) pool = allMeals.filter((m) => m.type === slotType && mealSafe(m, prefs, targets, slotType));
   return pool;
 }
-function pickBest(pool, prefs, excludeIds) {
+export function pickBest(pool, prefs, excludeIds) {
   let usable = pool.filter((m) => !excludeIds.has(m.id));
   if (!usable.length) usable = pool;
+  if (!usable.length) return null;
   return usable.reduce((best, m) => (prefScore(m, prefs) > prefScore(best, prefs) ? m : best), usable[0]);
 }
 
@@ -55,13 +68,13 @@ export function generateLocalWeek(allMeals, prefs, targets) {
         // snacks may repeat across the week (max ~2×), never within a day
         const exclude = new Set([...usedToday, ...Object.keys(snackUse).filter((id) => snackUse[id] >= 2)]);
         pick = pickBest(pool, prefs, exclude);
-        snackUse[pick.id] = (snackUse[pick.id] || 0) + 1;
+        if (pick) snackUse[pick.id] = (snackUse[pick.id] || 0) + 1;
       } else {
         pick = pickBest(pool, prefs, usedMains);
-        usedMains.add(pick.id);
+        if (pick) usedMains.add(pick.id);
       }
-      usedToday.add(pick.id);
-      day[slot.key] = pick.id;
+      if (pick) usedToday.add(pick.id);
+      day[slot.key] = pick ? pick.id : null; // null = no meal satisfies the hard rules
     }
     days.push(day);
   }

@@ -13,6 +13,7 @@ export function prefsSummary(prefs) {
     favoriteCuisines: prefs.cuisines, favoriteProteins: prefs.proteins,
     favoriteVegetables: prefs.vegetables,
     avoidStrictlyAllergies: [...prefs.allergies, prefs.allergyText].filter(Boolean),
+    neverIncludeIngredients: prefs.bannedIngredients || [],
     dislikes: [...prefs.dislikes, prefs.dislikeText].filter(Boolean),
     texturePreferences: prefs.textures, spiceTolerance: prefs.spice,
     portionPreference: prefs.portion, cookingTimeTolerance: prefs.cookTime,

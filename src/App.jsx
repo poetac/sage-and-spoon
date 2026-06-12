@@ -8,7 +8,7 @@ import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, MEAL_DB } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
 import { mondayOf, iso } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
-import { generateLocalWeek, pickLocalSwap } from "./lib/planner.js";
+import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal } from "./components/primitives.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
@@ -25,6 +25,8 @@ const TABS = [
   { key: "shopping", label: "Shopping List", icon: "cart" },
   { key: "settings", label: "Settings", icon: "gear" },
 ];
+
+const emptySlotCount = (p) => p.days.reduce((n, d) => n + SLOTS.filter((s) => !d[s.key]).length, 0);
 
 export default function App() {
   const [prefs, setPrefsState] = useState(() => store.get(K.prefs, null));
@@ -59,15 +61,21 @@ export default function App() {
   const toastErr = (m) => say(m, "error");
 
   /* ------------------------------ plan actions ----------------------------- */
+  const buildWeek = (forPrefs, okMsg) => {
+    const week = generateLocalWeek(allMeals, forPrefs, settings.targets);
+    setPlan(week);
+    const empty = emptySlotCount(week);
+    if (empty) toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`);
+    else toastOk(okMsg);
+  };
+
   const finishOnboarding = (newPrefs) => {
     setPrefs(newPrefs);
-    setPlan(generateLocalWeek(allMeals, newPrefs, settings.targets));
-    toastOk("Welcome! Here's a starter week — generate with AI anytime.");
+    buildWeek(newPrefs, "Welcome! Here's a starter week — generate with AI anytime.");
   };
 
   const shuffleWeek = () => {
-    setPlan(generateLocalWeek(allMeals, prefs, settings.targets));
-    toastOk("Fresh week, shuffled from the cookbook");
+    buildWeek(prefs, "Fresh week, shuffled from the cookbook");
   };
 
   const generateAIWeek = async () => {
@@ -78,11 +86,22 @@ export default function App() {
       const data = await callClaude(settings.apiKey, prompt, 16000);
       if (!Array.isArray(data.days) || data.days.length !== 7) throw new Error("unexpected plan shape");
       const newMeals = [];
+      const replacedUsed = new Set();
+      let replaced = 0;
       const days = data.days.map((day) => {
         const out = {};
         for (const slot of SLOTS) {
           const meal = normalizeAiMeal(day[slot.key], slot.type);
           if (!meal) throw new Error(`missing ${slot.key}`);
+          if (violatesExclusions(meal, prefs)) {
+            // The model slipped in an avoided ingredient — substitute from the
+            // cookbook rather than serve it or scrap the whole week.
+            const sub = pickBest(candidatesFor(allMeals, slot.type, prefs, settings.targets), prefs, replacedUsed);
+            if (sub) replacedUsed.add(sub.id);
+            out[slot.key] = sub ? sub.id : null;
+            replaced++;
+            continue;
+          }
           if (meal.carbsG > capFor(slot.type, settings.targets)) meal.carbsG = capFor(slot.type, settings.targets); // clamp drift
           newMeals.push(meal);
           out[slot.key] = meal.id;
@@ -91,7 +110,9 @@ export default function App() {
       });
       setCustom([...customMeals, ...newMeals]);
       setPlan({ weekStart: iso(mondayOf(new Date())), days });
-      toastOk("Your personalized week is ready ✦");
+      toastOk(replaced
+        ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to avoid excluded ingredients)`
+        : "Your personalized week is ready ✦");
     } catch (err) {
       toastErr(`Couldn't generate the week (${err.message}). Your current plan is untouched — try again, or use Shuffle.`);
     }
@@ -137,6 +158,7 @@ export default function App() {
       const data = await callClaude(settings.apiKey, prompt, 1500);
       const meal = normalizeAiMeal(data, slot.type);
       if (!meal) throw new Error("unexpected reply");
+      if (violatesExclusions(meal, prefs)) throw new Error("the idea contained an avoided ingredient");
       if (meal.carbsG > capFor(slot.type, settings.targets)) meal.carbsG = capFor(slot.type, settings.targets);
       setCustom([...customMeals, meal]);
       const days = plan.days.map((x) => ({ ...x }));

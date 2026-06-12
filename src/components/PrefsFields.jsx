@@ -1,4 +1,5 @@
-import { QUIZ } from "../data/meals.js";
+import { useState } from "react";
+import { QUIZ, INGREDIENT_NAMES } from "../data/meals.js";
 import { Chip } from "./primitives.jsx";
 
 /* ---------------------------- preferences form --------------------------- */
@@ -25,6 +26,44 @@ function SingleChips({ label, options, value, onChange }) {
   );
 }
 
+// Searchable ban list over the cookbook's ingredient vocabulary. Banned terms
+// match as substrings (one "onion" covers "red onion" too) and are enforced
+// everywhere — local planning, swaps, suggestions, and AI output.
+function IngredientPicker({ values, onChange }) {
+  const [term, setTerm] = useState("");
+  const q = term.trim().toLowerCase();
+  const has = (n) => values.some((b) => b.toLowerCase() === n.toLowerCase());
+  const matches = q ? INGREDIENT_NAMES.filter((n) => n.toLowerCase().includes(q) && !has(n)).slice(0, 12) : [];
+  const add = (n) => { onChange([...values, n]); setTerm(""); };
+  return (
+    <div className="mb-5">
+      <div style={{ fontWeight: 700 }} className="mb-0.5">Never include these ingredients</div>
+      <div className="t-soft text-sm mb-2">Picky-eater mode — any meal containing one of these is excluded everywhere, no exceptions.</div>
+      {values.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-2">
+          {values.map((b) => (
+            <button key={b} type="button" className="chip chip-on" onClick={() => onChange(values.filter((x) => x !== b))}
+              aria-label={`Allow ${b} again`} title="Tap to remove">
+              {b} ✕
+            </button>
+          ))}
+        </div>
+      )}
+      <input className="input" placeholder="Type to search ingredients (e.g. onion, beans, yogurt)" value={term}
+        onChange={(e) => setTerm(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter" && q.length > 1) { e.preventDefault(); add(term.trim()); } }} />
+      {q && (
+        <div className="flex flex-wrap gap-2 mt-2">
+          {matches.map((n) => <Chip key={n} onClick={() => add(n)}>{n}</Chip>)}
+          {q.length > 1 && !has(q) && !matches.some((n) => n.toLowerCase() === q) && (
+            <Chip onClick={() => add(term.trim())}>Ban “{term.trim()}”</Chip>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // eslint-disable-next-line react-refresh/only-export-components -- step copy belongs beside the form it titles
 export const QUIZ_STEPS = [
   { title: "The good stuff", blurb: "What does she love to eat? We'll lean into these." },
@@ -44,6 +83,7 @@ export function PrefsFields({ step, prefs, set }) {
     <>
       <MultiChips label="Foods to avoid" hint="Dislikes, aversions, anything unappealing right now" options={QUIZ.dislikes} values={prefs.dislikes} onChange={(v) => set({ dislikes: v })} />
       <input className="input mb-5" placeholder="Other dislikes, comma-separated (e.g. eggplant, beets)" value={prefs.dislikeText} onChange={(e) => set({ dislikeText: e.target.value })} />
+      <IngredientPicker values={prefs.bannedIngredients || []} onChange={(v) => set({ bannedIngredients: v })} />
       <MultiChips label="Allergies" hint="These are always excluded, no exceptions" options={QUIZ.allergies} values={prefs.allergies} onChange={(v) => set({ allergies: v })} />
       <input className="input" placeholder="Other allergies, comma-separated" value={prefs.allergyText} onChange={(e) => set({ allergyText: e.target.value })} />
     </>

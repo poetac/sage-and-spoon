@@ -31,6 +31,7 @@ export const QUIZ = {
 
 export const EMPTY_PREFS = {
   cuisines: [], proteins: [], vegetables: [], dislikes: [], dislikeText: "",
+  bannedIngredients: [],
   allergies: [], allergyText: "", textures: [], spice: "Mild",
   portion: "Normal", cookTime: "Any",
 };
@@ -154,3 +155,9 @@ export const MEAL_DB = [
   { id: "s12", name: "Berries & Whipped Ricotta", type: "snack", carbsG: 13, gi: "Low", prepMins: 5, cuisineTag: "Italian", proteinTag: "Greek yogurt",
     ingredients: [I("ricotta cheese", 0.75, "cup", "Dairy"), I("strawberries", 1, "cup", "Produce"), I("lemon", 0.25, "", "Produce")] },
 ];
+
+// Every distinct ingredient name in the cookbook (deduped case-insensitively,
+// original casing kept) — vocabulary for the "never include" picker.
+export const INGREDIENT_NAMES = [
+  ...new Map(MEAL_DB.flatMap((m) => m.ingredients.map((i) => [i.n.toLowerCase(), i.n]))).values(),
+].sort((a, b) => a.localeCompare(b));

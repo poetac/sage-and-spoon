@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS, SLOTS } from "../data/meals.js";
 import { capFor } from "./utils.js";
-import { mealAllowed, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal } from "./planner.js";
+import { mealAllowed, violatesExclusions, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal } from "./planner.js";
 
 const TARGETS = DEFAULT_SETTINGS.targets;
 const byId = Object.fromEntries(MEAL_DB.map((m) => [m.id, m]));
@@ -114,6 +114,71 @@ describe("generateLocalWeek — allergy exclusion end to end", () => {
         }
       }
     }
+  });
+});
+
+describe("bannedIngredients — picky-eater hard exclusions", () => {
+  const ban = (...items) => ({ ...EMPTY_PREFS, bannedIngredients: items });
+  it("excludes any meal containing a banned ingredient", () => {
+    expect(mealAllowed(byId.l3, ban("onion"), TARGETS, "lunch")).toBe(false);
+    expect(mealAllowed(byId.s4, ban("onion"), TARGETS, "snack")).toBe(true);
+  });
+  it("matches as a substring so one term covers variants", () => {
+    expect(mealAllowed(byId.d5, ban("onion"), TARGETS, "dinner")).toBe(false); // red onion
+    expect(mealAllowed(byId.d4, ban("rice"), TARGETS, "dinner")).toBe(false); // brown rice
+  });
+  it("is case-insensitive", () => {
+    expect(mealAllowed(byId.b1, ban("FETA"), TARGETS, "breakfast")).toBe(false);
+  });
+  it("never appears anywhere in a generated week", () => {
+    const banned = ["chicken", "onion", "yogurt"];
+    const prefs = ban(...banned);
+    for (let i = 0; i < 10; i++) {
+      const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+      for (const day of plan.days) {
+        for (const slot of SLOTS) {
+          const meal = byId[day[slot.key]];
+          if (!meal) continue; // an empty slot is the allowed outcome, a banned meal is not
+          const text = (meal.name + " " + meal.ingredients.map((x) => x.n).join(" ")).toLowerCase();
+          for (const b of banned) expect(text).not.toContain(b);
+        }
+      }
+    }
+  });
+});
+
+describe("scarcity — what relaxes and what never does", () => {
+  it("relaxes cook time before leaving a slot empty", () => {
+    // Every quick breakfast contains a banned term; b3 (25-min steel-cut
+    // oats) is the only clean one, so the cook-time preference must yield.
+    const prefs = { ...EMPTY_PREFS, cookTime: "Quick (<20 min)", bannedIngredients: ["egg", "yogurt", "chia", "avocado", "tortilla", "salmon", "cottage"] };
+    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+    for (const day of plan.days) expect(day.breakfast).toBe("b3");
+  });
+  it("leaves slots empty rather than violating allergies", () => {
+    // Every cookbook breakfast trips one of these allergies.
+    const prefs = { ...EMPTY_PREFS, allergies: ["Dairy", "Eggs", "Wheat / gluten", "Tree nuts", "Soy"] };
+    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+    for (const day of plan.days) expect(day.breakfast).toBeNull();
+  });
+  it("leaves slots empty rather than violating bans", () => {
+    const prefs = { ...EMPTY_PREFS, bannedIngredients: MEAL_DB.filter((m) => m.type === "breakfast").map((m) => m.ingredients[0].n) };
+    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+    for (const day of plan.days) expect(day.breakfast).toBeNull();
+  });
+});
+
+describe("violatesExclusions (gate for AI output)", () => {
+  it("flags meals containing banned or disliked ingredients", () => {
+    const aiMeal = { name: "Creamy Mushroom Risotto", ingredients: [{ n: "mushrooms" }, { n: "arborio rice" }] };
+    expect(violatesExclusions(aiMeal, { ...EMPTY_PREFS, dislikes: ["Mushrooms"] })).toBe(true);
+    expect(violatesExclusions(aiMeal, { ...EMPTY_PREFS, bannedIngredients: ["rice"] })).toBe(true);
+    expect(violatesExclusions(aiMeal, { ...EMPTY_PREFS, allergies: ["Shellfish"] })).toBe(false);
+    expect(violatesExclusions(aiMeal, EMPTY_PREFS)).toBe(false);
+  });
+  it("catches exclusions in the meal name, not just ingredients", () => {
+    const aiMeal = { name: "Shrimp Skewers", ingredients: [{ n: "mystery protein" }] };
+    expect(violatesExclusions(aiMeal, { ...EMPTY_PREFS, allergies: ["Shellfish"] })).toBe(true);
   });
 });
 

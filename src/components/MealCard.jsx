@@ -3,7 +3,17 @@ import { Icon, ICONS, Spinner, GiPill } from "./primitives.jsx";
 
 /* -------------------------------- meal card ------------------------------ */
 export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails, aiBusy, draggable, onDragStart, hasKey }) {
-  if (!meal) return <div className="t-soft text-xs italic p-2">empty</div>;
+  if (!meal) {
+    // Empty slot (no meal satisfies the hard rules). Still a tap-to-move
+    // target so a meal can be moved here from another slot.
+    return (
+      <div className={"t-soft text-xs italic p-2 cursor-pointer" + (selected ? " meal-card selected" : "")}
+        role="button" tabIndex={0} onClick={onSelect}
+        onKeyDown={(e) => { if (e.key === "Enter") onSelect(); }}>
+        empty — add from Ingredients, or relax a dislike
+      </div>
+    );
+  }
   return (
     <div
       className={"meal-card" + (selected ? " selected" : "")}
