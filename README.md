@@ -37,3 +37,7 @@ Requires Node 20+. Tailwind is loaded via the CDN script in `index.html` (zero c
 ## Project shape
 
 The entire app currently lives in [`src/App.jsx`](src/App.jsx) — styles, meal database, planner logic, Claude API layer, and UI. State persists to `localStorage` (`ss_*` keys) with an in-memory fallback for sandboxed contexts.
+
+## License
+
+[MIT](LICENSE)
