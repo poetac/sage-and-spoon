@@ -5,7 +5,7 @@ import { Icon, ICONS, Spinner, Chip } from "./primitives.jsx";
 import { MealCard } from "./MealCard.jsx";
 
 /* --------------------------------- plan tab ------------------------------ */
-function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap, onAiSwap, aiBusyKey, hasKey }) {
+function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap, onAiSwap, onDetails, aiBusyKey, hasKey }) {
   const day = plan.days[dayIdx];
   const date = dayDate(plan.weekStart, dayIdx);
   const total = SLOTS.reduce((s, sl) => s + (mealsById[day[sl.key]]?.carbsG || 0), 0);
@@ -37,6 +37,7 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
               onSelect={() => onCellAction(dayIdx, slot.key)}
               onSwap={() => onSwap(dayIdx, slot.key)}
               onAiSwap={() => onAiSwap(dayIdx, slot.key)}
+              onDetails={meal ? () => onDetails(meal) : undefined}
               aiBusy={aiBusyKey === key}
             />
           </div>

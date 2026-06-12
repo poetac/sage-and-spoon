@@ -1,5 +1,7 @@
 # Sage & Spoon 🌿
 
+**Live app: [poetac.github.io/sage-and-spoon](https://poetac.github.io/sage-and-spoon/)**
+
 A calm weekly meal planner for a household where the chef cooks for someone with **gestational diabetes (GD)**. Every meal — built-in or AI-generated — follows GD rules: low-GI carbs paired with protein/fat, per-meal carb caps, no added sugars, no juice, no white rice/bread.
 
 > **Not medical advice.** Carb targets default to common GD guidance (≤30g breakfast, ≤45g lunch/dinner, ≤20g snacks) but are fully editable — follow your dietitian's numbers, always.

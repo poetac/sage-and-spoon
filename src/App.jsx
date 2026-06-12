@@ -11,6 +11,7 @@ import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal } from "./components/primitives.jsx";
+import { MealDetail } from "./components/MealDetail.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
 import { PlanTab } from "./components/PlanTab.jsx";
 import { IngredientsTab } from "./components/IngredientsTab.jsx";
@@ -36,6 +37,7 @@ export default function App() {
   const [weekLoading, setWeekLoading] = useState(false);
   const [toast, setToast] = useState(null);
   const [placing, setPlacing] = useState(null);         // meal waiting for a day+slot
+  const [detailMeal, setDetailMeal] = useState(null);   // meal open in the detail modal
   const dragRef = useRef(null);
   const toastTimer = useRef(null);
 
@@ -167,7 +169,7 @@ export default function App() {
   /* --------------------------------- render -------------------------------- */
   if (!prefs) return <Onboarding onDone={finishOnboarding} />;
 
-  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek };
+  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek };
 
   return (
     <div className="ss-root">
@@ -229,6 +231,8 @@ export default function App() {
           </div>
         </Modal>
       )}
+
+      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} />}
 
       <Toast toast={toast} />
     </div>

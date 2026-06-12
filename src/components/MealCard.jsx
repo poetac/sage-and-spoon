@@ -2,7 +2,7 @@ import { qtyLabel } from "../lib/utils.js";
 import { Icon, ICONS, Spinner, GiPill } from "./primitives.jsx";
 
 /* -------------------------------- meal card ------------------------------ */
-export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, aiBusy, draggable, onDragStart, hasKey }) {
+export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails, aiBusy, draggable, onDragStart, hasKey }) {
   if (!meal) return <div className="t-soft text-xs italic p-2">empty</div>;
   return (
     <div
@@ -32,6 +32,12 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, aiBusy, d
           <button className="btn btn-berry" style={{ padding: "4px 10px", fontSize: 12 }} disabled={aiBusy}
             onClick={(e) => { e.stopPropagation(); onAiSwap(); }} title="Ask Claude for a new idea" aria-label={`AI swap ${meal.name}`}>
             {aiBusy ? <Spinner size={13} /> : <Icon d={ICONS.sparkle} size={13} />} AI
+          </button>
+        )}
+        {onDetails && (
+          <button className="btn btn-ghost ml-auto" style={{ padding: "4px 8px", fontSize: 12 }}
+            onClick={(e) => { e.stopPropagation(); onDetails(); }} title="Ingredients & details" aria-label={`Details for ${meal.name}`}>
+            <Icon d={ICONS.info} size={14} />
           </button>
         )}
       </div>
