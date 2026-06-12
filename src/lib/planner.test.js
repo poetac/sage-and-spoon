@@ -148,22 +148,32 @@ describe("bannedIngredients — picky-eater hard exclusions", () => {
 });
 
 describe("scarcity — what relaxes and what never does", () => {
+  // Synthetic fixtures so these stay true no matter how the cookbook grows.
+  const fixture = (id, prepMins, ingredient) => ({
+    id, name: id, type: "breakfast", carbsG: 20, gi: "Low", prepMins,
+    cuisineTag: "", proteinTag: "",
+    ingredients: [{ n: ingredient, q: 1, u: "", c: "Produce" }],
+  });
+  const FIX = [fixture("quick-banned", 10, "weirdroot"), fixture("slow-clean", 35, "plainfood")];
+
   it("relaxes cook time before leaving a slot empty", () => {
-    // Every quick breakfast contains a banned term; b3 (25-min steel-cut
-    // oats) is the only clean one, so the cook-time preference must yield.
-    const prefs = { ...EMPTY_PREFS, cookTime: "Quick (<20 min)", bannedIngredients: ["egg", "yogurt", "chia", "avocado", "tortilla", "salmon", "cottage"] };
-    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
-    for (const day of plan.days) expect(day.breakfast).toBe("b3");
+    const prefs = { ...EMPTY_PREFS, cookTime: "Quick (<20 min)", bannedIngredients: ["weirdroot"] };
+    const plan = generateLocalWeek(FIX, prefs, TARGETS);
+    for (const day of plan.days) expect(day.breakfast).toBe("slow-clean");
   });
   it("leaves slots empty rather than violating allergies", () => {
-    // Every cookbook breakfast trips one of these allergies.
-    const prefs = { ...EMPTY_PREFS, allergies: ["Dairy", "Eggs", "Wheat / gluten", "Tree nuts", "Soy"] };
-    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+    const peanutOnly = [fixture("nutty", 10, "peanut brittle")];
+    const plan = generateLocalWeek(peanutOnly, { ...EMPTY_PREFS, allergies: ["Peanuts"] }, TARGETS);
     for (const day of plan.days) expect(day.breakfast).toBeNull();
   });
   it("leaves slots empty rather than violating bans", () => {
-    const prefs = { ...EMPTY_PREFS, bannedIngredients: MEAL_DB.filter((m) => m.type === "breakfast").map((m) => m.ingredients[0].n) };
-    const plan = generateLocalWeek(MEAL_DB, prefs, TARGETS);
+    const prefs = { ...EMPTY_PREFS, bannedIngredients: ["weirdroot", "plainfood"] };
+    const plan = generateLocalWeek(FIX, prefs, TARGETS);
+    for (const day of plan.days) expect(day.breakfast).toBeNull();
+  });
+  it("leaves slots empty rather than exceeding the carb cap", () => {
+    const overCap = [{ ...fixture("carby", 10, "plainfood"), carbsG: 99 }];
+    const plan = generateLocalWeek(overCap, EMPTY_PREFS, TARGETS);
     for (const day of plan.days) expect(day.breakfast).toBeNull();
   });
 });
