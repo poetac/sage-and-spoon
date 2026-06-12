@@ -40,7 +40,7 @@ export async function callClaude(apiKey, userPrompt, maxTokens) {
   const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
   return extractJSON(text);
 }
-function extractJSON(text) {
+export function extractJSON(text) {
   const cleaned = text.replace(/```json|```/g, "").trim();
   const start = cleaned.indexOf("{");
   const end = cleaned.lastIndexOf("}");
