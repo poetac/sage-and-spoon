@@ -4,12 +4,12 @@
 // The Claude API key is entered in Settings and stays on this device.
 
 import { useState, useMemo, useRef } from "react";
-import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, MEAL_DB } from "./data/meals.js";
+import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, MEAL_DB, EMPTY_PREFS } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
 import { mondayOf, iso } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
-import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest } from "./lib/planner.js";
-import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal } from "./lib/claude.js";
+import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed } from "./lib/planner.js";
+import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal } from "./components/primitives.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
@@ -28,6 +28,10 @@ const TABS = [
 
 const emptySlotCount = (p) => p.days.reduce((n, d) => n + SLOTS.filter((s) => !d[s.key]).length, 0);
 
+// Distinct meals needed for a full no-repeat week: 7 per main type; 21 snack
+// slots at ≤2 uses each need 11 distinct snacks.
+const POOL_NEED = { breakfast: 7, lunch: 7, dinner: 7, snack: 11 };
+
 export default function App() {
   const [prefs, setPrefsState] = useState(() => store.get(K.prefs, null));
   const [plan, setPlanState] = useState(() => store.get(K.plan, null));
@@ -40,6 +44,7 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [placing, setPlacing] = useState(null);         // meal waiting for a day+slot
   const [detailMeal, setDetailMeal] = useState(null);   // meal open in the detail modal
+  const [growing, setGrowing] = useState(false);        // "grow cookbook" API call in flight
   const dragRef = useRef(null);
   const toastTimer = useRef(null);
 
@@ -51,6 +56,13 @@ export default function App() {
   const allMeals = useMemo(() => [...MEAL_DB, ...customMeals], [customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
   const hasKey = !!settings.apiKey;
+
+  // How many meals fit every current preference, per type — shown in Settings.
+  const poolHealth = useMemo(() => {
+    const p = prefs || EMPTY_PREFS;
+    return Object.fromEntries(Object.keys(POOL_NEED).map((t) =>
+      [t, allMeals.filter((m) => m.type === t && mealAllowed(m, p, settings.targets, t)).length]));
+  }, [allMeals, prefs, settings.targets]);
 
   const say = (msg, kind = "ok") => {
     clearTimeout(toastTimer.current);
@@ -171,6 +183,22 @@ export default function App() {
     setAiBusyKey(null);
   };
 
+  const growCookbook = async () => {
+    setGrowing(true);
+    try {
+      const thin = Object.entries(poolHealth).filter(([t, n]) => n < POOL_NEED[t]).map(([t, n]) => `${t} (only ${n} fit her preferences)`);
+      const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nGenerate 10 NEW meals for a permanent personal cookbook — a mix of breakfasts, lunches, dinners, and snacks${thin.length ? `, prioritizing ${thin.join(" and ")}` : ""}. Every meal must strictly avoid all allergies, dislikes, and never-include ingredients above. Do not duplicate any of these existing meals: ${allMeals.map((m) => m.name).join("; ")}. ${MEAL_SHAPE}\nReturn ONLY JSON: {"meals":[MEAL, ...]}`;
+      const data = await callClaude(settings.apiKey, prompt, 8000);
+      const vetted = vetNewMeals(data.meals, allMeals, prefs, settings.targets);
+      if (!vetted.length) throw new Error("none of the ideas passed the preference checks");
+      setCustom([...customMeals, ...vetted]);
+      toastOk(`Added ${vetted.length} new meal${vetted.length === 1 ? "" : "s"} to the cookbook ✦`);
+    } catch (err) {
+      toastErr(`Couldn't grow the cookbook (${err.message}) — try again.`);
+    }
+    setGrowing(false);
+  };
+
   const placeMeal = (dayIdx, slotKey) => {
     const meal = placing;
     setPlacing(null);
@@ -221,7 +249,7 @@ export default function App() {
         )}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} toastOk={toastOk} toastErr={toastErr} />}
-        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} />}
+        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} />}
       </main>
 
       {/* mobile tab bar */}

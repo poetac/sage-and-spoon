@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Icon, ICONS } from "./primitives.jsx";
+import { Icon, ICONS, Spinner } from "./primitives.jsx";
 import { PrefsFields } from "./PrefsFields.jsx";
 
+const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner", "Dinners"], ["snack", "Snacks"]];
+
 /* -------------------------------- settings ------------------------------- */
-export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll }) {
+export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch) => setPrefs({ ...prefs, ...patch });
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
@@ -18,6 +20,31 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
         <PrefsFields step={1} prefs={prefs} set={set} />
         <div className="mt-5"><PrefsFields step={2} prefs={prefs} set={set} /></div>
         <button className="btn btn-soft mt-2" onClick={onRegenerate}><Icon d={ICONS.swap} size={14} /> Rebuild week with these preferences</button>
+      </div>
+
+      <div className="card p-5 mb-4">
+        <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Cookbook coverage</h3>
+        <p className="t-soft text-sm mb-3">How many meals fit every preference above. A full week with no repeats needs 7 of each main type and 11 snacks — below that, repeats or empty slots become likely.</p>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {POOL_LABELS.map(([key, label]) => {
+            const low = poolHealth[key] < poolNeed[key];
+            return (
+              <span key={key} className={"pill " + (low ? "pill-miss" : "pill-match")} title={low ? `Needs ${poolNeed[key]} for full variety` : "Plenty of variety"}>
+                {label}: {poolHealth[key]}{low ? ` / ${poolNeed[key]}` : ""}
+              </span>
+            );
+          })}
+        </div>
+        {hasKey ? (
+          <>
+            <button className="btn btn-berry" onClick={onGrow} disabled={growing}>
+              {growing ? <Spinner size={14} /> : <Icon d={ICONS.sparkle} size={14} />} Grow cookbook with AI
+            </button>
+            <p className="t-soft text-xs mt-2">Asks Claude for ~10 new GD-safe meals tailored to her preferences (prioritizing whatever is running thin above) and saves the ones that pass every check to this device's cookbook.</p>
+          </>
+        ) : (
+          <p className="t-soft text-xs">Add a Claude API key below to grow the cookbook with new meals tailored to these preferences.</p>
+        )}
       </div>
 
       <div className="card p-5 mb-4">

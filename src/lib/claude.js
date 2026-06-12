@@ -1,4 +1,6 @@
 import { CATEGORIES } from "../data/meals.js";
+import { capFor } from "./utils.js";
+import { violatesExclusions } from "./planner.js";
 
 /* ------------------------------- Claude API ------------------------------ */
 const MODEL = "claude-sonnet-4-20250514";
@@ -48,6 +50,26 @@ export function extractJSON(text) {
   if (start < 0 || end < 0) throw new Error("The model reply contained no JSON.");
   return JSON.parse(cleaned.slice(start, end + 1));
 }
+// Vets a batch of AI-proposed meals for permanent cookbook membership:
+// normalizes each, then drops duplicates (by name, vs existing meals and
+// within the batch), anything over its type's carb cap, and anything
+// containing an excluded ingredient. Returns only the keepers.
+export function vetNewMeals(raws, existingMeals, prefs, targets) {
+  const seenNames = new Set(existingMeals.map((m) => m.name.toLowerCase()));
+  const kept = [];
+  for (const raw of Array.isArray(raws) ? raws : []) {
+    const meal = normalizeAiMeal(raw, "dinner");
+    if (!meal) continue;
+    const nameKey = meal.name.toLowerCase();
+    if (seenNames.has(nameKey)) continue;
+    if (meal.carbsG > capFor(meal.type, targets)) continue;
+    if (violatesExclusions(meal, prefs)) continue;
+    seenNames.add(nameKey);
+    kept.push(meal);
+  }
+  return kept;
+}
+
 let aiSeq = 0;
 export function normalizeAiMeal(raw, fallbackType) {
   if (!raw || !raw.name) return null;

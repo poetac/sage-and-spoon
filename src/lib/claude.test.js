@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { extractJSON, normalizeAiMeal, gdRules } from "./claude.js";
+import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals } from "./claude.js";
+import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../data/meals.js";
 
 describe("extractJSON", () => {
   it("parses bare JSON", () => {
@@ -52,6 +53,40 @@ describe("normalizeAiMeal", () => {
   });
   it("treats non-numeric carbs as 0 (later clamped by the caller)", () => {
     expect(normalizeAiMeal({ name: "X", carbsG: "lots" }, "snack").carbsG).toBe(0);
+  });
+});
+
+describe("vetNewMeals (cookbook-growth gate)", () => {
+  const T = DEFAULT_SETTINGS.targets;
+  const raw = (over = {}) => ({
+    name: "New Bowl", type: "lunch", carbsG: 30, gi: "Low", prepMins: 15,
+    cuisineTag: "Mediterranean", proteinTag: "Chicken",
+    ingredients: [{ n: "chicken breast", q: 2, u: "", c: "Protein" }], ...over,
+  });
+  const existing = [{ name: "Old Standby", ingredients: [] }];
+
+  it("keeps compliant new meals, normalized with ai ids", () => {
+    const kept = vetNewMeals([raw()], existing, EMPTY_PREFS, T);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].id).toMatch(/^ai-/);
+  });
+  it("drops duplicates of existing meals and within the batch", () => {
+    const kept = vetNewMeals([raw({ name: "old standby" }), raw(), raw()], existing, EMPTY_PREFS, T);
+    expect(kept).toHaveLength(1); // case-insensitive vs existing; second copy of "New Bowl" dropped
+  });
+  it("drops meals over their type's carb cap instead of clamping", () => {
+    expect(vetNewMeals([raw({ type: "snack", carbsG: 25 })], existing, EMPTY_PREFS, T)).toHaveLength(0);
+    expect(vetNewMeals([raw({ type: "breakfast", carbsG: 35 })], existing, EMPTY_PREFS, T)).toHaveLength(0);
+  });
+  it("drops meals containing excluded ingredients", () => {
+    const prefs = { ...EMPTY_PREFS, bannedIngredients: ["chicken"] };
+    expect(vetNewMeals([raw()], existing, prefs, T)).toHaveLength(0);
+    const allergic = { ...EMPTY_PREFS, allergies: ["Shellfish"] };
+    expect(vetNewMeals([raw({ name: "Shrimp Bowl", ingredients: [{ n: "shrimp", q: 1, u: "lb", c: "Protein" }] })], existing, allergic, T)).toHaveLength(0);
+  });
+  it("tolerates junk input", () => {
+    expect(vetNewMeals(null, existing, EMPTY_PREFS, T)).toEqual([]);
+    expect(vetNewMeals([null, {}, { nonsense: true }], existing, EMPTY_PREFS, T)).toEqual([]);
   });
 });
 

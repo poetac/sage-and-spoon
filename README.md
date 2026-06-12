@@ -19,7 +19,8 @@ First run shows a 3-step preference quiz (cuisines, proteins, vegetables, dislik
 
 | | No API key | With a Claude API key |
 |---|---|---|
-| Weekly plan | Built from the 42-meal cookbook | "Generate Full Week" personalizes with Claude |
+| Weekly plan | Built from the 77-meal cookbook | "Generate Full Week" personalizes with Claude |
+| Cookbook growth | Fixed library | "Grow cookbook" adds vetted AI meals permanently |
 | Swaps | Cookbook swap | Cookbook swap **+** ✨ AI swap |
 | Ingredient ideas | Cookbook matching | Tailored suggestions from Claude |
 
@@ -42,7 +43,7 @@ Requires Node 20+. Tailwind is loaded via the CDN script in `index.html` (zero c
 src/
   App.jsx          state, persistence, and composition
   styles.css       design tokens + component classes (Tailwind covers layout)
-  data/meals.js    the 42-meal cookbook, quiz options, allergen/dislike maps
+  data/meals.js    the 77-meal cookbook, quiz options, allergen/dislike maps
   lib/             pure logic: storage, dates, utils, planner, shopping, claude
   components/      primitives, MealCard, PrefsFields, Onboarding, and the four tabs
 ```
