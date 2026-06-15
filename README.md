@@ -35,7 +35,7 @@ npm install
 npm run dev
 ```
 
-Requires Node 20+. Tailwind is loaded via the CDN script in `index.html` (zero config; the app uses only core utility classes), so the dev-console warning about CDN-in-production is expected for now.
+Requires Node 20+. Tailwind v4 is compiled at build time via the `@tailwindcss/vite` plugin and imported in `src/styles.css` (`@import "tailwindcss"`) — no CDN script, no separate config file.
 
 ## Project shape
 
