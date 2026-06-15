@@ -3,7 +3,7 @@ import { capFor } from "./utils.js";
 import { violatesExclusions } from "./planner.js";
 
 /* ------------------------------- Claude API ------------------------------ */
-const MODEL = "claude-sonnet-4-20250514";
+const MODEL = "claude-sonnet-4-6";
 
 export function gdRules(targets) {
   return `All meals must comply with gestational diabetes dietary guidelines: low glycemic index carbohydrates only, carbs always paired with protein or healthy fat, max ${targets.mainMax}g carbs per main meal (max ${targets.breakfastMax}g at breakfast due to morning insulin resistance) and ${targets.snackMax}g per snack, no added sugars, no fruit juice, no white rice or white bread, high fiber preferred. Variety is important — avoid repeating meals within the same week.`;
