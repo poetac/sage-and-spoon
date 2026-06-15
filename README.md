@@ -15,6 +15,8 @@ A calm weekly meal planner for a household where the chef cooks for someone with
 
 First run shows a 3-step preference quiz (cuisines, proteins, vegetables, dislikes, allergies, textures, spice, cook time), then generates a starter week instantly. Allergies are hard-excluded everywhere.
 
+It's an installable PWA — add it to your phone's home screen and the plan, cookbook, and shopping list keep working offline (the AI features still need a connection).
+
 ## Two modes
 
 | | No API key | With a Claude API key |
