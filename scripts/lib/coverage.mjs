@@ -39,21 +39,6 @@ export function analyzeCoverage(meals = MEAL_DB, targets = COVERAGE_TARGETS) {
     const quick = poolSize(meals, { ...EMPTY_PREFS, cookTime: "Quick (<20 min)" }, type);
     gaps.push(gap("quick", type, `${type} · quick (<20 min)`, quick, targets.quickPerType, { type, quick: true }));
 
-    // Per-cuisine spread.
-    for (const cuisine of QUIZ.cuisines) {
-      const count = meals.filter((m) => m.type === type && m.cuisineTag === cuisine).length;
-      gaps.push(gap("cuisine", type, `${type} · ${cuisine}`, count, targets.cuisinePerType, { type, cuisine }));
-    }
-
-    // Per-protein spread (proteinTag is a loose label; match case-insensitively).
-    for (const protein of QUIZ.proteins) {
-      const p = protein.toLowerCase();
-      const count = meals.filter(
-        (m) => m.type === type && String(m.proteinTag).toLowerCase().includes(p)
-      ).length;
-      gaps.push(gap("protein", type, `${type} · ${protein}`, count, targets.proteinPerType, { type, proteinTag: protein }));
-    }
-
     // Remaining pool under each single allergy / dislike.
     for (const allergy of QUIZ.allergies) {
       const count = poolSize(meals, { ...EMPTY_PREFS, allergies: [allergy] }, type);
@@ -63,6 +48,20 @@ export function analyzeCoverage(meals = MEAL_DB, targets = COVERAGE_TARGETS) {
       const count = poolSize(meals, { ...EMPTY_PREFS, dislikes: [dislike] }, type);
       gaps.push(gap("dislike", type, `${type} · without ${dislike}`, count, targets.exclusionRemaining[type], { type, avoidDislike: dislike }));
     }
+  }
+
+  // Cuisine and protein coverage are measured OVERALL (across all meal types),
+  // not per type — many type×cuisine/protein combos are naturally sparse, so a
+  // per-type target would flag false gaps. spec.type defaults to "dinner" so the
+  // generator can still build a prompt if one of these ever falls short.
+  for (const cuisine of QUIZ.cuisines) {
+    const count = meals.filter((m) => m.cuisineTag === cuisine).length;
+    gaps.push(gap("cuisine", null, `${cuisine} (all types)`, count, targets.cuisineMin, { type: "dinner", cuisine }));
+  }
+  for (const protein of QUIZ.proteins) {
+    const p = protein.toLowerCase();
+    const count = meals.filter((m) => String(m.proteinTag).toLowerCase().includes(p)).length;
+    gaps.push(gap("protein", null, `${protein} (all types)`, count, targets.proteinMin, { type: "dinner", proteinTag: protein }));
   }
 
   const open = gaps.filter((g) => g.deficit > 0).sort((a, b) => b.deficit - a.deficit);

@@ -6,12 +6,10 @@ import { normalizeMeal, rejectReason, vetMeals } from "./recipe.mjs";
 const TARGETS = DEFAULT_SETTINGS.targets;
 
 describe("coverage analysis", () => {
-  it("reports a gap and worklist for the current cookbook", () => {
+  it("reports a worklist consistent with the cookbook", () => {
     const { gaps, open, summary } = analyzeCoverage();
     expect(summary.totalRecipes).toBeGreaterThan(0);
-    // We are well short of a 10x library, so there must be open gaps.
-    expect(open.length).toBeGreaterThan(0);
-    // Open gaps are a strict subset of all gaps, sorted by deficit desc.
+    // Open gaps are a subset of all gaps, sorted by deficit desc, all positive.
     expect(open.length).toBeLessThanOrEqual(gaps.length);
     for (let i = 1; i < open.length; i++) {
       expect(open[i - 1].deficit).toBeGreaterThanOrEqual(open[i].deficit);
@@ -19,11 +17,35 @@ describe("coverage analysis", () => {
     expect(open.every((g) => g.deficit > 0)).toBe(true);
   });
 
-  it("covers every meal type across all dimensions", () => {
+  it("flags an open gap when a target is unmet", () => {
+    // Drive the analyzer with an inflated target to prove gaps still surface.
+    const { open } = analyzeCoverage(undefined, {
+      perType: { breakfast: 9999, lunch: 0, dinner: 0, snack: 0 },
+      cuisineMin: 0, proteinMin: 0,
+      exclusionRemaining: { breakfast: 0, lunch: 0, dinner: 0, snack: 0 },
+      quickPerType: 0,
+    });
+    expect(open.some((g) => g.dimension === "type" && g.type === "breakfast")).toBe(true);
+  });
+
+  it("covers per-type dimensions for every meal type", () => {
     const { gaps } = analyzeCoverage();
     for (const type of TYPES) {
       const dims = new Set(gaps.filter((g) => g.type === type).map((g) => g.dimension));
-      expect(dims).toEqual(new Set(["type", "quick", "cuisine", "protein", "allergy", "dislike"]));
+      expect(dims).toEqual(new Set(["type", "quick", "allergy", "dislike"]));
+    }
+  });
+
+  it("measures cuisine and protein coverage overall (not per type)", () => {
+    const { gaps } = analyzeCoverage();
+    const cuisine = gaps.filter((g) => g.dimension === "cuisine");
+    const protein = gaps.filter((g) => g.dimension === "protein");
+    expect(cuisine.length).toBeGreaterThan(0);
+    expect(protein.length).toBeGreaterThan(0);
+    // Overall gaps are not tied to a meal type, but stay generatable.
+    for (const g of [...cuisine, ...protein]) {
+      expect(g.type).toBeNull();
+      expect(TYPES).toContain(g.spec.type);
     }
   });
 

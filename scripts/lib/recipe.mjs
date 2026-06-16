@@ -8,6 +8,22 @@ import { violatesExclusions } from "../../src/lib/planner.js";
 
 const VALID_TYPES = ["breakfast", "lunch", "dinner", "snack"];
 
+// Normalized name key for dedupe: lowercased, stripped of spacing and
+// punctuation so "Turkey Taco Bowl" and "turkey-taco bowl" collide. Sets passed
+// as `existingNames` to rejectReason/vetMeals must hold these keys.
+export const nameKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+// Jaccard overlap of two meals' ingredient-name sets (0..1). Used to surface
+// near-duplicate recipes during promote so a human can catch thin variations.
+export function ingredientSimilarity(a, b) {
+  const setOf = (m) => new Set((m.ingredients || []).map((i) => String(i.n).toLowerCase().trim()));
+  const sa = setOf(a), sb = setOf(b);
+  if (!sa.size || !sb.size) return 0;
+  let shared = 0;
+  for (const n of sa) if (sb.has(n)) shared++;
+  return shared / (sa.size + sb.size - shared);
+}
+
 // Coerce a raw model object into the cookbook meal shape. Returns null if it is
 // unusable (no name). `id` is left for the promote step to assign stably.
 export function normalizeMeal(raw, fallbackType = "dinner") {
@@ -41,7 +57,7 @@ export function normalizeMeal(raw, fallbackType = "dinner") {
 export function rejectReason(meal, { targets, prefs = {}, existingNames = new Set() } = {}) {
   if (!meal) return "could not be parsed";
   if (!meal.name) return "missing name";
-  if (existingNames.has(meal.name.toLowerCase())) return "duplicate name";
+  if (existingNames.has(nameKey(meal.name))) return "duplicate name";
   if (!VALID_TYPES.includes(meal.type)) return `unknown type "${meal.type}"`;
   if (!meal.ingredients.length) return "no ingredients";
   if (meal.ingredients.length > 8) return "more than 8 ingredients";
@@ -64,7 +80,7 @@ export function vetMeals(raws, { existingNames = new Set(), targets, prefs = {},
       rejected.push({ name: raw?.name || "(unnamed)", reason });
       continue;
     }
-    seen.add(meal.name.toLowerCase());
+    seen.add(nameKey(meal.name));
     kept.push(meal);
   }
   return { kept, rejected };

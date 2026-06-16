@@ -14,7 +14,11 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { MEAL_DB, DEFAULT_SETTINGS } from "../src/data/meals.js";
 import { GENERATED_MEALS } from "../src/data/generated-meals.js";
-import { normalizeMeal, rejectReason } from "./lib/recipe.mjs";
+import { normalizeMeal, rejectReason, nameKey, ingredientSimilarity } from "./lib/recipe.mjs";
+
+// A curated recipe whose ingredient set overlaps an existing same-type recipe
+// by at least this much is flagged (not rejected) as a likely thin variation.
+const SIMILARITY_WARN = 0.85;
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const TARGETS = DEFAULT_SETTINGS.targets;
@@ -41,7 +45,9 @@ if (!Array.isArray(curated)) {
 }
 
 // Names already in the bundle (core + previously promoted) are off-limits.
-const existingNames = new Set(MEAL_DB.map((m) => m.name.toLowerCase()));
+const existingNames = new Set(MEAL_DB.map((m) => nameKey(m.name)));
+// Recipes we compare against for near-duplicate warnings — grows as we keep.
+const compareAgainst = [...MEAL_DB];
 // Continue the g-id sequence from whatever is already promoted.
 let nextId = GENERATED_MEALS.reduce((max, m) => {
   const n = Number(String(m.id).replace(/^g/, ""));
@@ -50,6 +56,7 @@ let nextId = GENERATED_MEALS.reduce((max, m) => {
 
 const kept = [];
 const rejected = [];
+const warnings = [];
 for (const raw of curated) {
   const { _gap, id, ...rest } = raw; // drop provenance + any stale id
   const meal = normalizeMeal(rest, rest.type);
@@ -58,12 +65,24 @@ for (const raw of curated) {
     rejected.push({ name: raw?.name || "(unnamed)", reason });
     continue;
   }
-  existingNames.add(meal.name.toLowerCase());
-  kept.push({ id: `g${nextId++}`, ...meal });
+  // Surface (don't block) likely thin variations of an existing same-type meal.
+  let nearest = null;
+  for (const other of compareAgainst) {
+    if (other.type !== meal.type) continue;
+    const sim = ingredientSimilarity(meal, other);
+    if (sim >= SIMILARITY_WARN && (!nearest || sim > nearest.sim)) nearest = { name: other.name, sim };
+  }
+  if (nearest) warnings.push({ name: meal.name, like: nearest.name, sim: nearest.sim });
+
+  existingNames.add(nameKey(meal.name));
+  const promoted = { id: `g${nextId++}`, ...meal };
+  compareAgainst.push(promoted);
+  kept.push(promoted);
 }
 
-console.log(`\n  Promote — ${curated.length} curated, ${kept.length} valid, ${rejected.length} rejected.`);
+console.log(`\n  Promote — ${curated.length} curated, ${kept.length} valid, ${rejected.length} rejected, ${warnings.length} flagged.`);
 for (const r of rejected) console.log(`    ✗ ${r.name}: ${r.reason}`);
+for (const w of warnings) console.log(`    ⚠ ${w.name}: ${Math.round(w.sim * 100)}% ingredient overlap with "${w.like}" — review for duplication`);
 
 if (!kept.length) {
   console.log("\n  Nothing valid to promote. No changes written.\n");

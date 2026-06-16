@@ -19,7 +19,7 @@ import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS } from "../src/data/meals.js";
 import { gdRules, MEAL_SHAPE, callClaude } from "../src/lib/claude.js";
 import { analyzeCoverage } from "./lib/coverage.mjs";
 import { GENERATION } from "./lib/config.mjs";
-import { vetMeals, allergenKeywords, dislikeKeywords } from "./lib/recipe.mjs";
+import { vetMeals, allergenKeywords, dislikeKeywords, nameKey } from "./lib/recipe.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const TARGETS = DEFAULT_SETTINGS.targets;
@@ -96,8 +96,8 @@ if (!apiKey && !dryRun) {
 
 const staged = loadStaging();
 const existingNames = new Set([
-  ...MEAL_DB.map((m) => m.name.toLowerCase()),
-  ...staged.map((m) => String(m.name).toLowerCase()),
+  ...MEAL_DB.map((m) => nameKey(m.name)),
+  ...staged.map((m) => nameKey(m.name)),
 ]);
 
 const { open } = analyzeCoverage();
@@ -118,7 +118,7 @@ for (const gap of open) {
 
   // A short, recent slice of names keeps the prompt small while still steering
   // the model away from obvious repeats; full dedupe happens in vetMeals.
-  const avoidNames = [...existingNames].slice(-120);
+  const avoidNames = [...MEAL_DB, ...staged].map((m) => m.name).slice(-120);
   const prompt = buildPrompt(gap.spec, count, avoidNames);
   batches++;
 
@@ -146,7 +146,7 @@ for (const gap of open) {
   });
   // Tag provenance so curation knows which gap each recipe was meant to fill.
   kept.forEach((m) => { m._gap = gap.label; });
-  kept.forEach((m) => { existingNames.add(m.name.toLowerCase()); staged.push(m); });
+  kept.forEach((m) => { existingNames.add(nameKey(m.name)); staged.push(m); });
   added += kept.length;
   console.log(`kept ${kept.length}, rejected ${rejected.length}`);
   if (rejected.length) {
