@@ -1,3 +1,5 @@
+import { GENERATED_MEALS } from "./generated-meals.js";
+
 /* ------------------------------- constants ------------------------------ */
 
 export const SLOTS = [
@@ -62,7 +64,10 @@ export const DISLIKE_MAP = {
 // list can combine amounts; q:null means "to taste".
 const I = (n, q, u, c) => ({ n, q, u, c });
 
-export const MEAL_DB = [
+// CORE_MEALS are the hand-written recipes. GENERATED_MEALS are curated AI
+// recipes produced by the scripts/ pipeline (generate → curate → promote);
+// both ship in the offline bundle and share the same coverage/integrity tests.
+const CORE_MEALS = [
   // Breakfasts (≤30g carbs)
   { id: "b1", name: "Garden Veggie Scramble & Toast", type: "breakfast", carbsG: 18, gi: "Low", prepMins: 15, cuisineTag: "American comfort", proteinTag: "eggs",
     ingredients: [I("eggs", 4, "", "Protein"), I("baby spinach", 2, "cup", "Produce"), I("cherry tomatoes", 1, "cup", "Produce"), I("whole grain bread", 2, "slice", "Grains"), I("feta cheese", 0.25, "cup", "Dairy"), I("olive oil", 1, "tbsp", "Pantry")] },
@@ -229,6 +234,8 @@ export const MEAL_DB = [
   { id: "s20", name: "White Bean Dip with Carrots", type: "snack", carbsG: 17, gi: "Low", prepMins: 10, cuisineTag: "Mediterranean", proteinTag: "Beans & lentils",
     ingredients: [I("cannellini beans", 1, "can", "Pantry"), I("lemon", 0.5, "", "Produce"), I("garlic", 1, "clove", "Produce"), I("olive oil", 1, "tbsp", "Pantry"), I("carrots", 3, "", "Produce")] },
 ];
+
+export const MEAL_DB = [...CORE_MEALS, ...GENERATED_MEALS];
 
 // Every distinct ingredient name in the cookbook (deduped case-insensitively,
 // original casing kept) — vocabulary for the "never include" picker.

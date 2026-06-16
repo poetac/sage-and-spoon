@@ -1,0 +1,4 @@
+# Raw generator output is a working file, not source — regenerate any time.
+pending-recipes.json
+# curated-recipes.json is intentionally NOT ignored: it records the human
+# curation decisions that fed a promote, useful provenance to keep in git.

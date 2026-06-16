@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "recipes:report": "node scripts/report-coverage.mjs",
+    "recipes:generate": "node scripts/generate-recipes.mjs",
+    "recipes:promote": "node scripts/promote-recipes.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",
