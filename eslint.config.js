@@ -22,4 +22,10 @@ export default defineConfig([
     files: ['public/sw.js'],
     languageOptions: { globals: globals.serviceworker },
   },
+  {
+    // Tests run under Vitest in Node, so they may use Node globals (process,
+    // Buffer) on top of the jsdom browser globals.
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: { globals: globals.node },
+  },
 ])
