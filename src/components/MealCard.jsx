@@ -29,6 +29,9 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails
       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
         <GiPill gi={meal.gi} />
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.carbsG}g carbs</span>
+        {meal.proteinG != null && (
+          <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }} title="estimated protein">{meal.proteinG}g protein</span>
+        )}
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>
           <Icon d={ICONS.clock} size={11} /> {meal.prepMins}m
         </span>

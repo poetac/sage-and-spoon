@@ -1,4 +1,5 @@
 import { GENERATED_MEALS } from "./generated-meals.js";
+import { withMacros } from "../lib/nutrition.js";
 
 /* ------------------------------- constants ------------------------------ */
 
@@ -235,7 +236,9 @@ const CORE_MEALS = [
     ingredients: [I("cannellini beans", 1, "can", "Pantry"), I("lemon", 0.5, "", "Produce"), I("garlic", 1, "clove", "Produce"), I("olive oil", 1, "tbsp", "Pantry"), I("carrots", 3, "", "Produce")] },
 ];
 
-export const MEAL_DB = [...CORE_MEALS, ...GENERATED_MEALS];
+// Macros (protein/fat/fibre) are computed from ingredients here, not authored,
+// so they track ingredient edits and pipeline recipes get them for free.
+export const MEAL_DB = [...CORE_MEALS, ...GENERATED_MEALS].map(withMacros);
 
 // Every distinct ingredient name in the cookbook (deduped case-insensitively,
 // original casing kept) — vocabulary for the "never include" picker.

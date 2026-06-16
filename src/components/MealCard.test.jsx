@@ -4,7 +4,7 @@ import { MealCard } from "./MealCard.jsx";
 
 const meal = {
   id: "m1", name: "Test Bowl", type: "lunch", gi: "Low", carbsG: 30, prepMins: 15,
-  ingredients: [{ n: "chicken", q: 2, u: "cup" }],
+  proteinG: 34, ingredients: [{ n: "chicken", q: 2, u: "cup" }],
 };
 const noop = () => {};
 const base = { meal, onSelect: noop, onSwap: noop, onAiSwap: noop };
@@ -14,6 +14,7 @@ describe("MealCard", () => {
     const { container } = render(<MealCard {...base} />);
     expect(screen.getByText("Test Bowl")).toBeInTheDocument();
     expect(screen.getByText("30g carbs")).toBeInTheDocument();
+    expect(screen.getByText("34g protein")).toBeInTheDocument();
     // GI and prep labels sit beside an <Icon>, so assert on text content.
     expect(container).toHaveTextContent("Low GI");
     expect(container).toHaveTextContent("15m");

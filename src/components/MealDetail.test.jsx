@@ -4,6 +4,7 @@ import { MealDetail } from "./MealDetail.jsx";
 
 const meal = {
   name: "Salmon Plate", type: "dinner", gi: "Medium", carbsG: 40, prepMins: 25,
+  proteinG: 38, fatG: 22, fiberG: 6,
   cuisineTag: "Mediterranean",
   ingredients: [
     { n: "salmon", q: 2, u: "fillet" }, // q is per 2 servings
@@ -48,6 +49,14 @@ describe("MealDetail", () => {
     expect(screen.getByText("Mediterranean")).toBeInTheDocument();
     expect(screen.getByText("Season the salmon")).toBeInTheDocument();
     expect(screen.getByText("Bake for 15 minutes")).toBeInTheDocument();
+  });
+
+  it("shows estimated protein, fat, and fibre per serving", () => {
+    render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(dialog()).toHaveTextContent("per serving (est.)");
+    expect(screen.getByText("38g protein")).toBeInTheDocument();
+    expect(screen.getByText("22g fat")).toBeInTheDocument();
+    expect(screen.getByText("6g fibre")).toBeInTheDocument();
   });
 
   it("omits the steps section when there are none", () => {
