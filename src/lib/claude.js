@@ -1,5 +1,5 @@
 import { CATEGORIES } from "../data/meals.js";
-import { capFor } from "./utils.js";
+import { capFor, kcalFromMacros } from "./utils.js";
 import { violatesExclusions } from "./planner.js";
 
 /* ------------------------------- Claude API ------------------------------ */
@@ -8,7 +8,7 @@ const MODEL = "claude-sonnet-4-6";
 export function gdRules(targets) {
   return `All meals must comply with gestational diabetes dietary guidelines: low glycemic index carbohydrates only, carbs always paired with protein or healthy fat, max ${targets.mainMax}g carbs per main meal (max ${targets.breakfastMax}g at breakfast due to morning insulin resistance) and ${targets.snackMax}g per snack, no added sugars, no fruit juice, no white rice or white bread, high fiber preferred. Variety is important — avoid repeating meals within the same week.`;
 }
-export const MEAL_SHAPE = `Each MEAL is a JSON object: {"name":string,"type":"breakfast"|"lunch"|"dinner"|"snack","ingredients":[{"n":ingredient name,"q":number or null,"u":unit string like "cup"/"tbsp"/"oz" or "" for whole items or "to taste","c":"Produce"|"Protein"|"Dairy"|"Grains"|"Pantry"}],"carbsG":number,"gi":"Low"|"Medium","prepMins":number,"cuisineTag":string,"proteinTag":string}. Quantities are for 2 servings. Max 8 ingredients per meal.`;
+export const MEAL_SHAPE = `Each MEAL is a JSON object: {"name":string,"type":"breakfast"|"lunch"|"dinner"|"snack","ingredients":[{"n":ingredient name,"q":number or null,"u":unit string like "cup"/"tbsp"/"oz" or "" for whole items or "to taste","c":"Produce"|"Protein"|"Dairy"|"Grains"|"Pantry"}],"carbsG":number,"proteinG":number,"fatG":number,"fiberG":number,"gi":"Low"|"Medium","prepMins":number,"cuisineTag":string,"proteinTag":string}. carbsG/proteinG/fatG/fiberG are grams per single serving. Quantities are for 2 servings. Max 8 ingredients per meal.`;
 
 export function prefsSummary(prefs) {
   return JSON.stringify({
@@ -74,6 +74,10 @@ let aiSeq = 0;
 export function normalizeAiMeal(raw, fallbackType) {
   if (!raw || !raw.name) return null;
   const type = ["breakfast", "lunch", "dinner", "snack"].includes(raw.type) ? raw.type : fallbackType;
+  const carbsG = Number(raw.carbsG) || 0;
+  const proteinG = Math.max(0, Number(raw.proteinG) || 0);
+  const fatG = Math.max(0, Number(raw.fatG) || 0);
+  const fiberG = Math.max(0, Number(raw.fiberG) || 0);
   return {
     id: `ai-${Date.now()}-${aiSeq++}`,
     name: String(raw.name),
@@ -84,7 +88,11 @@ export function normalizeAiMeal(raw, fallbackType) {
       u: String(i.u || ""),
       c: CATEGORIES.includes(i.c) ? i.c : "Pantry",
     })),
-    carbsG: Number(raw.carbsG) || 0,
+    carbsG,
+    proteinG,
+    fatG,
+    fiberG,
+    caloriesKcal: kcalFromMacros(carbsG, proteinG, fatG),
     gi: raw.gi === "Medium" ? "Medium" : "Low",
     prepMins: Number(raw.prepMins) || 15,
     cuisineTag: String(raw.cuisineTag || ""),

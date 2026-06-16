@@ -8,7 +8,7 @@ A calm weekly meal planner for a household where the chef cooks for someone with
 
 ## What it does
 
-- **Plan** — a real-date Mon–Sun grid with 6 slots/day (3 meals + AM/PM/bedtime snacks). Drag-and-drop on desktop, tap-to-move on touch. Swap any meal from the built-in cookbook, or ask Claude for a fresh idea.
+- **Plan** — a real-date Mon–Sun grid with 6 slots/day (3 meals + AM/PM/bedtime snacks). Drag-and-drop on desktop, tap-to-move on touch. Swap any meal from the built-in cookbook, or ask Claude for a fresh idea. Each day tallies approximate carbs, protein, fiber, and calories; every meal's detail view shows the full per-serving breakdown.
 - **Ingredients** — list what's in the kitchen; get GD-compliant meal suggestions ranked by ingredient overlap, with matched/missing chips and one-tap add-to-plan.
 - **Shopping List** — auto-built from the week, grouped by aisle, scaled to your servings. Print, copy, or download.
 - **Settings** — preferences quiz, carb targets, servings, API key, full reset.

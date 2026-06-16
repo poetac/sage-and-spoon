@@ -18,6 +18,25 @@ export function MealDetail({ meal, servings, onClose }) {
         {meal.cuisineTag && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.cuisineTag}</span>}
       </div>
 
+      {meal.proteinG != null && (
+        <>
+          <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>
+            Nutrition · per serving · approximate
+          </div>
+          <div className="grid grid-cols-4 gap-2 mb-4">
+            {[["Carbs", `${meal.carbsG}g`], ["Protein", `${meal.proteinG}g`], ["Fat", `${meal.fatG}g`], ["Fiber", `${meal.fiberG}g`]].map(([label, value]) => (
+              <div key={label} className="text-center rounded-xl py-2" style={{ background: "var(--sage-mist)" }}>
+                <div style={{ fontWeight: 700, color: "var(--sage-deep)" }}>{value}</div>
+                <div className="t-soft text-[11px] uppercase tracking-wide">{label}</div>
+              </div>
+            ))}
+          </div>
+          {meal.caloriesKcal != null && (
+            <div className="t-soft text-xs mb-4" style={{ marginTop: -8 }}>≈ {meal.caloriesKcal} kcal per serving</div>
+          )}
+        </>
+      )}
+
       <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>
         Ingredients · for {servings} serving{servings === 1 ? "" : "s"}
       </div>

@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MealCard } from "./MealCard.jsx";
 
 const meal = {
-  id: "m1", name: "Test Bowl", type: "lunch", gi: "Low", carbsG: 30, prepMins: 15,
+  id: "m1", name: "Test Bowl", type: "lunch", gi: "Low", carbsG: 30, proteinG: 28, prepMins: 15,
   ingredients: [{ n: "chicken", q: 2, u: "cup" }],
 };
 const noop = () => {};
@@ -17,6 +17,13 @@ describe("MealCard", () => {
     // GI and prep labels sit beside an <Icon>, so assert on text content.
     expect(container).toHaveTextContent("Low GI");
     expect(container).toHaveTextContent("15m");
+    expect(screen.getByText("28g protein")).toBeInTheDocument();
+  });
+
+  it("omits the protein pill when a meal carries no nutrition", () => {
+    const { proteinG, ...noNutrition } = meal; // eslint-disable-line no-unused-vars
+    render(<MealCard {...base} meal={noNutrition} />);
+    expect(screen.queryByText(/g protein/)).toBeNull();
   });
 
   it("selects on card click", () => {

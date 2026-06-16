@@ -4,6 +4,7 @@ import { MealDetail } from "./MealDetail.jsx";
 
 const meal = {
   name: "Salmon Plate", type: "dinner", gi: "Medium", carbsG: 40, prepMins: 25,
+  proteinG: 35, fatG: 18, fiberG: 6, caloriesKcal: 462,
   cuisineTag: "Mediterranean",
   ingredients: [
     { n: "salmon", q: 2, u: "fillet" }, // q is per 2 servings
@@ -54,5 +55,20 @@ describe("MealDetail", () => {
     const noSteps = { ...meal, steps: [] };
     render(<MealDetail meal={noSteps} servings={2} onClose={() => {}} />);
     expect(screen.queryByText("Steps")).toBeNull();
+  });
+
+  it("shows the per-serving nutrition breakdown and derived calories", () => {
+    render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(dialog()).toHaveTextContent("Nutrition · per serving · approximate");
+    expect(screen.getByText("35g")).toBeInTheDocument(); // protein
+    expect(screen.getByText("18g")).toBeInTheDocument(); // fat
+    expect(screen.getByText("6g")).toBeInTheDocument();  // fiber
+    expect(dialog()).toHaveTextContent("≈ 462 kcal per serving");
+  });
+
+  it("omits nutrition when a meal carries none", () => {
+    const { proteinG, fatG, fiberG, caloriesKcal, ...bare } = meal; // eslint-disable-line no-unused-vars
+    render(<MealDetail meal={bare} servings={2} onClose={() => {}} />);
+    expect(screen.queryByText(/Nutrition/)).toBeNull();
   });
 });

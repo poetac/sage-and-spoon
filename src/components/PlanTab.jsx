@@ -8,7 +8,16 @@ import { MealCard } from "./MealCard.jsx";
 function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap, onAiSwap, onDetails, aiBusyKey, hasKey }) {
   const day = plan.days[dayIdx];
   const date = dayDate(plan.weekStart, dayIdx);
-  const total = SLOTS.reduce((s, sl) => s + (mealsById[day[sl.key]]?.carbsG || 0), 0);
+  const totals = SLOTS.reduce((acc, sl) => {
+    const m = mealsById[day[sl.key]];
+    if (m) {
+      acc.carbs += m.carbsG || 0;
+      acc.protein += m.proteinG || 0;
+      acc.fiber += m.fiberG || 0;
+      acc.kcal += m.caloriesKcal || 0;
+    }
+    return acc;
+  }, { carbs: 0, protein: 0, fiber: 0, kcal: 0 });
   const [over, setOver] = useState(null);
   return (
     <div className="flex flex-col gap-2 min-w-[185px] flex-1">
@@ -44,7 +53,10 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
         );
       })}
       <div className="text-center text-[12.5px] py-1.5 rounded-full" style={{ background: "var(--sage-mist)", color: "var(--sage-deep)", fontWeight: 700 }}>
-        ≈ {total}g carbs today
+        ≈ {totals.carbs}g carbs today
+      </div>
+      <div className="text-center t-soft text-[11px] -mt-1">
+        {totals.protein}g protein · {totals.fiber}g fiber · {totals.kcal} kcal
       </div>
     </div>
   );

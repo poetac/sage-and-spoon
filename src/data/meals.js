@@ -1,4 +1,5 @@
 /* ------------------------------- constants ------------------------------ */
+import { kcalFromMacros } from "../lib/utils.js";
 
 export const SLOTS = [
   { key: "breakfast", label: "Breakfast", type: "breakfast" },
@@ -62,7 +63,7 @@ export const DISLIKE_MAP = {
 // list can combine amounts; q:null means "to taste".
 const I = (n, q, u, c) => ({ n, q, u, c });
 
-export const MEAL_DB = [
+const RAW_MEALS = [
   // Breakfasts (≤30g carbs)
   { id: "b1", name: "Garden Veggie Scramble & Toast", type: "breakfast", carbsG: 18, gi: "Low", prepMins: 15, cuisineTag: "American comfort", proteinTag: "eggs",
     ingredients: [I("eggs", 4, "", "Protein"), I("baby spinach", 2, "cup", "Produce"), I("cherry tomatoes", 1, "cup", "Produce"), I("whole grain bread", 2, "slice", "Grains"), I("feta cheese", 0.25, "cup", "Dairy"), I("olive oil", 1, "tbsp", "Pantry")] },
@@ -229,6 +230,39 @@ export const MEAL_DB = [
   { id: "s20", name: "White Bean Dip with Carrots", type: "snack", carbsG: 17, gi: "Low", prepMins: 10, cuisineTag: "Mediterranean", proteinTag: "Beans & lentils",
     ingredients: [I("cannellini beans", 1, "can", "Pantry"), I("lemon", 0.5, "", "Produce"), I("garlic", 1, "clove", "Produce"), I("olive oil", 1, "tbsp", "Pantry"), I("carrots", 3, "", "Produce")] },
 ];
+
+// Approximate per-serving nutrition, keyed by meal id: [protein g, fat g,
+// fiber g]. Hand-estimated from each meal's ingredients (carbsG already lives
+// on the meal). These are guidance, not lab values — see the "approximate"
+// note in the meal detail view. Calories are derived from the macros below so
+// they stay internally consistent. Every RAW_MEALS id must appear here (the
+// coverage test enforces it).
+const NUTRITION = {
+  b1: [19, 18, 5], b2: [22, 11, 8], b3: [11, 14, 6], b4: [11, 16, 8], b5: [20, 9, 3],
+  b6: [16, 21, 4], b7: [6, 12, 12], b8: [17, 16, 9], b9: [14, 7, 3], b10: [20, 19, 4],
+  b11: [9, 8, 7], b12: [14, 15, 7], b13: [7, 6, 10], b14: [11, 13, 7], b15: [16, 14, 3],
+  b16: [14, 14, 3], b17: [6, 24, 12], b18: [13, 13, 5],
+  l1: [40, 21, 4], l2: [22, 14, 10], l3: [16, 4, 14], l4: [26, 5, 4], l5: [20, 24, 13],
+  l6: [39, 7, 8], l7: [45, 16, 6], l8: [38, 12, 7], l9: [35, 31, 5], l10: [35, 13, 11],
+  l11: [40, 12, 5], l12: [28, 15, 3], l13: [27, 9, 7], l14: [38, 5, 5], l15: [27, 12, 9],
+  l16: [33, 16, 5], l17: [14, 5, 11], l18: [32, 16, 5],
+  d1: [38, 22, 6], d2: [33, 16, 5], d3: [28, 23, 6], d4: [26, 6, 5], d5: [33, 15, 7],
+  d6: [34, 16, 5], d7: [14, 20, 6], d8: [42, 18, 8], d9: [39, 13, 5], d10: [44, 18, 9],
+  d11: [39, 4, 9], d12: [27, 9, 6], d13: [40, 12, 6], d14: [32, 23, 12], d15: [33, 10, 6],
+  d16: [32, 15, 5], d17: [36, 13, 5], d18: [40, 12, 6], d19: [28, 14, 7], d20: [36, 19, 4],
+  d21: [14, 3, 16],
+  s1: [4, 8, 3], s2: [9, 8, 2], s3: [5, 8, 6], s4: [6, 5, 1], s5: [3, 9, 5],
+  s6: [9, 0, 1], s7: [3, 8, 3], s8: [18, 7, 0], s9: [11, 5, 6], s10: [13, 2, 1],
+  s11: [3, 15, 5], s12: [7, 6, 2], s13: [10, 6, 8], s14: [2, 11, 7], s15: [3, 8, 2],
+  s16: [4, 7, 4], s17: [12, 2, 1], s18: [9, 8, 3], s19: [3, 9, 4], s20: [7, 5, 8],
+};
+
+// Final cookbook: each meal gains proteinG/fatG/fiberG from NUTRITION and a
+// derived caloriesKcal (Atwater 4/4/9). AI-proposed meals carry the same shape.
+export const MEAL_DB = RAW_MEALS.map((m) => {
+  const [proteinG, fatG, fiberG] = NUTRITION[m.id] || [0, 0, 0];
+  return { ...m, proteinG, fatG, fiberG, caloriesKcal: kcalFromMacros(m.carbsG, proteinG, fatG) };
+});
 
 // Every distinct ingredient name in the cookbook (deduped case-insensitively,
 // original casing kept) — vocabulary for the "never include" picker.

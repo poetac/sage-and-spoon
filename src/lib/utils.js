@@ -20,3 +20,8 @@ export function capFor(slotType, targets) {
   if (slotType === "snack") return targets.snackMax;
   return targets.mainMax;
 }
+
+// Atwater estimate so cookbook and AI meals report calories the same way.
+// Fiber is counted within carbs here — fine for an approximate figure.
+export const kcalFromMacros = (carbsG, proteinG, fatG) =>
+  Math.round(4 * (carbsG || 0) + 4 * (proteinG || 0) + 9 * (fatG || 0));

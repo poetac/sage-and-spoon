@@ -67,4 +67,16 @@ describe("cookbook data integrity", () => {
       for (const ing of m.ingredients) expect(CATEGORIES, `${m.name}: ${ing.n}`).toContain(ing.c);
     }
   });
+  it("carries plausible per-serving nutrition with derived calories", () => {
+    for (const m of MEAL_DB) {
+      for (const k of ["proteinG", "fatG", "fiberG", "caloriesKcal"]) {
+        expect(typeof m[k], `${m.name}: ${k}`).toBe("number");
+        expect(m[k], `${m.name}: ${k}`).toBeGreaterThanOrEqual(0);
+      }
+      // Fiber is a component of carbohydrate, so it can't exceed total carbs.
+      expect(m.fiberG, `${m.name}: fiber vs carbs`).toBeLessThanOrEqual(m.carbsG);
+      // Calories must match the Atwater estimate the cookbook derives them with.
+      expect(m.caloriesKcal, `${m.name}: kcal`).toBe(Math.round(4 * m.carbsG + 4 * m.proteinG + 9 * m.fatG));
+    }
+  });
 });

@@ -54,6 +54,20 @@ describe("normalizeAiMeal", () => {
   it("treats non-numeric carbs as 0 (later clamped by the caller)", () => {
     expect(normalizeAiMeal({ name: "X", carbsG: "lots" }, "snack").carbsG).toBe(0);
   });
+  it("carries nutrition and derives calories (Atwater 4/4/9)", () => {
+    const meal = normalizeAiMeal({ name: "X", carbsG: 30, proteinG: 25, fatG: 10, fiberG: 6 }, "lunch");
+    expect(meal.proteinG).toBe(25);
+    expect(meal.fatG).toBe(10);
+    expect(meal.fiberG).toBe(6);
+    expect(meal.caloriesKcal).toBe(4 * 30 + 4 * 25 + 9 * 10); // 310
+  });
+  it("clamps missing or negative nutrition to 0", () => {
+    const meal = normalizeAiMeal({ name: "X", carbsG: 20, proteinG: -5 }, "snack");
+    expect(meal.proteinG).toBe(0);
+    expect(meal.fatG).toBe(0);
+    expect(meal.fiberG).toBe(0);
+    expect(meal.caloriesKcal).toBe(80); // 4*20 only
+  });
 });
 
 describe("vetNewMeals (cookbook-growth gate)", () => {
