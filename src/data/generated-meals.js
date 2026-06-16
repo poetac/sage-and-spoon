@@ -7,4 +7,1851 @@
 //
 // These are spread into MEAL_DB in meals.js, so they ship in the offline bundle
 // and are subject to the same coverage + integrity tests as the core recipes.
-export const GENERATED_MEALS = [];
+export const GENERATED_MEALS = [
+  {
+    "id": "g1",
+    "name": "Lemon Herb Roasted Chickpeas",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "dried oregano",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Heat oven to 400F and pat chickpeas dry.",
+      "Toss with olive oil and oregano.",
+      "Roast 25-30 min until crisp.",
+      "Finish with a squeeze of lemon."
+    ]
+  },
+  {
+    "id": "g2",
+    "name": "Spiced Pumpkin Seed & Cranberry Mix",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "pumpkin seeds",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "sunflower seeds",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "unsweetened dried cranberries",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Toast pumpkin and sunflower seeds in a dry pan until fragrant.",
+      "Toss with cinnamon off the heat.",
+      "Stir in dried cranberries and cool."
+    ]
+  },
+  {
+    "id": "g3",
+    "name": "Guacamole-Stuffed Mini Peppers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "mini bell peppers",
+        "q": 6,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "nuts",
+    "steps": [
+      "Halve mini peppers and remove seeds.",
+      "Mash avocado with lime juice and chopped cilantro.",
+      "Spoon guacamole into pepper halves."
+    ]
+  },
+  {
+    "id": "g4",
+    "name": "Turkey Avocado Roll-Ups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "sliced turkey breast",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "dijon mustard",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 4,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Spread mashed avocado over turkey slices.",
+      "Add a thin line of dijon.",
+      "Roll up and slice into pinwheels."
+    ]
+  },
+  {
+    "id": "g5",
+    "name": "Sardine Cucumber Rounds",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "canned sardines",
+        "q": 1,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 5,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "White fish",
+    "steps": [
+      "Slice cucumber into thick rounds.",
+      "Flake sardines and pile onto each round.",
+      "Drizzle with olive oil and lemon."
+    ]
+  },
+  {
+    "id": "g6",
+    "name": "Chili-Lime Roasted Edamame",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "shelled edamame",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 11,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Heat oven to 400F.",
+      "Toss edamame with oil and chili powder.",
+      "Roast 15-18 min until lightly crisp.",
+      "Squeeze lime over the top."
+    ]
+  },
+  {
+    "id": "g7",
+    "name": "Pear Slices with Sunflower Butter",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "pear",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sunflower seed butter",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 4,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Slice pear into wedges.",
+      "Serve with sunflower seed butter for dipping.",
+      "Dust with cinnamon."
+    ]
+  },
+  {
+    "id": "g8",
+    "name": "Tuna Cucumber Boats",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "canned tuna",
+        "q": 1,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "dijon mustard",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "American comfort",
+    "proteinTag": "White fish",
+    "steps": [
+      "Halve cucumber lengthwise and scoop out seeds.",
+      "Mix tuna with dijon and lemon.",
+      "Fill the cucumber boats."
+    ]
+  },
+  {
+    "id": "g9",
+    "name": "Olive & Roasted Pepper Antipasto",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "kalamata olives",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "roasted red peppers",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "Italian",
+    "proteinTag": "nuts",
+    "steps": [
+      "Arrange olives, roasted peppers, and cucumber on a plate.",
+      "Drizzle with olive oil."
+    ]
+  },
+  {
+    "id": "g10",
+    "name": "Smoky Black Bean Jicama Dip",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "black beans",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "jicama",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Mash black beans with lime juice and cumin.",
+      "Cut jicama into sticks.",
+      "Serve dip with jicama dippers."
+    ]
+  },
+  {
+    "id": "g11",
+    "name": "Strawberry Coconut Chia Cup",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chia seeds",
+        "q": 3,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "strawberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "vanilla extract",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 13,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Stir chia into coconut cream with vanilla.",
+      "Chill 15 min until thickened.",
+      "Top with sliced strawberries."
+    ]
+  },
+  {
+    "id": "g12",
+    "name": "Prosciutto & Cantaloupe",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "prosciutto",
+        "q": 3,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "cantaloupe",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "Italian",
+    "proteinTag": "Pork",
+    "steps": [
+      "Cut cantaloupe into bite-size pieces.",
+      "Wrap each piece in a strip of prosciutto."
+    ]
+  },
+  {
+    "id": "g13",
+    "name": "Snap Peas with Lemon Tahini",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "sugar snap peas",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "nuts",
+    "steps": [
+      "Whisk tahini with lemon juice and a splash of water.",
+      "Serve snap peas with the tahini dip."
+    ]
+  },
+  {
+    "id": "g14",
+    "name": "Beef Jerky & Bell Pepper Snack",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "no-sugar beef jerky",
+        "q": 2,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 3,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Beef",
+    "steps": [
+      "Slice bell pepper into strips.",
+      "Serve alongside beef jerky."
+    ]
+  },
+  {
+    "id": "g15",
+    "name": "Coconut Quinoa Porridge with Berries",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "raspberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chia seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Cook quinoa until tender.",
+      "Stir in coconut cream and cinnamon.",
+      "Top with raspberries and chia seeds."
+    ]
+  },
+  {
+    "id": "g16",
+    "name": "Smoked Mackerel & Avocado Plate",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "smoked mackerel",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "White fish",
+    "steps": [
+      "Flake mackerel onto a plate.",
+      "Add sliced avocado and cucumber.",
+      "Finish with lemon."
+    ]
+  },
+  {
+    "id": "g17",
+    "name": "Sweet Potato Rounds with Sunflower Butter",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sunflower seed butter",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "chia seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Slice sweet potato into rounds and roast or toast until tender.",
+      "Spread with sunflower seed butter.",
+      "Sprinkle with chia and cinnamon."
+    ]
+  },
+  {
+    "id": "g18",
+    "name": "Turkey & Veggie Breakfast Skillet",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 0.75,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "smoked paprika",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Brown ground turkey in olive oil.",
+      "Add diced peppers and zucchini.",
+      "Season with smoked paprika and cook until tender."
+    ]
+  },
+  {
+    "id": "g19",
+    "name": "Kiwi Chia Coconut Pudding",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chia seeds",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "coconut cream",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "kiwi",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Stir chia into coconut cream and chill until set.",
+      "Top with sliced kiwi and pumpkin seeds."
+    ]
+  },
+  {
+    "id": "g20",
+    "name": "Savory Chickpea Flour Pancake",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Whisk chickpea flour with water, cumin, and salt into a batter.",
+      "Stir in chopped spinach and tomato.",
+      "Cook like a pancake in olive oil until set on both sides."
+    ]
+  },
+  {
+    "id": "g21",
+    "name": "Smoked Salmon Avocado Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "smoked salmon",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh dill",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Arrange smoked salmon, avocado, tomatoes, and cucumber in a bowl.",
+      "Scatter dill over the top."
+    ]
+  },
+  {
+    "id": "g22",
+    "name": "Apple Cinnamon Quinoa Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "apple",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground flaxseed",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 29,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Cook quinoa until fluffy.",
+      "Stir in diced apple and cinnamon.",
+      "Top with pumpkin seeds and flaxseed."
+    ]
+  },
+  {
+    "id": "g23",
+    "name": "Turkey Sausage Lettuce Cups",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "turkey breakfast sausage",
+        "q": 8,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "butter lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Cook turkey sausage until browned.",
+      "Spoon into lettuce leaves.",
+      "Top with sliced avocado and tomato."
+    ]
+  },
+  {
+    "id": "g24",
+    "name": "Spiced Lentil & Sweet Potato Hash",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "green lentils",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 27,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Cook lentils until just tender.",
+      "Saute diced sweet potato in olive oil with cumin.",
+      "Fold in lentils and spinach until wilted."
+    ]
+  },
+  {
+    "id": "g25",
+    "name": "Chicken Tikka Quinoa Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "quinoa",
+        "q": 0.66,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 38,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Toss chicken with garam masala and sear until cooked.",
+      "Stir in coconut cream to make a light sauce.",
+      "Serve over quinoa with spinach and a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g26",
+    "name": "Lentil & Roasted Veggie Buddha Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "green lentils",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "kale",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 40,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Roast cubed sweet potato until caramelized.",
+      "Cook lentils until tender.",
+      "Whisk tahini with lemon and water.",
+      "Build bowls with lentils, sweet potato, kale, and tahini drizzle."
+    ]
+  },
+  {
+    "id": "g27",
+    "name": "Shrimp Rice Noodle Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "rice noodles",
+        "q": 3,
+        "u": "oz",
+        "c": "Grains"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh mint",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 34,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Cook rice noodles and rinse.",
+      "Saute shrimp until pink.",
+      "Toss noodles with julienned cucumber, carrots, lime, and mint.",
+      "Top with shrimp."
+    ]
+  },
+  {
+    "id": "g28",
+    "name": "Mediterranean Tuna Quinoa Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "canned tuna",
+        "q": 2,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "kalamata olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 30,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "White fish",
+    "steps": [
+      "Cook and cool quinoa.",
+      "Toss with tuna, tomatoes, cucumber, and olives.",
+      "Dress with olive oil and lemon."
+    ]
+  },
+  {
+    "id": "g29",
+    "name": "Korean-Style Beef Lettuce Wraps",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "ground beef",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "butter lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Beef",
+    "steps": [
+      "Brown beef with ginger.",
+      "Stir in soy sauce and sesame oil.",
+      "Spoon into lettuce leaves and top with shredded carrots."
+    ]
+  },
+  {
+    "id": "g30",
+    "name": "Falafel-Spiced Chickpea Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh parsley",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 36,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Lightly mash chickpeas with cumin and parsley.",
+      "Add diced cucumber and tomato.",
+      "Dress with tahini and lemon."
+    ]
+  },
+  {
+    "id": "g31",
+    "name": "Turkey Black Bean Stuffed Sweet Potato",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "sweet potato",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground turkey",
+        "q": 0.75,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 35,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Bake sweet potatoes until soft.",
+      "Brown turkey with cumin and stir in black beans.",
+      "Split potatoes, fill with turkey mix, and top with avocado and lime."
+    ]
+  },
+  {
+    "id": "g32",
+    "name": "Ginger Chicken Veggie Soup",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bok choy",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chicken broth",
+        "q": 4,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Asian",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Simmer broth with ginger and sliced carrots.",
+      "Add diced chicken and cook through.",
+      "Stir in bok choy and scallions just before serving."
+    ]
+  },
+  {
+    "id": "g33",
+    "name": "Chickpea Spinach Coconut Curry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "baby spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 40,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer tomatoes with ginger and garam masala.",
+      "Add chickpeas and coconut cream; simmer 10 min.",
+      "Wilt in spinach.",
+      "Serve over brown rice."
+    ]
+  },
+  {
+    "id": "g34",
+    "name": "Moroccan Chicken & Cauliflower",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Low",
+    "prepMins": 40,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Toss chicken and cauliflower with cumin, cinnamon, and oil.",
+      "Roast at 425F until chicken is cooked and cauliflower browned.",
+      "Warm chickpeas and fold in before serving."
+    ]
+  },
+  {
+    "id": "g35",
+    "name": "Baked Cod with Tomato Olive Sauce",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "cod fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "kalamata olives",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "capers",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "White fish",
+    "steps": [
+      "Blister tomatoes with garlic in olive oil.",
+      "Stir in olives and capers.",
+      "Nestle cod into the sauce and bake until flaky."
+    ]
+  },
+  {
+    "id": "g36",
+    "name": "Thai Basil Turkey Stir-Fry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "green beans",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh basil",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 30,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Stir-fry turkey with ginger until browned.",
+      "Add green beans and peppers; cook until crisp-tender.",
+      "Toss with soy sauce and basil.",
+      "Serve over brown rice."
+    ]
+  },
+  {
+    "id": "g37",
+    "name": "Beef & Vegetable Lentil Stew",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "green lentils",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "celery",
+        "q": 2,
+        "u": "stalk",
+        "c": "Produce"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 34,
+    "gi": "Low",
+    "prepMins": 40,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beef",
+    "steps": [
+      "Sear cubed beef, then set aside.",
+      "Soften carrots, celery, and garlic.",
+      "Add lentils, tomatoes, and water; simmer until lentils are tender.",
+      "Return beef to warm through."
+    ]
+  },
+  {
+    "id": "g38",
+    "name": "Pork & Cabbage Stir-Fry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "green cabbage",
+        "q": 4,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Pork",
+    "steps": [
+      "Slice pork thin and stir-fry in sesame oil.",
+      "Add shredded cabbage and carrots.",
+      "Season with soy sauce and ginger; cook until crisp-tender."
+    ]
+  },
+  {
+    "id": "g39",
+    "name": "Shrimp & Chickpea Skillet",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "baby spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 32,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute garlic and tomatoes in olive oil.",
+      "Add chickpeas and shrimp; cook until shrimp are pink.",
+      "Wilt in spinach and finish with lemon."
+    ]
+  },
+  {
+    "id": "g40",
+    "name": "Tandoori Salmon with Cauliflower Rice",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "salmon fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Coat salmon in garam masala and a little coconut cream.",
+      "Roast until just cooked.",
+      "Saute cauliflower rice until tender.",
+      "Serve with lime and cilantro."
+    ]
+  }
+];
