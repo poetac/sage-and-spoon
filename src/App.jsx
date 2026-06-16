@@ -15,12 +15,14 @@ import { MealDetail } from "./components/MealDetail.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
 import { PlanTab } from "./components/PlanTab.jsx";
 import { IngredientsTab } from "./components/IngredientsTab.jsx";
+import { CookbookTab } from "./components/CookbookTab.jsx";
 import { ShoppingTab } from "./components/ShoppingTab.jsx";
 import { SettingsTab } from "./components/SettingsTab.jsx";
 
 /* ----------------------------------- app --------------------------------- */
 const TABS = [
   { key: "plan", label: "Plan", icon: "plan" },
+  { key: "cookbook", label: "Cookbook", icon: "leaf" },
   { key: "ingredients", label: "Ingredients", icon: "basket" },
   { key: "shopping", label: "Shopping List", icon: "cart" },
   { key: "settings", label: "Settings", icon: "gear" },
@@ -247,6 +249,7 @@ export default function App() {
             <button className="btn btn-primary" onClick={shuffleWeek}>Build my week</button>
           </div>
         )}
+        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} toastOk={toastOk} toastErr={toastErr} />}
         {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} />}
