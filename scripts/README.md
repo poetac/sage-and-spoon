@@ -49,18 +49,31 @@ never loses progress.
 Open `scripts/generated/pending-recipes.json`, keep the good recipes, fix or
 drop the rest (this is the hand-curation step — automated vetting catches
 unsafe/duplicate recipes, but taste, realism, and step quality are human calls).
-Save the approved set to `scripts/generated/curated-recipes.json` (an array of
-meal objects; the `_gap` tag is ignored on promote).
+Save the approved set as the next numbered batch, e.g.
+`scripts/generated/curated-recipes.batch9.json` (an array of meal objects; the
+`_gap` tag is ignored on promote). The existing `batch1`–`batch8` files are the
+provenance of the current library — see `generated/README.md`.
 
 ## 4. Promote — `recipes:promote`
 
 Re-runs full validation on the curated file, assigns stable ids (`g1`, `g2`, …),
 and rewrites `src/data/generated-meals.js`, which `meals.js` spreads into
 `MEAL_DB`. Promoted recipes are then subject to the same CI tests as the core
-cookbook (`src/data/coverage.test.js`).
+cookbook (`src/data/coverage.test.js`). Recipes that pass but overlap an
+existing same-type recipe heavily are **flagged** (not dropped) so you can catch
+thin variations.
+
+```
+npm run recipes:promote -- --in scripts/generated/curated-recipes.batch9.json
+```
 
 - `--in PATH` — curated input (default `scripts/generated/curated-recipes.json`)
 - `--dry-run` — validate and report without writing
+
+> **Heads-up:** `recipes:generate` calls `api.anthropic.com` directly and needs a
+> raw `ANTHROPIC_API_KEY` in the environment. The curate → promote half needs no
+> key, so you can author or edit a `curated-recipes.*.json` by hand and promote it
+> through the exact same gates (that is how the current library was built).
 
 ## Where things live
 
