@@ -16849,5 +16849,1947 @@ export const GENERATED_MEALS = [
       "Top with tilapia and lemon.",
       "Bake at 400F until fish flakes."
     ]
+  },
+  {
+    "id": "g377",
+    "name": "Coconut Chickpea Trail Mix",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "coconut flakes",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Roast chickpeas until crisp.",
+      "Toss with coconut, pumpkin seeds, and cinnamon."
+    ]
+  },
+  {
+    "id": "g378",
+    "name": "Shrimp Lettuce Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 0.5,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "butter lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute shrimp with ginger.",
+      "Spoon into lettuce leaves with lime."
+    ]
+  },
+  {
+    "id": "g379",
+    "name": "Zucchini Pizza Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "zucchini",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "marinara sauce",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "mozzarella cheese",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Italian",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Slice zucchini into rounds.",
+      "Top with marinara and mozzarella.",
+      "Broil until bubbly."
+    ]
+  },
+  {
+    "id": "g380",
+    "name": "Avocado Egg Salad Cucumber Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "dijon mustard",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "American comfort",
+    "proteinTag": "eggs",
+    "steps": [
+      "Mash hard-boiled eggs with avocado and dijon.",
+      "Spoon onto cucumber rounds."
+    ]
+  },
+  {
+    "id": "g381",
+    "name": "Roasted Parsnip Fries",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "parsnips",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh rosemary",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Cut parsnips into fries.",
+      "Toss with oil and rosemary.",
+      "Roast at 425F until golden."
+    ]
+  },
+  {
+    "id": "g382",
+    "name": "Tuna Avocado Nori Wraps",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "canned tuna",
+        "q": 1,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "nori sheets",
+        "q": 2,
+        "u": "",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Asian",
+    "proteinTag": "White fish",
+    "steps": [
+      "Mix tuna with avocado.",
+      "Spoon onto nori with cucumber sticks.",
+      "Roll and slice."
+    ]
+  },
+  {
+    "id": "g383",
+    "name": "Marinated Olives & Almonds",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "green olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "almonds",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh rosemary",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 7,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "nuts",
+    "steps": [
+      "Warm olives and almonds with rosemary and lemon zest."
+    ]
+  },
+  {
+    "id": "g384",
+    "name": "Greek Yogurt Pumpkin Seed Cup",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "plain Greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 3,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Spoon yogurt into a cup.",
+      "Top with pumpkin seeds and cinnamon."
+    ]
+  },
+  {
+    "id": "g385",
+    "name": "Carrot White Bean Hummus",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cannellini beans",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "carrots",
+        "q": 3,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Blend beans with tahini and lemon.",
+      "Serve with carrot sticks."
+    ]
+  },
+  {
+    "id": "g386",
+    "name": "Apple Walnut Cinnamon Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "apple",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "walnuts",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Core and slice apple into rings.",
+      "Top with chopped walnuts and cinnamon."
+    ]
+  },
+  {
+    "id": "g387",
+    "name": "Pesto Egg Halves",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 3,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "basil pesto",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 4,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Italian",
+    "proteinTag": "eggs",
+    "steps": [
+      "Halve hard-boiled eggs.",
+      "Top with a dab of pesto.",
+      "Serve with cherry tomatoes."
+    ]
+  },
+  {
+    "id": "g388",
+    "name": "Lime Chili Roasted Chickpeas",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Roast chickpeas with oil and chili powder.",
+      "Finish with lime."
+    ]
+  },
+  {
+    "id": "g389",
+    "name": "Turkey Pepperoncini Roll-Ups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "sliced turkey breast",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "pepperoncini",
+        "q": 4,
+        "u": "",
+        "c": "Pantry"
+      },
+      {
+        "n": "mozzarella cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 4,
+    "gi": "Low",
+    "prepMins": 6,
+    "cuisineTag": "Italian",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Layer turkey with mozzarella and sliced pepperoncini.",
+      "Roll up and slice."
+    ]
+  },
+  {
+    "id": "g390",
+    "name": "Coconut Almond Cocoa Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "coconut flakes",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "almond butter",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "unsweetened cocoa powder",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Mix coconut, almond butter, and cocoa.",
+      "Roll into bites and chill."
+    ]
+  },
+  {
+    "id": "g391",
+    "name": "Ham Veggie Egg Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "sliced ham",
+        "q": 3,
+        "u": "slice",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "American comfort",
+    "proteinTag": "eggs",
+    "steps": [
+      "Saute ham and pepper in oil.",
+      "Add spinach to wilt.",
+      "Pour in eggs and scramble."
+    ]
+  },
+  {
+    "id": "g392",
+    "name": "Coconut Raspberry Quinoa Porridge",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "raspberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "almonds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Cook quinoa and stir in coconut cream.",
+      "Top with raspberries and almonds."
+    ]
+  },
+  {
+    "id": "g393",
+    "name": "Curried Tofu Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 1,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "curry powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Crumble tofu and saute with curry powder.",
+      "Add tomato.",
+      "Fold in spinach until wilted."
+    ]
+  },
+  {
+    "id": "g394",
+    "name": "Raspberry Almond Yogurt Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "plain Greek yogurt",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "raspberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "almonds",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Spoon yogurt into a bowl.",
+      "Top with raspberries, almonds, and cinnamon."
+    ]
+  },
+  {
+    "id": "g395",
+    "name": "Smoked Salmon Cucumber Egg Plate",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "smoked salmon",
+        "q": 3,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Soft-boil eggs and halve.",
+      "Plate with salmon, cucumber, and avocado."
+    ]
+  },
+  {
+    "id": "g396",
+    "name": "Blackberry Coconut Chia Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chia seeds",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "coconut cream",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "blackberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "hemp seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Set chia in coconut cream.",
+      "Top with blackberries and hemp seeds."
+    ]
+  },
+  {
+    "id": "g397",
+    "name": "Veggie Frittata Muffins",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 6,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "American comfort",
+    "proteinTag": "eggs",
+    "steps": [
+      "Whisk eggs with chopped vegetables.",
+      "Pour into a muffin tin.",
+      "Bake at 375F until set."
+    ]
+  },
+  {
+    "id": "g398",
+    "name": "Sweet Potato Turkey Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 0.75,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Saute diced sweet potato in oil.",
+      "Add turkey and brown.",
+      "Fold in spinach."
+    ]
+  },
+  {
+    "id": "g399",
+    "name": "Chicken Sausage & Pepper Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "chicken sausage",
+        "q": 6,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "American comfort",
+    "proteinTag": "eggs",
+    "steps": [
+      "Brown sliced sausage with peppers.",
+      "Add spinach to wilt.",
+      "Pour in eggs and scramble."
+    ]
+  },
+  {
+    "id": "g400",
+    "name": "Spiced Pear Quinoa Porridge",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "pear",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "American comfort",
+    "proteinTag": "nuts",
+    "steps": [
+      "Cook quinoa with cinnamon.",
+      "Stir in coconut cream.",
+      "Top with diced pear and pumpkin seeds."
+    ]
+  },
+  {
+    "id": "g401",
+    "name": "Greek Chicken Salad Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "romaine lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "feta cheese",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Grill and slice chicken.",
+      "Toss romaine, cucumber, tomato, and feta.",
+      "Add chicken and olive oil."
+    ]
+  },
+  {
+    "id": "g402",
+    "name": "Salmon Avocado Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "salmon fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "mixed greens",
+        "q": 4,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Sear salmon and flake.",
+      "Toss greens with cucumber and lemon.",
+      "Top with salmon and avocado."
+    ]
+  },
+  {
+    "id": "g403",
+    "name": "Lentil Tomato Soup",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "green lentils",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "celery",
+        "q": 2,
+        "u": "stalk",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 36,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer lentils with tomatoes, carrots, and celery.",
+      "Season with cumin and cook until tender."
+    ]
+  },
+  {
+    "id": "g404",
+    "name": "Chicken Burrito Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "salsa",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 40,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Season and cook chicken; slice.",
+      "Build bowls with rice and black beans.",
+      "Top with avocado, salsa, and lime."
+    ]
+  },
+  {
+    "id": "g405",
+    "name": "Shrimp Greek Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "kalamata olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "feta cheese",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute shrimp until pink.",
+      "Toss cucumber, tomato, olives, and feta.",
+      "Add shrimp and olive oil."
+    ]
+  },
+  {
+    "id": "g406",
+    "name": "Turkey Quinoa Pepper Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 34,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Brown turkey with cumin.",
+      "Stir in peppers and tomatoes.",
+      "Serve over quinoa."
+    ]
+  },
+  {
+    "id": "g407",
+    "name": "Tofu Veggie Brown Rice Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 1,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "broccoli",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 38,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Pan-fry tofu until golden.",
+      "Stir-fry broccoli and carrots with ginger.",
+      "Serve over rice with soy sauce."
+    ]
+  },
+  {
+    "id": "g408",
+    "name": "Beef Taco Lettuce Cups",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "ground beef",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "butter lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "salsa",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beef",
+    "steps": [
+      "Brown beef with taco spices.",
+      "Spoon into lettuce cups.",
+      "Top with avocado, salsa, and lime."
+    ]
+  },
+  {
+    "id": "g409",
+    "name": "White Bean & Spinach Soup",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "cannellini beans",
+        "q": 2,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "baby spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "vegetable broth",
+        "q": 4,
+        "u": "cup",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 32,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Soften carrots and garlic.",
+      "Add beans and broth; simmer.",
+      "Stir in spinach until wilted."
+    ]
+  },
+  {
+    "id": "g410",
+    "name": "Chicken Cauliflower Fried Rice",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "green peas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Stir-fry diced chicken.",
+      "Add carrots, peas, and cauliflower rice.",
+      "Push aside, scramble eggs, then toss with soy sauce and ginger."
+    ]
+  },
+  {
+    "id": "g411",
+    "name": "Rosemary Roasted Chicken & Veggies",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "carrots",
+        "q": 3,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh rosemary",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 40,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Toss chicken and vegetables with oil and rosemary.",
+      "Roast at 425F until chicken is cooked."
+    ]
+  },
+  {
+    "id": "g412",
+    "name": "Cajun Shrimp & Cauliflower Rice",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cajun seasoning",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute shrimp with cajun seasoning.",
+      "Cook cauliflower rice with peppers.",
+      "Combine and finish with lemon."
+    ]
+  },
+  {
+    "id": "g413",
+    "name": "Beef & Vegetable Kebabs",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beef",
+    "steps": [
+      "Cube beef and vegetables.",
+      "Thread onto skewers and brush with oil.",
+      "Grill until beef is cooked to taste."
+    ]
+  },
+  {
+    "id": "g414",
+    "name": "Coconut Cod Curry with Spinach",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "cod fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "baby spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "curry powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "White fish",
+    "steps": [
+      "Simmer tomatoes with curry powder and coconut cream.",
+      "Add cod and cook until flaky.",
+      "Wilt in spinach; serve over cauliflower rice."
+    ]
+  },
+  {
+    "id": "g415",
+    "name": "Greek Lemon Chicken & Potatoes",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "baby potatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "dried oregano",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Medium",
+    "prepMins": 45,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Toss chicken and halved potatoes with lemon, garlic, oregano, and oil.",
+      "Roast at 425F until chicken is cooked and potatoes tender."
+    ]
+  },
+  {
+    "id": "g416",
+    "name": "Salmon with Roasted Brussels",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "salmon fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "Brussels sprouts",
+        "q": 1,
+        "u": "lb",
+        "c": "Produce"
+      },
+      {
+        "n": "quinoa",
+        "q": 0.66,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 30,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Roast Brussels sprouts in oil.",
+      "Roast salmon with lemon.",
+      "Serve over quinoa."
+    ]
+  },
+  {
+    "id": "g417",
+    "name": "Shrimp Stir-Fry with Snap Peas",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "sugar snap peas",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 38,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute shrimp until pink.",
+      "Add snap peas and ginger.",
+      "Toss with soy sauce; serve over brown rice."
+    ]
+  },
+  {
+    "id": "g418",
+    "name": "Pork & Pepper Stir-Fry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sugar snap peas",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Pork",
+    "steps": [
+      "Stir-fry sliced pork.",
+      "Add peppers and snap peas with ginger.",
+      "Toss with soy sauce."
+    ]
+  },
+  {
+    "id": "g419",
+    "name": "Vegetable Lentil Curry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "green lentils",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cauliflower",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "coconut cream",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "curry powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      }
+    ],
+    "carbsG": 38,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer lentils and cauliflower with curry powder and coconut cream.",
+      "Wilt in spinach.",
+      "Serve over brown rice."
+    ]
+  },
+  {
+    "id": "g420",
+    "name": "Lemon Oregano Chicken Skewers",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "dried oregano",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Marinate chicken in lemon, oregano, and oil.",
+      "Thread with zucchini and peppers.",
+      "Grill until cooked through."
+    ]
   }
 ];
