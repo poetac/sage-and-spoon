@@ -40,12 +40,47 @@ function excludedKeywords(prefs) {
   (prefs.bannedIngredients || []).map((b) => lc(b).trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
   return kws;
 }
+// Compound-aware keyword matching. Plain substring matching over-matches
+// ("eggplant"→egg, "buckwheat"→wheat) and — worse — blocks the obvious dairy
+// fix: bare "butter"/"cream"/"milk" can't be Dairy keywords under substring
+// rules without tripping almond butter / coconut cream / oat milk. So we match
+// on word boundaries with light plural handling, and guard the generic dairy
+// terms with a plant-qualifier check (a plant word on either side → it's a
+// plant fat, not dairy). This lets us add butter/cream to Dairy (closing the
+// live "garlic butter" gap) and also fixes the existing "coconut milk" /
+// "almond milk" false-dairy over-match. Matching is word-level now, so a
+// free-text/banned term matches whole words and their simple plurals rather
+// than arbitrary substrings.
+const PLANT_QUALIFIERS = new Set([
+  "almond", "peanut", "cashew", "coconut", "soy", "soya", "oat", "rice", "hemp",
+  "sunflower", "seed", "hazelnut", "macadamia", "cocoa", "shea", "apple",
+  "pistachio", "walnut", "pecan", "tahini", "nut", "tiger",
+]);
+const TRAILING_NON_DAIRY = new Set(["lettuce", "bean", "beans", "squash"]);
+const PLANT_GUARDED = new Set(["butter", "cream", "milk"]);
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+function keywordHit(text, kw) {
+  const re = new RegExp(`\\b${escapeRe(kw)}(?:e?s)?\\b`, "gi");
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (!PLANT_GUARDED.has(kw)) return true;
+    // Plant guard: a plant word immediately before (almond butter, oat milk) or
+    // after (butter lettuce, butter beans) means this isn't dairy.
+    const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
+    const next = text.slice(re.lastIndex).match(/^[^a-z]*([a-z]+)/)?.[1] || "";
+    if (PLANT_QUALIFIERS.has(prev) || TRAILING_NON_DAIRY.has(next)) continue;
+    return true;
+  }
+  return false;
+}
+
 // True when the meal contains anything excluded (allergies, dislike chips,
 // free-text dislikes, banned ingredients). Also the gate for AI output.
 export function violatesExclusions(meal, prefs) {
   const kws = excludedKeywords(prefs);
   const text = lc(meal.name) + " " + meal.ingredients.map((i) => lc(i.n)).join(" ");
-  return kws.some((kw) => text.includes(kw));
+  return kws.some((kw) => keywordHit(text, kw));
 }
 // Hard rules only: carb cap + exclusions. These are never relaxed.
 export function mealSafe(meal, prefs, targets, slotType) {

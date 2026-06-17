@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { capFor } from "../lib/utils.js";
 import { parseIngredientInput, matchMeal, mealAllowed, violatesExclusions } from "../lib/planner.js";
-import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal } from "../lib/claude.js";
+import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, gdCompliant } from "../lib/claude.js";
 import { Icon, ICONS, Spinner, GiPill } from "./primitives.jsx";
 
 /* ------------------------------ ingredients tab -------------------------- */
@@ -72,7 +71,7 @@ export function IngredientsTab({ plan, mealsById, allMeals, prefs, settings, onP
         suggestions = (data.suggestions || []).map((raw) => {
           const meal = normalizeAiMeal(raw, "dinner");
           if (!meal) return null;
-          if (meal.carbsG > capFor(meal.type, settings.targets)) return null; // belt & braces
+          if (!gdCompliant(meal, settings.targets)) return null; // cap, GI, added sugar, pairing
           if (violatesExclusions(meal, prefs)) return null; // never suggest avoided ingredients
           return { meal, matched: Array.isArray(raw.matched) ? raw.matched : [], missing: Array.isArray(raw.missing) ? raw.missing : [], score: (raw.matched || []).length };
         }).filter(Boolean).slice(0, 10);

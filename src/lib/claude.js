@@ -1,5 +1,5 @@
 import { CATEGORIES } from "../data/meals.js";
-import { capFor } from "./utils.js";
+import { lc, capFor } from "./utils.js";
 import { violatesExclusions } from "./planner.js";
 import { withMacros } from "./nutrition.js";
 
@@ -51,10 +51,50 @@ export function extractJSON(text) {
   if (start < 0 || end < 0) throw new Error("The model reply contained no JSON.");
   return JSON.parse(cleaned.slice(start, end + 1));
 }
+// Runtime GD safety predicate. The prompt asks the model to honour the GD
+// rules, but a prompt is not a guarantee — this enforces them on every meal an
+// AI path would surface or persist, independent of what the model claims. A
+// false positive (rejecting a fine meal) is acceptable here; a false negative
+// (serving an over-cap / high-GI / added-sugar meal) is not.
+const SUGAR_OK_PREV = new Set(["no", "low", "reduced", "zero", "without", "unsweetened"]);
+function hasGdBannedIngredient(text) {
+  if (/\bwhite rice\b/.test(text) || /\bwhite bread\b/.test(text)) return true;
+  // Fruit juice — lemon/lime juice is an acid used in drops, not a sweet juice.
+  for (const m of text.matchAll(/\bjuices?\b/g)) {
+    const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
+    if (prev !== "lemon" && prev !== "lime") return true;
+  }
+  // Named added sugars / syrups.
+  if (/\b(honey|agave|molasses|maple syrup|corn syrup|brown sugar|cane sugar|powdered sugar|coconut sugar)\b/.test(text)) return true;
+  // Bare "sugar", minus the safe near-matches (sugar snap peas, no-sugar/sugar-free).
+  for (const m of text.matchAll(/\bsugars?\b/g)) {
+    const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
+    const rest = text.slice(m.index);
+    if (/^sugars?[ -]?free/.test(rest) || /^sugars?\s+snap/.test(rest) || SUGAR_OK_PREV.has(prev)) continue;
+    return true;
+  }
+  return false;
+}
+
+// True when a meal satisfies the hard GD rules: within its slot's carb cap,
+// explicitly low-GI (Medium/unknown is rejected, never assumed Low), free of
+// added sugar / fruit juice / white rice / white bread, and — once carbs are
+// non-trivial — pairing those carbs with estimated protein or fat.
+export function gdCompliant(meal, targets) {
+  if (!meal) return false;
+  if (meal.carbsG > capFor(meal.type, targets)) return false;
+  if (meal.gi !== "Low") return false;
+  const text = lc(meal.name) + " " + (meal.ingredients || []).map((i) => lc(i.n)).join(" ");
+  if (hasGdBannedIngredient(text)) return false;
+  if (meal.carbsG >= 20 && (meal.proteinG || 0) + (meal.fatG || 0) < 5) return false;
+  return true;
+}
+
 // Vets a batch of AI-proposed meals for permanent cookbook membership:
-// normalizes each, then drops duplicates (by name, vs existing meals and
-// within the batch), anything over its type's carb cap, and anything
-// containing an excluded ingredient. Returns only the keepers.
+// normalizes each, then drops duplicates (by name, vs existing meals and within
+// the batch), anything failing the GD safety rules (cap, GI, added sugar,
+// carb↔protein/fat pairing), and anything containing an excluded ingredient.
+// Returns only the keepers.
 export function vetNewMeals(raws, existingMeals, prefs, targets) {
   const seenNames = new Set(existingMeals.map((m) => m.name.toLowerCase()));
   const kept = [];
@@ -63,7 +103,7 @@ export function vetNewMeals(raws, existingMeals, prefs, targets) {
     if (!meal) continue;
     const nameKey = meal.name.toLowerCase();
     if (seenNames.has(nameKey)) continue;
-    if (meal.carbsG > capFor(meal.type, targets)) continue;
+    if (!gdCompliant(meal, targets)) continue;
     if (violatesExclusions(meal, prefs)) continue;
     seenNames.add(nameKey);
     kept.push(meal);
@@ -87,7 +127,9 @@ export function normalizeAiMeal(raw, fallbackType) {
       c: CATEGORIES.includes(i.c) ? i.c : "Pantry",
     })),
     carbsG: Number(raw.carbsG) || 0,
-    gi: raw.gi === "Medium" ? "Medium" : "Low",
+    // Preserve the model's stated GI; never silently default unknown/garbage to
+    // "Low" — gdCompliant rejects anything that isn't an explicit "Low".
+    gi: ["Low", "Medium"].includes(raw.gi) ? raw.gi : null,
     prepMins: Number(raw.prepMins) || 15,
     cuisineTag: String(raw.cuisineTag || ""),
     proteinTag: String(raw.proteinTag || ""),
