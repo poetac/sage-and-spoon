@@ -26,7 +26,26 @@ describe("Onboarding", () => {
     expect(onDone).toHaveBeenCalledTimes(1);
     expect(onDone).toHaveBeenCalledWith(
       expect.objectContaining({ cuisines: ["Italian"] }),
+      [], // no starter meals offered → no favorites chosen
     );
+  });
+
+  it("offers a starter-favorites step when meals are provided", async () => {
+    const user = userEvent.setup();
+    const onDone = vi.fn();
+    const starterMeals = [{ id: "b1", name: "Veggie Scramble" }, { id: "l1", name: "Cobb Salad" }];
+    render(<Onboarding onDone={onDone} starterMeals={starterMeals} />);
+
+    // Three quiz steps now precede the favorites step, so "Next" three times.
+    await user.click(screen.getByRole("button", { name: "Next" }));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(screen.getByText("Any of these sound good?")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Veggie Scramble" }));
+    await user.click(screen.getByRole("button", { name: "Plan my week" }));
+
+    expect(onDone).toHaveBeenCalledWith(expect.any(Object), ["b1"]);
   });
 
   it("keeps selections when navigating back", async () => {
