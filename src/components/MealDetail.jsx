@@ -11,11 +11,21 @@ export function MealDetail({ meal, servings, onClose }) {
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />
-        <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.carbsG}g carbs</span>
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>
           <Icon d={ICONS.clock} size={11} /> {meal.prepMins}m
         </span>
         {meal.cuisineTag && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.cuisineTag}</span>}
+      </div>
+
+      {/* Carbs are authored; protein/fat/fibre are estimated from ingredients. */}
+      <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>
+        Nutrition · per serving (est.)
+      </div>
+      <div className="flex flex-wrap items-center gap-1.5 mb-4">
+        <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.carbsG}g carbs</span>
+        {meal.proteinG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.proteinG}g protein</span>}
+        {meal.fatG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.fatG}g fat</span>}
+        {meal.fiberG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.fiberG}g fibre</span>}
       </div>
 
       <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>

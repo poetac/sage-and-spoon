@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { PlanTab } from "./PlanTab.jsx";
 
-const meal = { id: "m1", name: "Sheet-Pan Salmon", type: "dinner", gi: "Low", carbsG: 38, prepMins: 25, ingredients: [{ n: "salmon", q: 2, u: "fillet" }] };
+const meal = { id: "m1", name: "Sheet-Pan Salmon", type: "dinner", gi: "Low", carbsG: 38, proteinG: 30, prepMins: 25, ingredients: [{ n: "salmon", q: 2, u: "fillet" }] };
 
 // The plan renders a mobile (single-day) view AND a desktop (7-day) grid. With
 // the clock pinned to a Monday the mobile view shows day 0, so placing the only
@@ -41,11 +41,11 @@ describe("PlanTab", () => {
   beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date("2026-06-15T12:00:00")); });
   afterEach(() => { vi.useRealTimers(); });
 
-  it("renders the week header and the day's carb total", () => {
+  it("renders the week header and the day's carb + protein totals", () => {
     renderTab();
     expect(screen.getByText("This week's table")).toBeInTheDocument();
-    // Only Tuesday has a meal, so its 38g total is unique on screen.
-    expect(screen.getByText("≈ 38g carbs today")).toBeInTheDocument();
+    // Only Tuesday has a meal, so its totals are unique on screen.
+    expect(screen.getByText("≈ 38g carbs · 30g protein")).toBeInTheDocument();
   });
 
   it("shuffles and generates via the header actions", () => {

@@ -1,4 +1,4 @@
-import { GENERATED_MEALS } from "./generated-meals.js";
+import { withMacros } from "../lib/nutrition.js";
 
 /* ------------------------------- constants ------------------------------ */
 
@@ -235,10 +235,37 @@ const CORE_MEALS = [
     ingredients: [I("cannellini beans", 1, "can", "Pantry"), I("lemon", 0.5, "", "Produce"), I("garlic", 1, "clove", "Produce"), I("olive oil", 1, "tbsp", "Pantry"), I("carrots", 3, "", "Produce")] },
 ];
 
-export const MEAL_DB = [...CORE_MEALS, ...GENERATED_MEALS];
+// Macros (protein/fat/fibre) are computed from ingredients, not authored, so
+// they track ingredient edits and pipeline recipes get them for free.
+//
+// The ~420 GENERATED_MEALS are the bulk of the bundle (~36KB gzip), but a saved
+// plan only stores meal ids, so the full cookbook is needed to render. To keep
+// that weight off the first-paint critical path we split it into a dynamic
+// chunk: CORE_DB ships synchronously; loadCookbook() pulls the generated chunk
+// on demand and memoizes the assembled, macro-enriched MEAL_DB.
+// Assemble + macro-enrich the cookbook from the generated recipes. Used by the
+// async browser loader (below) and, synchronously, by the Node build-time
+// pipeline in scripts/ — which statically imports the generated chunk because
+// it has no first-paint budget to protect.
+export const assembleMealDB = (generated) => [...CORE_MEALS, ...generated].map(withMacros);
+export const CORE_DB = CORE_MEALS.map(withMacros);
 
-// Every distinct ingredient name in the cookbook (deduped case-insensitively,
-// original casing kept) — vocabulary for the "never include" picker.
-export const INGREDIENT_NAMES = [
-  ...new Map(MEAL_DB.flatMap((m) => m.ingredients.map((i) => [i.n.toLowerCase(), i.n]))).values(),
-].sort((a, b) => a.localeCompare(b));
+const namesOf = (meals) =>
+  [...new Map(meals.flatMap((m) => m.ingredients.map((i) => [i.n.toLowerCase(), i.n]))).values()]
+    .sort((a, b) => a.localeCompare(b));
+
+// Ingredient vocabulary for the "never include" picker. A live binding: it
+// starts with the core recipes (available synchronously) and widens to the full
+// cookbook once loadCookbook resolves, so the picker upgrades without prop
+// threading and the data chunk stays off the critical path.
+export let INGREDIENT_NAMES = namesOf(CORE_DB);
+
+let cookbook = null; // memoized full MEAL_DB once the generated chunk has loaded
+
+export async function loadCookbook() {
+  if (cookbook) return cookbook;
+  const { GENERATED_MEALS } = await import("./generated-meals.js");
+  cookbook = assembleMealDB(GENERATED_MEALS);
+  INGREDIENT_NAMES = namesOf(cookbook);
+  return cookbook;
+}

@@ -1,7 +1,12 @@
-import { describe, it, expect } from "vitest";
-import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS, QUIZ, CATEGORIES } from "./meals.js";
+import { describe, it, expect, beforeAll } from "vitest";
+import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS, QUIZ, CATEGORIES } from "./meals.js";
 import { GENERATED_MEALS } from "./generated-meals.js";
 import { mealAllowed } from "../lib/planner.js";
+import { lookupIngredient } from "../lib/nutrition.js";
+
+// MEAL_DB is now assembled from a dynamically-imported chunk; load it once.
+let MEAL_DB;
+beforeAll(async () => { MEAL_DB = await loadCookbook(); });
 
 // A no-repeat week needs 7 distinct mains per type; 21 snack slots at ≤2 uses
 // each need 11 distinct snacks. These tests make "don't run out of viable
@@ -86,5 +91,28 @@ describe("cookbook data integrity", () => {
       expect(m.prepMins).toBeGreaterThan(0);
       for (const ing of m.ingredients) expect(CATEGORIES, `${m.name}: ${ing.n}`).toContain(ing.c);
     }
+  });
+  it("carries plausible computed macros on every meal", () => {
+    // Macros are estimated from ingredients (lib/nutrition.js); guard against a
+    // table/unit regression producing missing or wildly out-of-range values.
+    for (const m of MEAL_DB) {
+      for (const k of ["proteinG", "fatG", "fiberG"]) {
+        expect(Number.isInteger(m[k]), `${m.name}.${k}`).toBe(true);
+        expect(m[k], `${m.name}.${k}`).toBeGreaterThanOrEqual(0);
+      }
+      expect(m.proteinG, `${m.name} protein`).toBeLessThanOrEqual(110);
+      expect(m.fatG, `${m.name} fat`).toBeLessThanOrEqual(110);
+      expect(m.fiberG, `${m.name} fibre`).toBeLessThanOrEqual(45);
+    }
+  });
+});
+
+describe("nutrition table coverage", () => {
+  it("recognises essentially every ingredient in the cookbook", () => {
+    const names = [...new Set(MEAL_DB.flatMap((m) => m.ingredients.map((i) => i.n)))];
+    const unmatched = names.filter((n) => !lookupIngredient(n));
+    // A handful of misses is tolerable (they just contribute 0 macros), but a
+    // sharp drop means a new common ingredient slipped the table.
+    expect(unmatched, `unmatched: ${unmatched.join(", ")}`).toHaveLength(0);
   });
 });

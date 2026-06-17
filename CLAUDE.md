@@ -37,10 +37,12 @@ Always run `npm test` and `npm run lint` before committing.
 src/
   App.jsx                  state, persistence, composition
   data/meals.js            CORE_MEALS (77 hand-written), QUIZ, ALLERGEN_MAP, DISLIKE_MAP,
-                           DEFAULT_SETTINGS; exports MEAL_DB = [...CORE_MEALS, ...GENERATED_MEALS]
-  data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit
+                           DEFAULT_SETTINGS; CORE_DB (sync) + async loadCookbook() that pulls
+                           the generated chunk and assembles the macro-enriched MEAL_DB
+  data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit;
+                           a dynamic chunk (loadCookbook), kept off the first-paint critical path
   data/coverage.test.js    CI-enforced coverage + integrity properties of the cookbook
-  lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), utils, dates, storage
+  lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition, utils, dates, storage
   components/              primitives + MealCard, Onboarding, PrefsFields, and the four tabs
 scripts/                   recipe-library pipeline (see scripts/README.md)
 ```
@@ -53,8 +55,16 @@ State persists to `localStorage` (`ss_*` keys) with an in-memory fallback.
 { id, name, type: "breakfast"|"lunch"|"dinner"|"snack",
   carbsG, gi: "Low"|"Medium", prepMins, cuisineTag, proteinTag,
   ingredients: [{ n, q, u, c }],   // c ∈ CATEGORIES; q is per 2 servings, null = "to taste"
-  steps?: [string] }               // required on generated recipes
+  steps?: [string],                // required on generated recipes
+  proteinG, fatG, fiberG }         // per serving, EST. — computed, not authored (see below)
 ```
+
+- `carbsG` is **authored** per recipe; `proteinG`/`fatG`/`fiberG` are **estimated**
+  from the ingredient list by `lib/nutrition.js` when `MEAL_DB` is assembled (and
+  for AI swaps in `claude.js`). They track ingredient edits and new pipeline
+  recipes get them for free — but they are estimates, shown labeled "est." Don't
+  hand-author macro fields on recipes; extend the `lib/nutrition.js` table instead
+  (a keyword→per-100g map + unit→grams weights; longest keyword match wins).
 
 - Quantities are **per 2 servings**; the UI scales to the household setting.
 - Allergy/dislike filtering is **keyword-based** over name + ingredient names

@@ -1,10 +1,12 @@
-import { describe, it, expect } from "vitest";
-import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS, SLOTS } from "../data/meals.js";
+import { describe, it, expect, beforeAll } from "vitest";
+import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS, SLOTS } from "../data/meals.js";
 import { capFor } from "./utils.js";
 import { mealAllowed, violatesExclusions, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal } from "./planner.js";
 
 const TARGETS = DEFAULT_SETTINGS.targets;
-const byId = Object.fromEntries(MEAL_DB.map((m) => [m.id, m]));
+// The cookbook now loads as a dynamic chunk; pull it once for the whole suite.
+let MEAL_DB, byId;
+beforeAll(async () => { MEAL_DB = await loadCookbook(); byId = Object.fromEntries(MEAL_DB.map((m) => [m.id, m])); });
 const SNACK_KEYS = ["amSnack", "pmSnack", "bedSnack"];
 const MAIN_KEYS = ["breakfast", "lunch", "dinner"];
 
@@ -57,7 +59,9 @@ describe("mealAllowed — dislikes and cook time", () => {
 
 describe("generateLocalWeek — invariants (with the full cookbook pool)", () => {
   // prefScore is intentionally randomized, so run the generator repeatedly.
-  const runs = Array.from({ length: 20 }, () => generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS));
+  // Built in beforeAll because the cookbook chunk loads asynchronously.
+  let runs;
+  beforeAll(() => { runs = Array.from({ length: 20 }, () => generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS)); });
 
   it("fills 7 days × 6 slots with known meals", () => {
     for (const plan of runs) {

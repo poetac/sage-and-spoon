@@ -1,6 +1,7 @@
 import { CATEGORIES } from "../data/meals.js";
 import { capFor } from "./utils.js";
 import { violatesExclusions } from "./planner.js";
+import { withMacros } from "./nutrition.js";
 
 /* ------------------------------- Claude API ------------------------------ */
 const MODEL = "claude-sonnet-4-6";
@@ -74,7 +75,8 @@ let aiSeq = 0;
 export function normalizeAiMeal(raw, fallbackType) {
   if (!raw || !raw.name) return null;
   const type = ["breakfast", "lunch", "dinner", "snack"].includes(raw.type) ? raw.type : fallbackType;
-  return {
+  // Estimate macros from ingredients so AI swaps match cookbook recipes.
+  return withMacros({
     id: `ai-${Date.now()}-${aiSeq++}`,
     name: String(raw.name),
     type,
@@ -89,5 +91,5 @@ export function normalizeAiMeal(raw, fallbackType) {
     prepMins: Number(raw.prepMins) || 15,
     cuisineTag: String(raw.cuisineTag || ""),
     proteinTag: String(raw.proteinTag || ""),
-  };
+  });
 }
