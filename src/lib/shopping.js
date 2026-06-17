@@ -2,7 +2,9 @@ import { CATEGORIES } from "../data/meals.js";
 import { lc, qtyLabel } from "./utils.js";
 
 /* ------------------------------ shopping list ---------------------------- */
-export function buildShoppingList(plan, mealsById, servings) {
+// `pantry` is a Set of lowercased ingredient names the cook always keeps on
+// hand; those are left off the list entirely.
+export function buildShoppingList(plan, mealsById, servings, pantry = new Set()) {
   const mult = servings / 2;
   const map = new Map();
   if (!plan) return {};
@@ -11,6 +13,7 @@ export function buildShoppingList(plan, mealsById, servings) {
       const meal = mealsById[id];
       if (!meal) continue;
       for (const ing of meal.ingredients) {
+        if (pantry.has(lc(ing.n))) continue; // already a kitchen staple
         const key = lc(ing.n) + "|" + lc(ing.u || "");
         const cur = map.get(key);
         if (cur) {
