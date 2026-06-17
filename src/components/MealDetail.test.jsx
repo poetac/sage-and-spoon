@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MealDetail } from "./MealDetail.jsx";
 
 const meal = {
-  name: "Salmon Plate", type: "dinner", gi: "Medium", carbsG: 40, prepMins: 25,
+  id: "sp1", name: "Salmon Plate", type: "dinner", gi: "Medium", carbsG: 40, prepMins: 25,
   proteinG: 38, fatG: 22, fiberG: 6,
   cuisineTag: "Mediterranean",
   ingredients: [
@@ -57,6 +57,20 @@ describe("MealDetail", () => {
     expect(screen.getByText("38g protein")).toBeInTheDocument();
     expect(screen.getByText("22g fat")).toBeInTheDocument();
     expect(screen.getByText("6g fibre")).toBeInTheDocument();
+  });
+
+  it("toggles favorite from the detail header when wired", () => {
+    const onToggleFavorite = vi.fn();
+    const { rerender } = render(<MealDetail meal={meal} servings={2} onClose={() => {}} isFavorite={false} onToggleFavorite={onToggleFavorite} />);
+    fireEvent.click(screen.getByRole("button", { name: "Favorite Salmon Plate" }));
+    expect(onToggleFavorite).toHaveBeenCalledWith(meal.id);
+    rerender(<MealDetail meal={meal} servings={2} onClose={() => {}} isFavorite onToggleFavorite={onToggleFavorite} />);
+    expect(screen.getByRole("button", { name: "Unfavorite Salmon Plate" })).toBeInTheDocument();
+  });
+
+  it("omits the favorite button when no handler is provided", () => {
+    render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(screen.queryByRole("button", { name: /favorite/i })).toBeNull();
   });
 
   it("omits the steps section when there are none", () => {
