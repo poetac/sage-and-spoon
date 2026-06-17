@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { violatesExclusions } from "../lib/planner.js";
 import { lc } from "../lib/utils.js";
 import { Icon, ICONS, GiPill } from "./primitives.jsx";
+import { RecipeImage } from "./RecipeImage.jsx";
 
 /* -------------------------------- cookbook ------------------------------- */
 // Browse the whole library (~500 recipes) with search, facet filters, and
@@ -31,6 +32,7 @@ const pill = (text) => (
 function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, isInWeek, isNoted }) {
   return (
     <div className="card p-4 flex flex-col gap-2">
+      <RecipeImage meal={meal} height={104} />
       <div className="flex items-start justify-between gap-2">
         <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>
           {meal.name}

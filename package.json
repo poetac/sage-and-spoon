@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "recipes:report": "node scripts/report-coverage.mjs",
     "recipes:generate": "node scripts/generate-recipes.mjs",
-    "recipes:promote": "node scripts/promote-recipes.mjs"
+    "recipes:promote": "node scripts/promote-recipes.mjs",
+    "images:fetch": "node scripts/fetch-images.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",
