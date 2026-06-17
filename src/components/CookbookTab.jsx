@@ -28,10 +28,17 @@ const pill = (text) => (
   <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{text}</span>
 );
 
-function CookbookCard({ meal, onDetails, onPlace }) {
+function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite }) {
   return (
     <div className="card p-4 flex flex-col gap-2">
-      <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>{meal.name}</div>
+      <div className="flex items-start justify-between gap-2">
+        <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>{meal.name}</div>
+        <button onClick={() => onToggleFavorite(meal.id)} title={isFavorite ? "Remove from favorites" : "Save to favorites"}
+          aria-label={isFavorite ? `Unfavorite ${meal.name}` : `Favorite ${meal.name}`} aria-pressed={isFavorite}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: isFavorite ? "var(--berry)" : "var(--ink-soft)", lineHeight: 0 }}>
+          <Icon d={ICONS.heart} size={17} fill={isFavorite ? "currentColor" : "none"} />
+        </button>
+      </div>
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />
@@ -54,7 +61,7 @@ function CookbookCard({ meal, onDetails, onPlace }) {
   );
 }
 
-export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
+export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite, onPlace, onDetails }) {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
   const [cuisine, setCuisine] = useState("all");
@@ -63,7 +70,10 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
   const [sort, setSort] = useState("name");
   const [quick, setQuick] = useState(false);
   const [respect, setRespect] = useState(true);
+  const [favOnly, setFavOnly] = useState(false);
   const [limit, setLimit] = useState(PAGE);
+
+  const favSet = useMemo(() => new Set(favorites), [favorites]);
 
   const cuisines = useMemo(() => [...new Set(allMeals.map((m) => m.cuisineTag).filter(Boolean))].sort(), [allMeals]);
   const proteins = useMemo(() => [...new Set(allMeals.map((m) => m.proteinTag).filter(Boolean))].sort(), [allMeals]);
@@ -78,6 +88,7 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
       (protein === "all" || m.proteinTag === protein) &&
       (m.carbsG <= carbCap) &&
       (!quick || m.prepMins < 20) &&
+      (!favOnly || favSet.has(m.id)) &&
       (!respect || !violatesExclusions(m, prefs)) &&
       (!tokens.length || hits(m))
     );
@@ -90,19 +101,19 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
       time: (a, b) => a.prepMins - b.prepMins || byName(a, b),
     }[sort];
     return [...list].sort(cmp);
-  }, [allMeals, prefs, q, type, cuisine, protein, maxCarbs, quick, respect, sort]);
+  }, [allMeals, prefs, favSet, q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, sort]);
 
   // Any filter change collapses the view back to the first page. Resetting
   // during render (React's documented pattern) avoids a state-setting effect.
-  const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, sort].join("|");
+  const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, sort].join("|");
   const [prevSig, setPrevSig] = useState(sig);
   if (sig !== prevSig) { setPrevSig(sig); setLimit(PAGE); }
 
   // Sort isn't a filter; "respect exclusions" defaults on, so leaving it on
   // isn't a narrowing the user needs to clear.
-  const active = !!q || type !== "all" || cuisine !== "all" || protein !== "all" || maxCarbs !== "all" || quick || !respect;
+  const active = !!q || type !== "all" || cuisine !== "all" || protein !== "all" || maxCarbs !== "all" || quick || favOnly || !respect;
   const clearFilters = () => {
-    setQ(""); setType("all"); setCuisine("all"); setProtein("all"); setMaxCarbs("all"); setQuick(false); setRespect(true);
+    setQ(""); setType("all"); setCuisine("all"); setProtein("all"); setMaxCarbs("all"); setQuick(false); setRespect(true); setFavOnly(false);
   };
 
   const shown = filtered.slice(0, limit);
@@ -138,6 +149,7 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
         <div className="flex flex-wrap items-center gap-2">
           <button className="chip" style={quick ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setQuick((v) => !v)} aria-pressed={quick}>Quick &lt; 20m</button>
           <button className="chip" style={respect ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setRespect((v) => !v)} aria-pressed={respect}>Respect my exclusions</button>
+          <button className="chip" style={favOnly ? { borderColor: "var(--berry)", color: "var(--berry)" } : { opacity: 0.6 }} onClick={() => setFavOnly((v) => !v)} aria-pressed={favOnly}>♥ Favorites{favorites.length ? ` (${favorites.length})` : ""}</button>
           {active && (
             <button className="btn btn-ghost ml-auto" style={{ padding: "4px 10px", fontSize: 12 }} onClick={clearFilters}>
               <Icon d={ICONS.x} size={12} /> Clear filters
@@ -152,7 +164,7 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
       ) : (
         <>
           <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
-            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} />)}
+            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} isFavorite={favSet.has(m.id)} onToggleFavorite={onToggleFavorite} />)}
           </div>
           {filtered.length > limit && (
             <div className="flex justify-center mt-5">

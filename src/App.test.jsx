@@ -71,6 +71,17 @@ describe("App — navigation & placing", () => {
     expect(screen.getByText(/added to Mon Breakfast/)).toBeInTheDocument();
   });
 
+  it("favorites a cookbook recipe and persists it", async () => {
+    seedPrefs();
+    seedPlan();
+    const parfait = MEAL_DB.find((m) => m.name === "Greek Yogurt Berry Parfait");
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    fireEvent.click(screen.getByRole("button", { name: `Favorite ${parfait.name}` }));
+    await waitFor(() => expect(store.get(K.favorites, [])).toEqual([parfait.id]));
+  });
+
   it("refuses to place from the cookbook before a plan exists", async () => {
     seedPrefs(); // no plan
     render(<App />);

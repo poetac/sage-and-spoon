@@ -38,6 +38,7 @@ export default function App() {
   const [prefs, setPrefsState] = useState(() => store.get(K.prefs, null));
   const [plan, setPlanState] = useState(() => store.get(K.plan, null));
   const [customMeals, setCustomState] = useState(() => store.get(K.custom, []));
+  const [favorites, setFavoritesState] = useState(() => store.get(K.favorites, []));
   const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
@@ -66,6 +67,10 @@ export default function App() {
   const setPrefs = (p) => { setPrefsState(p); store.set(K.prefs, p); };
   const setPlan = (p) => { setPlanState(p); store.set(K.plan, p); };
   const setCustom = (m) => { setCustomState(m); store.set(K.custom, m); };
+  const toggleFavorite = (id) => {
+    const next = favorites.includes(id) ? favorites.filter((x) => x !== id) : [...favorites, id];
+    setFavoritesState(next); store.set(K.favorites, next);
+  };
   const setSettings = (s) => { setSettingsState(s); store.set(K.settings, s); };
 
   const cookbookReady = cookbook != null;
@@ -232,7 +237,7 @@ export default function App() {
 
   const resetAll = () => {
     store.clear(Object.values(K));
-    setPrefsState(null); setPlanState(null); setCustomState([]);
+    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]);
     setSettingsState(DEFAULT_SETTINGS);
   };
 
@@ -274,7 +279,7 @@ export default function App() {
             <button className="btn btn-primary" onClick={shuffleWeek}>Build my week</button>
           </div>
         )}
-        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} />}
+        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} toastOk={toastOk} toastErr={toastErr} />}
         {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} />}
