@@ -14,4 +14,4 @@ export const store = {
     keys.forEach((k) => { try { window.localStorage.removeItem(k); } catch { /* in-memory only */ } delete mem[k]; });
   },
 };
-export const K = { prefs: "ss_prefs", plan: "ss_plan", custom: "ss_custom_meals", settings: "ss_settings", favorites: "ss_favorites", pantry: "ss_pantry", history: "ss_history" };
+export const K = { prefs: "ss_prefs", plan: "ss_plan", custom: "ss_custom_meals", settings: "ss_settings", favorites: "ss_favorites", pantry: "ss_pantry", history: "ss_history", notes: "ss_notes" };
