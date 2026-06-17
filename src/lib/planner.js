@@ -3,12 +3,40 @@ import { lc, capFor } from "./utils.js";
 import { mondayOf, iso } from "./dates.js";
 
 /* --------------------------- preference filters -------------------------- */
+// Common free-text phrasings → the equivalent allergy chip(s), so typing
+// "shellfish" / "tree nuts" / "nuts" protects you the same as picking the chip.
+// Without this, a free-text allergy matches only its literal category word —
+// which appears in no ingredient name — so the filter silently catches nothing
+// (a real safety gap, since users reasonably type the allergy they have).
+const ALLERGY_ALIASES = {
+  nut: ["Tree nuts", "Peanuts"], nuts: ["Tree nuts", "Peanuts"],
+  "tree nut": ["Tree nuts"], "tree nuts": ["Tree nuts"],
+  peanut: ["Peanuts"], peanuts: ["Peanuts"], groundnut: ["Peanuts"],
+  shellfish: ["Shellfish"], "shell fish": ["Shellfish"], crustacean: ["Shellfish"], crustaceans: ["Shellfish"], seafood: ["Shellfish"],
+  dairy: ["Dairy"], lactose: ["Dairy"], milk: ["Dairy"],
+  egg: ["Eggs"], eggs: ["Eggs"],
+  soy: ["Soy"], soya: ["Soy"], soybean: ["Soy"], soybeans: ["Soy"],
+  wheat: ["Wheat / gluten"], gluten: ["Wheat / gluten"],
+};
+// Expand a free-text exclusion token into keywords. The literal is always kept;
+// allergy text additionally resolves through ALLERGEN_MAP via chip names and
+// aliases, and dislike text through DISLIKE_MAP, so a category word pulls in its
+// whole keyword set rather than matching nothing.
+function expandToken(token, map, aliases) {
+  const kws = [token];
+  const keys = (aliases && aliases[token]) ||
+    Object.keys(map).filter((k) => lc(k) === token || lc(k).split(/\s*\/\s*/).includes(token));
+  for (const k of keys) kws.push(...(map[k] || []));
+  return kws;
+}
+const freeText = (s) => lc(s).split(/[,;\n]+/).map((t) => t.trim()).filter((t) => t.length > 1);
+
 function excludedKeywords(prefs) {
   const kws = [];
   (prefs.allergies || []).forEach((a) => kws.push(...(ALLERGEN_MAP[a] || [lc(a)])));
-  lc(prefs.allergyText).split(/[,;\n]+/).map((s) => s.trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
+  freeText(prefs.allergyText).forEach((s) => kws.push(...expandToken(s, ALLERGEN_MAP, ALLERGY_ALIASES)));
   (prefs.dislikes || []).forEach((d) => kws.push(...(DISLIKE_MAP[d] || [lc(d)])));
-  lc(prefs.dislikeText).split(/[,;\n]+/).map((s) => s.trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
+  freeText(prefs.dislikeText).forEach((s) => kws.push(...expandToken(s, DISLIKE_MAP)));
   (prefs.bannedIngredients || []).map((b) => lc(b).trim()).filter((s) => s.length > 1).forEach((s) => kws.push(s));
   return kws;
 }
@@ -57,7 +85,15 @@ export function pickBest(pool, prefs, excludeIds, favorites = NO_FAVORITES) {
   let usable = pool.filter((m) => !excludeIds.has(m.id));
   if (!usable.length) usable = pool;
   if (!usable.length) return null;
-  return usable.reduce((best, m) => (prefScore(m, prefs, favorites) > prefScore(best, prefs, favorites) ? m : best), usable[0]);
+  // Score each meal exactly once. prefScore carries a random jitter for variety;
+  // scoring inside the reduce would re-roll it on every comparison (and re-roll
+  // the incumbent each step), biasing selection toward the head of the pool.
+  let best = usable[0], bestScore = prefScore(best, prefs, favorites);
+  for (let i = 1; i < usable.length; i++) {
+    const s = prefScore(usable[i], prefs, favorites);
+    if (s > bestScore) { best = usable[i]; bestScore = s; }
+  }
+  return best;
 }
 
 /* --------------------------- local generation --------------------------- */
