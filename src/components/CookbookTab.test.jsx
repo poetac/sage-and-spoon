@@ -13,7 +13,7 @@ const meals = [
   meal({ id: "b", name: "Chicken Pasta", type: "dinner", cuisineTag: "Italian", proteinTag: "Chicken", proteinG: 25, prepMins: 30, ingredients: [{ n: "chicken breast", q: 1, u: "lb" }] }),
   meal({ id: "c", name: "Tofu Stir Fry", type: "dinner", cuisineTag: "Asian", proteinTag: "Tofu", proteinG: 18, prepMins: 18, ingredients: [{ n: "firm tofu", q: 1, u: "block" }] }),
 ];
-const base = { allMeals: meals, prefs: EMPTY_PREFS, onPlace: () => {}, onDetails: () => {} };
+const base = { allMeals: meals, prefs: EMPTY_PREFS, onPlace: () => {}, onDetails: () => {}, favorites: [], onToggleFavorite: () => {} };
 
 describe("CookbookTab", () => {
   it("lists every recipe with a count", () => {
@@ -32,6 +32,21 @@ describe("CookbookTab", () => {
     fireEvent.click(screen.getByRole("button", { name: /Clear filters/ }));
     expect(screen.getByText("3 recipes")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Clear filters/ })).toBeNull();
+  });
+
+  it("toggles a recipe's favorite state via its heart button", () => {
+    const onToggleFavorite = vi.fn();
+    render(<CookbookTab {...base} onToggleFavorite={onToggleFavorite} />);
+    fireEvent.click(screen.getByRole("button", { name: "Favorite Salmon Bowl" }));
+    expect(onToggleFavorite).toHaveBeenCalledWith("a");
+  });
+
+  it("filters to favorites only", () => {
+    render(<CookbookTab {...base} favorites={["b"]} />);
+    fireEvent.click(screen.getByRole("button", { name: /Favorites/ }));
+    expect(screen.getByText("1 recipe · filtered")).toBeInTheDocument();
+    expect(screen.getByText("Chicken Pasta")).toBeInTheDocument();
+    expect(screen.queryByText("Salmon Bowl")).toBeNull();
   });
 
   it("sorts by most fibre", () => {
