@@ -51,10 +51,15 @@ export default function App() {
   const dragRef = useRef(null);
   const toastTimer = useRef(null);
 
-  // Pull the generated-recipe chunk after first paint (see loadCookbook).
+  // Pull the generated-recipe chunk after first paint (see loadCookbook). If it
+  // fails (flaky first-visit network), fall back to the core recipes so the app
+  // still works rather than hanging on the skeleton.
   useEffect(() => {
     let alive = true;
-    loadCookbook().then((db) => { if (alive) setCookbook(db); });
+    loadCookbook().then(
+      (db) => { if (alive) setCookbook(db); },
+      () => { if (alive) setCookbook(CORE_DB); },
+    );
     return () => { alive = false; };
   }, []);
 
