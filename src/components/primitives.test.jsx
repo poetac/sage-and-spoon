@@ -78,4 +78,34 @@ describe("Modal", () => {
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
     expect(onClose).toHaveBeenCalledTimes(2);
   });
+
+  it("is a modal dialog and closes on Escape", () => {
+    const onClose = vi.fn();
+    render(
+      <Modal title="Add meal" onClose={onClose}>
+        <p>body content</p>
+      </Modal>,
+    );
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("moves focus into the dialog and restores it to the trigger on close", () => {
+    const trigger = document.createElement("button");
+    document.body.appendChild(trigger);
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+
+    const { unmount } = render(
+      <Modal title="Add meal" onClose={() => {}}>
+        <p>body content</p>
+      </Modal>,
+    );
+    expect(document.activeElement).toBe(screen.getByRole("dialog"));
+
+    unmount();
+    expect(document.activeElement).toBe(trigger);
+    trigger.remove();
+  });
 });

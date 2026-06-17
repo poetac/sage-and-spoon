@@ -14,7 +14,9 @@ export const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export const CATEGORIES = ["Produce", "Protein", "Dairy", "Grains", "Pantry"];
 
 export const DEFAULT_SETTINGS = {
-  targets: { breakfastMax: 30, mainMax: 45, snackMax: 20 },
+  // Carb caps are per meal; proteinMin is a daily total goal (GD plans pair
+  // carbs with protein). All editable in Settings.
+  targets: { breakfastMax: 30, mainMax: 45, snackMax: 20, proteinMin: 75 },
   servings: 2,
   apiKey: "",
 };
