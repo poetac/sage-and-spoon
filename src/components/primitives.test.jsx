@@ -49,6 +49,13 @@ describe("Toast", () => {
     rerender(<Toast toast={{ msg: "Something broke", kind: "error" }} />);
     expect(screen.getByText("Something broke")).toBeInTheDocument();
   });
+
+  it("renders an optional action button and fires it", () => {
+    const onClick = vi.fn();
+    render(<Toast toast={{ msg: "Swapped", kind: "ok", action: { label: "Undo", onClick } }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("Modal", () => {

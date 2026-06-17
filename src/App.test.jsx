@@ -82,6 +82,24 @@ describe("App — navigation & placing", () => {
     await waitFor(() => expect(store.get(K.favorites, [])).toEqual([parfait.id]));
   });
 
+  it("offers undo after placing a meal and reverts the plan", async () => {
+    seedPrefs();
+    seedPlan();
+    const before = JSON.stringify(store.get(K.plan, null));
+    const parfait = MEAL_DB.find((m) => m.name === "Greek Yogurt Berry Parfait");
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
+    fireEvent.click(within(card).getByRole("button", { name: `Add ${parfait.name} to the week` }));
+    const dialog = screen.getByRole("dialog");
+    fireEvent.click(within(within(dialog).getByText("Mon").parentElement).getByText("Breakfast"));
+
+    await waitFor(() => expect(store.get(K.plan, null).days[0].breakfast).toBe(parfait.id));
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    await waitFor(() => expect(JSON.stringify(store.get(K.plan, null))).toBe(before));
+  });
+
   it("refuses to place from the cookbook before a plan exists", async () => {
     seedPrefs(); // no plan
     render(<App />);

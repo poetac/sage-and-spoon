@@ -97,13 +97,22 @@ export default function App() {
       [t, allMeals.filter((m) => m.type === t && mealAllowed(m, p, settings.targets, t)).length]));
   }, [allMeals, prefs, settings.targets]);
 
-  const say = (msg, kind = "ok") => {
+  const say = (msg, kind = "ok", action = null) => {
     clearTimeout(toastTimer.current);
-    setToast({ msg, kind });
-    toastTimer.current = setTimeout(() => setToast(null), 4000);
+    setToast({ msg, kind, action });
+    // Give a little longer to reach for an Undo than for a plain confirmation.
+    toastTimer.current = setTimeout(() => setToast(null), action ? 6000 : 4000);
   };
   const toastOk = (m) => say(m, "ok");
   const toastErr = (m) => say(m, "error");
+
+  // Replace the plan and offer one-level undo to the prior plan (when there was
+  // one), so a mis-tapped swap/move/shuffle is painless to walk back.
+  const commitPlan = (next, msg) => {
+    const prev = plan;
+    setPlan(next);
+    say(msg, "ok", prev ? { label: "Undo", onClick: () => { setPlan(prev); say("Reverted"); } } : null);
+  };
 
   /* ------------------------------ plan actions ----------------------------- */
   const buildWeek = async (forPrefs, okMsg, favs = favSet) => {
@@ -114,8 +123,8 @@ export default function App() {
     const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favs);
     setPlan(week);
     const empty = emptySlotCount(week);
-    if (empty) toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`);
-    else toastOk(okMsg);
+    if (empty) { setPlan(week); toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`); }
+    else commitPlan(week, okMsg);
   };
 
   const finishOnboarding = (newPrefs, favIds = []) => {
@@ -164,8 +173,7 @@ export default function App() {
         return out;
       });
       setCustom([...customMeals, ...newMeals]);
-      setPlan({ weekStart: iso(mondayOf(new Date())), days });
-      toastOk(replaced
+      commitPlan({ weekStart: iso(mondayOf(new Date())), days }, replaced
         ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to avoid excluded ingredients)`
         : "Your personalized week is ready ✦");
     } catch (err) {
@@ -180,7 +188,7 @@ export default function App() {
     const tmp = days[a.d][a.s];
     days[a.d][a.s] = days[b.d][b.s];
     days[b.d][b.s] = tmp;
-    setPlan({ ...plan, days });
+    commitPlan({ ...plan, days }, "Meals swapped");
   };
 
   const onDrop = (d, s) => {
@@ -200,7 +208,7 @@ export default function App() {
     if (!next) { toastErr("No other cookbook meals fit here — try an AI swap or relax a preference."); return; }
     const days = plan.days.map((x) => ({ ...x }));
     days[d][s] = next.id;
-    setPlan({ ...plan, days });
+    commitPlan({ ...plan, days }, `Swapped in "${next.name}"`);
   };
 
   const aiSwap = async (d, s) => {
@@ -218,8 +226,7 @@ export default function App() {
       setCustom([...customMeals, meal]);
       const days = plan.days.map((x) => ({ ...x }));
       days[d][s] = meal.id;
-      setPlan({ ...plan, days });
-      toastOk(`Swapped in "${meal.name}"`);
+      commitPlan({ ...plan, days }, `Swapped in "${meal.name}"`);
     } catch (err) {
       toastErr(`AI swap didn't work (${err.message}) — the regular swap still will.`);
     }
@@ -248,9 +255,8 @@ export default function App() {
     if (!mealsById[meal.id]) setCustom([...customMeals, meal]);
     const days = plan.days.map((x) => ({ ...x }));
     days[dayIdx][slotKey] = meal.id;
-    setPlan({ ...plan, days });
     setTab("plan");
-    toastOk(`"${meal.name}" added to ${DAY_NAMES[dayIdx]} ${SLOTS.find((s) => s.key === slotKey).label}`);
+    commitPlan({ ...plan, days }, `"${meal.name}" added to ${DAY_NAMES[dayIdx]} ${SLOTS.find((s) => s.key === slotKey).label}`);
   };
 
   const resetAll = () => {
