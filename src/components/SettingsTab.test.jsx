@@ -41,6 +41,16 @@ describe("SettingsTab", () => {
     );
   });
 
+  it("shows no over-cap hint at the default GD targets (SAFE-6)", () => {
+    renderTab();
+    expect(screen.queryByText(/Above typical GD guidance/)).toBeNull();
+  });
+
+  it("hints when a carb cap is set well above typical GD guidance (SAFE-6)", () => {
+    renderTab({ settings: { ...DEFAULT_SETTINGS, targets: { ...DEFAULT_SETTINGS.targets, mainMax: 200 } } });
+    expect(screen.getByText(/Above typical GD guidance/)).toBeInTheDocument();
+  });
+
   it("clamps the daily protein goal to a 5g floor", () => {
     const { props } = renderTab();
     const protein = screen.getByDisplayValue("75");

@@ -3,6 +3,9 @@ import { Icon, ICONS, Spinner } from "./primitives.jsx";
 import { PrefsFields } from "./PrefsFields.jsx";
 
 const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner", "Dinners"], ["snack", "Snacks"]];
+// Caps comfortably above common GD per-meal guidance; crossing one shows a
+// gentle, non-blocking nudge (the cap still applies — this is a sanity check).
+const CARB_HINT_ABOVE = { breakfastMax: 45, mainMax: 60, snackMax: 30 };
 
 /* -------------------------------- settings ------------------------------- */
 export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport }) {
@@ -55,6 +58,11 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
             <label key={k} className="text-sm">
               <span className="t-soft block mb-1">{label}</span>
               <input type="number" className="input" value={settings.targets[k]} onChange={(e) => setTarget(k, e.target.value)} min="5" />
+              {settings.targets[k] > CARB_HINT_ABOVE[k] && (
+                <span role="note" className="block mt-1 text-[11px]" style={{ color: "var(--amber)", fontWeight: 600 }}>
+                  Above typical GD guidance — worth double-checking with her dietitian.
+                </span>
+              )}
             </label>
           ))}
         </div>

@@ -96,6 +96,10 @@ describe("vetNewMeals (cookbook-growth gate)", () => {
     const sweet = raw({ name: "Honey Oats", ingredients: [{ n: "honey", q: 1, u: "tbsp", c: "Pantry" }] });
     expect(vetNewMeals([sweet], existing, EMPTY_PREFS, T)).toHaveLength(0);
   });
+  it("drops candidates whose ingredients imply far more carbs than claimed (SAFE-4)", () => {
+    const understated = raw({ name: "Date Bites", type: "snack", carbsG: 18, ingredients: [{ n: "medjool dates", q: 6, u: "", c: "Pantry" }] });
+    expect(vetNewMeals([understated], existing, EMPTY_PREFS, T)).toHaveLength(0);
+  });
   it("tolerates junk input", () => {
     expect(vetNewMeals(null, existing, EMPTY_PREFS, T)).toEqual([]);
     expect(vetNewMeals([null, {}, { nonsense: true }], existing, EMPTY_PREFS, T)).toEqual([]);
@@ -144,6 +148,14 @@ describe("gdCompliant (runtime GD predicate)", () => {
     expect(gdCompliant(base({ carbsG: 25, proteinG: 0, fatG: 0 }), T)).toBe(false); // bare carbs
     expect(gdCompliant(base({ carbsG: 25, proteinG: 3, fatG: 3 }), T)).toBe(true); // 6 ≥ 5 floor
     expect(gdCompliant(base({ type: "snack", carbsG: 18, proteinG: 0, fatG: 0 }), T)).toBe(true); // <20g: floor not enforced
+  });
+  it("rejects a meal whose ingredients imply far more carbs than authored (SAFE-4)", () => {
+    // ~8 dates ≈ 72g carbs/serving, but the model claims only 20g.
+    const understated = base({ carbsG: 20, type: "lunch", ingredients: [{ n: "medjool dates", q: 8, u: "", c: "Pantry" }] });
+    expect(gdCompliant(understated, T)).toBe(false);
+    // A faithful number for an ingredient-light meal corroborates and passes.
+    const honest = base({ carbsG: 30, ingredients: [{ n: "quinoa", q: 0.5, u: "cup", c: "Grains" }, { n: "chicken breast", q: 2, u: "", c: "Protein" }] });
+    expect(gdCompliant(honest, T)).toBe(true);
   });
 });
 
