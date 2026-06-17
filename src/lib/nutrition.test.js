@@ -58,6 +58,21 @@ describe("estimateMacros", () => {
   });
 });
 
+describe("estimateCarbs — net carbs for legumes", () => {
+  it("subtracts fibre for high-fibre legumes (chickpeas: 27 total − 8 fibre)", () => {
+    // 1 can (240g) chickpeas per 2 servings = 120g/serving → net (27−8)*1.2 ≈ 23g,
+    // vs 32g if total carbs were used.
+    const m = { ingredients: [{ n: "chickpeas", q: 1, u: "can" }] };
+    expect(estimateCarbs(m)).toBe(23);
+  });
+
+  it("uses total carbs for non-legume ingredients (fibre not subtracted)", () => {
+    // 1 cup brown rice (195g) per 2 servings → 23 carbs/100g, no net adjustment.
+    const m = { ingredients: [{ n: "brown rice", q: 1, u: "cup" }] };
+    expect(estimateCarbs(m)).toBe(Math.round((23 * 1.95) / 2));
+  });
+});
+
 describe("withMacros", () => {
   it("attaches macros without mutating the source meal", () => {
     const src = { name: "x", ingredients: [{ n: "eggs", q: 4, u: "" }] };
@@ -70,8 +85,9 @@ describe("withMacros", () => {
 // carbsG is authored per recipe; the table carries per-100g carbs too, so the
 // estimate engine can be checked against that ground truth. If a unit weight or
 // table value regressed, computed carbs would drift away from authored carbsG.
-// Thresholds sit well clear of current values (median ~4g, mean ~6g, 92% within
-// 15g) so they catch a real regression without being brittle to recipe noise.
+// Thresholds sit clear of current values (median ~4g, mean ~5.5g, 96% within
+// 15g — after net-carb handling for legumes, #24) so they catch a real
+// regression without being brittle to recipe noise.
 describe("carb calibration — estimate engine vs authored carbsG", () => {
   let DB;
   beforeAll(async () => { DB = await loadCookbook(); });
@@ -80,8 +96,8 @@ describe("carb calibration — estimate engine vs authored carbsG", () => {
     const median = errs[Math.floor(errs.length / 2)];
     const mean = errs.reduce((s, x) => s + x, 0) / errs.length;
     const within15 = errs.filter((x) => x <= 15).length / errs.length;
-    expect(median, "median abs carb error").toBeLessThanOrEqual(8);
-    expect(mean, "mean abs carb error").toBeLessThanOrEqual(12);
-    expect(within15, "fraction within 15g").toBeGreaterThanOrEqual(0.85);
+    expect(median, "median abs carb error").toBeLessThanOrEqual(6);
+    expect(mean, "mean abs carb error").toBeLessThanOrEqual(8);
+    expect(within15, "fraction within 15g").toBeGreaterThanOrEqual(0.93);
   });
 });
