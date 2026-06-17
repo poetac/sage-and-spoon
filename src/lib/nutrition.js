@@ -20,8 +20,10 @@ const DEFAULT_GRAMS = {
   head: 300, block: 400, slice: 25, stalk: 40, bunch: 100, bulb: 200, "": 100,
 };
 
-// e(keys, protein, fat, fibre, carbs, gramOverrides?) — all macros per 100g.
-const e = (keys, p, f, fib, c, g = {}) => ({ keys, p, f, fib, c, g });
+// e(keys, protein, fat, fibre, carbs, gramOverrides?, opts?) — all macros per
+// 100g. opts.net marks high-fibre legumes whose authored carbsG tracks *net*
+// carbs (total minus fibre): see estimateCarbs.
+const e = (keys, p, f, fib, c, g = {}, opts = {}) => ({ keys, p, f, fib, c, g, ...opts });
 
 // Seasonings, herbs and aromatics: real macros are negligible at the quantities
 // used, so they map to ~0 with small gram weights. Grouped to keep the table lean.
@@ -99,17 +101,20 @@ const TABLE = [
   e(["smoked whitefish", "whitefish"], 19, 8, 0, 0, { oz: 28 }),
   e(["shrimp"], 24, 0.3, 0, 0, { lb: 454, cup: 145, oz: 28 }),
   e(["lump crab meat", "crab"], 18, 1, 0, 0, { oz: 28, cup: 120 }),
-  // legumes, tofu & beans
+  // legumes, tofu & beans. Beans/chickpeas/lentils are exceptionally high-fibre,
+  // so their authored carbsG tracks net (digestible) carbs — net:true makes the
+  // estimate subtract fibre to match (and is the GD-relevant figure). tofu and
+  // edamame are low-carb enough not to need it.
   e(["firm tofu", "tofu"], 9, 5, 1, 2, { block: 400, cup: 250, oz: 28 }),
   e(["frozen edamame in pods", "shelled edamame", "edamame"], 11, 5, 5, 9, { cup: 155, oz: 28 }),
   e(["chickpea flour"], 22, 7, 11, 58, { cup: 90, tbsp: 6 }),
-  e(["chickpeas", "chickpea"], 9, 2.6, 8, 27, { can: 240, cup: 160 }),
-  e(["black beans"], 8, 0.5, 8, 24, { can: 240, cup: 170 }),
-  e(["cannellini beans"], 8, 0.5, 6, 25, { can: 240, cup: 170 }),
-  e(["kidney beans"], 8, 0.5, 7, 23, { can: 240, cup: 170 }),
-  e(["pinto beans"], 9, 0.6, 9, 26, { can: 240, cup: 170 }),
-  e(["green lentils", "red lentils", "lentils"], 9, 0.4, 8, 20, { cup: 200, can: 240 }),
-  e(["beans"], 8, 1, 7, 24, { can: 240, cup: 170 }),
+  e(["chickpeas", "chickpea"], 9, 2.6, 8, 27, { can: 240, cup: 160 }, { net: true }),
+  e(["black beans"], 8, 0.5, 8, 24, { can: 240, cup: 170 }, { net: true }),
+  e(["cannellini beans"], 8, 0.5, 6, 25, { can: 240, cup: 170 }, { net: true }),
+  e(["kidney beans"], 8, 0.5, 7, 23, { can: 240, cup: 170 }, { net: true }),
+  e(["pinto beans"], 9, 0.6, 9, 26, { can: 240, cup: 170 }, { net: true }),
+  e(["green lentils", "red lentils", "lentils"], 9, 0.4, 8, 20, { cup: 200, can: 240 }, { net: true }),
+  e(["beans"], 8, 1, 7, 24, { can: 240, cup: 170 }, { net: true }),
   e(["hummus"], 8, 10, 6, 14, { cup: 240, tbsp: 15 }),
   // grains & starches
   e(["quinoa"], 4.4, 1.9, 2.8, 21, { cup: 185 }),
@@ -265,7 +270,9 @@ export function estimateCarbs(meal) {
   for (const ing of meal.ingredients || []) {
     const entry = lookupIngredient(ing.n);
     if (!entry) continue;
-    c += entry.c * (gramsForIngredient(ing) / 100);
+    // Net carbs for high-fibre legumes (see the table's net:true entries).
+    const per = entry.net ? Math.max(0, entry.c - entry.fib) : entry.c;
+    c += per * (gramsForIngredient(ing) / 100);
   }
   return Math.round(c / 2);
 }
