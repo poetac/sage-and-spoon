@@ -15,6 +15,12 @@ const SORTS = [
   { key: "protein", label: "Most protein" },
   { key: "time", label: "Quickest" },
 ];
+const CARB_CAPS = [
+  { key: "all", label: "Any carbs" },
+  { key: "15", label: "≤ 15g carbs" },
+  { key: "25", label: "≤ 25g carbs" },
+  { key: "35", label: "≤ 35g carbs" },
+];
 const PAGE = 48; // reveal in chunks so a no-filter view doesn't render 500 cards
 
 const pill = (text) => (
@@ -50,6 +56,7 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
   const [type, setType] = useState("all");
   const [cuisine, setCuisine] = useState("all");
   const [protein, setProtein] = useState("all");
+  const [maxCarbs, setMaxCarbs] = useState("all");
   const [sort, setSort] = useState("name");
   const [quick, setQuick] = useState(false);
   const [respect, setRespect] = useState(true);
@@ -61,10 +68,12 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
   const filtered = useMemo(() => {
     const tokens = lc(q).split(/[\s,]+/).filter(Boolean);
     const hits = (m) => tokens.every((t) => lc(m.name).includes(t) || m.ingredients.some((i) => lc(i.n).includes(t)));
+    const carbCap = maxCarbs === "all" ? Infinity : Number(maxCarbs);
     const list = allMeals.filter((m) =>
       (type === "all" || m.type === type) &&
       (cuisine === "all" || m.cuisineTag === cuisine) &&
       (protein === "all" || m.proteinTag === protein) &&
+      (m.carbsG <= carbCap) &&
       (!quick || m.prepMins < 20) &&
       (!respect || !violatesExclusions(m, prefs)) &&
       (!tokens.length || hits(m))
@@ -77,11 +86,11 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
       time: (a, b) => a.prepMins - b.prepMins || byName(a, b),
     }[sort];
     return [...list].sort(cmp);
-  }, [allMeals, prefs, q, type, cuisine, protein, quick, respect, sort]);
+  }, [allMeals, prefs, q, type, cuisine, protein, maxCarbs, quick, respect, sort]);
 
   // Any filter change collapses the view back to the first page. Resetting
   // during render (React's documented pattern) avoids a state-setting effect.
-  const sig = [q, type, cuisine, protein, quick, respect, sort].join("|");
+  const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, sort].join("|");
   const [prevSig, setPrevSig] = useState(sig);
   if (sig !== prevSig) { setPrevSig(sig); setLimit(PAGE); }
 
@@ -107,6 +116,9 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
           <select className={sel} style={{ width: "auto" }} value={protein} onChange={(e) => setProtein(e.target.value)} aria-label="Filter by protein">
             <option value="all">All proteins</option>
             {proteins.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+          <select className={sel} style={{ width: "auto" }} value={maxCarbs} onChange={(e) => setMaxCarbs(e.target.value)} aria-label="Filter by carbs">
+            {CARB_CAPS.map((c) => <option key={c.key} value={c.key}>{c.label}</option>)}
           </select>
           <select className={sel} style={{ width: "auto" }} value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort recipes">
             {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}

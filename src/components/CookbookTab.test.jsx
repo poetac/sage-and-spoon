@@ -31,6 +31,15 @@ describe("CookbookTab", () => {
     expect(screen.queryByText("Salmon Bowl")).toBeNull();
   });
 
+  it("filters by a maximum carb budget", () => {
+    render(<CookbookTab {...base} />);
+    // meals carry carbsG 20; tighten to <= 15 to drop them all, then relax.
+    fireEvent.change(screen.getByLabelText("Filter by carbs"), { target: { value: "15" } });
+    expect(screen.getByText("0 recipes")).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Filter by carbs"), { target: { value: "25" } });
+    expect(screen.getByText("3 recipes")).toBeInTheDocument();
+  });
+
   it("filters by meal type", () => {
     render(<CookbookTab {...base} />);
     fireEvent.change(screen.getByLabelText("Filter by meal type"), { target: { value: "lunch" } });
