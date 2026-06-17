@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { lookupIngredient, gramsForIngredient, estimateMacros, withMacros } from "./nutrition.js";
+import { describe, it, expect, beforeAll } from "vitest";
+import { lookupIngredient, gramsForIngredient, estimateMacros, estimateCarbs, withMacros } from "./nutrition.js";
+import { loadCookbook } from "../data/meals.js";
 
 describe("lookupIngredient — keyword matching", () => {
   it("matches case-insensitively over substrings of the ingredient name", () => {
@@ -63,5 +64,24 @@ describe("withMacros", () => {
     const out = withMacros(src);
     expect(out.proteinG).toBe(13);
     expect(src.proteinG).toBeUndefined();
+  });
+});
+
+// carbsG is authored per recipe; the table carries per-100g carbs too, so the
+// estimate engine can be checked against that ground truth. If a unit weight or
+// table value regressed, computed carbs would drift away from authored carbsG.
+// Thresholds sit well clear of current values (median ~4g, mean ~6g, 92% within
+// 15g) so they catch a real regression without being brittle to recipe noise.
+describe("carb calibration — estimate engine vs authored carbsG", () => {
+  let DB;
+  beforeAll(async () => { DB = await loadCookbook(); });
+  it("tracks authored carbs closely across the whole cookbook", () => {
+    const errs = DB.map((m) => Math.abs(estimateCarbs(m) - m.carbsG)).sort((a, b) => a - b);
+    const median = errs[Math.floor(errs.length / 2)];
+    const mean = errs.reduce((s, x) => s + x, 0) / errs.length;
+    const within15 = errs.filter((x) => x <= 15).length / errs.length;
+    expect(median, "median abs carb error").toBeLessThanOrEqual(8);
+    expect(mean, "mean abs carb error").toBeLessThanOrEqual(12);
+    expect(within15, "fraction within 15g").toBeGreaterThanOrEqual(0.85);
   });
 });

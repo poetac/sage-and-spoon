@@ -64,7 +64,10 @@ State persists to `localStorage` (`ss_*` keys) with an in-memory fallback.
   for AI swaps in `claude.js`). They track ingredient edits and new pipeline
   recipes get them for free — but they are estimates, shown labeled "est." Don't
   hand-author macro fields on recipes; extend the `lib/nutrition.js` table instead
-  (a keyword→per-100g map + unit→grams weights; longest keyword match wins).
+  (a keyword→per-100g map + unit→grams weights; longest keyword match wins). The
+  table also carries per-100g carbs — not shown (carbsG is authored), but a
+  calibration test asserts computed carbs track authored carbsG, guarding the
+  unit/weight engine against regressions.
 
 - Quantities are **per 2 servings**; the UI scales to the household setting.
 - Allergy/dislike filtering is **keyword-based** over name + ingredient names
