@@ -42,6 +42,12 @@ describe("CookbookTab", () => {
     expect(within(otherCard).queryByText("in your week")).toBeNull();
   });
 
+  it("badges recipes that have a saved note", () => {
+    render(<CookbookTab {...base} notedIds={new Set(["a"])} />);
+    expect(within(screen.getByText("Salmon Bowl").closest(".card")).getByText("note")).toBeInTheDocument();
+    expect(within(screen.getByText("Chicken Pasta").closest(".card")).queryByText("note")).toBeNull();
+  });
+
   it("toggles a recipe's favorite state via its heart button", () => {
     const onToggleFavorite = vi.fn();
     render(<CookbookTab {...base} onToggleFavorite={onToggleFavorite} />);

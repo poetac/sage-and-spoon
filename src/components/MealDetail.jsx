@@ -4,7 +4,7 @@ import { Icon, ICONS, GiPill, Modal } from "./primitives.jsx";
 /* ------------------------------- meal detail ------------------------------ */
 // Quantities in the meal DB are per 2 servings; scale to the household's
 // current servings setting, same as the shopping list does.
-export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite }) {
+export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite, note, onSetNote }) {
   const scaled = meal.ingredients.map((ing) => ({ ...ing, q: ing.q == null ? null : (ing.q * servings) / 2 }));
   return (
     <Modal title={meal.name} onClose={onClose}>
@@ -61,6 +61,14 @@ export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavori
               </li>
             ))}
           </ol>
+        </>
+      )}
+
+      {onSetNote && (
+        <>
+          <div className="t-soft text-xs uppercase tracking-wide mt-4 mb-2" style={{ fontWeight: 700 }}>Your notes</div>
+          <textarea className="input" rows={2} placeholder="Tweaks, what worked, who liked it…"
+            aria-label="Recipe notes" value={note || ""} onChange={(e) => onSetNote(meal.id, e.target.value)} />
         </>
       )}
     </Modal>

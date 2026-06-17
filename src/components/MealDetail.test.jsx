@@ -73,6 +73,16 @@ describe("MealDetail", () => {
     expect(screen.queryByRole("button", { name: /favorite/i })).toBeNull();
   });
 
+  it("edits notes when wired, and omits the field otherwise", () => {
+    const { rerender } = render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(screen.queryByLabelText("Recipe notes")).toBeNull();
+
+    const onSetNote = vi.fn();
+    rerender(<MealDetail meal={meal} servings={2} onClose={() => {}} note="" onSetNote={onSetNote} />);
+    fireEvent.change(screen.getByLabelText("Recipe notes"), { target: { value: "double the lemon" } });
+    expect(onSetNote).toHaveBeenCalledWith(meal.id, "double the lemon");
+  });
+
   it("omits the steps section when there are none", () => {
     const noSteps = { ...meal, steps: [] };
     render(<MealDetail meal={noSteps} servings={2} onClose={() => {}} />);

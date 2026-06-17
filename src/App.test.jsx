@@ -127,6 +127,21 @@ describe("App — week history", () => {
   });
 });
 
+describe("App — recipe notes", () => {
+  it("saves a note from the recipe detail and persists it", async () => {
+    seedPrefs();
+    seedPlan();
+    const parfait = MEAL_DB.find((m) => m.name === "Greek Yogurt Berry Parfait");
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
+    fireEvent.click(within(card).getByText("Details"));
+    fireEvent.change(screen.getByLabelText("Recipe notes"), { target: { value: "less granola" } });
+    await waitFor(() => expect(store.get(K.notes, {})[parfait.id]).toBe("less granola"));
+  });
+});
+
 describe("App — backup restore", () => {
   it("restores prefs and favorites from a backup file", async () => {
     seedPrefs();
