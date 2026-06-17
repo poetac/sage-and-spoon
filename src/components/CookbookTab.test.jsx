@@ -34,6 +34,14 @@ describe("CookbookTab", () => {
     expect(screen.queryByRole("button", { name: /Clear filters/ })).toBeNull();
   });
 
+  it("badges recipes already in the current week", () => {
+    render(<CookbookTab {...base} inWeek={new Set(["b"])} />);
+    const inWeekCard = screen.getByText("Chicken Pasta").closest(".card");
+    expect(within(inWeekCard).getByText("in your week")).toBeInTheDocument();
+    const otherCard = screen.getByText("Salmon Bowl").closest(".card");
+    expect(within(otherCard).queryByText("in your week")).toBeNull();
+  });
+
   it("toggles a recipe's favorite state via its heart button", () => {
     const onToggleFavorite = vi.fn();
     render(<CookbookTab {...base} onToggleFavorite={onToggleFavorite} />);

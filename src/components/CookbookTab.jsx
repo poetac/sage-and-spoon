@@ -28,11 +28,14 @@ const pill = (text) => (
   <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{text}</span>
 );
 
-function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite }) {
+function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, isInWeek }) {
   return (
     <div className="card p-4 flex flex-col gap-2">
       <div className="flex items-start justify-between gap-2">
-        <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>{meal.name}</div>
+        <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>
+          {meal.name}
+          {isInWeek && <span className="pill ml-1.5" style={{ background: "var(--sage-mist)", color: "var(--sage-deep)", fontSize: 10, fontWeight: 700, verticalAlign: "middle" }}>in your week</span>}
+        </div>
         <button onClick={() => onToggleFavorite(meal.id)} title={isFavorite ? "Remove from favorites" : "Save to favorites"}
           aria-label={isFavorite ? `Unfavorite ${meal.name}` : `Favorite ${meal.name}`} aria-pressed={isFavorite}
           style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: isFavorite ? "var(--berry)" : "var(--ink-soft)", lineHeight: 0 }}>
@@ -61,7 +64,7 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite }
   );
 }
 
-export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite, onPlace, onDetails }) {
+export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite, onPlace, onDetails, inWeek }) {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
   const [cuisine, setCuisine] = useState("all");
@@ -164,7 +167,7 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
       ) : (
         <>
           <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
-            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} isFavorite={favSet.has(m.id)} onToggleFavorite={onToggleFavorite} />)}
+            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} isFavorite={favSet.has(m.id)} onToggleFavorite={onToggleFavorite} isInWeek={!!inWeek && inWeek.has(m.id)} />)}
           </div>
           {filtered.length > limit && (
             <div className="flex justify-center mt-5">
