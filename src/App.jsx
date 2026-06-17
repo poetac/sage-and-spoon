@@ -8,7 +8,7 @@ import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS 
 import { store, K } from "./lib/storage.js";
 import { mondayOf, iso } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
-import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed } from "./lib/planner.js";
+import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
@@ -331,15 +331,27 @@ export default function App() {
       for (const [name, key] of Object.entries(K)) if (d[name] != null) store.set(key, d[name]);
       // Re-hydrate state from the restored store (settings merged onto defaults).
       const s = store.get(K.settings, {});
-      setSettingsState({ ...DEFAULT_SETTINGS, ...s, targets: { ...DEFAULT_SETTINGS.targets, ...(s.targets || {}) } });
-      setCustomState(store.get(K.custom, []));
+      const targets = { ...DEFAULT_SETTINGS.targets, ...(s.targets || {}) };
+      setSettingsState({ ...DEFAULT_SETTINGS, ...s, targets });
+      // Re-vet restored custom meals against the restored caps/exclusions — a
+      // backup made under looser settings could otherwise reintroduce an
+      // over-cap or now-excluded meal. Drop any that no longer pass (the hard
+      // rules only) and tell the cook how many were skipped.
+      const importedPrefs = store.get(K.prefs, null) || EMPTY_PREFS;
+      const rawCustom = store.get(K.custom, []);
+      const safeCustom = rawCustom.filter((m) => m && m.ingredients && mealSafe(m, importedPrefs, targets, m.type));
+      const dropped = rawCustom.length - safeCustom.length;
+      if (dropped) store.set(K.custom, safeCustom);
+      setCustomState(safeCustom);
       setFavoritesState(store.get(K.favorites, []));
       setPantryState(store.get(K.pantry, []));
       setHistoryState(store.get(K.history, []));
       setNotesState(store.get(K.notes, {}));
       setPlanState(store.get(K.plan, null));
       setPrefsState(store.get(K.prefs, null)); // last: may flip onboarding → app
-      toastOk("Backup restored");
+      toastOk(dropped
+        ? `Backup restored — skipped ${dropped} saved meal${dropped === 1 ? "" : "s"} that no longer fit your carb caps or exclusions.`
+        : "Backup restored");
     } catch (err) {
       toastErr(`Couldn't read that backup (${err.message}).`);
     }

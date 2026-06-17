@@ -1,7 +1,7 @@
 import { CATEGORIES } from "../data/meals.js";
 import { lc, capFor } from "./utils.js";
 import { violatesExclusions } from "./planner.js";
-import { withMacros } from "./nutrition.js";
+import { withMacros, estimateCarbs } from "./nutrition.js";
 
 /* ------------------------------- Claude API ------------------------------ */
 const MODEL = "claude-sonnet-4-6";
@@ -76,16 +76,26 @@ function hasGdBannedIngredient(text) {
   return false;
 }
 
+// Estimated carbs are noisy (calibrated to within ~15g for 93% of recipes), so
+// only a divergence well beyond that envelope is treated as the model
+// under-reporting carbs. One-directional on purpose: a higher estimate than the
+// authored number is the dangerous case (the user doses against the authored
+// figure); a lower estimate is harmless.
+const CARB_DIVERGENCE = 20;
+
 // True when a meal satisfies the hard GD rules: within its slot's carb cap,
 // explicitly low-GI (Medium/unknown is rejected, never assumed Low), free of
-// added sugar / fruit juice / white rice / white bread, and — once carbs are
-// non-trivial — pairing those carbs with estimated protein or fat.
+// added sugar / fruit juice / white rice / white bread, with authored carbs that
+// its ingredients corroborate, and — once carbs are non-trivial — pairing those
+// carbs with estimated protein or fat. Applied on every AI path, since week/swap
+// meals also persist into the cookbook, not just the grow-cookbook batch.
 export function gdCompliant(meal, targets) {
   if (!meal) return false;
   if (meal.carbsG > capFor(meal.type, targets)) return false;
   if (meal.gi !== "Low") return false;
   const text = lc(meal.name) + " " + (meal.ingredients || []).map((i) => lc(i.n)).join(" ");
   if (hasGdBannedIngredient(text)) return false;
+  if (estimateCarbs(meal) > meal.carbsG + CARB_DIVERGENCE) return false; // authored carbs under-report
   if (meal.carbsG >= 20 && (meal.proteinG || 0) + (meal.fatG || 0) < 5) return false;
   return true;
 }

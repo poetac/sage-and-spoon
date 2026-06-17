@@ -170,6 +170,24 @@ describe("App — backup restore", () => {
     await waitFor(() => expect(store.get(K.favorites, [])).toEqual(["b1"]));
     expect(store.get(K.prefs, null).cuisines).toEqual(["Italian"]);
   });
+
+  it("re-vets restored custom meals and skips ones that violate the restored settings", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Settings/);
+    const okMeal = { id: "cust-ok", name: "Veggie Scramble", type: "breakfast", gi: "Low", carbsG: 15, prepMins: 10, ingredients: [{ n: "eggs", q: 4, u: "", c: "Protein" }] };
+    const badMeal = { id: "cust-bad", name: "Shrimp Snack", type: "snack", gi: "Low", carbsG: 10, prepMins: 5, ingredients: [{ n: "shrimp", q: 1, u: "lb", c: "Protein" }] };
+    const backup = {
+      app: "sage-and-spoon", version: 1,
+      data: { prefs: { ...EMPTY_PREFS, allergies: ["Shellfish"] }, settings: DEFAULT_SETTINGS, custom: [okMeal, badMeal] },
+    };
+    const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+    // The shrimp snack violates the restored Shellfish allergy → skipped.
+    await waitFor(() => expect(store.get(K.custom, []).map((m) => m.id)).toEqual(["cust-ok"]));
+    expect(screen.getByText(/skipped 1 saved meal/)).toBeInTheDocument();
+  });
 });
 
 describe("App — reset", () => {
