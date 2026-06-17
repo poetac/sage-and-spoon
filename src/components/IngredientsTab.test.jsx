@@ -6,6 +6,7 @@ import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../data/meals.js";
 // Two cookbook meals: one uses "chicken", one uses none of the typed tokens.
 const chickenBowl = {
   id: "c1", name: "Lemon Chicken Bowl", type: "dinner", gi: "Low", carbsG: 30, prepMins: 20,
+  proteinG: 35, fiberG: 6,
   ingredients: [{ n: "chicken breast", q: 2, u: "lb", c: "Protein" }, { n: "quinoa", q: 1, u: "cup", c: "Grains" }],
 };
 const tofuPlate = {
@@ -45,6 +46,8 @@ describe("IngredientsTab (offline / cookbook mode)", () => {
     expect(await screen.findByText("Ideas from the cookbook")).toBeInTheDocument();
     expect(screen.getByText("Lemon Chicken Bowl")).toBeInTheDocument();
     expect(screen.queryByText("Tofu Stir-Fry")).toBeNull();
+    // estimated macros surface on the suggestion card too
+    expect(screen.getByText("35g protein")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /Add/ }));
     expect(onPlace).toHaveBeenCalledWith(chickenBowl);

@@ -15,6 +15,8 @@ function SuggestionCard({ sug, onAdd }) {
             <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{sug.meal.type}</span>
             <GiPill gi={sug.meal.gi} />
             <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.carbsG}g carbs</span>
+            {sug.meal.proteinG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.proteinG}g protein</span>}
+            {sug.meal.fiberG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.fiberG}g fibre</span>}
             <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}><Icon d={ICONS.clock} size={11} /> {sug.meal.prepMins}m</span>
           </div>
         </div>
