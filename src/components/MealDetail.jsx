@@ -1,12 +1,13 @@
-import { qtyLabel } from "../lib/utils.js";
+import { qtyLabel, scaleIngredient } from "../lib/utils.js";
 import { Icon, ICONS, GiPill, Modal } from "./primitives.jsx";
+import { NutritionPills } from "./NutritionPills.jsx";
 import { RecipeImage } from "./RecipeImage.jsx";
 
 /* ------------------------------- meal detail ------------------------------ */
-// Quantities in the meal DB are per 2 servings; scale to the household's
+// Quantities in the meal DB are per RECIPE_SERVINGS; scale to the household's
 // current servings setting, same as the shopping list does.
 export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite, note, onSetNote }) {
-  const scaled = meal.ingredients.map((ing) => ({ ...ing, q: ing.q == null ? null : (ing.q * servings) / 2 }));
+  const scaled = meal.ingredients.map((ing) => scaleIngredient(ing, servings));
   return (
     <Modal title={meal.name} onClose={onClose}>
       <div className="mb-4"><RecipeImage meal={meal} height={160} showCredit /></div>
@@ -31,10 +32,7 @@ export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavori
         Nutrition · per serving (est.)
       </div>
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
-        <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.carbsG}g carbs</span>
-        {meal.proteinG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.proteinG}g protein</span>}
-        {meal.fatG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.fatG}g fat</span>}
-        {meal.fiberG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.fiberG}g fibre</span>}
+        <NutritionPills meal={meal} />
       </div>
 
       <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>

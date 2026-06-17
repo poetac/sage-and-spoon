@@ -11,6 +11,7 @@ import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
+import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
 import { WeekHistory } from "./components/WeekHistory.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
@@ -147,8 +148,9 @@ export default function App() {
     const db = await loadCookbook();
     if (!cookbook) setCookbook(db);
     const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favs);
-    setPlan(week);
     const empty = emptySlotCount(week);
+    // commitPlan sets the plan (with undo); the empty branch sets it directly
+    // and surfaces a fix-it nudge instead of an undo toast.
     if (empty) { setPlan(week); toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`); }
     else commitPlan(week, okMsg);
   };
@@ -206,8 +208,9 @@ export default function App() {
         : "Your personalized week is ready ✦");
     } catch (err) {
       toastErr(`Couldn't generate the week (${err.message}). Your current plan is untouched — try again, or use Shuffle.`);
+    } finally {
+      setWeekLoading(false);
     }
-    setWeekLoading(false);
   };
 
   const swapMeals = (a, b) => {
@@ -257,8 +260,9 @@ export default function App() {
       commitPlan({ ...plan, days }, `Swapped in "${meal.name}"`);
     } catch (err) {
       toastErr(`AI swap didn't work (${err.message}) — the regular swap still will.`);
+    } finally {
+      setAiBusyKey(null);
     }
-    setAiBusyKey(null);
   };
 
   const growCookbook = async () => {
@@ -273,8 +277,9 @@ export default function App() {
       toastOk(`Added ${vetted.length} new meal${vetted.length === 1 ? "" : "s"} to the cookbook ✦`);
     } catch (err) {
       toastErr(`Couldn't grow the cookbook (${err.message}) — try again.`);
+    } finally {
+      setGrowing(false);
     }
-    setGrowing(false);
   };
 
   const placeMeal = (dayIdx, slotKey) => {
@@ -350,12 +355,12 @@ export default function App() {
       <header className="no-print sticky top-0 z-30 px-4 md:px-6 py-3 flex items-center gap-2"
         style={{ background: "rgba(250,247,241,.92)", backdropFilter: "blur(6px)", borderBottom: "1px solid var(--line)" }}>
         <span style={{ color: "var(--sage-deep)" }}><Icon d={ICONS.leaf} size={20} /></span>
-        <span className="font-display text-lg" style={{ fontWeight: 600 }}>Sage &amp; Spoon</span>
+        <h1 className="font-display text-lg" style={{ fontWeight: 600, margin: 0 }}>Sage &amp; Spoon</h1>
         <span className="t-soft text-xs hidden sm:inline ml-1 mt-0.5">GD-friendly meals, planned together</span>
         <nav className="ml-auto hidden md:flex gap-1" aria-label="Sections">
           {TABS.map((t) => (
-            <button key={t.key} onClick={() => setTab(t.key)}
-              className="btn" style={tab === t.key ? { background: "var(--sage-mist)", color: "var(--sage-deep)" } : { color: "var(--ink-soft)" }}>
+            <button key={t.key} onClick={() => setTab(t.key)} aria-current={tab === t.key ? "page" : undefined}
+              className="btn" style={tab === t.key ? { background: "var(--sage-mist)", color: "var(--sage-deep)", fontWeight: 700 } : { color: "var(--ink-soft)" }}>
               <Icon d={ICONS[t.icon]} size={15} /> {t.label}
             </button>
           ))}
@@ -369,7 +374,7 @@ export default function App() {
             <p className="t-soft text-sm">Loading your cookbook…</p>
           </div>
         ) : (
-          <>
+          <ErrorBoundary key={tab}>
         {tab === "plan" && plan && <PlanTab {...planProps} />}
         {tab === "plan" && !plan && (
           <div className="card p-8 text-center max-w-md mx-auto rise">
@@ -382,7 +387,7 @@ export default function App() {
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
         {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />}
-          </>
+          </ErrorBoundary>
         )}
       </main>
 
@@ -390,7 +395,8 @@ export default function App() {
       <nav className="no-print md:hidden fixed bottom-0 inset-x-0 z-30 flex justify-around py-1.5"
         style={{ background: "#fff", borderTop: "1px solid var(--line)" }} aria-label="Sections">
         {TABS.map((t) => (
-          <button key={t.key} onClick={() => setTab(t.key)} className="flex flex-col items-center gap-0.5 px-3 py-1"
+          <button key={t.key} onClick={() => setTab(t.key)} aria-current={tab === t.key ? "page" : undefined}
+            className="flex flex-col items-center gap-0.5 px-3 py-1"
             style={{ color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 11, background: "none", border: "none", cursor: "pointer" }}>
             <Icon d={ICONS[t.icon]} size={20} /> {t.label}
           </button>

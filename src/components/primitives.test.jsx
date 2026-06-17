@@ -38,16 +38,20 @@ describe("Chip", () => {
 });
 
 describe("Toast", () => {
-  it("renders nothing without a toast", () => {
-    const { container } = render(<Toast toast={null} />);
-    expect(container).toBeEmptyDOMElement();
+  it("keeps an empty, always-mounted live region when there is no toast", () => {
+    render(<Toast toast={null} />);
+    // The polite status region stays in the DOM so screen readers announce
+    // toasts when they appear; it just has no message yet.
+    expect(screen.getByRole("status")).toBeEmptyDOMElement();
   });
 
-  it("shows the message for both kinds", () => {
+  it("shows the message politely for ok and assertively (alert) for errors", () => {
     const { rerender } = render(<Toast toast={{ msg: "Saved", kind: "ok" }} />);
     expect(screen.getByText("Saved")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveAttribute("aria-live", "polite");
     rerender(<Toast toast={{ msg: "Something broke", kind: "error" }} />);
     expect(screen.getByText("Something broke")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveAttribute("aria-live", "assertive");
   });
 
   it("renders an optional action button and fires it", () => {
@@ -96,6 +100,18 @@ describe("Modal", () => {
     expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
     fireEvent.keyDown(document, { key: "Escape" });
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("locks background scroll while open and restores it on close", () => {
+    document.body.style.overflow = "scroll";
+    const { unmount } = render(
+      <Modal title="Add meal" onClose={() => {}}>
+        <p>body content</p>
+      </Modal>,
+    );
+    expect(document.body.style.overflow).toBe("hidden");
+    unmount();
+    expect(document.body.style.overflow).toBe("scroll");
   });
 
   it("moves focus into the dialog and restores it to the trigger on close", () => {

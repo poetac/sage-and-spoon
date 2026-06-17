@@ -20,3 +20,9 @@ export function capFor(slotType, targets) {
   if (slotType === "snack") return targets.snackMax;
   return targets.mainMax;
 }
+
+// Authored ingredient quantities are per this many servings; the UI and shopping
+// list scale them to the household's chosen `servings` setting.
+export const RECIPE_SERVINGS = 2;
+export const scaleIngredient = (ing, servings) =>
+  ({ ...ing, q: ing.q == null ? null : (ing.q * servings) / RECIPE_SERVINGS });

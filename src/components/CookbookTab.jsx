@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { violatesExclusions } from "../lib/planner.js";
 import { lc } from "../lib/utils.js";
 import { Icon, ICONS, GiPill } from "./primitives.jsx";
+import { NutritionPills } from "./NutritionPills.jsx";
 import { RecipeImage } from "./RecipeImage.jsx";
 
 /* -------------------------------- cookbook ------------------------------- */
@@ -48,10 +49,7 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, 
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />
-        {pill(`${meal.carbsG}g carbs`)}
-        {meal.proteinG != null && pill(`${meal.proteinG}g protein`)}
-        {meal.fatG != null && pill(`${meal.fatG}g fat`)}
-        {meal.fiberG != null && pill(`${meal.fiberG}g fibre`)}
+        <NutritionPills meal={meal} showEst />
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}><Icon d={ICONS.clock} size={11} /> {meal.prepMins}m</span>
         {meal.cuisineTag && pill(meal.cuisineTag)}
       </div>
