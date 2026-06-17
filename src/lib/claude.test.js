@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals } from "./claude.js";
+import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals, gdCompliant } from "./claude.js";
 import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../data/meals.js";
 
 describe("extractJSON", () => {
@@ -44,12 +44,17 @@ describe("normalizeAiMeal", () => {
     expect(meal.ingredients[2].q).toBeNull(); // string quantities are not trusted
     expect(meal.ingredients[2].c).toBe("Pantry");
   });
-  it("coerces numbers and defaults gi/prepMins", () => {
-    const meal = normalizeAiMeal({ name: "X", carbsG: "33", gi: "High", prepMins: 0 }, "lunch");
+  it("coerces numbers and defaults prepMins", () => {
+    const meal = normalizeAiMeal({ name: "X", carbsG: "33", prepMins: 0 }, "lunch");
     expect(meal.carbsG).toBe(33);
-    expect(meal.gi).toBe("Low"); // only "Medium" is accepted as non-Low
     expect(meal.prepMins).toBe(15);
     expect(meal.id).toMatch(/^ai-/);
+  });
+  it("preserves a stated GI but never invents 'Low' for unknown/garbage values", () => {
+    expect(normalizeAiMeal({ name: "X", gi: "Low" }, "lunch").gi).toBe("Low");
+    expect(normalizeAiMeal({ name: "X", gi: "Medium" }, "lunch").gi).toBe("Medium");
+    expect(normalizeAiMeal({ name: "X", gi: "High" }, "lunch").gi).toBeNull(); // not silently downgraded to Low
+    expect(normalizeAiMeal({ name: "X" }, "lunch").gi).toBeNull();
   });
   it("treats non-numeric carbs as 0 (later clamped by the caller)", () => {
     expect(normalizeAiMeal({ name: "X", carbsG: "lots" }, "snack").carbsG).toBe(0);
@@ -84,9 +89,61 @@ describe("vetNewMeals (cookbook-growth gate)", () => {
     const allergic = { ...EMPTY_PREFS, allergies: ["Shellfish"] };
     expect(vetNewMeals([raw({ name: "Shrimp Bowl", ingredients: [{ n: "shrimp", q: 1, u: "lb", c: "Protein" }] })], existing, allergic, T)).toHaveLength(0);
   });
+  it("drops non-low-GI ideas instead of letting them into the cookbook", () => {
+    expect(vetNewMeals([raw({ name: "Medium Bowl", gi: "Medium" })], existing, EMPTY_PREFS, T)).toHaveLength(0);
+  });
+  it("drops ideas with added sugar", () => {
+    const sweet = raw({ name: "Honey Oats", ingredients: [{ n: "honey", q: 1, u: "tbsp", c: "Pantry" }] });
+    expect(vetNewMeals([sweet], existing, EMPTY_PREFS, T)).toHaveLength(0);
+  });
   it("tolerates junk input", () => {
     expect(vetNewMeals(null, existing, EMPTY_PREFS, T)).toEqual([]);
     expect(vetNewMeals([null, {}, { nonsense: true }], existing, EMPTY_PREFS, T)).toEqual([]);
+  });
+});
+
+describe("gdCompliant (runtime GD predicate)", () => {
+  const T = DEFAULT_SETTINGS.targets;
+  // A compliant lunch: under the 45g cap, low-GI, carbs paired with protein/fat.
+  const base = (over = {}) => ({
+    name: "Plate", type: "lunch", carbsG: 30, gi: "Low", proteinG: 25, fatG: 12,
+    ingredients: [{ n: "chicken breast" }, { n: "quinoa" }], ...over,
+  });
+
+  it("accepts a compliant meal", () => {
+    expect(gdCompliant(base(), T)).toBe(true);
+  });
+  it("rejects null and over-cap meals (no clamping)", () => {
+    expect(gdCompliant(null, T)).toBe(false);
+    expect(gdCompliant(base({ type: "snack", carbsG: 25 }), T)).toBe(false); // 25 > 20 snack cap
+    expect(gdCompliant(base({ type: "breakfast", carbsG: 35 }), T)).toBe(false); // 35 > 30 breakfast cap
+  });
+  it("requires an explicit low GI — Medium and unknown are rejected", () => {
+    expect(gdCompliant(base({ gi: "Medium" }), T)).toBe(false);
+    expect(gdCompliant(base({ gi: null }), T)).toBe(false);
+    expect(gdCompliant(base({ gi: "Low" }), T)).toBe(true);
+  });
+  it("rejects white rice and white bread", () => {
+    expect(gdCompliant(base({ ingredients: [{ n: "white rice" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "white bread" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "brown rice" }] }), T)).toBe(true); // brown rice is fine
+  });
+  it("rejects fruit juice but allows lemon/lime juice", () => {
+    expect(gdCompliant(base({ ingredients: [{ n: "orange juice" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ name: "Apple Juice Cooler", ingredients: [{ n: "chicken breast" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n: "lemon juice" }] }), T)).toBe(true);
+  });
+  it("rejects added sugars but not safe near-matches", () => {
+    expect(gdCompliant(base({ ingredients: [{ n: "honey" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "maple syrup" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "brown sugar" }] }), T)).toBe(false);
+    expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n: "sugar snap peas" }] }), T)).toBe(true);
+    expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n: "no-sugar beef jerky" }] }), T)).toBe(true);
+  });
+  it("requires carbs to be paired with protein/fat once carbs are non-trivial", () => {
+    expect(gdCompliant(base({ carbsG: 25, proteinG: 0, fatG: 0 }), T)).toBe(false); // bare carbs
+    expect(gdCompliant(base({ carbsG: 25, proteinG: 3, fatG: 3 }), T)).toBe(true); // 6 ≥ 5 floor
+    expect(gdCompliant(base({ type: "snack", carbsG: 18, proteinG: 0, fatG: 0 }), T)).toBe(true); // <20g: floor not enforced
   });
 });
 

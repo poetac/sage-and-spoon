@@ -220,6 +220,54 @@ describe("violatesExclusions (gate for AI output)", () => {
   });
 });
 
+describe("compound-aware exclusion matching (SAFE-3)", () => {
+  const meal = (name, ...ings) => ({ name, ingredients: ings.map((n) => ({ n })) });
+  const has = (m, prefs) => violatesExclusions(m, prefs);
+  const allergic = (a) => ({ ...EMPTY_PREFS, allergies: [a] });
+  const dairy = allergic("Dairy");
+  const treenuts = allergic("Tree nuts");
+
+  it("now catches bare dairy butter/cream (the live 'garlic butter' gap)", () => {
+    expect(has(meal("Garlic Butter Shrimp", "shrimp", "garlic", "quinoa"), dairy)).toBe(true);
+    expect(has(meal("Steak with Herb Butter", "sirloin steak", "butter"), dairy)).toBe(true);
+    expect(has(meal("Berry Cream Pots", "heavy cream", "strawberries"), dairy)).toBe(true);
+    // and the real promoted recipe is now excluded for a dairy allergy
+    expect(mealAllowed(byId.g368, dairy, TARGETS, "dinner")).toBe(false);
+  });
+  it("does not mistake plant fats for dairy", () => {
+    expect(has(meal("Celery & Almond Butter", "celery", "almond butter"), dairy)).toBe(false);
+    expect(has(meal("PB Apple", "apple", "natural peanut butter"), dairy)).toBe(false);
+    expect(has(meal("Seed Butter Toast", "sunflower seed butter"), dairy)).toBe(false);
+    expect(has(meal("Coconut Curry", "coconut cream", "chicken breast"), dairy)).toBe(false);
+    expect(has(meal("Overnight Oats", "unsweetened almond milk"), dairy)).toBe(false); // fixes the old false-dairy over-match
+    expect(has(meal("Thai Soup", "light coconut milk", "shrimp"), dairy)).toBe(false);
+    expect(has(meal("Garden Wrap", "butter lettuce", "turkey breast"), dairy)).toBe(false); // butter lettuce is produce
+  });
+  it("still flags those plant fats under their real allergen (nuts/coconut)", () => {
+    expect(has(meal("Celery & Almond Butter", "celery", "almond butter"), treenuts)).toBe(true);
+    expect(has(meal("Coconut Curry", "coconut cream", "chicken breast"), treenuts)).toBe(true);
+    expect(has(meal("Overnight Oats", "unsweetened almond milk"), treenuts)).toBe(true);
+  });
+  it("keeps cream cheese as dairy", () => {
+    expect(has(meal("Schmear Plate", "cream cheese", "cucumber"), dairy)).toBe(true);
+  });
+  it("word boundaries fix the documented over-matches", () => {
+    expect(has(meal("Eggplant Bake", "eggplant", "olive oil"), allergic("Eggs"))).toBe(false); // eggplant ≠ egg
+    expect(has(meal("Veggie Scramble", "eggs", "spinach"), allergic("Eggs"))).toBe(true);
+    expect(has(meal("Buckwheat Bowl", "buckwheat flour", "blueberries"), allergic("Wheat / gluten"))).toBe(false); // buckwheat ≠ wheat
+    expect(has(meal("Toast", "whole grain bread"), allergic("Wheat / gluten"))).toBe(true);
+    expect(has(meal("Roasted Sprouts", "brussels sprouts", "chicken breast"), allergic("Shellfish"))).toBe(false); // mussel ≠ brussels
+  });
+  it("handles simple plurals", () => {
+    expect(has(meal("Olive Plate", "kalamata olives"), { ...EMPTY_PREFS, dislikes: ["Olives"] })).toBe(true);
+    expect(has(meal("Onion Soup", "red onion"), { ...EMPTY_PREFS, dislikes: ["Onions"] })).toBe(true);
+  });
+  it("catches jalapeño/jalapeno for a spicy-food dislike", () => {
+    expect(has(meal("Hot Bowl", "jalapeño", "chicken breast"), { ...EMPTY_PREFS, dislikes: ["Spicy food"] })).toBe(true);
+    expect(has(meal("Hot Bowl", "jalapenos", "chicken breast"), { ...EMPTY_PREFS, dislikes: ["Spicy food"] })).toBe(true);
+  });
+});
+
 describe("pickLocalSwap", () => {
   it("returns a different meal of the right type, avoiding the current week", () => {
     for (let i = 0; i < 20; i++) {

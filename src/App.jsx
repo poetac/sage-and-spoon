@@ -9,7 +9,7 @@ import { store, K } from "./lib/storage.js";
 import { mondayOf, iso } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed } from "./lib/planner.js";
-import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals } from "./lib/claude.js";
+import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
 import { WeekHistory } from "./components/WeekHistory.jsx";
@@ -183,16 +183,17 @@ export default function App() {
         for (const slot of SLOTS) {
           const meal = normalizeAiMeal(day[slot.key], slot.type);
           if (!meal) throw new Error(`missing ${slot.key}`);
-          if (violatesExclusions(meal, prefs)) {
-            // The model slipped in an avoided ingredient — substitute from the
-            // cookbook rather than serve it or scrap the whole week.
+          if (violatesExclusions(meal, prefs) || !gdCompliant(meal, settings.targets)) {
+            // The model slipped in an avoided ingredient, ran over the carb cap,
+            // wasn't low-GI, or didn't pair its carbs with protein/fat —
+            // substitute a known-safe cookbook meal rather than serve it (or
+            // falsify its carbs down to the cap) or scrap the whole week.
             const sub = pickBest(candidatesFor(allMeals, slot.type, prefs, settings.targets), prefs, replacedUsed, favSet);
             if (sub) replacedUsed.add(sub.id);
             out[slot.key] = sub ? sub.id : null;
             replaced++;
             continue;
           }
-          if (meal.carbsG > capFor(slot.type, settings.targets)) meal.carbsG = capFor(slot.type, settings.targets); // clamp drift
           newMeals.push(meal);
           out[slot.key] = meal.id;
         }
@@ -201,7 +202,7 @@ export default function App() {
       setCustom([...customMeals, ...newMeals]);
       archive(plan); // keep the week the AI plan replaces
       commitPlan({ weekStart: iso(mondayOf(new Date())), days }, replaced
-        ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to avoid excluded ingredients)`
+        ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to keep every meal within the GD rules)`
         : "Your personalized week is ready ✦");
     } catch (err) {
       toastErr(`Couldn't generate the week (${err.message}). Your current plan is untouched — try again, or use Shuffle.`);
@@ -249,7 +250,7 @@ export default function App() {
       const meal = normalizeAiMeal(data, slot.type);
       if (!meal) throw new Error("unexpected reply");
       if (violatesExclusions(meal, prefs)) throw new Error("the idea contained an avoided ingredient");
-      if (meal.carbsG > capFor(slot.type, settings.targets)) meal.carbsG = capFor(slot.type, settings.targets);
+      if (!gdCompliant(meal, settings.targets)) throw new Error("the idea broke a GD rule (carb cap, GI, or added sugar)");
       setCustom([...customMeals, meal]);
       const days = plan.days.map((x) => ({ ...x }));
       days[d][s] = meal.id;
