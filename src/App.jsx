@@ -76,6 +76,7 @@ export default function App() {
   const cookbookReady = cookbook != null;
   const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
+  const favSet = useMemo(() => new Set(favorites), [favorites]);
   const hasKey = !!settings.apiKey;
 
   // How many meals fit every current preference, per type — shown in Settings.
@@ -99,7 +100,7 @@ export default function App() {
     // background chunk has resolved.
     const db = await loadCookbook();
     if (!cookbook) setCookbook(db);
-    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets);
+    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favSet);
     setPlan(week);
     const empty = emptySlotCount(week);
     if (empty) toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`);
@@ -112,7 +113,7 @@ export default function App() {
   };
 
   const shuffleWeek = () => {
-    buildWeek(prefs, "Fresh week, shuffled from the cookbook");
+    buildWeek(prefs, favorites.length ? "Fresh week — your favorites first ♥" : "Fresh week, shuffled from the cookbook");
   };
 
   const generateAIWeek = async () => {
@@ -133,7 +134,7 @@ export default function App() {
           if (violatesExclusions(meal, prefs)) {
             // The model slipped in an avoided ingredient — substitute from the
             // cookbook rather than serve it or scrap the whole week.
-            const sub = pickBest(candidatesFor(allMeals, slot.type, prefs, settings.targets), prefs, replacedUsed);
+            const sub = pickBest(candidatesFor(allMeals, slot.type, prefs, settings.targets), prefs, replacedUsed, favSet);
             if (sub) replacedUsed.add(sub.id);
             out[slot.key] = sub ? sub.id : null;
             replaced++;
@@ -178,7 +179,7 @@ export default function App() {
 
   const localSwap = (d, s) => {
     const slot = SLOTS.find((x) => x.key === s);
-    const next = pickLocalSwap(allMeals, slot.type, prefs, settings.targets, plan, plan.days[d][s]);
+    const next = pickLocalSwap(allMeals, slot.type, prefs, settings.targets, plan, plan.days[d][s], favSet);
     if (!next) { toastErr("No other cookbook meals fit here — try an AI swap or relax a preference."); return; }
     const days = plan.days.map((x) => ({ ...x }));
     days[d][s] = next.id;

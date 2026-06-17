@@ -30,14 +30,21 @@ export function mealAllowed(meal, prefs, targets, slotType) {
   if (prefs.cookTime === "Moderate (20–40 min)" && meal.prepMins > 40) return false;
   return true;
 }
-function prefScore(meal, prefs) {
+function prefScore(meal, prefs, favorites) {
   let s = Math.random() * 3;
   if ((prefs.cuisines || []).includes(meal.cuisineTag)) s += 2;
   if ((prefs.proteins || []).some((p) => lc(meal.proteinTag).includes(lc(p)) || lc(p).includes(lc(meal.proteinTag)))) s += 2;
   const veg = (prefs.vegetables || []).map(lc);
   if (meal.ingredients.some((i) => veg.some((v) => lc(i.n).includes(v.replace(/s$/, ""))))) s += 1;
+  // Saved favorites are an explicit choice, so they outrank any inferred
+  // preference (whose score tops out below FAVORITE_BOOST): the week fills with
+  // favorites first, then variety. No-repeat still applies, so one favorite
+  // can't take every slot.
+  if (favorites && favorites.has(meal.id)) s += FAVORITE_BOOST;
   return s;
 }
+const FAVORITE_BOOST = 10;
+const NO_FAVORITES = new Set();
 export function candidatesFor(allMeals, slotType, prefs, targets) {
   // Cook time is the only preference relaxed under scarcity. Allergies,
   // dislikes, banned ingredients, and carb caps are never violated — a slot
@@ -46,15 +53,15 @@ export function candidatesFor(allMeals, slotType, prefs, targets) {
   if (!pool.length) pool = allMeals.filter((m) => m.type === slotType && mealSafe(m, prefs, targets, slotType));
   return pool;
 }
-export function pickBest(pool, prefs, excludeIds) {
+export function pickBest(pool, prefs, excludeIds, favorites = NO_FAVORITES) {
   let usable = pool.filter((m) => !excludeIds.has(m.id));
   if (!usable.length) usable = pool;
   if (!usable.length) return null;
-  return usable.reduce((best, m) => (prefScore(m, prefs) > prefScore(best, prefs) ? m : best), usable[0]);
+  return usable.reduce((best, m) => (prefScore(m, prefs, favorites) > prefScore(best, prefs, favorites) ? m : best), usable[0]);
 }
 
 /* --------------------------- local generation --------------------------- */
-export function generateLocalWeek(allMeals, prefs, targets) {
+export function generateLocalWeek(allMeals, prefs, targets, favorites = NO_FAVORITES) {
   const usedMains = new Set();
   const snackUse = {};
   const days = [];
@@ -67,10 +74,10 @@ export function generateLocalWeek(allMeals, prefs, targets) {
       if (slot.type === "snack") {
         // snacks may repeat across the week (max ~2×), never within a day
         const exclude = new Set([...usedToday, ...Object.keys(snackUse).filter((id) => snackUse[id] >= 2)]);
-        pick = pickBest(pool, prefs, exclude);
+        pick = pickBest(pool, prefs, exclude, favorites);
         if (pick) snackUse[pick.id] = (snackUse[pick.id] || 0) + 1;
       } else {
-        pick = pickBest(pool, prefs, usedMains);
+        pick = pickBest(pool, prefs, usedMains, favorites);
         if (pick) usedMains.add(pick.id);
       }
       if (pick) usedToday.add(pick.id);
@@ -80,11 +87,11 @@ export function generateLocalWeek(allMeals, prefs, targets) {
   }
   return { weekStart: iso(mondayOf(new Date())), days };
 }
-export function pickLocalSwap(allMeals, slotType, prefs, targets, plan, currentId) {
+export function pickLocalSwap(allMeals, slotType, prefs, targets, plan, currentId, favorites = NO_FAVORITES) {
   const inWeek = new Set(plan.days.flatMap((d) => Object.values(d)));
   const pool = candidatesFor(allMeals, slotType, prefs, targets).filter((m) => m.id !== currentId);
   if (!pool.length) return null;
-  return pickBest(pool, prefs, inWeek);
+  return pickBest(pool, prefs, inWeek, favorites);
 }
 
 /* --------------------------- ingredient matching ------------------------- */
