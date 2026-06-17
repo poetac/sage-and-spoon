@@ -30,6 +30,16 @@ const gradientFor = (meal) => {
   return `linear-gradient(135deg, hsl(${h} 38% 82%), hsl(${(h + 40) % 360} 34% 73%))`;
 };
 
+// Flickr serves every size from the same path, so request a thumbnail-sized
+// image (320px for cards, 800px for the larger detail view) instead of the
+// ~1024px "_b" original — a big byte saving for photos painted into ~100px
+// cards. Non-Flickr URLs (e.g. Wikimedia) are left untouched.
+const FLICKR = /^(https:\/\/live\.staticflickr\.com\/\d+\/\d+_[0-9a-f]+)(?:_[a-z0-9]+)?\.jpg$/i;
+const sizedSrc = (src, height) => {
+  const m = src.match(FLICKR);
+  return m ? `${m[1]}_${height > 140 ? "c" : "n"}.jpg` : src;
+};
+
 export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit = false }) {
   const [errored, setErrored] = useState(false);
   const img = imageForRecipe(meal.id);
@@ -46,8 +56,8 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
   return (
     <figure style={{ margin: 0 }}>
       <div style={wrap}>
-        <img src={img.src} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
-          loading="lazy" decoding="async" onError={() => setErrored(true)}
+        <img src={sizedSrc(img.src, height)} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
+          loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setErrored(true)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
       {showCredit && img.credit && (

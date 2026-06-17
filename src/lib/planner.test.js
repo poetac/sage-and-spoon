@@ -38,6 +38,30 @@ describe("mealAllowed — allergy hard-exclusions", () => {
   });
 });
 
+describe("mealAllowed — expanded allergen synonyms & free-text expansion", () => {
+  const allergic = (a) => ({ ...EMPTY_PREFS, allergies: [a] });
+  it("excludes crab (not just shrimp) for a Shellfish allergy, without tripping on Brussels", () => {
+    expect(mealAllowed(byId.g322, allergic("Shellfish"), TARGETS, "snack")).toBe(false); // lump crab meat
+    expect(mealAllowed(byId.d4, allergic("Shellfish"), TARGETS, "dinner")).toBe(false); // shrimp
+    expect(mealAllowed(byId.d3, allergic("Shellfish"), TARGETS, "dinner")).toBe(true); // chicken & Brussels sprouts — "mussel" must not match "Brussels"
+  });
+  it("excludes coconut for a Tree nuts allergy (FDA-classified tree-nut allergen)", () => {
+    expect(mealAllowed(byId.g11, allergic("Tree nuts"), TARGETS, "snack")).toBe(false); // coconut cream
+    expect(mealAllowed(byId.b17, allergic("Tree nuts"), TARGETS, "breakfast")).toBe(false); // coconut chia
+    expect(mealAllowed(byId.s1, allergic("Tree nuts"), TARGETS, "snack")).toBe(true); // peanut butter is not a tree nut
+  });
+  it("expands a free-text 'shellfish' allergy to the full chip keyword set", () => {
+    const prefs = { ...EMPTY_PREFS, allergyText: "shellfish" };
+    expect(mealAllowed(byId.g322, prefs, TARGETS, "snack")).toBe(false); // crab — would slip through without expansion
+    expect(mealAllowed(byId.d4, prefs, TARGETS, "dinner")).toBe(false); // shrimp
+  });
+  it("expands free-text 'tree nuts' and the umbrella 'nuts' to nut keywords", () => {
+    expect(mealAllowed(byId.b17, { ...EMPTY_PREFS, allergyText: "tree nuts" }, TARGETS, "breakfast")).toBe(false); // coconut
+    expect(mealAllowed(byId.s5, { ...EMPTY_PREFS, allergyText: "nuts" }, TARGETS, "snack")).toBe(false); // almonds
+    expect(mealAllowed(byId.s1, { ...EMPTY_PREFS, allergyText: "nuts" }, TARGETS, "snack")).toBe(false); // 'nuts' also covers peanuts
+  });
+});
+
 describe("mealAllowed — dislikes and cook time", () => {
   it("excludes dislike chips via keyword maps", () => {
     const prefs = { ...EMPTY_PREFS, dislikes: ["Fish"] };

@@ -40,13 +40,19 @@ export const EMPTY_PREFS = {
   portion: "Normal", cookTime: "Any",
 };
 
-// Ingredient keywords excluded by each allergy / dislike chip.
+// Ingredient keywords excluded by each allergy / dislike chip. Matching is
+// substring-based (lib/planner.js), so keywords must be specific enough not to
+// trip safe foods: bare "butter"/"cream" are deliberately omitted from Dairy
+// because they would wrongly exclude almond/peanut/seed butter and coconut
+// cream — closing that gap needs compound-aware matching (see ROADMAP). Coconut
+// is grouped under Tree nuts: the FDA labels it a tree-nut allergen, so the
+// conservative (safe) default for a tree-nut allergy is to exclude it.
 export const ALLERGEN_MAP = {
-  "Peanuts": ["peanut"],
-  "Tree nuts": ["almond", "walnut", "pecan", "cashew", "pistachio"],
-  "Shellfish": ["shrimp"],
+  "Peanuts": ["peanut", "groundnut"],
+  "Tree nuts": ["almond", "walnut", "pecan", "cashew", "pistachio", "hazelnut", "macadamia", "coconut", "pine nut", "brazil nut"],
+  "Shellfish": ["shrimp", "crab", "lobster", "prawn", "scallop", "clam", "mussel", "oyster", "crawfish", "crayfish"],
   "Eggs": ["egg"],
-  "Dairy": ["yogurt", "cheese", "milk", "feta", "mozzarella", "parmesan", "ricotta", "cottage"],
+  "Dairy": ["yogurt", "cheese", "milk", "feta", "mozzarella", "parmesan", "ricotta", "cottage", "ghee", "casein", "whey", "buttermilk", "custard", "half-and-half"],
   "Soy": ["tofu", "soy", "edamame"],
   "Wheat / gluten": ["bread", "tortilla", "cracker", "crispbread", "farro", "bulgur", "oats"],
 };

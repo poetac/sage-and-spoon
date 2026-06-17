@@ -278,12 +278,26 @@ export default function App() {
 
   const placeMeal = (dayIdx, slotKey) => {
     const meal = placing;
+    const slot = SLOTS.find((s) => s.key === slotKey);
+    // Never let the cookbook/ingredients "add to week" path slip a meal past the
+    // hard GD rails: it must fit the destination slot's carb cap and contain no
+    // excluded ingredient (the Cookbook can list excluded meals when its filter
+    // is toggled off). Guarding here, not just by dimming slots, keeps the plan
+    // safe regardless of how the meal was chosen.
+    const overCap = meal.carbsG > capFor(slot.type, settings.targets);
+    if (overCap || violatesExclusions(meal, prefs)) {
+      setPlacing(null);
+      toastErr(overCap
+        ? `Can't add "${meal.name}" to ${slot.label} — ${meal.carbsG}g carbs is over the ${capFor(slot.type, settings.targets)}g cap for that slot.`
+        : `Can't add "${meal.name}" — it contains an ingredient you're avoiding.`);
+      return;
+    }
     setPlacing(null);
     if (!mealsById[meal.id]) setCustom([...customMeals, meal]);
     const days = plan.days.map((x) => ({ ...x }));
     days[dayIdx][slotKey] = meal.id;
     setTab("plan");
-    commitPlan({ ...plan, days }, `"${meal.name}" added to ${DAY_NAMES[dayIdx]} ${SLOTS.find((s) => s.key === slotKey).label}`);
+    commitPlan({ ...plan, days }, `"${meal.name}" added to ${DAY_NAMES[dayIdx]} ${slot.label}`);
   };
 
   const resetAll = () => {
@@ -389,12 +403,17 @@ export default function App() {
             {DAY_NAMES.map((dn, d) => (
               <div key={dn} className="flex items-center gap-2 flex-wrap">
                 <span style={{ fontWeight: 700, width: 38 }} className="text-sm">{dn}</span>
-                {SLOTS.map((s) => (
-                  <button key={s.key} className="chip" style={s.type === placing.type ? { borderColor: "var(--sage)" } : { opacity: 0.55 }}
-                    onClick={() => placeMeal(d, s.key)}>
-                    {s.label}
-                  </button>
-                ))}
+                {SLOTS.map((s) => {
+                  const fits = s.type === placing.type; // a lunch belongs in a lunch slot, etc.
+                  return (
+                    <button key={s.key} className="chip" disabled={!fits}
+                      title={fits ? undefined : `${placing.name} is a ${placing.type}, not a ${s.type}`}
+                      style={fits ? { borderColor: "var(--sage)" } : { opacity: 0.4, cursor: "not-allowed" }}
+                      onClick={() => placeMeal(d, s.key)}>
+                      {s.label}
+                    </button>
+                  );
+                })}
               </div>
             ))}
           </div>
