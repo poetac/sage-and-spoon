@@ -5,7 +5,7 @@ import { PrefsFields } from "./PrefsFields.jsx";
 const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner", "Dinners"], ["snack", "Snacks"]];
 
 /* -------------------------------- settings ------------------------------- */
-export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey }) {
+export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch) => setPrefs({ ...prefs, ...patch });
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
@@ -82,6 +82,19 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
         <input type="password" className="input" placeholder="sk-ant-..." value={settings.apiKey}
           onChange={(e) => setSettings({ ...settings, apiKey: e.target.value.trim() })} autoComplete="off" />
         <p className="t-soft text-xs mt-2">Note: calling the API straight from a browser exposes the key to this device; for anything beyond personal use, route calls through a small backend proxy instead.</p>
+      </div>
+
+      <div className="card p-5 mb-4">
+        <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Backup &amp; restore</h3>
+        <p className="t-soft text-sm mb-3">Everything stays on this device. Download a backup file, or restore one to move your plan, cookbook, favorites, and history to another device.</p>
+        <div className="flex flex-wrap gap-2">
+          <button className="btn btn-soft" onClick={onExport}><Icon d={ICONS.download} size={14} /> Download backup</button>
+          <label className="btn btn-soft" style={{ cursor: "pointer" }}>
+            <Icon d={ICONS.copy} size={14} /> Restore from backup
+            <input type="file" accept="application/json,.json" aria-label="Restore from backup" style={{ display: "none" }}
+              onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) onImport(f); e.target.value = ""; }} />
+          </label>
+        </div>
       </div>
 
       <div className="card p-5" style={{ borderColor: "var(--berry-mist)" }}>
