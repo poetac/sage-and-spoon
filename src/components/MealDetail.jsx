@@ -1,5 +1,6 @@
 import { qtyLabel } from "../lib/utils.js";
 import { Icon, ICONS, GiPill, Modal } from "./primitives.jsx";
+import { RecipeImage } from "./RecipeImage.jsx";
 
 /* ------------------------------- meal detail ------------------------------ */
 // Quantities in the meal DB are per 2 servings; scale to the household's
@@ -8,6 +9,7 @@ export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavori
   const scaled = meal.ingredients.map((ing) => ({ ...ing, q: ing.q == null ? null : (ing.q * servings) / 2 }));
   return (
     <Modal title={meal.name} onClose={onClose}>
+      <div className="mb-4"><RecipeImage meal={meal} height={160} showCredit /></div>
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />
