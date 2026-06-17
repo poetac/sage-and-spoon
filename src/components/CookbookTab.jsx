@@ -13,6 +13,7 @@ const SORTS = [
   { key: "name", label: "Name A–Z" },
   { key: "carbs", label: "Lowest carbs" },
   { key: "protein", label: "Most protein" },
+  { key: "fibre", label: "Most fibre" },
   { key: "time", label: "Quickest" },
 ];
 const CARB_CAPS = [
@@ -36,6 +37,8 @@ function CookbookCard({ meal, onDetails, onPlace }) {
         <GiPill gi={meal.gi} />
         {pill(`${meal.carbsG}g carbs`)}
         {meal.proteinG != null && pill(`${meal.proteinG}g protein`)}
+        {meal.fatG != null && pill(`${meal.fatG}g fat`)}
+        {meal.fiberG != null && pill(`${meal.fiberG}g fibre`)}
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}><Icon d={ICONS.clock} size={11} /> {meal.prepMins}m</span>
         {meal.cuisineTag && pill(meal.cuisineTag)}
       </div>
@@ -83,6 +86,7 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
       name: byName,
       carbs: (a, b) => a.carbsG - b.carbsG || byName(a, b),
       protein: (a, b) => (b.proteinG || 0) - (a.proteinG || 0) || byName(a, b),
+      fibre: (a, b) => (b.fiberG || 0) - (a.fiberG || 0) || byName(a, b),
       time: (a, b) => a.prepMins - b.prepMins || byName(a, b),
     }[sort];
     return [...list].sort(cmp);
@@ -93,6 +97,13 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
   const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, sort].join("|");
   const [prevSig, setPrevSig] = useState(sig);
   if (sig !== prevSig) { setPrevSig(sig); setLimit(PAGE); }
+
+  // Sort isn't a filter; "respect exclusions" defaults on, so leaving it on
+  // isn't a narrowing the user needs to clear.
+  const active = !!q || type !== "all" || cuisine !== "all" || protein !== "all" || maxCarbs !== "all" || quick || !respect;
+  const clearFilters = () => {
+    setQ(""); setType("all"); setCuisine("all"); setProtein("all"); setMaxCarbs("all"); setQuick(false); setRespect(true);
+  };
 
   const shown = filtered.slice(0, limit);
   const sel = "input"; // shared class for the facet dropdowns
@@ -124,13 +135,18 @@ export function CookbookTab({ allMeals, prefs, onPlace, onDetails }) {
             {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button className="chip" style={quick ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setQuick((v) => !v)} aria-pressed={quick}>Quick &lt; 20m</button>
           <button className="chip" style={respect ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setRespect((v) => !v)} aria-pressed={respect}>Respect my exclusions</button>
+          {active && (
+            <button className="btn btn-ghost ml-auto" style={{ padding: "4px 10px", fontSize: 12 }} onClick={clearFilters}>
+              <Icon d={ICONS.x} size={12} /> Clear filters
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="t-soft text-sm mb-3">{filtered.length} recipe{filtered.length === 1 ? "" : "s"}</div>
+      <div className="t-soft text-sm mb-3">{filtered.length} recipe{filtered.length === 1 ? "" : "s"}{active ? " · filtered" : ""}</div>
       {filtered.length === 0 ? (
         <p className="t-soft text-sm">No recipes match those filters — try clearing the search or a facet.</p>
       ) : (

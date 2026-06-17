@@ -23,10 +23,33 @@ describe("CookbookTab", () => {
     expect(screen.getByText("Chicken Pasta")).toBeInTheDocument();
   });
 
+  it("clears active filters and the filtered indicator with one tap", () => {
+    render(<CookbookTab {...base} />);
+    // No filters yet → no Clear button, no "· filtered" marker.
+    expect(screen.queryByRole("button", { name: /Clear filters/ })).toBeNull();
+    fireEvent.change(screen.getByLabelText("Filter by meal type"), { target: { value: "dinner" } });
+    expect(screen.getByText("2 recipes · filtered")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Clear filters/ }));
+    expect(screen.getByText("3 recipes")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Clear filters/ })).toBeNull();
+  });
+
+  it("sorts by most fibre", () => {
+    const withFibre = [
+      meal({ id: "a", name: "Low Fibre", fiberG: 2 }),
+      meal({ id: "b", name: "High Fibre", fiberG: 12 }),
+      meal({ id: "c", name: "Mid Fibre", fiberG: 7 }),
+    ];
+    render(<CookbookTab {...base} allMeals={withFibre} />);
+    fireEvent.change(screen.getByLabelText("Sort recipes"), { target: { value: "fibre" } });
+    const names = screen.getAllByText(/Fibre$/).map((n) => n.textContent);
+    expect(names).toEqual(["High Fibre", "Mid Fibre", "Low Fibre"]);
+  });
+
   it("searches over names and ingredients", () => {
     render(<CookbookTab {...base} />);
     fireEvent.change(screen.getByLabelText("Search recipes"), { target: { value: "tofu" } });
-    expect(screen.getByText("1 recipe")).toBeInTheDocument();
+    expect(screen.getByText("1 recipe · filtered")).toBeInTheDocument();
     expect(screen.getByText("Tofu Stir Fry")).toBeInTheDocument();
     expect(screen.queryByText("Salmon Bowl")).toBeNull();
   });
@@ -35,9 +58,9 @@ describe("CookbookTab", () => {
     render(<CookbookTab {...base} />);
     // meals carry carbsG 20; tighten to <= 15 to drop them all, then relax.
     fireEvent.change(screen.getByLabelText("Filter by carbs"), { target: { value: "15" } });
-    expect(screen.getByText("0 recipes")).toBeInTheDocument();
+    expect(screen.getByText("0 recipes · filtered")).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Filter by carbs"), { target: { value: "25" } });
-    expect(screen.getByText("3 recipes")).toBeInTheDocument();
+    expect(screen.getByText("3 recipes · filtered")).toBeInTheDocument();
   });
 
   it("filters by meal type", () => {
@@ -58,7 +81,7 @@ describe("CookbookTab", () => {
     render(<CookbookTab {...base} />);
     fireEvent.click(screen.getByText("Quick < 20m"));
     // 30-min Chicken Pasta drops; 10- and 18-min stay.
-    expect(screen.getByText("2 recipes")).toBeInTheDocument();
+    expect(screen.getByText("2 recipes · filtered")).toBeInTheDocument();
     expect(screen.queryByText("Chicken Pasta")).toBeNull();
   });
 
