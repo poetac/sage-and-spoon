@@ -110,6 +110,23 @@ describe("App — navigation & placing", () => {
   });
 });
 
+describe("App — week history", () => {
+  it("archives the prior week on shuffle and restores it from history", async () => {
+    seedPrefs();
+    seedPlan();
+    const beforeDays = store.get(K.plan, null).days;
+    render(<App />);
+    await screen.findByText("This week's table");
+
+    fireEvent.click(screen.getByRole("button", { name: /Shuffle week/ }));
+    await waitFor(() => expect(store.get(K.history, []).length).toBe(1));
+
+    fireEvent.click(screen.getByRole("button", { name: /History/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Use this week" }));
+    await waitFor(() => expect(store.get(K.plan, null).days).toEqual(beforeDays));
+  });
+});
+
 describe("App — reset", () => {
   it("clears storage and returns to onboarding after confirming", async () => {
     seedPrefs();

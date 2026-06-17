@@ -68,7 +68,7 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
 }
 
 export function PlanTab(props) {
-  const { plan, mealsById, selected, weekLoading, onGenerateAI, onShuffle, hasKey, proteinMin } = props;
+  const { plan, mealsById, selected, weekLoading, onGenerateAI, onShuffle, hasKey, proteinMin, historyCount, onShowHistory } = props;
   const [mobileDay, setMobileDay] = useState(() => Math.min((new Date().getDay() + 6) % 7, 6));
   const weekLabel = plan ? `${fmtShort(dayDate(plan.weekStart, 0))} – ${fmtShort(dayDate(plan.weekStart, 6))}` : "";
 
@@ -87,6 +87,11 @@ export function PlanTab(props) {
           <p className="t-soft text-sm">Week of {weekLabel} · drag meals to rearrange, or tap one and then tap its new spot</p>
         </div>
         <div className="flex gap-2">
+          {historyCount > 0 && (
+            <button className="btn btn-ghost" onClick={onShowHistory} title="Past weeks you can reuse">
+              <Icon d={ICONS.clock} size={14} /> History
+            </button>
+          )}
           <button className="btn btn-ghost" onClick={() => window.print()} title="Print this week's plan">
             <Icon d={ICONS.print} size={14} /> Print
           </button>

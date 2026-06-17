@@ -12,6 +12,7 @@ import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pi
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
+import { WeekHistory } from "./components/WeekHistory.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
 import { PlanTab } from "./components/PlanTab.jsx";
 import { IngredientsTab } from "./components/IngredientsTab.jsx";
@@ -40,6 +41,8 @@ export default function App() {
   const [customMeals, setCustomState] = useState(() => store.get(K.custom, []));
   const [favorites, setFavoritesState] = useState(() => store.get(K.favorites, []));
   const [pantry, setPantryState] = useState(() => store.get(K.pantry, []));
+  const [history, setHistoryState] = useState(() => store.get(K.history, []));
+  const [showHistory, setShowHistory] = useState(false);
   const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
@@ -107,6 +110,20 @@ export default function App() {
   const toastOk = (m) => say(m, "ok");
   const toastErr = (m) => say(m, "error");
 
+  // Archive a week being replaced so it can be revisited/reused. Newest first,
+  // capped, and skips a no-op when the latest entry is identical.
+  const archive = (p) => {
+    if (!p) return;
+    if (history[0] && JSON.stringify(history[0].days) === JSON.stringify(p.days)) return;
+    const next = [{ weekStart: p.weekStart, days: p.days }, ...history].slice(0, 8);
+    setHistoryState(next); store.set(K.history, next);
+  };
+  const restoreWeek = (w) => {
+    setShowHistory(false);
+    archive(plan);
+    commitPlan({ weekStart: iso(mondayOf(new Date())), days: w.days }, "Restored a saved week");
+  };
+
   // Replace the plan and offer one-level undo to the prior plan (when there was
   // one), so a mis-tapped swap/move/shuffle is painless to walk back.
   const commitPlan = (next, msg) => {
@@ -117,6 +134,7 @@ export default function App() {
 
   /* ------------------------------ plan actions ----------------------------- */
   const buildWeek = async (forPrefs, okMsg, favs = favSet) => {
+    archive(plan); // keep the week we're replacing
     // Ensure the full cookbook is loaded — onboarding can finish before the
     // background chunk has resolved.
     const db = await loadCookbook();
@@ -174,6 +192,7 @@ export default function App() {
         return out;
       });
       setCustom([...customMeals, ...newMeals]);
+      archive(plan); // keep the week the AI plan replaces
       commitPlan({ weekStart: iso(mondayOf(new Date())), days }, replaced
         ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to avoid excluded ingredients)`
         : "Your personalized week is ready ✦");
@@ -262,14 +281,14 @@ export default function App() {
 
   const resetAll = () => {
     store.clear(Object.values(K));
-    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]);
+    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]);
     setSettingsState(DEFAULT_SETTINGS);
   };
 
   /* --------------------------------- render -------------------------------- */
   if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
 
-  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin };
+  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin, historyCount: history.length, onShowHistory: () => setShowHistory(true) };
 
   return (
     <div className="ss-root">
@@ -343,6 +362,8 @@ export default function App() {
       )}
 
       {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} />}
+
+      {showHistory && <WeekHistory history={history} onRestore={restoreWeek} onClose={() => setShowHistory(false)} />}
 
       <Toast toast={toast} />
     </div>
