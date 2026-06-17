@@ -48,10 +48,16 @@ export const GiPill = ({ gi }) => (
 export function Toast({ toast }) {
   if (!toast) return null;
   return (
-    <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 rise no-print"
+    <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 rise no-print flex items-center gap-3"
       style={{ background: toast.kind === "error" ? "var(--berry)" : "var(--sage-deep)", color: "#fff",
         borderRadius: 999, padding: "10px 18px", fontSize: 14, fontWeight: 700, boxShadow: "0 8px 24px rgba(60,58,53,.25)", maxWidth: "90vw" }}>
-      {toast.msg}
+      <span>{toast.msg}</span>
+      {toast.action && (
+        <button onClick={toast.action.onClick}
+          style={{ background: "rgba(255,255,255,.18)", color: "#fff", border: "none", borderRadius: 999, padding: "3px 12px", fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+          {toast.action.label}
+        </button>
+      )}
     </div>
   );
 }
