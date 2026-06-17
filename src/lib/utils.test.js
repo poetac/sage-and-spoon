@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { prettyQty, qtyLabel, capFor } from "./utils.js";
+import { prettyQty, qtyLabel, capFor, scaleIngredient, RECIPE_SERVINGS } from "./utils.js";
 
 describe("prettyQty", () => {
   it("returns empty string for null", () => {
@@ -47,5 +47,17 @@ describe("capFor", () => {
     expect(capFor("snack", targets)).toBe(20);
     expect(capFor("lunch", targets)).toBe(45);
     expect(capFor("dinner", targets)).toBe(45);
+  });
+});
+
+describe("scaleIngredient", () => {
+  it("scales a per-RECIPE_SERVINGS quantity to the chosen servings", () => {
+    expect(RECIPE_SERVINGS).toBe(2);
+    expect(scaleIngredient({ n: "rice", q: 2, u: "cup" }, 2).q).toBe(2); // base
+    expect(scaleIngredient({ n: "rice", q: 2, u: "cup" }, 4).q).toBe(4); // doubled
+    expect(scaleIngredient({ n: "rice", q: 2, u: "cup" }, 1).q).toBe(1); // halved
+  });
+  it("leaves 'to taste' (null) quantities untouched and copies other fields", () => {
+    expect(scaleIngredient({ n: "salt", q: null, u: "" }, 8)).toEqual({ n: "salt", q: null, u: "" });
   });
 });

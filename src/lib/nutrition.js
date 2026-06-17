@@ -11,7 +11,7 @@
 // over the ingredient name and longest-match-wins, so specific keys beat
 // generic ones ("coconut cream" over a bare "coconut", "sweet potato" over
 // "potato"). Ingredients we don't recognise — and seasonings — contribute 0.
-import { lc } from "./utils.js";
+import { lc, RECIPE_SERVINGS } from "./utils.js";
 
 // Fallback grams per unit when an entry doesn't override it. "" is a count
 // (e.g. "2 eggs"); "to taste"/null contribute nothing.
@@ -257,8 +257,21 @@ export function estimateMacros(meal) {
     f += entry.f * g;
     fib += entry.fib * g;
   }
-  const round = (x) => Math.round(x / 2);
+  const round = (x) => Math.round(x / RECIPE_SERVINGS);
   return { proteinG: round(p), fatG: round(f), fiberG: round(fib) };
+}
+
+// Whether a meal's protein estimate can be trusted enough to show a number.
+// Macros come from a keyword table; an unrecognised ingredient contributes 0,
+// so a meal whose protein-category ingredients are *all* unrecognised would read
+// as misleadingly low-protein. Those are flagged (UI shows "n/a") rather than a
+// wrong number. A meal with no protein-category ingredient reads honestly low,
+// so it stays trusted. The bundled cookbook recognises every ingredient, so this
+// only ever flags novel AI recipes.
+export function proteinEstimateReliable(meal) {
+  const proteins = (meal.ingredients || []).filter((i) => i.c === "Protein");
+  if (!proteins.length) return true;
+  return proteins.some((i) => lookupIngredient(i.n));
 }
 
 // Estimated carbs for a meal, per single serving. Not used for display —
@@ -274,7 +287,7 @@ export function estimateCarbs(meal) {
     const per = entry.net ? Math.max(0, entry.c - entry.fib) : entry.c;
     c += per * (gramsForIngredient(ing) / 100);
   }
-  return Math.round(c / 2);
+  return Math.round(c / RECIPE_SERVINGS);
 }
 
 // Attach computed macros to a meal (used when assembling MEAL_DB). Returns a

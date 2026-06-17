@@ -42,6 +42,19 @@ describe("App — building a week", () => {
 });
 
 describe("App — navigation & placing", () => {
+  it("exposes an app-level h1 and marks the active tab with aria-current", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    await screen.findByText("This week's table");
+    expect(screen.getByRole("heading", { level: 1, name: /Sage & Spoon/ })).toBeInTheDocument();
+    const isCurrent = (name) => screen.getAllByRole("button", { name }).some((b) => b.getAttribute("aria-current") === "page");
+    expect(isCurrent(/^Plan$/)).toBe(true); // Plan is active by default
+    goTo(/Cookbook/);
+    expect(isCurrent(/^Cookbook$/)).toBe(true);
+    expect(isCurrent(/^Plan$/)).toBe(false);
+  });
+
   it("opens the Cookbook tab and lists recipes", async () => {
     seedPrefs();
     seedPlan();

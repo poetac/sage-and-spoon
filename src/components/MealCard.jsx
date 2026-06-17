@@ -1,5 +1,6 @@
 import { qtyLabel } from "../lib/utils.js";
 import { Icon, ICONS, Spinner, GiPill } from "./primitives.jsx";
+import { NutritionPills } from "./NutritionPills.jsx";
 
 /* -------------------------------- meal card ------------------------------ */
 export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails, aiBusy, draggable, onDragStart, hasKey }) {
@@ -8,9 +9,9 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails
     // target so a meal can be moved here from another slot.
     return (
       <div className={"t-soft text-xs italic p-2 cursor-pointer" + (selected ? " meal-card selected" : "")}
-        role="button" tabIndex={0} onClick={onSelect}
+        role="button" tabIndex={0} aria-pressed={!!selected} onClick={onSelect}
         onKeyDown={(e) => { if (e.key === "Enter") onSelect(); }}>
-        empty — add from Ingredients, or relax a dislike
+        {selected ? "moving — tap a slot to drop here" : "empty — add from Ingredients, or relax a dislike"}
       </div>
     );
   }
@@ -23,15 +24,13 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails
       title={meal.ingredients.map((i) => `${i.n} (${qtyLabel(i)})`).join(", ")}
       role="button"
       tabIndex={0}
+      aria-pressed={!!selected}
       onKeyDown={(e) => { if (e.key === "Enter") onSelect(); }}
     >
       <div className="text-[13.5px] leading-snug" style={{ fontWeight: 700 }}>{meal.name}</div>
       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
         <GiPill gi={meal.gi} />
-        <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.carbsG}g carbs</span>
-        {meal.proteinG != null && (
-          <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }} title="estimated protein">{meal.proteinG}g protein</span>
-        )}
+        <NutritionPills meal={meal} fields={["carbs", "protein"]} showEst />
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>
           <Icon d={ICONS.clock} size={11} /> {meal.prepMins}m
         </span>

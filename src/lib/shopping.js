@@ -1,11 +1,11 @@
 import { CATEGORIES } from "../data/meals.js";
-import { lc, qtyLabel } from "./utils.js";
+import { lc, qtyLabel, RECIPE_SERVINGS } from "./utils.js";
 
 /* ------------------------------ shopping list ---------------------------- */
 // `pantry` is a Set of lowercased ingredient names the cook always keeps on
 // hand; those are left off the list entirely.
 export function buildShoppingList(plan, mealsById, servings, pantry = new Set()) {
-  const mult = servings / 2;
+  const mult = servings / RECIPE_SERVINGS;
   const map = new Map();
   if (!plan) return {};
   for (const day of plan.days) {

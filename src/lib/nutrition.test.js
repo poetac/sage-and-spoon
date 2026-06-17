@@ -1,6 +1,22 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { lookupIngredient, gramsForIngredient, estimateMacros, estimateCarbs, withMacros } from "./nutrition.js";
+import { lookupIngredient, gramsForIngredient, estimateMacros, estimateCarbs, withMacros, proteinEstimateReliable } from "./nutrition.js";
 import { loadCookbook } from "../data/meals.js";
+
+describe("proteinEstimateReliable", () => {
+  it("trusts a meal whose protein-category ingredient is recognised", () => {
+    expect(proteinEstimateReliable({ ingredients: [{ n: "chicken breast", c: "Protein" }] })).toBe(true);
+  });
+  it("flags a meal whose protein-category ingredients are all unrecognised", () => {
+    expect(proteinEstimateReliable({ ingredients: [{ n: "seitan strips", c: "Protein" }] })).toBe(false);
+  });
+  it("trusts a meal with no protein-category ingredient (honestly low protein)", () => {
+    expect(proteinEstimateReliable({ ingredients: [{ n: "mystery sauce", c: "Pantry" }] })).toBe(true);
+    expect(proteinEstimateReliable({ ingredients: [] })).toBe(true);
+  });
+  it("trusts a meal where at least one protein ingredient is recognised", () => {
+    expect(proteinEstimateReliable({ ingredients: [{ n: "seitan strips", c: "Protein" }, { n: "shrimp", c: "Protein" }] })).toBe(true);
+  });
+});
 
 describe("lookupIngredient — keyword matching", () => {
   it("matches case-insensitively over substrings of the ingredient name", () => {

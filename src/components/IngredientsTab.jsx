@@ -2,6 +2,7 @@ import { useState } from "react";
 import { parseIngredientInput, matchMeal, mealAllowed, violatesExclusions } from "../lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, gdCompliant } from "../lib/claude.js";
 import { Icon, ICONS, Spinner, GiPill } from "./primitives.jsx";
+import { NutritionPills } from "./NutritionPills.jsx";
 
 /* ------------------------------ ingredients tab -------------------------- */
 function SuggestionCard({ sug, onAdd }) {
@@ -13,9 +14,7 @@ function SuggestionCard({ sug, onAdd }) {
           <div className="flex flex-wrap gap-1.5 mt-1.5">
             <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{sug.meal.type}</span>
             <GiPill gi={sug.meal.gi} />
-            <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.carbsG}g carbs</span>
-            {sug.meal.proteinG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.proteinG}g protein</span>}
-            {sug.meal.fiberG != null && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{sug.meal.fiberG}g fibre</span>}
+            <NutritionPills meal={sug.meal} fields={["carbs", "protein", "fibre"]} showEst />
             <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}><Icon d={ICONS.clock} size={11} /> {sug.meal.prepMins}m</span>
           </div>
         </div>
