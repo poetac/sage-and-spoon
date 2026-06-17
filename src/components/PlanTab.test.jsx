@@ -48,6 +48,15 @@ describe("PlanTab", () => {
     expect(screen.getByText("≈ 38g carbs · 30g protein")).toBeInTheDocument();
   });
 
+  it("summarizes the week's average macros and protein-goal days", () => {
+    // One planned day (Tue: 38g carbs, 30g protein); 75g goal → 0/1 days meet.
+    renderTab({ proteinMin: 75 });
+    expect(screen.getByText("Week at a glance")).toBeInTheDocument();
+    expect(screen.getByText("~38g carbs/day")).toBeInTheDocument();
+    expect(screen.getByText("~30g protein/day")).toBeInTheDocument();
+    expect(screen.getByText("0/1 days meet 75g protein")).toBeInTheDocument();
+  });
+
   it("flags a day that falls short of the protein goal", () => {
     // The only meal (Tue, 30g protein) is below a 75g goal → footer nudges.
     renderTab({ proteinMin: 75 });
