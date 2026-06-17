@@ -36,22 +36,67 @@ const dryRun = args.includes("--dry-run");
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// Query Openverse for one usable photo; null if nothing suitable comes back.
-async function fetchImage(meal) {
-  const q = `${meal.name} food`;
-  const url = `${API}?q=${encodeURIComponent(q)}&license=${LICENSES}&page_size=8&mature=false`;
+// Ordered search queries for a meal, most specific first. Recipe names are very
+// specific ("Garden Veggie Scramble & Toast") and rarely match an Openverse photo
+// verbatim, so we fall back to the hero dish (the part before "with"/"&"/…) and
+// then to protein+type / cuisine. A hit on the full name wins on relevance, while
+// the broader fallbacks guarantee every recipe resolves to a real, on-topic photo
+// instead of leaving the library mostly empty.
+function queriesFor(meal) {
+  const clean = meal.name.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+  const hero = clean.split(/ with | & |, | and | over | on | in | topped /i)[0].trim();
+  const cands = [clean];
+  if (hero && hero !== clean) cands.push(hero);
+  if (meal.proteinTag) cands.push(`${meal.proteinTag} ${meal.type}`);
+  if (meal.cuisineTag) cands.push(`${meal.cuisineTag} food`);
+  return [...new Set(cands.filter(Boolean))];
+}
+
+const PER_PAGE = 20; // Openverse anonymous cap; larger page sizes need a key (401).
+
+// Fetch one result page for a query: usable hits plus whether more pages exist.
+async function searchPage(q, page) {
+  const url = `${API}?q=${encodeURIComponent(q)}&license=${LICENSES}&page_size=${PER_PAGE}&page=${page}&mature=false`;
   const res = await fetch(url, { headers: { "User-Agent": "sage-and-spoon image fetcher" } });
-  if (res.status === 429) { console.warn("  rate-limited (429) — backing off 30s"); await sleep(30000); return fetchImage(meal); }
+  if (res.status === 429) { console.warn("  rate-limited (429) — backing off 30s"); await sleep(30000); return searchPage(q, page); }
   if (!res.ok) throw new Error(`Openverse ${res.status} for "${q}"`);
   const data = await res.json();
-  const hit = (data.results || []).find((r) => r.url);
-  if (!hit) return null;
-  return {
-    src: hit.url,
-    credit: hit.creator || hit.source || "Openverse",
-    creditUrl: hit.foreign_landing_url || hit.url,
-    license: hit.license || "",
-  };
+  return { hits: (data.results || []).filter((r) => r.url), hasMore: page < (data.page_count || 0) };
+}
+
+// Per-query result pool with a cursor, so recipes that share a fallback query
+// (e.g. several "Chicken lunch") each get a *distinct*, still-on-topic photo
+// rather than all repeating results[0] — and we query Openverse once per pool,
+// not once per recipe. Pages are pulled in on demand; once a query's distinct
+// results run out we wrap, accepting repeats only as a last resort.
+const pools = new Map();
+async function pick(q) {
+  let p = pools.get(q);
+  if (!p) { p = { hits: [], cursor: 0, nextPage: 1, more: true }; pools.set(q, p); }
+  while (p.cursor >= p.hits.length && p.more) {
+    const { hits, hasMore } = await searchPage(q, p.nextPage);
+    p.hits.push(...hits); p.nextPage++; p.more = hasMore;
+  }
+  if (p.hits.length === 0) return null;
+  const hit = p.hits[p.cursor % p.hits.length];
+  p.cursor++;
+  return hit;
+}
+
+// Resolve one usable photo, trying progressively broader queries; null only if
+// none of them turn up anything suitable.
+async function fetchImage(meal) {
+  for (const q of queriesFor(meal)) {
+    const hit = await pick(q);
+    if (hit) return {
+      src: hit.url,
+      credit: hit.creator || hit.source || "Openverse",
+      creditUrl: hit.foreign_landing_url || hit.url,
+      license: hit.license || "",
+      query: q,
+    };
+  }
+  return null;
 }
 
 // Re-emit the library map: stable id order, attribution preserved.
@@ -85,7 +130,7 @@ async function main() {
     done++;
     try {
       const img = await fetchImage(meal);
-      if (img) { map[meal.id] = img; ok++; console.log(`  ✓ ${meal.id} ${meal.name} ← ${img.credit}`); }
+      if (img) { map[meal.id] = img; ok++; console.log(`  ✓ ${meal.id} ${meal.name} ← ${img.credit} [q: ${img.query}]`); }
       else { miss++; console.log(`  · ${meal.id} ${meal.name} — no result`); }
     } catch (err) {
       miss++; console.warn(`  ! ${meal.id} ${meal.name} — ${err.message}`);
