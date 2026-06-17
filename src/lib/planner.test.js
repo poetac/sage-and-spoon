@@ -210,6 +210,30 @@ describe("pickLocalSwap", () => {
       expect(inWeek.has(next.id)).toBe(false);
     }
   });
+
+  it("prefers a favorite when swapping", () => {
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS);
+    const inWeek = new Set(plan.days.flatMap((d) => Object.values(d)));
+    const fav = MEAL_DB.find((m) => m.type === "breakfast" && !inWeek.has(m.id));
+    const next = pickLocalSwap(MEAL_DB, "breakfast", EMPTY_PREFS, TARGETS, plan, plan.days[0].breakfast, new Set([fav.id]));
+    expect(next.id).toBe(fav.id);
+  });
+});
+
+describe("generateLocalWeek — favorites", () => {
+  it("fills slots with favorites first (explicit choice beats inferred prefs)", () => {
+    const favBreakfast = MEAL_DB.find((m) => m.type === "breakfast").id;
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS, new Set([favBreakfast]));
+    // The boost outranks any preference score, so the favorite takes day 0.
+    expect(plan.days[0].breakfast).toBe(favBreakfast);
+  });
+
+  it("still respects no-repeat — one favorite can't fill every main slot", () => {
+    const favBreakfast = MEAL_DB.find((m) => m.type === "breakfast").id;
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS, new Set([favBreakfast]));
+    const breakfasts = plan.days.map((d) => d.breakfast);
+    expect(breakfasts.filter((id) => id === favBreakfast)).toHaveLength(1);
+  });
 });
 
 describe("parseIngredientInput", () => {
