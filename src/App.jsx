@@ -83,6 +83,11 @@ export default function App() {
   const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
   const favSet = useMemo(() => new Set(favorites), [favorites]);
+  // A small spread of recipes to offer as starter favorites during onboarding.
+  const starterMeals = useMemo(() => {
+    const perType = (t, n) => allMeals.filter((m) => m.type === t).slice(0, n);
+    return [...perType("breakfast", 3), ...perType("lunch", 3), ...perType("dinner", 3), ...perType("snack", 3)];
+  }, [allMeals]);
   const hasKey = !!settings.apiKey;
 
   // How many meals fit every current preference, per type — shown in Settings.
@@ -101,21 +106,27 @@ export default function App() {
   const toastErr = (m) => say(m, "error");
 
   /* ------------------------------ plan actions ----------------------------- */
-  const buildWeek = async (forPrefs, okMsg) => {
+  const buildWeek = async (forPrefs, okMsg, favs = favSet) => {
     // Ensure the full cookbook is loaded — onboarding can finish before the
     // background chunk has resolved.
     const db = await loadCookbook();
     if (!cookbook) setCookbook(db);
-    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favSet);
+    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favs);
     setPlan(week);
     const empty = emptySlotCount(week);
     if (empty) toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`);
     else toastOk(okMsg);
   };
 
-  const finishOnboarding = (newPrefs) => {
+  const finishOnboarding = (newPrefs, favIds = []) => {
     setPrefs(newPrefs);
-    buildWeek(newPrefs, "Welcome! Here's a starter week — generate with AI anytime.");
+    const favs = new Set(favIds);
+    if (favIds.length) { setFavoritesState(favIds); store.set(K.favorites, favIds); }
+    buildWeek(
+      newPrefs,
+      favIds.length ? "Welcome! Your starter week leads with your favorites ♥" : "Welcome! Here's a starter week — generate with AI anytime.",
+      favs,
+    );
   };
 
   const shuffleWeek = () => {
@@ -249,7 +260,7 @@ export default function App() {
   };
 
   /* --------------------------------- render -------------------------------- */
-  if (!prefs) return <Onboarding onDone={finishOnboarding} />;
+  if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
 
   const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin };
 
