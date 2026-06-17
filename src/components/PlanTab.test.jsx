@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useRef } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { PlanTab } from "./PlanTab.jsx";
 
 const meal = { id: "m1", name: "Sheet-Pan Salmon", type: "dinner", gi: "Low", carbsG: 38, proteinG: 30, prepMins: 25, ingredients: [{ n: "salmon", q: 2, u: "fillet" }] };
@@ -61,6 +61,24 @@ describe("PlanTab", () => {
     // The only meal (Tue, 30g protein) is below a 75g goal → footer nudges.
     renderTab({ proteinMin: 75 });
     expect(screen.getByText("≈ 38g carbs · 30g protein · under 75g")).toBeInTheDocument();
+  });
+
+  it("prints the week via the header Print button", () => {
+    const spy = vi.spyOn(window, "print").mockImplementation(() => {});
+    renderTab();
+    fireEvent.click(screen.getByRole("button", { name: /Print/ }));
+    expect(spy).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
+  });
+
+  it("renders a printable week sheet listing each day's meals", () => {
+    const { container } = renderTab();
+    const sheet = container.querySelector("#print-sheet");
+    expect(sheet).toBeInTheDocument();
+    expect(within(sheet).getByText(/Meal plan — week of/)).toBeInTheDocument();
+    // The Tuesday meal shows with its macros inside the sheet (scoped so it
+    // doesn't collide with the on-screen card).
+    expect(within(sheet).getByText(/Sheet-Pan Salmon \(38g carbs, 30g protein\)/)).toBeInTheDocument();
   });
 
   it("shuffles and generates via the header actions", () => {

@@ -87,6 +87,9 @@ export function PlanTab(props) {
           <p className="t-soft text-sm">Week of {weekLabel} · drag meals to rearrange, or tap one and then tap its new spot</p>
         </div>
         <div className="flex gap-2">
+          <button className="btn btn-ghost" onClick={() => window.print()} title="Print this week's plan">
+            <Icon d={ICONS.print} size={14} /> Print
+          </button>
           <button className="btn btn-ghost" onClick={onShuffle} disabled={weekLoading}>
             <Icon d={ICONS.swap} size={14} /> Shuffle week
           </button>
@@ -130,6 +133,33 @@ export function PlanTab(props) {
       {/* Desktop: full grid */}
       <div className="hidden md:flex gap-3 overflow-x-auto pb-2">
         {DAY_NAMES.map((_, i) => <DayColumn key={i} dayIdx={i} {...props} />)}
+      </div>
+
+      {/* Printable sheet — hidden on screen, the only thing shown when printing
+          (shares #print-sheet styling; only the active tab is ever mounted). */}
+      <div id="print-sheet">
+        <h1 style={{ fontSize: 22, marginBottom: 2 }}>Meal plan — week of {weekLabel}</h1>
+        <p style={{ fontSize: 13, color: "#555", marginBottom: 16 }}>Sage &amp; Spoon · carbs &amp; protein are estimates</p>
+        {plan.days.map((day, d) => {
+          const t = totals[d];
+          return (
+            <div key={d} style={{ marginBottom: 12, breakInside: "avoid" }}>
+              <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, borderBottom: "1px solid #ccc", paddingBottom: 3, marginBottom: 6 }}>
+                {DAY_NAMES[d]} · {fmtShort(dayDate(plan.weekStart, d))}
+              </h2>
+              {SLOTS.map((sl) => {
+                const m = mealsById[day[sl.key]];
+                return (
+                  <div key={sl.key} style={{ fontSize: 13, padding: "1.5px 0" }}>
+                    <span style={{ color: "#777" }}>{sl.label}:</span>{" "}
+                    {m ? `${m.name} (${m.carbsG}g carbs, ${m.proteinG}g protein)` : "—"}
+                  </div>
+                );
+              })}
+              {t.filled && <div style={{ fontSize: 12.5, color: "#555", marginTop: 3 }}>Day total: {t.carbs}g carbs, {t.protein}g protein</div>}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
