@@ -12,7 +12,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { MEAL_DB, DEFAULT_SETTINGS } from "../src/data/meals.js";
+import { DEFAULT_SETTINGS } from "../src/data/meals.js";
+import { MEAL_DB } from "./lib/full-db.mjs";
 import { GENERATED_MEALS } from "../src/data/generated-meals.js";
 import { normalizeMeal, rejectReason, nameKey, ingredientSimilarity } from "./lib/recipe.mjs";
 

@@ -6,7 +6,8 @@
 //
 // Pure and dependency-free beyond the app's own libs, so it is shared by the
 // gap reporter, the generator, and the tooling tests.
-import { MEAL_DB, QUIZ, EMPTY_PREFS, DEFAULT_SETTINGS } from "../../src/data/meals.js";
+import { QUIZ, EMPTY_PREFS, DEFAULT_SETTINGS } from "../../src/data/meals.js";
+import { MEAL_DB } from "./full-db.mjs";
 import { mealAllowed } from "../../src/lib/planner.js";
 import { COVERAGE_TARGETS } from "./config.mjs";
 

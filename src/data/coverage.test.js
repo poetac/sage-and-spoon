@@ -1,8 +1,12 @@
-import { describe, it, expect } from "vitest";
-import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS, QUIZ, CATEGORIES } from "./meals.js";
+import { describe, it, expect, beforeAll } from "vitest";
+import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS, QUIZ, CATEGORIES } from "./meals.js";
 import { GENERATED_MEALS } from "./generated-meals.js";
 import { mealAllowed } from "../lib/planner.js";
 import { lookupIngredient } from "../lib/nutrition.js";
+
+// MEAL_DB is now assembled from a dynamically-imported chunk; load it once.
+let MEAL_DB;
+beforeAll(async () => { MEAL_DB = await loadCookbook(); });
 
 // A no-repeat week needs 7 distinct mains per type; 21 snack slots at ≤2 uses
 // each need 11 distinct snacks. These tests make "don't run out of viable

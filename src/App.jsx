@@ -3,14 +3,14 @@
 // src/data, planner/shopping/Claude logic in src/lib, UI in src/components.
 // The Claude API key is entered in Settings and stays on this device.
 
-import { useState, useMemo, useRef } from "react";
-import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, MEAL_DB, EMPTY_PREFS } from "./data/meals.js";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
 import { mondayOf, iso } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals } from "./lib/claude.js";
-import { Icon, ICONS, Toast, Modal } from "./components/primitives.jsx";
+import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
 import { MealDetail } from "./components/MealDetail.jsx";
 import { Onboarding } from "./components/Onboarding.jsx";
 import { PlanTab } from "./components/PlanTab.jsx";
@@ -47,15 +47,24 @@ export default function App() {
   const [placing, setPlacing] = useState(null);         // meal waiting for a day+slot
   const [detailMeal, setDetailMeal] = useState(null);   // meal open in the detail modal
   const [growing, setGrowing] = useState(false);        // "grow cookbook" API call in flight
+  const [cookbook, setCookbook] = useState(null);       // full MEAL_DB; null until the data chunk loads
   const dragRef = useRef(null);
   const toastTimer = useRef(null);
+
+  // Pull the generated-recipe chunk after first paint (see loadCookbook).
+  useEffect(() => {
+    let alive = true;
+    loadCookbook().then((db) => { if (alive) setCookbook(db); });
+    return () => { alive = false; };
+  }, []);
 
   const setPrefs = (p) => { setPrefsState(p); store.set(K.prefs, p); };
   const setPlan = (p) => { setPlanState(p); store.set(K.plan, p); };
   const setCustom = (m) => { setCustomState(m); store.set(K.custom, m); };
   const setSettings = (s) => { setSettingsState(s); store.set(K.settings, s); };
 
-  const allMeals = useMemo(() => [...MEAL_DB, ...customMeals], [customMeals]);
+  const cookbookReady = cookbook != null;
+  const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
   const hasKey = !!settings.apiKey;
 
@@ -75,8 +84,12 @@ export default function App() {
   const toastErr = (m) => say(m, "error");
 
   /* ------------------------------ plan actions ----------------------------- */
-  const buildWeek = (forPrefs, okMsg) => {
-    const week = generateLocalWeek(allMeals, forPrefs, settings.targets);
+  const buildWeek = async (forPrefs, okMsg) => {
+    // Ensure the full cookbook is loaded — onboarding can finish before the
+    // background chunk has resolved.
+    const db = await loadCookbook();
+    if (!cookbook) setCookbook(db);
+    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets);
     setPlan(week);
     const empty = emptySlotCount(week);
     if (empty) toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`);
@@ -241,6 +254,13 @@ export default function App() {
       </header>
 
       <main className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto">
+        {!cookbookReady ? (
+          <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3">
+            <Spinner size={20} />
+            <p className="t-soft text-sm">Loading your cookbook…</p>
+          </div>
+        ) : (
+          <>
         {tab === "plan" && plan && <PlanTab {...planProps} />}
         {tab === "plan" && !plan && (
           <div className="card p-8 text-center max-w-md mx-auto rise">
@@ -253,6 +273,8 @@ export default function App() {
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} toastOk={toastOk} toastErr={toastErr} />}
         {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} />}
+          </>
+        )}
       </main>
 
       {/* mobile tab bar */}

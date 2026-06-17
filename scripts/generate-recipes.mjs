@@ -15,7 +15,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS } from "../src/data/meals.js";
+import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../src/data/meals.js";
+import { MEAL_DB } from "./lib/full-db.mjs";
 import { gdRules, MEAL_SHAPE, callClaude } from "../src/lib/claude.js";
 import { analyzeCoverage } from "./lib/coverage.mjs";
 import { GENERATION } from "./lib/config.mjs";

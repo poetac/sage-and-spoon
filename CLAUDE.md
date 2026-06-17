@@ -37,8 +37,10 @@ Always run `npm test` and `npm run lint` before committing.
 src/
   App.jsx                  state, persistence, composition
   data/meals.js            CORE_MEALS (77 hand-written), QUIZ, ALLERGEN_MAP, DISLIKE_MAP,
-                           DEFAULT_SETTINGS; exports MEAL_DB = [...CORE, ...GENERATED].map(withMacros)
-  data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit
+                           DEFAULT_SETTINGS; CORE_DB (sync) + async loadCookbook() that pulls
+                           the generated chunk and assembles the macro-enriched MEAL_DB
+  data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit;
+                           a dynamic chunk (loadCookbook), kept off the first-paint critical path
   data/coverage.test.js    CI-enforced coverage + integrity properties of the cookbook
   lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition, utils, dates, storage
   components/              primitives + MealCard, Onboarding, PrefsFields, and the four tabs
