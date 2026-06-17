@@ -75,4 +75,22 @@ describe("ShoppingTab", () => {
     const { container } = renderTab({ plan: null });
     expect(container).toHaveTextContent("0 items from this week's plan");
   });
+
+  it("marks an item as a pantry staple via its 'have it' button", () => {
+    const onTogglePantry = vi.fn();
+    renderTab({ onTogglePantry });
+    fireEvent.click(screen.getByRole("button", { name: "Always have broccoli" }));
+    expect(onTogglePantry).toHaveBeenCalledWith("broccoli");
+  });
+
+  it("hides pantry staples from the list and shows them in a restorable section", () => {
+    const onTogglePantry = vi.fn();
+    const { container } = renderTab({ pantry: ["broccoli"], onTogglePantry });
+    // Dropped from the list (count falls from 3 to 2) and no Produce heading.
+    expect(container).toHaveTextContent("2 items from this week's plan");
+    expect(screen.queryByRole("heading", { level: 3, name: "Produce" })).toBeNull();
+    // Listed in the staples section; tapping it puts it back.
+    fireEvent.click(screen.getByRole("button", { name: "Stop always-having broccoli" }));
+    expect(onTogglePantry).toHaveBeenCalledWith("broccoli");
+  });
 });

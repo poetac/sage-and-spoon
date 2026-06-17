@@ -1,14 +1,15 @@
 import { useState, useMemo } from "react";
 import { CATEGORIES } from "../data/meals.js";
-import { qtyLabel } from "../lib/utils.js";
+import { lc, qtyLabel } from "../lib/utils.js";
 import { dayDate, fmtShort } from "../lib/dates.js";
 import { buildShoppingList, listToText } from "../lib/shopping.js";
 import { Icon, ICONS } from "./primitives.jsx";
 
 /* ------------------------------- shopping tab ---------------------------- */
-export function ShoppingTab({ plan, mealsById, settings, setSettings, toastOk, toastErr }) {
+export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [], onTogglePantry, toastOk, toastErr }) {
   const [checked, setChecked] = useState({});
-  const grouped = useMemo(() => buildShoppingList(plan, mealsById, settings.servings), [plan, mealsById, settings.servings]);
+  const pantrySet = useMemo(() => new Set(pantry.map(lc)), [pantry]);
+  const grouped = useMemo(() => buildShoppingList(plan, mealsById, settings.servings, pantrySet), [plan, mealsById, settings.servings, pantrySet]);
   const weekLabel = plan ? `week of ${fmtShort(dayDate(plan.weekStart, 0))}` : "";
   const asText = () => listToText(grouped, weekLabel, settings.servings);
   const total = CATEGORIES.reduce((n, c) => n + (grouped[c]?.length || 0), 0);
@@ -61,6 +62,21 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, toastOk, t
         <span className="t-soft text-xs">amounts scale automatically</span>
       </div>
 
+      {pantry.length > 0 && (
+        <div className="card p-4 mb-5">
+          <h3 className="text-sm uppercase tracking-wide mb-1" style={{ fontWeight: 700, color: "var(--sage-deep)" }}>Pantry staples · always on hand</h3>
+          <p className="t-soft text-xs mb-2">Kept off the list. Tap one to add it back.</p>
+          <div className="flex flex-wrap gap-1.5">
+            {pantry.map((n) => (
+              <button key={n} className="pill" onClick={() => onTogglePantry(n)} title="Add back to the shopping list"
+                aria-label={`Stop always-having ${n}`} style={{ background: "#F3F0E8", color: "var(--ink-soft)", border: "none", cursor: "pointer" }}>
+                {n} <span aria-hidden="true">×</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid md:grid-cols-2 gap-4">
         {CATEGORIES.map((cat) => {
           const items = grouped[cat] || [];
@@ -73,7 +89,7 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, toastOk, t
                   const key = it.n + "|" + (it.u || "");
                   const q = qtyLabel(it);
                   return (
-                    <li key={key}>
+                    <li key={key} className="flex items-start justify-between gap-2">
                       <label className="flex items-start gap-2 cursor-pointer text-[14.5px]">
                         <input type="checkbox" className="mt-1 accent-current" style={{ color: "var(--sage)" }}
                           checked={!!checked[key]} onChange={() => setChecked((c) => ({ ...c, [key]: !c[key] }))} />
@@ -81,6 +97,13 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, toastOk, t
                           {it.n}{q && <span className="t-soft"> — {q}</span>}
                         </span>
                       </label>
+                      {onTogglePantry && (
+                        <button onClick={() => onTogglePantry(it.n)} title="I always have this — hide from the list"
+                          aria-label={`Always have ${it.n}`}
+                          style={{ background: "none", border: "none", cursor: "pointer", fontSize: 11, color: "var(--ink-soft)", whiteSpace: "nowrap", padding: "1px 2px" }}>
+                          have it
+                        </button>
+                      )}
                     </li>
                   );
                 })}

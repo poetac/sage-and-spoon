@@ -54,6 +54,12 @@ describe("buildShoppingList", () => {
     const grouped = buildShoppingList(plan, MEALS, 2);
     expect(grouped.Protein.find((i) => i.n === "eggs").q).toBe(2);
   });
+  it("omits pantry staples entirely", () => {
+    const grouped = buildShoppingList(PLAN, MEALS, 2, new Set(["olive oil", "eggs"]));
+    expect(grouped.Pantry.some((i) => i.n === "olive oil")).toBe(false);
+    expect(grouped.Protein.some((i) => i.n === "eggs")).toBe(false);
+    expect(grouped.Dairy.some((i) => i.n === "milk")).toBe(true); // non-staple stays
+  });
 });
 
 describe("listToText", () => {
