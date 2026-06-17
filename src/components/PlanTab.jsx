@@ -5,16 +5,18 @@ import { Icon, ICONS, Spinner, Chip } from "./primitives.jsx";
 import { MealCard } from "./MealCard.jsx";
 
 /* --------------------------------- plan tab ------------------------------ */
-function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap, onAiSwap, onDetails, aiBusyKey, hasKey }) {
+function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap, onAiSwap, onDetails, aiBusyKey, hasKey, proteinMin }) {
   const day = plan.days[dayIdx];
   const date = dayDate(plan.weekStart, dayIdx);
   // Daily carbs + (estimated) protein — GD eating pairs carbs with protein, so
   // both totals matter at a glance.
   const totals = SLOTS.reduce((acc, sl) => {
     const m = mealsById[day[sl.key]];
-    if (m) { acc.carbs += m.carbsG || 0; acc.protein += m.proteinG || 0; }
+    if (m) { acc.filled = true; acc.carbs += m.carbsG || 0; acc.protein += m.proteinG || 0; }
     return acc;
-  }, { carbs: 0, protein: 0 });
+  }, { carbs: 0, protein: 0, filled: false });
+  // Only nudge once the day has meals, so empty/partial days aren't flagged.
+  const lowProtein = totals.filled && proteinMin > 0 && totals.protein < proteinMin;
   const [over, setOver] = useState(null);
   return (
     <div className="flex flex-col gap-2 min-w-[185px] flex-1">
@@ -49,8 +51,12 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
           </div>
         );
       })}
-      <div className="text-center text-[12.5px] py-1.5 rounded-full" style={{ background: "var(--sage-mist)", color: "var(--sage-deep)", fontWeight: 700 }}>
-        ≈ {totals.carbs}g carbs · {totals.protein}g protein
+      <div className="text-center text-[12.5px] py-1.5 rounded-full"
+        style={lowProtein
+          ? { background: "var(--berry-mist)", color: "var(--berry)", fontWeight: 700 }
+          : { background: "var(--sage-mist)", color: "var(--sage-deep)", fontWeight: 700 }}
+        title={lowProtein ? `Below the ${proteinMin}g daily protein goal` : undefined}>
+        ≈ {totals.carbs}g carbs · {totals.protein}g protein{lowProtein ? ` · under ${proteinMin}g` : ""}
       </div>
     </div>
   );

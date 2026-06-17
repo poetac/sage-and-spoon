@@ -61,6 +61,15 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
       </div>
 
       <div className="card p-5 mb-4">
+        <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Daily protein goal</h3>
+        <p className="t-soft text-sm mb-4">GD eating pairs carbs with protein. The plan flags any day whose estimated protein falls short of this — a gentle nudge, not medical advice.</p>
+        <label className="text-sm">
+          <span className="t-soft block mb-1">Protein per day (g)</span>
+          <input type="number" className="input" style={{ maxWidth: 120 }} value={settings.targets.proteinMin} onChange={(e) => setTarget("proteinMin", e.target.value)} min="5" />
+        </label>
+      </div>
+
+      <div className="card p-5 mb-4">
         <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Servings</h3>
         <p className="t-soft text-sm mb-3">Recipes and the shopping list scale to this many servings per meal.</p>
         <input type="number" className="input" style={{ maxWidth: 120 }} min="1" max="8" value={settings.servings}

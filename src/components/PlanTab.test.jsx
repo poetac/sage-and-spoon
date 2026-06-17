@@ -48,6 +48,12 @@ describe("PlanTab", () => {
     expect(screen.getByText("≈ 38g carbs · 30g protein")).toBeInTheDocument();
   });
 
+  it("flags a day that falls short of the protein goal", () => {
+    // The only meal (Tue, 30g protein) is below a 75g goal → footer nudges.
+    renderTab({ proteinMin: 75 });
+    expect(screen.getByText("≈ 38g carbs · 30g protein · under 75g")).toBeInTheDocument();
+  });
+
   it("shuffles and generates via the header actions", () => {
     const { onShuffle, onGenerateAI } = renderTab();
     fireEvent.click(screen.getByRole("button", { name: /Shuffle week/ }));

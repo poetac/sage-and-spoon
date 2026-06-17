@@ -41,6 +41,15 @@ describe("SettingsTab", () => {
     );
   });
 
+  it("clamps the daily protein goal to a 5g floor", () => {
+    const { props } = renderTab();
+    const protein = screen.getByDisplayValue("75");
+    fireEvent.change(protein, { target: { value: "2" } });
+    expect(props.setSettings).toHaveBeenLastCalledWith(
+      expect.objectContaining({ targets: expect.objectContaining({ proteinMin: 5 }) }),
+    );
+  });
+
   it("clamps the servings field to the 1–8 range", () => {
     const { props } = renderTab();
     const servings = screen.getByDisplayValue("2");
