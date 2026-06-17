@@ -317,7 +317,7 @@ export default function App() {
         </Modal>
       )}
 
-      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} />}
+      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} />}
 
       <Toast toast={toast} />
     </div>

@@ -4,7 +4,7 @@ import { Icon, ICONS, GiPill, Modal } from "./primitives.jsx";
 /* ------------------------------- meal detail ------------------------------ */
 // Quantities in the meal DB are per 2 servings; scale to the household's
 // current servings setting, same as the shopping list does.
-export function MealDetail({ meal, servings, onClose }) {
+export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite }) {
   const scaled = meal.ingredients.map((ing) => ({ ...ing, q: ing.q == null ? null : (ing.q * servings) / 2 }));
   return (
     <Modal title={meal.name} onClose={onClose}>
@@ -15,6 +15,13 @@ export function MealDetail({ meal, servings, onClose }) {
           <Icon d={ICONS.clock} size={11} /> {meal.prepMins}m
         </span>
         {meal.cuisineTag && <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{meal.cuisineTag}</span>}
+        {onToggleFavorite && (
+          <button onClick={() => onToggleFavorite(meal.id)} className="ml-auto" title={isFavorite ? "Remove from favorites" : "Save to favorites"}
+            aria-label={isFavorite ? `Unfavorite ${meal.name}` : `Favorite ${meal.name}`} aria-pressed={!!isFavorite}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: isFavorite ? "var(--berry)" : "var(--ink-soft)", lineHeight: 0 }}>
+            <Icon d={ICONS.heart} size={18} fill={isFavorite ? "currentColor" : "none"} />
+          </button>
+        )}
       </div>
 
       {/* Carbs are authored; protein/fat/fibre are estimated from ingredients. */}
