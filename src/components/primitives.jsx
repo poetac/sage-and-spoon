@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 /* ------------------------------ UI primitives ---------------------------- */
 export const Icon = ({ d, size = 18, ...rest }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -54,12 +56,40 @@ export function Toast({ toast }) {
 }
 
 export function Modal({ title, onClose, children }) {
+  const ref = useRef(null);
+  // Keep the latest onClose without re-running the setup effect each render
+  // (callers pass a fresh inline arrow every time).
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; });
+
+  // Accessibility: move focus into the dialog, trap Tab within it, close on
+  // Escape, and restore focus to the trigger on unmount.
+  useEffect(() => {
+    const node = ref.current;
+    const prevFocus = document.activeElement;
+    node?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") { e.stopPropagation(); onCloseRef.current(); return; }
+      if (e.key !== "Tab" || !node) return;
+      const f = node.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (prevFocus instanceof HTMLElement) prevFocus.focus();
+    };
+  }, []);
+
   return (
     <div className="fixed inset-0 z-40 flex items-end md:items-center justify-center no-print"
       style={{ background: "rgba(60,58,53,.4)" }} onClick={onClose}>
-      <div className="card rise w-full md:max-w-md m-0 md:m-4 p-5"
-        style={{ borderRadius: "20px 20px 0 0", maxHeight: "85vh", overflowY: "auto" }}
-        onClick={(e) => e.stopPropagation()} role="dialog" aria-label={title}>
+      <div ref={ref} tabIndex={-1} className="card rise w-full md:max-w-md m-0 md:m-4 p-5"
+        style={{ borderRadius: "20px 20px 0 0", maxHeight: "85vh", overflowY: "auto", outline: "none" }}
+        onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={title}>
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-display text-lg" style={{ fontWeight: 600 }}>{title}</h3>
           <button className="btn btn-ghost" style={{ padding: 8 }} onClick={onClose} aria-label="Close">
