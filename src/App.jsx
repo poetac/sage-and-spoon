@@ -285,6 +285,38 @@ export default function App() {
     setSettingsState(DEFAULT_SETTINGS);
   };
 
+  // Everything lives in localStorage, so a backup is just those keys as JSON.
+  const exportData = () => {
+    const out = { app: "sage-and-spoon", version: 1, exportedAt: new Date().toISOString(), data: {} };
+    for (const [name, key] of Object.entries(K)) out.data[name] = store.get(key, null);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
+    a.download = "sage-and-spoon-backup.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    toastOk("Backup downloaded");
+  };
+  const importData = async (file) => {
+    try {
+      const parsed = JSON.parse(await file.text());
+      const d = parsed && parsed.data ? parsed.data : parsed; // tolerate a bare key map
+      if (!d || typeof d !== "object" || (!d.prefs && !d.settings)) throw new Error("not a Sage & Spoon backup");
+      for (const [name, key] of Object.entries(K)) if (d[name] != null) store.set(key, d[name]);
+      // Re-hydrate state from the restored store (settings merged onto defaults).
+      const s = store.get(K.settings, {});
+      setSettingsState({ ...DEFAULT_SETTINGS, ...s, targets: { ...DEFAULT_SETTINGS.targets, ...(s.targets || {}) } });
+      setCustomState(store.get(K.custom, []));
+      setFavoritesState(store.get(K.favorites, []));
+      setPantryState(store.get(K.pantry, []));
+      setHistoryState(store.get(K.history, []));
+      setPlanState(store.get(K.plan, null));
+      setPrefsState(store.get(K.prefs, null)); // last: may flip onboarding → app
+      toastOk("Backup restored");
+    } catch (err) {
+      toastErr(`Couldn't read that backup (${err.message}).`);
+    }
+  };
+
   /* --------------------------------- render -------------------------------- */
   if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
 
@@ -326,7 +358,7 @@ export default function App() {
         {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
-        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} />}
+        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />}
           </>
         )}
       </main>

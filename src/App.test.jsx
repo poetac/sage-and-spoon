@@ -127,6 +127,23 @@ describe("App — week history", () => {
   });
 });
 
+describe("App — backup restore", () => {
+  it("restores prefs and favorites from a backup file", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Settings/);
+    const backup = {
+      app: "sage-and-spoon", version: 1,
+      data: { prefs: { ...EMPTY_PREFS, cuisines: ["Italian"] }, favorites: ["b1"], settings: DEFAULT_SETTINGS },
+    };
+    const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+    await waitFor(() => expect(store.get(K.favorites, [])).toEqual(["b1"]));
+    expect(store.get(K.prefs, null).cuisines).toEqual(["Italian"]);
+  });
+});
+
 describe("App — reset", () => {
   it("clears storage and returns to onboarding after confirming", async () => {
     seedPrefs();

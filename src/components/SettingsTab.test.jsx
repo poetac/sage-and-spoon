@@ -90,6 +90,17 @@ describe("SettingsTab", () => {
     expect(props.onRegenerate).toHaveBeenCalledTimes(1);
   });
 
+  it("triggers a backup download and a restore from a chosen file", () => {
+    const onExport = vi.fn();
+    const onImport = vi.fn();
+    renderTab({ onExport, onImport });
+    fireEvent.click(screen.getByRole("button", { name: /Download backup/ }));
+    expect(onExport).toHaveBeenCalledTimes(1);
+    const file = new File(["{}"], "backup.json", { type: "application/json" });
+    fireEvent.change(screen.getByLabelText("Restore from backup"), { target: { files: [file] } });
+    expect(onImport).toHaveBeenCalledWith(file);
+  });
+
   it("stores a typed API key trimmed", () => {
     const { props } = renderTab();
     const key = screen.getByPlaceholderText("sk-ant-...");
