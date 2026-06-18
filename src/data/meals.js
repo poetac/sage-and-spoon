@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS = {
   // carbs with protein). All editable in Settings.
   targets: { breakfastMax: 30, mainMax: 45, snackMax: 20, proteinMin: 75 },
   servings: 2,
+  planDays: 7, // how many days a generated plan covers (1–7, set on the Plan tab)
   apiKey: "",
 };
 

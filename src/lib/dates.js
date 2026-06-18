@@ -12,3 +12,10 @@ export function dayDate(weekStartIso, i) {
   return d;
 }
 export const fmtShort = (d) => d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+export const weekdayShort = (d) => d.toLocaleDateString(undefined, { weekday: "short" });
+// Today as a plan start: local date, anchored to noon so iso() can't slip a day.
+export function todayIso() {
+  const d = new Date();
+  d.setHours(12, 0, 0, 0);
+  return iso(d);
+}

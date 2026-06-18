@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS, SLOTS } from "../data/meals.js";
 import { capFor } from "./utils.js";
 import { mealAllowed, violatesExclusions, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal } from "./planner.js";
+import { todayIso } from "./dates.js";
 
 const TARGETS = DEFAULT_SETTINGS.targets;
 // The cookbook now loads as a dynamic chunk; pull it once for the whole suite.
@@ -95,9 +96,9 @@ describe("generateLocalWeek — invariants (with the full cookbook pool)", () =>
       }
     }
   });
-  it("starts the week on a Monday", () => {
+  it("starts on today by default", () => {
     for (const plan of runs) {
-      expect(new Date(plan.weekStart + "T12:00:00").getDay()).toBe(1);
+      expect(plan.weekStart).toBe(todayIso());
     }
   });
   it("never repeats a main meal within the week", () => {
@@ -124,6 +125,27 @@ describe("generateLocalWeek — invariants (with the full cookbook pool)", () =>
           expect(byId[day[slot.key]].carbsG).toBeLessThanOrEqual(capFor(slot.type, TARGETS));
         }
       }
+    }
+  });
+});
+
+describe("generateLocalWeek — variable day count (1–7)", () => {
+  it("builds exactly the requested number of days from the given start", () => {
+    for (const n of [1, 3, 4, 7]) {
+      const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS, undefined, n, "2026-06-18");
+      expect(plan.days).toHaveLength(n);
+      expect(plan.weekStart).toBe("2026-06-18");
+      for (const day of plan.days) for (const slot of SLOTS) expect(byId[day[slot.key]]).toBeDefined();
+    }
+  });
+  it("keeps no-repeat mains and ≤2×/snack across a shorter batch", () => {
+    for (let i = 0; i < 10; i++) {
+      const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS, undefined, 4);
+      const mains = plan.days.flatMap((d) => MAIN_KEYS.map((k) => d[k]));
+      expect(new Set(mains).size).toBe(mains.length); // 12 distinct mains over 4 days
+      const counts = {};
+      for (const day of plan.days) for (const k of SNACK_KEYS) counts[day[k]] = (counts[day[k]] || 0) + 1;
+      for (const id of Object.keys(counts)) expect(counts[id]).toBeLessThanOrEqual(2);
     }
   });
 });

@@ -1,6 +1,6 @@
 import { SLOTS, ALLERGEN_MAP, DISLIKE_MAP } from "../data/meals.js";
 import { lc, capFor } from "./utils.js";
-import { mondayOf, iso } from "./dates.js";
+import { todayIso } from "./dates.js";
 
 /* --------------------------- preference filters -------------------------- */
 // Common free-text phrasings → the equivalent allergy chip(s), so typing
@@ -132,11 +132,13 @@ export function pickBest(pool, prefs, excludeIds, favorites = NO_FAVORITES) {
 }
 
 /* --------------------------- local generation --------------------------- */
-export function generateLocalWeek(allMeals, prefs, targets, favorites = NO_FAVORITES) {
+// Builds a plan of `numDays` (1–7) consecutive days starting at `startIso`.
+// No-repeat for mains and the ≤2×/week snack rule scale with the day count.
+export function generateLocalWeek(allMeals, prefs, targets, favorites = NO_FAVORITES, numDays = 7, startIso = todayIso()) {
   const usedMains = new Set();
   const snackUse = {};
   const days = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < numDays; i++) {
     const day = {};
     const usedToday = new Set();
     for (const slot of SLOTS) {
@@ -156,7 +158,7 @@ export function generateLocalWeek(allMeals, prefs, targets, favorites = NO_FAVOR
     }
     days.push(day);
   }
-  return { weekStart: iso(mondayOf(new Date())), days };
+  return { weekStart: startIso, days };
 }
 export function pickLocalSwap(allMeals, slotType, prefs, targets, plan, currentId, favorites = NO_FAVORITES) {
   const inWeek = new Set(plan.days.flatMap((d) => Object.values(d)));

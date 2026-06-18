@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { SLOTS, DAY_NAMES } from "../data/meals.js";
-import { dayDate, fmtShort } from "../lib/dates.js";
+import { SLOTS } from "../data/meals.js";
+import { dayDate, fmtShort, weekdayShort } from "../lib/dates.js";
 import { Icon, ICONS, Spinner, Chip } from "./primitives.jsx";
 import { MealCard } from "./MealCard.jsx";
 
@@ -26,7 +26,7 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
   return (
     <div className="flex flex-col gap-2 min-w-[185px] flex-1">
       <div className="text-center pb-1" style={{ borderBottom: "2px solid var(--line)" }}>
-        <span style={{ fontWeight: 700 }}>{DAY_NAMES[dayIdx]}</span>
+        <span style={{ fontWeight: 700 }}>{weekdayShort(date)}</span>
         <span className="t-soft text-sm"> · {fmtShort(date)}</span>
       </div>
       {SLOTS.map((slot) => {
@@ -68,9 +68,12 @@ function DayColumn({ dayIdx, plan, mealsById, selected, dragRef, onCellAction, o
 }
 
 export function PlanTab(props) {
-  const { plan, mealsById, selected, weekLoading, onGenerateAI, onShuffle, hasKey, proteinMin, historyCount, onShowHistory } = props;
-  const [mobileDay, setMobileDay] = useState(() => Math.min((new Date().getDay() + 6) % 7, 6));
-  const weekLabel = plan ? `${fmtShort(dayDate(plan.weekStart, 0))} – ${fmtShort(dayDate(plan.weekStart, 6))}` : "";
+  const { plan, mealsById, selected, weekLoading, onGenerateAI, onShuffle, hasKey, proteinMin, historyCount, onShowHistory,
+    planStart, onSetPlanStart, planDays, onSetPlanDays } = props;
+  const dayCount = plan ? plan.days.length : planDays;
+  const [mobileDay, setMobileDay] = useState(0); // first day of the plan (the start date)
+  const md = Math.min(mobileDay, dayCount - 1);
+  const weekLabel = plan ? `${fmtShort(dayDate(plan.weekStart, 0))} – ${fmtShort(dayDate(plan.weekStart, dayCount - 1))}` : "";
 
   // Week at a glance: averages over the planned (non-empty) days, plus how many
   // meet the protein goal. Reuses dayTotals so it can't drift from the columns.
@@ -83,31 +86,50 @@ export function PlanTab(props) {
     <div className="rise">
       <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
         <div>
-          <h2 className="font-display text-2xl" style={{ fontWeight: 600 }}>This week's table</h2>
-          <p className="t-soft text-sm">Week of {weekLabel} · drag meals to rearrange, or tap one and then tap its new spot</p>
+          <h2 className="font-display text-2xl" style={{ fontWeight: 600 }}>Your meal plan</h2>
+          <p className="t-soft text-sm">{weekLabel} · drag meals to rearrange, or tap one and then tap its new spot</p>
         </div>
         <div className="flex gap-2">
           {historyCount > 0 && (
-            <button className="btn btn-ghost" onClick={onShowHistory} title="Past weeks you can reuse">
+            <button className="btn btn-ghost" onClick={onShowHistory} title="Past plans you can reuse">
               <Icon d={ICONS.clock} size={14} /> History
             </button>
           )}
-          <button className="btn btn-ghost" onClick={() => window.print()} title="Print this week's plan">
+          <button className="btn btn-ghost" onClick={() => window.print()} title="Print this plan">
             <Icon d={ICONS.print} size={14} /> Print
           </button>
           <button className="btn btn-ghost" onClick={onShuffle} disabled={weekLoading}>
-            <Icon d={ICONS.swap} size={14} /> Shuffle week
+            <Icon d={ICONS.swap} size={14} /> Shuffle
           </button>
           <button className="btn btn-primary" onClick={onGenerateAI} disabled={weekLoading}
             title={hasKey ? "Generate with Claude" : "Add an API key in Settings to enable"}>
-            {weekLoading ? <Spinner /> : <Icon d={ICONS.sparkle} size={14} />} Generate Full Week
+            {weekLoading ? <Spinner /> : <Icon d={ICONS.sparkle} size={14} />} Generate
           </button>
         </div>
       </div>
 
+      {/* How long a batch to plan, and from when. Shuffle / Generate use these. */}
+      {onSetPlanDays && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4 text-sm">
+          <label className="flex items-center gap-2">
+            <span className="t-soft" style={{ fontWeight: 700 }}>Plan</span>
+            <select className="input" style={{ width: "auto", padding: "4px 8px" }} value={planDays}
+              onChange={(e) => onSetPlanDays(Number(e.target.value))} aria-label="Number of days to plan">
+              {[1, 2, 3, 4, 5, 6, 7].map((n) => <option key={n} value={n}>{n} day{n === 1 ? "" : "s"}</option>)}
+            </select>
+          </label>
+          <label className="flex items-center gap-2">
+            <span className="t-soft" style={{ fontWeight: 700 }}>from</span>
+            <input type="date" className="input" style={{ width: "auto", padding: "4px 8px" }} value={planStart}
+              onChange={(e) => onSetPlanStart(e.target.value || planStart)} aria-label="Plan start date" />
+          </label>
+          <span className="t-soft text-xs">Shuffle or Generate to build {planDays} day{planDays === 1 ? "" : "s"}.</span>
+        </div>
+      )}
+
       {planned.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 mb-4 text-sm">
-          <span className="t-soft" style={{ fontWeight: 700 }}>Week at a glance</span>
+          <span className="t-soft" style={{ fontWeight: 700 }}>At a glance</span>
           <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>~{avg("carbs")}g carbs/day</span>
           <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>~{avg("protein")}g protein/day</span>
           {meetingProtein != null && (
@@ -129,29 +151,29 @@ export function PlanTab(props) {
       {/* Mobile: one day at a time */}
       <div className="md:hidden">
         <div className="flex gap-1.5 mb-3 overflow-x-auto pb-1">
-          {DAY_NAMES.map((d, i) => (
-            <Chip key={d} on={mobileDay === i} onClick={() => setMobileDay(i)}>{d}</Chip>
+          {plan.days.map((_, i) => (
+            <Chip key={i} on={md === i} onClick={() => setMobileDay(i)}>{weekdayShort(dayDate(plan.weekStart, i))}</Chip>
           ))}
         </div>
-        <DayColumn dayIdx={mobileDay} {...props} />
+        <DayColumn dayIdx={md} {...props} />
       </div>
 
       {/* Desktop: full grid */}
       <div className="hidden md:flex gap-3 overflow-x-auto pb-2">
-        {DAY_NAMES.map((_, i) => <DayColumn key={i} dayIdx={i} {...props} />)}
+        {plan.days.map((_, i) => <DayColumn key={i} dayIdx={i} {...props} />)}
       </div>
 
       {/* Printable sheet — hidden on screen, the only thing shown when printing
           (shares #print-sheet styling; only the active tab is ever mounted). */}
       <div id="print-sheet">
-        <h1 style={{ fontSize: 22, marginBottom: 2 }}>Meal plan — week of {weekLabel}</h1>
+        <h1 style={{ fontSize: 22, marginBottom: 2 }}>Meal plan — {weekLabel}</h1>
         <p style={{ fontSize: 13, color: "#555", marginBottom: 16 }}>Sage &amp; Spoon · carbs &amp; protein are estimates</p>
         {plan.days.map((day, d) => {
           const t = totals[d];
           return (
             <div key={d} style={{ marginBottom: 12, breakInside: "avoid" }}>
               <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, borderBottom: "1px solid #ccc", paddingBottom: 3, marginBottom: 6 }}>
-                {DAY_NAMES[d]} · {fmtShort(dayDate(plan.weekStart, d))}
+                {weekdayShort(dayDate(plan.weekStart, d))} · {fmtShort(dayDate(plan.weekStart, d))}
               </h2>
               {SLOTS.map((sl) => {
                 const m = mealsById[day[sl.key]];

@@ -10,7 +10,7 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
   const [checked, setChecked] = useState({});
   const pantrySet = useMemo(() => new Set(pantry.map(lc)), [pantry]);
   const grouped = useMemo(() => buildShoppingList(plan, mealsById, settings.servings, pantrySet), [plan, mealsById, settings.servings, pantrySet]);
-  const weekLabel = plan ? `week of ${fmtShort(dayDate(plan.weekStart, 0))}` : "";
+  const weekLabel = plan ? `${fmtShort(dayDate(plan.weekStart, 0))} – ${fmtShort(dayDate(plan.weekStart, plan.days.length - 1))}` : "";
   const asText = () => listToText(grouped, weekLabel, settings.servings);
   const total = CATEGORIES.reduce((n, c) => n + (grouped[c]?.length || 0), 0);
 

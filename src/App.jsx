@@ -4,9 +4,9 @@
 // The Claude API key is entered in Settings and stays on this device.
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { SLOTS, DAY_NAMES, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
+import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
-import { mondayOf, iso } from "./lib/dates.js";
+import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
@@ -47,6 +47,7 @@ export default function App() {
   const [showHistory, setShowHistory] = useState(false);
   const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
+  const [planStart, setPlanStart] = useState(todayIso);  // first day of the next generated plan
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
   const [aiBusyKey, setAiBusyKey] = useState(null);     // "dayIdx-slotKey" while an AI swap runs
   const [weekLoading, setWeekLoading] = useState(false);
@@ -88,6 +89,8 @@ export default function App() {
     setPantryState(next); store.set(K.pantry, next);
   };
   const setSettings = (s) => { setSettingsState(s); store.set(K.settings, s); };
+  const planDays = Math.min(7, Math.max(1, settings.planDays || 7));
+  const setPlanDays = (n) => setSettings({ ...settings, planDays: Math.min(7, Math.max(1, Number(n) || 7)) });
 
   const cookbookReady = cookbook != null;
   const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
@@ -129,7 +132,7 @@ export default function App() {
   const restoreWeek = (w) => {
     setShowHistory(false);
     archive(plan);
-    commitPlan({ weekStart: iso(mondayOf(new Date())), days: w.days }, "Restored a saved week");
+    commitPlan({ weekStart: w.weekStart, days: w.days }, "Restored a saved plan");
   };
 
   // Replace the plan and offer one-level undo to the prior plan (when there was
@@ -147,7 +150,7 @@ export default function App() {
     // background chunk has resolved.
     const db = await loadCookbook();
     if (!cookbook) setCookbook(db);
-    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favs);
+    const week = generateLocalWeek([...db, ...customMeals], forPrefs, settings.targets, favs, planDays, planStart);
     const empty = emptySlotCount(week);
     // commitPlan sets the plan (with undo); the empty branch sets it directly
     // and surfaces a fix-it nudge instead of an undo toast.
@@ -174,9 +177,10 @@ export default function App() {
     if (!hasKey) { toastErr("Add your Claude API key in Settings to generate with AI."); setTab("settings"); return; }
     setWeekLoading(true);
     try {
-      const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nCreate a personalized 7-day plan (Monday through Sunday). Each day has six slots: breakfast, amSnack, lunch, pmSnack, dinner, bedSnack (the three snack slots are snacks). No main meal (breakfast/lunch/dinner) may repeat during the week; a snack may appear at most twice. ${MEAL_SHAPE}\nReturn ONLY JSON: {"days":[{"breakfast":MEAL,"amSnack":MEAL,"lunch":MEAL,"pmSnack":MEAL,"dinner":MEAL,"bedSnack":MEAL}, ...7 items]}`;
+      const n = planDays;
+      const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nCreate a personalized ${n}-day plan. Each day has six slots: breakfast, amSnack, lunch, pmSnack, dinner, bedSnack (the three snack slots are snacks). No main meal (breakfast/lunch/dinner) may repeat across the plan; a snack may appear at most twice. ${MEAL_SHAPE}\nReturn ONLY JSON: {"days":[{"breakfast":MEAL,"amSnack":MEAL,"lunch":MEAL,"pmSnack":MEAL,"dinner":MEAL,"bedSnack":MEAL}, ...${n} items]}`;
       const data = await callClaude(settings.apiKey, prompt, 16000);
-      if (!Array.isArray(data.days) || data.days.length !== 7) throw new Error("unexpected plan shape");
+      if (!Array.isArray(data.days) || data.days.length !== n) throw new Error("unexpected plan shape");
       const newMeals = [];
       const replacedUsed = new Set();
       let replaced = 0;
@@ -202,10 +206,10 @@ export default function App() {
         return out;
       });
       setCustom([...customMeals, ...newMeals]);
-      archive(plan); // keep the week the AI plan replaces
-      commitPlan({ weekStart: iso(mondayOf(new Date())), days }, replaced
-        ? `Your personalized week is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to keep every meal within the GD rules)`
-        : "Your personalized week is ready ✦");
+      archive(plan); // keep the plan the AI plan replaces
+      commitPlan({ weekStart: planStart, days }, replaced
+        ? `Your personalized plan is ready ✦ (${replaced} idea${replaced === 1 ? "" : "s"} swapped from the cookbook to keep every meal within the GD rules)`
+        : "Your personalized plan is ready ✦");
     } catch (err) {
       toastErr(`Couldn't generate the week (${err.message}). Your current plan is untouched — try again, or use Shuffle.`);
     } finally {
@@ -303,7 +307,7 @@ export default function App() {
     const days = plan.days.map((x) => ({ ...x }));
     days[dayIdx][slotKey] = meal.id;
     setTab("plan");
-    commitPlan({ ...plan, days }, `"${meal.name}" added to ${DAY_NAMES[dayIdx]} ${slot.label}`);
+    commitPlan({ ...plan, days }, `"${meal.name}" added to ${weekdayShort(dayDate(plan.weekStart, dayIdx))} ${slot.label}`);
   };
 
   const resetAll = () => {
@@ -360,7 +364,7 @@ export default function App() {
   /* --------------------------------- render -------------------------------- */
   if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
 
-  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin, historyCount: history.length, onShowHistory: () => setShowHistory(true) };
+  const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin, historyCount: history.length, onShowHistory: () => setShowHistory(true), planStart, onSetPlanStart: setPlanStart, planDays, onSetPlanDays: setPlanDays };
 
   return (
     <div className="ss-root">
@@ -415,13 +419,13 @@ export default function App() {
         ))}
       </nav>
 
-      {placing && (
-        <Modal title={`Add "${placing.name}" to the week`} onClose={() => setPlacing(null)}>
+      {placing && plan && (
+        <Modal title={`Add "${placing.name}" to the plan`} onClose={() => setPlacing(null)}>
           <p className="t-soft text-sm mb-3">Pick a day and slot — it will replace whatever is there.</p>
           <div className="grid gap-2">
-            {DAY_NAMES.map((dn, d) => (
-              <div key={dn} className="flex items-center gap-2 flex-wrap">
-                <span style={{ fontWeight: 700, width: 38 }} className="text-sm">{dn}</span>
+            {plan.days.map((_, d) => (
+              <div key={d} className="flex items-center gap-2 flex-wrap">
+                <span style={{ fontWeight: 700, width: 64 }} className="text-sm">{weekdayShort(dayDate(plan.weekStart, d))} {fmtShort(dayDate(plan.weekStart, d))}</span>
                 {SLOTS.map((s) => {
                   const fits = s.type === placing.type; // a lunch belongs in a lunch slot, etc.
                   return (
