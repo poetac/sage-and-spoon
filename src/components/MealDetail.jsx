@@ -10,7 +10,7 @@ export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavori
   const scaled = meal.ingredients.map((ing) => scaleIngredient(ing, servings));
   return (
     <Modal title={meal.name} onClose={onClose}>
-      <div className="mb-4"><RecipeImage meal={meal} height={160} showCredit /></div>
+      <div className="mb-4"><RecipeImage key={meal.id} meal={meal} height={160} showCredit /></div>
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />

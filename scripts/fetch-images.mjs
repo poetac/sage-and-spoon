@@ -14,12 +14,13 @@
 //   npm run images:audit            (alias: --audit)
 //
 // Flags:
-//   --audit         re-score every recipe and report pass/fall-back, no write
-//   --force         re-vet all recipes (re-fetch + drop ones with no match)
-//   --min-score N   relevance threshold (default 2 — strict)
-//   --limit N       stop after N processed recipes (handy with --audit)
-//   --delay MS      pause between requests (default 350)
-//   --dry-run       query and report, but don't write the file
+//   --audit           re-score every recipe and report pass/fall-back, no write
+//   --force           re-vet all recipes (re-fetch + drop ones with no match)
+//   --min-score N     relevance threshold (default 2 — strict)
+//   --max-per-recipe N  photos to collect per recipe (default 3)
+//   --limit N         stop after N processed recipes (handy with --audit)
+//   --delay MS        pause between requests (default 350)
+//   --dry-run         query and report, but don't write the file
 //
 // Network: api.openverse.org must be reachable (egress allowlist). Images are
 // stored as their durable source URL, so end users' browsers don't depend on
@@ -44,6 +45,7 @@ const flag = (name, fb) => { const i = args.indexOf(name); return i >= 0 ? args[
 const limit = Number(flag("--limit", Infinity));
 const delay = Number(flag("--delay", 350));
 const minScore = Number(flag("--min-score", DEFAULT_MIN_SCORE));
+const maxPerRecipe = Number(flag("--max-per-recipe", 3));
 const force = args.includes("--force");
 const audit = args.includes("--audit");
 const dryRun = args.includes("--dry-run") || audit;
@@ -120,18 +122,15 @@ async function commonsFor(q) {
 const QUALITY_SOURCES = new Set(["wikimedia_commons", "wikimedia", "rawpixel", "stocksnap"]);
 const sourceBonus = (hit) => (QUALITY_SOURCES.has(hit.source) ? 3 : 0);
 
-// Resolve the best usable photo for a meal: across progressively broader queries,
-// the highest-scoring hit that clears quality + relevance and isn't already used.
+// Resolve the best usable photo for a meal that hasn't already been used.
 // Returns null when nothing is confidently on-topic (→ gradient fallback).
-async function fetchImage(meal, used) {
+async function fetchOneImage(meal, used) {
   let best = null, bestScore = 0, bestQ = -1, bestQuery = "";
   const queries = queriesFor(meal);
   const consider = (hit, q) => {
     if (used.has(hit.url)) return;
     const score = acceptScore(meal, hit, { minScore });
     if (score === 0) return;
-    // Relevance first; then prefer a quality source and the bigger/landscape
-    // photo among equally-relevant candidates.
     const qual = qualityScore(hit) + sourceBonus(hit);
     if (score > bestScore || (score === bestScore && qual > bestQ)) {
       best = hit; bestScore = score; bestQ = qual; bestQuery = q;
@@ -139,11 +138,9 @@ async function fetchImage(meal, used) {
   };
   for (let rank = 0; rank < queries.length; rank++) {
     const q = queries[rank];
-    // Commons (curated, high-res) on the two most specific queries, plus the
-    // broad Openverse pool. Both pass through the same relevance/quality gate.
     if (rank < 2) for (const hit of await commonsFor(q)) consider(hit, q);
     for (const hit of await hitsFor(q, MAX_PAGES)) consider(hit, q);
-    if (best && bestScore >= STRONG_SCORE) break; // confident enough; stop widening
+    if (best && bestScore >= STRONG_SCORE) break;
   }
   if (!best) return null;
   used.add(best.url);
@@ -158,67 +155,106 @@ async function fetchImage(meal, used) {
   };
 }
 
-// Re-emit the library map: stable id order, attribution preserved.
+// Collect up to `max` distinct photos for a meal (called repeatedly with the
+// same `used` set so photos stay unique across the whole cookbook too).
+async function fetchImages(meal, used, max) {
+  const results = [];
+  for (let i = 0; i < max; i++) {
+    const img = await fetchOneImage(meal, used);
+    if (!img) break;
+    results.push(img);
+    await sleep(delay);
+  }
+  return results;
+}
+
+// Re-emit the library map in Photo[] format: stable id order, attribution preserved.
 function serialize(map) {
   const ids = Object.keys(map).sort((a, b) => {
     const na = +a.replace(/\D/g, ""), nb = +b.replace(/\D/g, "");
     return (a[0] === b[0] ? na - nb : a.localeCompare(b));
   });
   const body = ids.map((id) => {
-    const e = map[id];
-    const fields = [
-      `src: ${JSON.stringify(e.src)}`,
-      `credit: ${JSON.stringify(e.credit)}`,
-      `creditUrl: ${JSON.stringify(e.creditUrl)}`,
-      `license: ${JSON.stringify(e.license)}`,
-    ];
-    return `  ${JSON.stringify(id)}: { ${fields.join(", ")} },`;
+    const photos = map[id]; // Photo[]
+    const items = photos.map((e) => {
+      const fields = [
+        `src: ${JSON.stringify(e.src)}`,
+        `credit: ${JSON.stringify(e.credit)}`,
+        `creditUrl: ${JSON.stringify(e.creditUrl)}`,
+        `license: ${JSON.stringify(e.license)}`,
+      ];
+      return `{ ${fields.join(", ")} }`;
+    });
+    return `  ${JSON.stringify(id)}: [${items.join(", ")}],`;
   }).join("\n");
   const header = readFileSync(OUT, "utf8").split("export const RECIPE_IMAGES")[0];
-  return `${header}export const RECIPE_IMAGES = {\n${body}\n};\n\nexport const imageForRecipe = (id) => RECIPE_IMAGES[id] || null;\n`;
+  return (
+    `${header}export const RECIPE_IMAGES = {\n${body}\n};\n\n` +
+    `export const photosForRecipe = (id) => RECIPE_IMAGES[id] ?? [];\n` +
+    `export const imageForRecipe = (id) => RECIPE_IMAGES[id]?.[0] ?? null; // compat\n`
+  );
 }
 
 async function main() {
-  const map = { ...RECIPE_IMAGES };
+  // map is now { id: Photo[] }
+  const map = {};
+  for (const [id, photos] of Object.entries(RECIPE_IMAGES)) map[id] = [...photos];
+
   const revet = force || audit;
-  const todo = MEAL_DB.filter((m) => revet || !map[m.id]);
-  // De-dupe chosen photos across recipes. When only filling gaps, treat the
-  // already-kept images as used so new picks stay distinct.
+  // Recipes to process: in revet mode all; otherwise those with fewer photos than target.
+  const todo = MEAL_DB.filter((m) => revet || (map[m.id]?.length ?? 0) < maxPerRecipe);
+
+  // Pre-populate used URLs so new picks stay distinct across the whole cookbook.
   const used = new Set();
-  if (!revet) for (const id of Object.keys(map)) used.add(map[id].src);
+  if (!revet) for (const photos of Object.values(map)) for (const p of photos) used.add(p.src);
 
-  console.log(`Cookbook: ${MEAL_DB.length} recipes · mode: ${audit ? "audit (dry-run)" : revet ? "re-vet all" : "fill missing"} · min-score ${minScore}`);
+  const mode = audit ? "audit (dry-run)" : revet ? "re-vet all" : `fill to ${maxPerRecipe}/recipe`;
+  console.log(`Cookbook: ${MEAL_DB.length} recipes · mode: ${mode} · min-score ${minScore} · max-per-recipe ${maxPerRecipe}`);
 
-  let kept = 0, dropped = 0;
+  let totalAdded = 0, totalDropped = 0;
   const scores = [];
+  let processed = 0;
   for (const meal of todo) {
-    if (Number.isFinite(limit) && kept + dropped >= limit) break;
-    let img = null;
-    try { img = await fetchImage(meal, used); }
+    if (Number.isFinite(limit) && processed >= limit) break;
+    processed++;
+    const existing = map[meal.id] ?? [];
+    const want = maxPerRecipe - (revet ? 0 : existing.length);
+    if (want <= 0) continue;
+
+    let imgs = [];
+    try { imgs = await fetchImages(meal, used, want); }
     catch (err) { console.warn(`  ! ${meal.id} ${meal.name} — ${err.message}`); }
-    const had = !!map[meal.id];
-    if (img) {
-      kept++; scores.push(img.score);
-      if (!audit) map[meal.id] = { src: img.src, credit: img.credit, creditUrl: img.creditUrl, license: img.license };
-      console.log(`  ✓ ${meal.id} ${meal.name} ← [${img.score} · ${img.source}] ${img.credit} [q: ${img.query}]`);
+
+    const had = existing.length;
+    if (imgs.length > 0) {
+      totalAdded += imgs.length;
+      for (const img of imgs) scores.push(img.score);
+      if (!audit) {
+        const newPhotos = imgs.map((img) => ({ src: img.src, credit: img.credit, creditUrl: img.creditUrl, license: img.license }));
+        map[meal.id] = revet ? newPhotos : [...existing, ...newPhotos];
+      }
+      const label = imgs.map((img) => `[${img.score}·${img.source}]`).join(" ");
+      console.log(`  ✓ ${meal.id} ${meal.name} +${imgs.length} photo(s) ${label}`);
     } else {
-      dropped++;
-      if (!audit && had) delete map[meal.id];
-      console.log(`  · ${meal.id} ${meal.name} — no confident match${had ? " (dropped → gradient)" : ""}`);
+      totalDropped++;
+      if (!audit && revet) delete map[meal.id];
+      console.log(`  · ${meal.id} ${meal.name} — no new match${had ? ` (kept ${had} existing)` : ""}`);
     }
-    await sleep(delay);
   }
 
   scores.sort((a, b) => a - b);
   const median = scores.length ? scores[Math.floor(scores.length / 2)] : 0;
   const mean = scores.length ? (scores.reduce((s, x) => s + x, 0) / scores.length).toFixed(1) : "0";
   const hist = scores.reduce((h, s) => ((h[s] = (h[s] || 0) + 1), h), {});
-  console.log(`\nProcessed ${kept + dropped}: ${kept} confident photo, ${dropped} → gradient fallback.`);
-  console.log(`Kept-photo score → median ${median}, mean ${mean}, min ${scores[0] || 0}, max ${scores[scores.length - 1] || 0}.`);
-  console.log(`Score histogram: ${Object.keys(hist).sort((a, b) => a - b).map((s) => `${s}:${hist[s]}`).join("  ")}`);
+  const totalPhotos = Object.values(map).reduce((n, a) => n + a.length, 0);
+  console.log(`\nProcessed ${processed}: +${totalAdded} photos added, ${totalDropped} → no new match.`);
+  if (scores.length) {
+    console.log(`New-photo score → median ${median}, mean ${mean}, min ${scores[0]}, max ${scores[scores.length - 1]}.`);
+    console.log(`Score histogram: ${Object.keys(hist).sort((a, b) => a - b).map((s) => `${s}:${hist[s]}`).join("  ")}`);
+  }
   if (dryRun) { console.log(audit ? "(audit — nothing written)" : "(dry-run — nothing written)"); return; }
   writeFileSync(OUT, serialize(map));
-  console.log(`Wrote ${OUT}: ${Object.keys(map).length}/${MEAL_DB.length} recipes imaged.`);
+  console.log(`Wrote ${OUT}: ${Object.keys(map).length}/${MEAL_DB.length} recipes with images (${totalPhotos} total photos).`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });

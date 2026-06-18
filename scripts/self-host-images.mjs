@@ -11,10 +11,12 @@
 // a partial fetch).
 //
 // Output (two widths so dense cards don't pull the full detail-modal image):
-//   public/recipe-images/<id>.webp      — 800px wide, quality 70 (detail modal)
-//   public/recipe-images/<id>-400.webp  — 400px wide, quality 70 (cards)
-//   public/recipe-images/manifest.json  — every local path, for the SW pre-cache
-//   src/data/recipe-images.js           — src rewritten to "recipe-images/<id>.webp"
+//   public/recipe-images/<id>.webp         — 800px, quality 70 (detail modal, photo 1)
+//   public/recipe-images/<id>-400.webp     — 400px, quality 70 (cards, photo 1)
+//   public/recipe-images/<id>-2.webp       — 800px (photo 2, if present)
+//   public/recipe-images/<id>-2-400.webp   — 400px (photo 2 card variant)
+//   public/recipe-images/manifest.json     — every local path, for the SW pre-cache
+//   src/data/recipe-images.js              — src rewritten to local relative path
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -32,9 +34,7 @@ const args = process.argv.slice(2);
 const flag = (name, fb) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : fb; };
 const delay = Number(flag("--delay", 200));
 
-// A real browser UA helps with servers that check the User-Agent header.
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
-
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchBytes(url) {
@@ -48,21 +48,23 @@ async function fetchBytes(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-// 800px covers the detail modal; 400px the dense cards (~120px, retina-safe).
-const WIDTHS = [800, 400];
-const variantPath = (id, w) => resolve(IMG_DIR, w === 800 ? `${id}.webp` : `${id}-${w}.webp`);
-const variantName = (id, w) => (w === 800 ? `recipe-images/${id}.webp` : `recipe-images/${id}-${w}.webp`);
+// Stable filename key per recipe × photo-index.
+// Photo 0 (primary) keeps the bare id for backward compat with the SW cache.
+const photoKey = (id, photoIdx) => (photoIdx === 0 ? id : `${id}-${photoIdx + 1}`);
 
-async function writeVariants(buf, id) {
+const WIDTHS = [800, 400];
+const variantPath = (key, w) => resolve(IMG_DIR, w === 800 ? `${key}.webp` : `${key}-${w}.webp`);
+const variantSrc  = (key, w) => (w === 800 ? `recipe-images/${key}.webp` : `recipe-images/${key}-${w}.webp`);
+
+async function writeVariants(buf, key) {
   for (const w of WIDTHS) {
-    await sharp(buf).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 70 }).toFile(variantPath(id, w));
+    await sharp(buf).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 70 }).toFile(variantPath(key, w));
   }
 }
 
-// Backfill the small variant from the committed 800px file (no re-fetch needed
-// for entries self-hosted before the card variant existed). Returns true if written.
-async function ensureSmall(id) {
-  const small = variantPath(id, 400), big = variantPath(id, 800);
+// Backfill the 400px card variant from the committed 800px file.
+async function ensureSmall(key) {
+  const small = variantPath(key, 400), big = variantPath(key, 800);
   if (existsSync(small) || !existsSync(big)) return false;
   await sharp(big).resize({ width: 400, withoutEnlargement: true }).webp({ quality: 70 }).toFile(small);
   return true;
@@ -74,76 +76,98 @@ function serialize(map) {
     return a[0] === b[0] ? na - nb : a.localeCompare(b);
   });
   const body = ids.map((id) => {
-    const e = map[id];
-    const fields = [
-      `src: ${JSON.stringify(e.src)}`,
-      `credit: ${JSON.stringify(e.credit)}`,
-      `creditUrl: ${JSON.stringify(e.creditUrl)}`,
-      `license: ${JSON.stringify(e.license)}`,
-    ];
-    return `  ${JSON.stringify(id)}: { ${fields.join(", ")} },`;
+    const photos = map[id]; // Photo[]
+    const items = photos.map((e) => {
+      const fields = [
+        `src: ${JSON.stringify(e.src)}`,
+        `credit: ${JSON.stringify(e.credit)}`,
+        `creditUrl: ${JSON.stringify(e.creditUrl)}`,
+        `license: ${JSON.stringify(e.license)}`,
+      ];
+      return `{ ${fields.join(", ")} }`;
+    });
+    return `  ${JSON.stringify(id)}: [${items.join(", ")}],`;
   }).join("\n");
   const header = readFileSync(OUT, "utf8").split("export const RECIPE_IMAGES")[0];
-  return `${header}export const RECIPE_IMAGES = {\n${body}\n};\n\nexport const imageForRecipe = (id) => RECIPE_IMAGES[id] || null;\n`;
+  return (
+    `${header}export const RECIPE_IMAGES = {\n${body}\n};\n\n` +
+    `export const photosForRecipe = (id) => RECIPE_IMAGES[id] ?? [];\n` +
+    `export const imageForRecipe = (id) => RECIPE_IMAGES[id]?.[0] ?? null; // compat\n`
+  );
 }
 
 async function main() {
-  const map = { ...RECIPE_IMAGES };
-  const entries = Object.entries(map);
-  const todo = entries.filter(([, e]) => /^https?:/.test(e.src));
-  const alreadyLocal = entries.length - todo.length;
+  // Build mutable copy; each value is Photo[]
+  const map = {};
+  for (const [id, photos] of Object.entries(RECIPE_IMAGES)) map[id] = [...photos];
 
-  console.log(`${entries.length} entries · ${alreadyLocal} already local · ${todo.length} to fetch\n`);
+  // Collect all (id, photoIdx, photo) tuples whose src is still a remote URL.
+  const todo = [];
+  for (const [id, photos] of Object.entries(map)) {
+    for (let i = 0; i < photos.length; i++) {
+      if (/^https?:/.test(photos[i].src)) todo.push({ id, photoIdx: i });
+    }
+  }
+  const alreadyLocal = Object.values(map).reduce((n, photos) => n + photos.filter((p) => !/^https?:/.test(p.src)).length, 0);
+  console.log(`${Object.keys(map).length} recipes · ${alreadyLocal} local photos · ${todo.length} to fetch\n`);
 
   let fetched = 0, skipped = 0, failed = 0;
   const failures = [];
 
-  for (const [id, entry] of todo) {
-    const outPath = resolve(IMG_DIR, `${id}.webp`);
+  for (const { id, photoIdx } of todo) {
+    const entry = map[id][photoIdx];
+    const key = photoKey(id, photoIdx);
+    const outPath = variantPath(key, 800);
     if (existsSync(outPath)) {
-      map[id] = { ...entry, src: `recipe-images/${id}.webp` };
+      map[id][photoIdx] = { ...entry, src: variantSrc(key, 800) };
       skipped++;
       continue;
     }
     try {
       const buf = await fetchBytes(entry.src);
-      await writeVariants(buf, id);
-      map[id] = { ...entry, src: `recipe-images/${id}.webp` };
+      await writeVariants(buf, key);
+      map[id][photoIdx] = { ...entry, src: variantSrc(key, 800) };
       fetched++;
-      process.stdout.write(`  ✓ ${id}\n`);
+      process.stdout.write(`  ✓ ${key}\n`);
     } catch (err) {
       failed++;
-      failures.push({ id, url: entry.src, err: err.message });
-      process.stdout.write(`  ✗ ${id} — ${err.message}\n`);
+      failures.push({ key, url: entry.src, err: err.message });
+      process.stdout.write(`  ✗ ${key} — ${err.message}\n`);
     }
     if (delay > 0) await sleep(delay);
   }
 
-  // Backfill the 400px card variant for any local entry that lacks it.
-  const localIds = Object.entries(map).filter(([, e]) => !/^https?:/.test(e.src)).map(([id]) => id);
+  // Backfill 400px card variants for any local photo that lacks one.
+  const allLocalKeys = [];
+  for (const [id, photos] of Object.entries(map)) {
+    for (let i = 0; i < photos.length; i++) {
+      if (!/^https?:/.test(photos[i].src)) allLocalKeys.push(photoKey(id, i));
+    }
+  }
   let backfilled = 0;
-  for (const id of localIds) if (await ensureSmall(id)) backfilled++;
+  for (const key of allLocalKeys) if (await ensureSmall(key)) backfilled++;
 
   let files = 0, totalBytes = 0;
-  for (const id of localIds) {
+  for (const key of allLocalKeys) {
     for (const w of WIDTHS) {
-      const p = variantPath(id, w);
+      const p = variantPath(key, w);
       if (existsSync(p)) { files++; totalBytes += statSync(p).size; }
     }
   }
 
   console.log(`\nDone: ${fetched} fetched, ${skipped} skipped (already local), ${failed} failed (kept remote).`);
   if (backfilled) console.log(`Backfilled ${backfilled} card variant(s) from existing 800px files.`);
-  console.log(`Local images: ${files} files (${localIds.length} recipes × 2 widths), ${(totalBytes / 1_048_576).toFixed(1)} MB total.`);
+  console.log(`Local images: ${files} files (${allLocalKeys.length} photos × 2 widths), ${(totalBytes / 1_048_576).toFixed(1)} MB total.`);
   if (failures.length) {
     console.log("\nFailed (kept as remote URL):");
-    for (const { id, err } of failures) console.log(`  ${id}: ${err}`);
+    for (const { key, err } of failures) console.log(`  ${key}: ${err}`);
   }
 
   writeFileSync(OUT, serialize(map));
   console.log(`\nWrote ${OUT}`);
 
-  const manifest = localIds.flatMap((id) => WIDTHS.map((w) => variantName(id, w))).sort();
+  // manifest lists all local photo files (both widths) for SW pre-cache.
+  const manifest = allLocalKeys.flatMap((key) => WIDTHS.map((w) => variantSrc(key, w))).sort();
   const MANIFEST = resolve(IMG_DIR, "manifest.json");
   writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
   console.log(`Wrote manifest.json with ${manifest.length} entries.`);
