@@ -84,3 +84,31 @@ npm run recipes:promote -- --in scripts/generated/curated-recipes.batch9.json
 | `lib/recipe.mjs` | Normalization + vetting (reuses the app's safety predicates) |
 | `lib/pipeline.test.js` | Tests for the analyzer and vetting |
 | `src/data/generated-meals.js` | Auto-generated curated recipes (do not edit by hand) |
+
+## Recipe images
+
+Per-recipe preview photos live in `src/data/recipe-images.js` (`{ id: { src,
+credit, creditUrl, license } }`). Two offline-authoring steps maintain them:
+
+```
+npm run images:fetch        # resolve openly-licensed photos (Openverse + Commons)
+npm run images:self-host    # download the fetchable ones → local optimised WebP
+```
+
+- **`images:fetch`** (`fetch-images.mjs`) fills gaps gap-first, gated for quality
+  and relevance, and writes durable source URLs into the library. `images:audit`
+  re-scores without writing.
+- **`images:self-host`** (`self-host-images.mjs`) downloads each remote `src`,
+  optimises it with `sharp` into two widths — `public/recipe-images/<id>.webp`
+  (800px, detail modal) and `<id>-400.webp` (400px, cards) — and rewrites `src` to
+  the base-relative local path. Hosts that block download (403) keep their remote
+  URL. Idempotent: already-local entries are skipped; the 400px variant is
+  backfilled from the committed 800px file. It also writes `manifest.json`, the
+  list the service worker reads to **pre-cache** every local photo on activation
+  (true offline before first view). `RecipeImage.jsx` resolves local paths against
+  `import.meta.env.BASE_URL` at render time and picks the variant by height.
+
+> **Updating an image:** filenames are stable per id, so changing a photo's bytes
+> without changing its id won't bust the SW image cache. Bump `IMG_CACHE` in
+> `public/sw.js` (`-img-v1` → `-v2`) when you replace existing image bytes; new
+> ids cache fine on their own.

@@ -27,6 +27,9 @@ npm run lint         # ESLint
 npm run recipes:report     # recipe-library coverage vs targets
 npm run recipes:generate   # AI recipe drafts for gaps (needs ANTHROPIC_API_KEY)
 npm run recipes:promote     # validate curated recipes into the bundle
+
+npm run images:fetch       # resolve openly-licensed recipe photos (Openverse + Commons)
+npm run images:self-host   # download fetchable photos → local optimised WebP (offline)
 ```
 
 Always run `npm test` and `npm run lint` before committing.

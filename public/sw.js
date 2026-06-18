@@ -10,6 +10,8 @@
 // viewed (the lighter alternative to self-hosting). Other cross-origin requests
 // (the Claude API, Google Fonts) are left to the network.
 const CACHE = "sage-spoon-v2";
+// Bump this (-v1 → -v2) when self-hosted image *bytes* change under a stable
+// filename — cache-first won't otherwise refetch them. New ids cache on their own.
 const IMG_CACHE = "sage-spoon-img-v1";
 const IMG_CACHE_MAX = 320; // ~one full cookbook's worth of viewed photos
 
