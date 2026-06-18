@@ -53,14 +53,19 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
     );
   }
 
+  // Self-hosted photos ship a 400px card variant alongside the 800px default;
+  // pick the smaller below the same 140px threshold sizedSrc uses for Flickr.
   // Local paths are base-relative ("recipe-images/b1.webp") so the app works
-  // under any deploy base (e.g. /sage-and-spoon/). Remote URLs pass through.
-  const src = /^https?:/.test(img.src) ? img.src : import.meta.env.BASE_URL + img.src;
+  // under any deploy base (e.g. /sage-and-spoon/). Remote URLs pass through sizedSrc.
+  const remote = /^https?:/.test(img.src);
+  const src = remote
+    ? sizedSrc(img.src, height)
+    : import.meta.env.BASE_URL + (height > 140 ? img.src : img.src.replace(/\.webp$/, "-400.webp"));
 
   return (
     <figure style={{ margin: 0 }}>
       <div style={wrap}>
-        <img src={sizedSrc(src, height)} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
+        <img src={src} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
           loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setErrored(true)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>

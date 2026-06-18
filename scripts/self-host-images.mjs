@@ -10,9 +10,11 @@
 // entries whose output file already exists are skipped (re-runnable after
 // a partial fetch).
 //
-// Output:
-//   public/recipe-images/<id>.webp  — optimised at 800px wide, quality 70
-//   src/data/recipe-images.js       — src rewritten to "recipe-images/<id>.webp"
+// Output (two widths so dense cards don't pull the full detail-modal image):
+//   public/recipe-images/<id>.webp      — 800px wide, quality 70 (detail modal)
+//   public/recipe-images/<id>-400.webp  — 400px wide, quality 70 (cards)
+//   public/recipe-images/manifest.json  — every local path, for the SW pre-cache
+//   src/data/recipe-images.js           — src rewritten to "recipe-images/<id>.webp"
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -46,12 +48,24 @@ async function fetchBytes(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-async function toWebp(buf, outPath) {
-  await sharp(buf)
-    .rotate()
-    .resize({ width: 800, withoutEnlargement: true })
-    .webp({ quality: 70 })
-    .toFile(outPath);
+// 800px covers the detail modal; 400px the dense cards (~120px, retina-safe).
+const WIDTHS = [800, 400];
+const variantPath = (id, w) => resolve(IMG_DIR, w === 800 ? `${id}.webp` : `${id}-${w}.webp`);
+const variantName = (id, w) => (w === 800 ? `recipe-images/${id}.webp` : `recipe-images/${id}-${w}.webp`);
+
+async function writeVariants(buf, id) {
+  for (const w of WIDTHS) {
+    await sharp(buf).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 70 }).toFile(variantPath(id, w));
+  }
+}
+
+// Backfill the small variant from the committed 800px file (no re-fetch needed
+// for entries self-hosted before the card variant existed). Returns true if written.
+async function ensureSmall(id) {
+  const small = variantPath(id, 400), big = variantPath(id, 800);
+  if (existsSync(small) || !existsSync(big)) return false;
+  await sharp(big).resize({ width: 400, withoutEnlargement: true }).webp({ quality: 70 }).toFile(small);
+  return true;
 }
 
 function serialize(map) {
@@ -93,7 +107,7 @@ async function main() {
     }
     try {
       const buf = await fetchBytes(entry.src);
-      await toWebp(buf, outPath);
+      await writeVariants(buf, id);
       map[id] = { ...entry, src: `recipe-images/${id}.webp` };
       fetched++;
       process.stdout.write(`  ✓ ${id}\n`);
@@ -105,17 +119,22 @@ async function main() {
     if (delay > 0) await sleep(delay);
   }
 
-  const localCount = Object.values(map).filter((e) => !/^https?:/.test(e.src)).length;
-  let totalBytes = 0;
-  for (const [id, e] of Object.entries(map)) {
-    if (!/^https?:/.test(e.src)) {
-      const p = resolve(IMG_DIR, `${id}.webp`);
-      if (existsSync(p)) totalBytes += statSync(p).size;
+  // Backfill the 400px card variant for any local entry that lacks it.
+  const localIds = Object.entries(map).filter(([, e]) => !/^https?:/.test(e.src)).map(([id]) => id);
+  let backfilled = 0;
+  for (const id of localIds) if (await ensureSmall(id)) backfilled++;
+
+  let files = 0, totalBytes = 0;
+  for (const id of localIds) {
+    for (const w of WIDTHS) {
+      const p = variantPath(id, w);
+      if (existsSync(p)) { files++; totalBytes += statSync(p).size; }
     }
   }
 
   console.log(`\nDone: ${fetched} fetched, ${skipped} skipped (already local), ${failed} failed (kept remote).`);
-  console.log(`Local images: ${localCount} files, ${(totalBytes / 1_048_576).toFixed(1)} MB total.`);
+  if (backfilled) console.log(`Backfilled ${backfilled} card variant(s) from existing 800px files.`);
+  console.log(`Local images: ${files} files (${localIds.length} recipes × 2 widths), ${(totalBytes / 1_048_576).toFixed(1)} MB total.`);
   if (failures.length) {
     console.log("\nFailed (kept as remote URL):");
     for (const { id, err } of failures) console.log(`  ${id}: ${err}`);
@@ -124,10 +143,7 @@ async function main() {
   writeFileSync(OUT, serialize(map));
   console.log(`\nWrote ${OUT}`);
 
-  const manifest = Object.entries(map)
-    .filter(([, e]) => !/^https?:/.test(e.src))
-    .map(([id]) => `recipe-images/${id}.webp`)
-    .sort();
+  const manifest = localIds.flatMap((id) => WIDTHS.map((w) => variantName(id, w))).sort();
   const MANIFEST = resolve(IMG_DIR, "manifest.json");
   writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
   console.log(`Wrote manifest.json with ${manifest.length} entries.`);

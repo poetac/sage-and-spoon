@@ -43,4 +43,16 @@ describe("RecipeImage", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
     expect(screen.getByText("🍗")).toBeInTheDocument();
   });
+
+  it("uses the 400px card variant for a self-hosted photo at card height", () => {
+    images.m1 = { src: "recipe-images/m1.webp", credit: "Jane Doe" };
+    render(<RecipeImage meal={meal} height={120} />);
+    expect(screen.getByRole("img")).toHaveAttribute("src", "/recipe-images/m1-400.webp");
+  });
+
+  it("uses the 800px variant for a self-hosted photo at detail height", () => {
+    images.m1 = { src: "recipe-images/m1.webp", credit: "Jane Doe" };
+    render(<RecipeImage meal={meal} height={800} />);
+    expect(screen.getByRole("img")).toHaveAttribute("src", "/recipe-images/m1.webp");
+  });
 });
