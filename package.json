@@ -14,7 +14,8 @@
     "recipes:generate": "node scripts/generate-recipes.mjs",
     "recipes:promote": "node scripts/promote-recipes.mjs",
     "images:fetch": "node scripts/fetch-images.mjs",
-    "images:audit": "node scripts/fetch-images.mjs --audit"
+    "images:audit": "node scripts/fetch-images.mjs --audit",
+    "images:self-host": "node scripts/self-host-images.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",
@@ -34,6 +35,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
+    "sharp": "^0.35.1",
     "tailwindcss": "^4.3.1",
     "vite": "^8.0.12",
     "vitest": "^4.1.8"

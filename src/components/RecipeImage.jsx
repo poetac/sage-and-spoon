@@ -53,10 +53,14 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
     );
   }
 
+  // Local paths are base-relative ("recipe-images/b1.webp") so the app works
+  // under any deploy base (e.g. /sage-and-spoon/). Remote URLs pass through.
+  const src = /^https?:/.test(img.src) ? img.src : import.meta.env.BASE_URL + img.src;
+
   return (
     <figure style={{ margin: 0 }}>
       <div style={wrap}>
-        <img src={sizedSrc(img.src, height)} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
+        <img src={sizedSrc(src, height)} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
           loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setErrored(true)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
