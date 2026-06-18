@@ -3,23 +3,35 @@
 // committed library map src/data/recipe-images.js — nothing is fetched at app
 // build or run time; this is an offline authoring step, like recipes:promote.
 //
+// Relevance + quality are gated (scripts/lib/image-match.mjs): a photo is kept
+// only when it clears a quality bar (real photograph, decent size, sane aspect)
+// AND clearly matches the dish (title/tag token overlap). Anything we can't
+// vouch for is rejected, so the recipe falls back to the app's clean gradient
+// placeholder instead of showing a wrong or junk image.
+//
 // Usage:
 //   npm run images:fetch -- [flags]
+//   npm run images:audit            (alias: --audit)
 //
 // Flags:
-//   --limit N     stop after N newly-fetched recipes (default: all)
-//   --force       refetch recipes that already have an image
-//   --delay MS    pause between requests (default 350)
-//   --dry-run     query and report, but don't write the file
+//   --audit         re-score every recipe and report pass/fall-back, no write
+//   --force         re-vet all recipes (re-fetch + drop ones with no match)
+//   --min-score N   relevance threshold (default 2 — strict)
+//   --limit N       stop after N processed recipes (handy with --audit)
+//   --delay MS      pause between requests (default 350)
+//   --dry-run       query and report, but don't write the file
 //
 // Network: api.openverse.org must be reachable (egress allowlist). Images are
 // stored as their durable source URL, so end users' browsers don't depend on
-// Openverse at runtime. Re-runnable: existing entries are kept unless --force.
+// Openverse at runtime. Re-runnable: without --force/--audit only missing
+// recipes are fetched; existing entries are kept.
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { MEAL_DB } from "./lib/full-db.mjs";
 import { RECIPE_IMAGES } from "../src/data/recipe-images.js";
+import { acceptScore, qualityScore, DEFAULT_MIN_SCORE } from "./lib/image-match.mjs";
+import { commonsUrl, normalizeCommons } from "./lib/commons.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(HERE, "../src/data/recipe-images.js");
@@ -31,17 +43,19 @@ const args = process.argv.slice(2);
 const flag = (name, fb) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : fb; };
 const limit = Number(flag("--limit", Infinity));
 const delay = Number(flag("--delay", 350));
+const minScore = Number(flag("--min-score", DEFAULT_MIN_SCORE));
 const force = args.includes("--force");
-const dryRun = args.includes("--dry-run");
+const audit = args.includes("--audit");
+const dryRun = args.includes("--dry-run") || audit;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Ordered search queries for a meal, most specific first. Recipe names are very
 // specific ("Garden Veggie Scramble & Toast") and rarely match an Openverse photo
 // verbatim, so we fall back to the hero dish (the part before "with"/"&"/…) and
-// then to protein+type / cuisine. A hit on the full name wins on relevance, while
-// the broader fallbacks guarantee every recipe resolves to a real, on-topic photo
-// instead of leaving the library mostly empty.
+// then to protein+type / cuisine. The relevance gate decides which hits are
+// usable, so broad fallbacks simply yield a gradient when nothing on-topic turns
+// up rather than a wrong photo.
 function queriesFor(meal) {
   const clean = meal.name.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
   const hero = clean.split(/ with | & |, | and | over | on | in | topped /i)[0].trim();
@@ -52,51 +66,96 @@ function queriesFor(meal) {
   return [...new Set(cands.filter(Boolean))];
 }
 
-const PER_PAGE = 20; // Openverse anonymous cap; larger page sizes need a key (401).
+const PER_PAGE = 20;     // Openverse anonymous cap; larger page sizes need a key (401).
+const MAX_PAGES = 3;     // candidate pages to scan per query (60 hits)
+const STRONG_SCORE = 6;  // a match this good ends the search early
+const MAX_429_RETRIES = 5;
 
-// Fetch one result page for a query: usable hits plus whether more pages exist.
-async function searchPage(q, page) {
-  const url = `${API}?q=${encodeURIComponent(q)}&license=${LICENSES}&page_size=${PER_PAGE}&page=${page}&mature=false`;
+// Fetch one result page for a query (photographs only), with a bounded 429
+// back-off so a persistently rate-limited host can't loop forever (ARCH-11).
+async function searchPage(q, page, attempt = 0) {
+  const url = `${API}?q=${encodeURIComponent(q)}&license=${LICENSES}&category=photograph&page_size=${PER_PAGE}&page=${page}&mature=false`;
   const res = await fetch(url, { headers: { "User-Agent": "sage-and-spoon image fetcher" } });
-  if (res.status === 429) { console.warn("  rate-limited (429) — backing off 30s"); await sleep(30000); return searchPage(q, page); }
+  if (res.status === 429) {
+    if (attempt >= MAX_429_RETRIES) throw new Error(`Openverse kept rate-limiting "${q}" (gave up after ${attempt} retries)`);
+    const wait = 15000 * (attempt + 1);
+    console.warn(`  rate-limited (429) — backing off ${wait / 1000}s`);
+    await sleep(wait);
+    return searchPage(q, page, attempt + 1);
+  }
   if (!res.ok) throw new Error(`Openverse ${res.status} for "${q}"`);
   const data = await res.json();
   return { hits: (data.results || []).filter((r) => r.url), hasMore: page < (data.page_count || 0) };
 }
 
-// Per-query result pool with a cursor, so recipes that share a fallback query
-// (e.g. several "Chicken lunch") each get a *distinct*, still-on-topic photo
-// rather than all repeating results[0] — and we query Openverse once per pool,
-// not once per recipe. Pages are pulled in on demand; once a query's distinct
-// results run out we wrap, accepting repeats only as a last resort.
-const pools = new Map();
-async function pick(q) {
-  let p = pools.get(q);
-  if (!p) { p = { hits: [], cursor: 0, nextPage: 1, more: true }; pools.set(q, p); }
-  while (p.cursor >= p.hits.length && p.more) {
-    const { hits, hasMore } = await searchPage(q, p.nextPage);
-    p.hits.push(...hits); p.nextPage++; p.more = hasMore;
+// Per-query page cache, so recipes sharing a fallback query reuse one set of
+// network calls.
+const queryCache = new Map();
+async function hitsFor(q, pages) {
+  let c = queryCache.get(q);
+  if (!c) { c = { hits: [], next: 1, more: true }; queryCache.set(q, c); }
+  while (c.more && c.next <= pages) {
+    const { hits, hasMore } = await searchPage(q, c.next);
+    c.hits.push(...hits); c.next++; c.more = hasMore;
   }
-  if (p.hits.length === 0) return null;
-  const hit = p.hits[p.cursor % p.hits.length];
-  p.cursor++;
-  return hit;
+  return c.hits;
 }
 
-// Resolve one usable photo, trying progressively broader queries; null only if
-// none of them turn up anything suitable.
-async function fetchImage(meal) {
-  for (const q of queriesFor(meal)) {
-    const hit = await pick(q);
-    if (hit) return {
-      src: hit.url,
-      credit: hit.creator || hit.source || "Openverse",
-      creditUrl: hit.foreign_landing_url || hit.url,
-      license: hit.license || "",
-      query: q,
-    };
+// Wikimedia Commons candidates for a query (keyless, higher quality than Flickr),
+// cached per query. Failures are non-fatal — Openverse still covers the recipe.
+const commonsCache = new Map();
+async function commonsFor(q) {
+  if (commonsCache.has(q)) return commonsCache.get(q);
+  let hits = [];
+  try {
+    const res = await fetch(commonsUrl(q), { headers: { "User-Agent": "sage-and-spoon image fetcher (poet.ac@gmail.com)" } });
+    if (res.ok) hits = normalizeCommons(await res.json());
+  } catch { /* ignore — Openverse is the fallback */ }
+  commonsCache.set(q, hits);
+  return hits;
+}
+
+// Photos from professionally-curated sources read better than the Flickr pool,
+// so nudge them ahead of equally-relevant amateur shots.
+const QUALITY_SOURCES = new Set(["wikimedia_commons", "wikimedia", "rawpixel", "stocksnap"]);
+const sourceBonus = (hit) => (QUALITY_SOURCES.has(hit.source) ? 3 : 0);
+
+// Resolve the best usable photo for a meal: across progressively broader queries,
+// the highest-scoring hit that clears quality + relevance and isn't already used.
+// Returns null when nothing is confidently on-topic (→ gradient fallback).
+async function fetchImage(meal, used) {
+  let best = null, bestScore = 0, bestQ = -1, bestQuery = "";
+  const queries = queriesFor(meal);
+  const consider = (hit, q) => {
+    if (used.has(hit.url)) return;
+    const score = acceptScore(meal, hit, { minScore });
+    if (score === 0) return;
+    // Relevance first; then prefer a quality source and the bigger/landscape
+    // photo among equally-relevant candidates.
+    const qual = qualityScore(hit) + sourceBonus(hit);
+    if (score > bestScore || (score === bestScore && qual > bestQ)) {
+      best = hit; bestScore = score; bestQ = qual; bestQuery = q;
+    }
+  };
+  for (let rank = 0; rank < queries.length; rank++) {
+    const q = queries[rank];
+    // Commons (curated, high-res) on the two most specific queries, plus the
+    // broad Openverse pool. Both pass through the same relevance/quality gate.
+    if (rank < 2) for (const hit of await commonsFor(q)) consider(hit, q);
+    for (const hit of await hitsFor(q, MAX_PAGES)) consider(hit, q);
+    if (best && bestScore >= STRONG_SCORE) break; // confident enough; stop widening
   }
-  return null;
+  if (!best) return null;
+  used.add(best.url);
+  return {
+    src: best.url,
+    credit: best.creator || best.source || "Openverse",
+    creditUrl: best.foreign_landing_url || best.url,
+    license: best.license || "",
+    query: bestQuery,
+    score: bestScore,
+    source: best.source || "openverse",
+  };
 }
 
 // Re-emit the library map: stable id order, attribution preserved.
@@ -121,27 +180,45 @@ function serialize(map) {
 
 async function main() {
   const map = { ...RECIPE_IMAGES };
-  const todo = MEAL_DB.filter((m) => force || !map[m.id]);
-  console.log(`Cookbook: ${MEAL_DB.length} recipes · ${MEAL_DB.length - todo.length} already imaged · fetching up to ${Math.min(limit, todo.length)}…`);
+  const revet = force || audit;
+  const todo = MEAL_DB.filter((m) => revet || !map[m.id]);
+  // De-dupe chosen photos across recipes. When only filling gaps, treat the
+  // already-kept images as used so new picks stay distinct.
+  const used = new Set();
+  if (!revet) for (const id of Object.keys(map)) used.add(map[id].src);
 
-  let done = 0, ok = 0, miss = 0;
+  console.log(`Cookbook: ${MEAL_DB.length} recipes · mode: ${audit ? "audit (dry-run)" : revet ? "re-vet all" : "fill missing"} · min-score ${minScore}`);
+
+  let kept = 0, dropped = 0;
+  const scores = [];
   for (const meal of todo) {
-    if (done >= limit) break;
-    done++;
-    try {
-      const img = await fetchImage(meal);
-      if (img) { map[meal.id] = img; ok++; console.log(`  ✓ ${meal.id} ${meal.name} ← ${img.credit} [q: ${img.query}]`); }
-      else { miss++; console.log(`  · ${meal.id} ${meal.name} — no result`); }
-    } catch (err) {
-      miss++; console.warn(`  ! ${meal.id} ${meal.name} — ${err.message}`);
+    if (Number.isFinite(limit) && kept + dropped >= limit) break;
+    let img = null;
+    try { img = await fetchImage(meal, used); }
+    catch (err) { console.warn(`  ! ${meal.id} ${meal.name} — ${err.message}`); }
+    const had = !!map[meal.id];
+    if (img) {
+      kept++; scores.push(img.score);
+      if (!audit) map[meal.id] = { src: img.src, credit: img.credit, creditUrl: img.creditUrl, license: img.license };
+      console.log(`  ✓ ${meal.id} ${meal.name} ← [${img.score} · ${img.source}] ${img.credit} [q: ${img.query}]`);
+    } else {
+      dropped++;
+      if (!audit && had) delete map[meal.id];
+      console.log(`  · ${meal.id} ${meal.name} — no confident match${had ? " (dropped → gradient)" : ""}`);
     }
     await sleep(delay);
   }
 
-  console.log(`\nFetched ${ok} new, ${miss} without a match. Total imaged: ${Object.keys(map).length}/${MEAL_DB.length}.`);
-  if (dryRun) { console.log("(dry-run — not writing)"); return; }
+  scores.sort((a, b) => a - b);
+  const median = scores.length ? scores[Math.floor(scores.length / 2)] : 0;
+  const mean = scores.length ? (scores.reduce((s, x) => s + x, 0) / scores.length).toFixed(1) : "0";
+  const hist = scores.reduce((h, s) => ((h[s] = (h[s] || 0) + 1), h), {});
+  console.log(`\nProcessed ${kept + dropped}: ${kept} confident photo, ${dropped} → gradient fallback.`);
+  console.log(`Kept-photo score → median ${median}, mean ${mean}, min ${scores[0] || 0}, max ${scores[scores.length - 1] || 0}.`);
+  console.log(`Score histogram: ${Object.keys(hist).sort((a, b) => a - b).map((s) => `${s}:${hist[s]}`).join("  ")}`);
+  if (dryRun) { console.log(audit ? "(audit — nothing written)" : "(dry-run — nothing written)"); return; }
   writeFileSync(OUT, serialize(map));
-  console.log(`Wrote ${OUT}`);
+  console.log(`Wrote ${OUT}: ${Object.keys(map).length}/${MEAL_DB.length} recipes imaged.`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });
