@@ -31,6 +31,7 @@ import { fileURLToPath } from "node:url";
 import { MEAL_DB } from "./lib/full-db.mjs";
 import { RECIPE_IMAGES } from "../src/data/recipe-images.js";
 import { acceptScore, qualityScore, DEFAULT_MIN_SCORE } from "./lib/image-match.mjs";
+import { commonsUrl, normalizeCommons } from "./lib/commons.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(HERE, "../src/data/recipe-images.js");
@@ -100,26 +101,48 @@ async function hitsFor(q, pages) {
   return c.hits;
 }
 
+// Wikimedia Commons candidates for a query (keyless, higher quality than Flickr),
+// cached per query. Failures are non-fatal — Openverse still covers the recipe.
+const commonsCache = new Map();
+async function commonsFor(q) {
+  if (commonsCache.has(q)) return commonsCache.get(q);
+  let hits = [];
+  try {
+    const res = await fetch(commonsUrl(q), { headers: { "User-Agent": "sage-and-spoon image fetcher (poet.ac@gmail.com)" } });
+    if (res.ok) hits = normalizeCommons(await res.json());
+  } catch { /* ignore — Openverse is the fallback */ }
+  commonsCache.set(q, hits);
+  return hits;
+}
+
+// Photos from professionally-curated sources read better than the Flickr pool,
+// so nudge them ahead of equally-relevant amateur shots.
+const QUALITY_SOURCES = new Set(["wikimedia_commons", "wikimedia", "rawpixel", "stocksnap"]);
+const sourceBonus = (hit) => (QUALITY_SOURCES.has(hit.source) ? 3 : 0);
+
 // Resolve the best usable photo for a meal: across progressively broader queries,
 // the highest-scoring hit that clears quality + relevance and isn't already used.
 // Returns null when nothing is confidently on-topic (→ gradient fallback).
 async function fetchImage(meal, used) {
   let best = null, bestScore = 0, bestQ = -1, bestQuery = "";
   const queries = queriesFor(meal);
+  const consider = (hit, q) => {
+    if (used.has(hit.url)) return;
+    const score = acceptScore(meal, hit, { minScore });
+    if (score === 0) return;
+    // Relevance first; then prefer a quality source and the bigger/landscape
+    // photo among equally-relevant candidates.
+    const qual = qualityScore(hit) + sourceBonus(hit);
+    if (score > bestScore || (score === bestScore && qual > bestQ)) {
+      best = hit; bestScore = score; bestQ = qual; bestQuery = q;
+    }
+  };
   for (let rank = 0; rank < queries.length; rank++) {
     const q = queries[rank];
-    const hits = await hitsFor(q, MAX_PAGES);
-    for (const hit of hits) {
-      if (used.has(hit.url)) continue;
-      const score = acceptScore(meal, hit, { minScore });
-      if (score === 0) continue;
-      // Relevance first, then prefer the better-quality photo (resolution +
-      // landscape orientation) among equally-relevant candidates.
-      const qual = qualityScore(hit);
-      if (score > bestScore || (score === bestScore && qual > bestQ)) {
-        best = hit; bestScore = score; bestQ = qual; bestQuery = q;
-      }
-    }
+    // Commons (curated, high-res) on the two most specific queries, plus the
+    // broad Openverse pool. Both pass through the same relevance/quality gate.
+    if (rank < 2) for (const hit of await commonsFor(q)) consider(hit, q);
+    for (const hit of await hitsFor(q, MAX_PAGES)) consider(hit, q);
     if (best && bestScore >= STRONG_SCORE) break; // confident enough; stop widening
   }
   if (!best) return null;
@@ -131,6 +154,7 @@ async function fetchImage(meal, used) {
     license: best.license || "",
     query: bestQuery,
     score: bestScore,
+    source: best.source || "openverse",
   };
 }
 
@@ -176,7 +200,7 @@ async function main() {
     if (img) {
       kept++; scores.push(img.score);
       if (!audit) map[meal.id] = { src: img.src, credit: img.credit, creditUrl: img.creditUrl, license: img.license };
-      console.log(`  ✓ ${meal.id} ${meal.name} ← [score ${img.score}] ${img.credit} [q: ${img.query}]`);
+      console.log(`  ✓ ${meal.id} ${meal.name} ← [${img.score} · ${img.source}] ${img.credit} [q: ${img.query}]`);
     } else {
       dropped++;
       if (!audit && had) delete map[meal.id];
