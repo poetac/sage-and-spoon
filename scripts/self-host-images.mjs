@@ -123,6 +123,14 @@ async function main() {
 
   writeFileSync(OUT, serialize(map));
   console.log(`\nWrote ${OUT}`);
+
+  const manifest = Object.entries(map)
+    .filter(([, e]) => !/^https?:/.test(e.src))
+    .map(([id]) => `recipe-images/${id}.webp`)
+    .sort();
+  const MANIFEST = resolve(IMG_DIR, "manifest.json");
+  writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
+  console.log(`Wrote manifest.json with ${manifest.length} entries.`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });

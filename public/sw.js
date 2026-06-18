@@ -25,6 +25,7 @@ self.addEventListener("activate", (event) => {
       await self.clients.claim();
     })(),
   );
+  precacheLocalImages(); // non-blocking background warm-up
 });
 
 const isNavigation = (request) => request.mode === "navigate";
@@ -51,6 +52,29 @@ async function trimCache(name, max) {
   const cache = await caches.open(name);
   const keys = await cache.keys();
   for (const key of keys.slice(0, keys.length - max)) await cache.delete(key); // evict oldest first
+}
+
+// After activation, warm the image cache with all self-hosted recipe photos so
+// they're available offline before first view. Non-blocking — a miss just falls
+// back to the gradient placeholder, same as before self-hosting.
+async function precacheLocalImages() {
+  try {
+    const base = self.registration.scope;
+    const res = await fetch(base + "recipe-images/manifest.json");
+    if (!res.ok) return;
+    const paths = await res.json();
+    if (!Array.isArray(paths)) return;
+    const cache = await caches.open(IMG_CACHE);
+    for (const path of paths) {
+      if (typeof path !== "string") continue;
+      const url = base + path;
+      if (await cache.match(url)) continue;
+      try {
+        const r = await fetch(url);
+        if (r.ok) await cache.put(url, r);
+      } catch { /* skip individual failures */ }
+    }
+  } catch { /* non-fatal */ }
 }
 
 async function networkFirst(request) {

@@ -34,4 +34,10 @@ describe("service worker (PERF-5)", () => {
     // opaque (no-cors) image responses must still be cached
     expect(sw).toMatch(/response\.type === "opaque"/);
   });
+  it("pre-caches local recipe images non-blocking after activation", () => {
+    expect(sw).toContain("precacheLocalImages");
+    expect(sw).toContain("recipe-images/manifest.json");
+    // must be non-blocking (not awaited in event.waitUntil)
+    expect(sw).toMatch(/self\.clients\.claim[\s\S]*?precacheLocalImages\(\)/);
+  });
 });
