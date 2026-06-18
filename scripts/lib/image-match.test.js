@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { contentTokens, recipeTerms, relevanceScore, passesQuality, acceptScore } from "./image-match.mjs";
+import { contentTokens, recipeTerms, relevanceScore, passesQuality, acceptScore, qualityScore } from "./image-match.mjs";
 
 const meal = {
   name: "Quinoa Salad with Feta", type: "lunch", proteinTag: "Greek yogurt", cuisineTag: "Mediterranean",
@@ -64,6 +64,20 @@ describe("passesQuality", () => {
   });
   it("rejects extreme aspect ratios (panoramas/strips)", () => {
     expect(passesQuality(photo({ width: 2000, height: 500 }))).toBe(false);
+  });
+});
+
+describe("qualityScore", () => {
+  it("prefers larger images and landscape orientation", () => {
+    const big = qualityScore({ width: 2000, height: 1333 });   // big landscape
+    const small = qualityScore({ width: 500, height: 500 });    // small square
+    expect(big).toBeGreaterThan(small);
+  });
+  it("rates a landscape frame above a portrait of equal area", () => {
+    expect(qualityScore({ width: 1600, height: 1000 })).toBeGreaterThan(qualityScore({ width: 1000, height: 1600 }));
+  });
+  it("is zero when dimensions are unknown", () => {
+    expect(qualityScore({ width: 0, height: 0 })).toBe(0);
   });
 });
 

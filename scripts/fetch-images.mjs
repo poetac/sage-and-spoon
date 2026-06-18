@@ -30,7 +30,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { MEAL_DB } from "./lib/full-db.mjs";
 import { RECIPE_IMAGES } from "../src/data/recipe-images.js";
-import { acceptScore, DEFAULT_MIN_SCORE } from "./lib/image-match.mjs";
+import { acceptScore, qualityScore, DEFAULT_MIN_SCORE } from "./lib/image-match.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(HERE, "../src/data/recipe-images.js");
@@ -66,8 +66,8 @@ function queriesFor(meal) {
 }
 
 const PER_PAGE = 20;     // Openverse anonymous cap; larger page sizes need a key (401).
-const MAX_PAGES = 2;     // candidate pages to scan per query (40 hits)
-const STRONG_SCORE = 4;  // a match this good ends the search early
+const MAX_PAGES = 3;     // candidate pages to scan per query (60 hits)
+const STRONG_SCORE = 6;  // a match this good ends the search early
 const MAX_429_RETRIES = 5;
 
 // Fetch one result page for a query (photographs only), with a bounded 429
@@ -104,7 +104,7 @@ async function hitsFor(q, pages) {
 // the highest-scoring hit that clears quality + relevance and isn't already used.
 // Returns null when nothing is confidently on-topic (→ gradient fallback).
 async function fetchImage(meal, used) {
-  let best = null, bestScore = 0, bestRank = 99, bestQuery = "";
+  let best = null, bestScore = 0, bestQ = -1, bestQuery = "";
   const queries = queriesFor(meal);
   for (let rank = 0; rank < queries.length; rank++) {
     const q = queries[rank];
@@ -112,8 +112,12 @@ async function fetchImage(meal, used) {
     for (const hit of hits) {
       if (used.has(hit.url)) continue;
       const score = acceptScore(meal, hit, { minScore });
-      if (score > 0 && (score > bestScore || (score === bestScore && rank < bestRank))) {
-        best = hit; bestScore = score; bestRank = rank; bestQuery = q;
+      if (score === 0) continue;
+      // Relevance first, then prefer the better-quality photo (resolution +
+      // landscape orientation) among equally-relevant candidates.
+      const qual = qualityScore(hit);
+      if (score > bestScore || (score === bestScore && qual > bestQ)) {
+        best = hit; bestScore = score; bestQ = qual; bestQuery = q;
       }
     }
     if (best && bestScore >= STRONG_SCORE) break; // confident enough; stop widening

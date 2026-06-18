@@ -83,12 +83,28 @@ export function passesQuality(hit, q = DEFAULT_QUALITY) {
   return short >= q.minShort && long >= q.minLong && aspect >= q.minAspect && aspect <= q.maxAspect;
 }
 
+// Quality preference *among* photos that already pass the gate: bigger images
+// look crisper, and a landscape-ish frame fills a recipe card better than a tall
+// or square crop. Used only to choose between equally-relevant candidates.
+export function qualityScore(hit) {
+  const w = Number(hit.width) || 0, h = Number(hit.height) || 0;
+  if (!w || !h) return 0;
+  const aspect = w / h;
+  const orient =
+    aspect >= 1.2 && aspect <= 1.9 ? 1.0 :   // ideal landscape
+    aspect >= 1.0 && aspect < 1.2 ? 0.6 :    // near-square
+    aspect > 0.85 ? 0.3 : 0.1;               // square/portrait
+  return Math.log2(w * h) + orient;          // ~log area, + orientation nudge
+}
+
 // Strict by default: a photo is accepted only if it clears the quality bar and
-// scores at least `minScore` (2 ⇒ one hero/protein match, or two supporting
-// matches). Returns the score (0 = rejected) so callers can pick the best.
+// scores at least `minScore` (2 ⇒ one dish-name word, or two supporting
+// matches). Returns the relevance score (0 = rejected) so callers can pick the
+// best; ties are broken on qualityScore.
 export const DEFAULT_MIN_SCORE = 2;
 export function acceptScore(meal, hit, { minScore = DEFAULT_MIN_SCORE, quality = DEFAULT_QUALITY } = {}) {
   if (!passesQuality(hit, quality)) return 0;
   const score = relevanceScore(meal, hit);
   return score >= minScore ? score : 0;
 }
+
