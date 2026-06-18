@@ -43,7 +43,7 @@ describe("PlanTab", () => {
 
   it("renders the week header and the day's carb + protein totals", () => {
     renderTab();
-    expect(screen.getByText("This week's table")).toBeInTheDocument();
+    expect(screen.getByText("Your meal plan")).toBeInTheDocument();
     // Only Tuesday has a meal, so its totals are unique on screen.
     expect(screen.getByText("≈ 38g carbs · 30g protein")).toBeInTheDocument();
   });
@@ -51,7 +51,7 @@ describe("PlanTab", () => {
   it("summarizes the week's average macros and protein-goal days", () => {
     // One planned day (Tue: 38g carbs, 30g protein); 75g goal → 0/1 days meet.
     renderTab({ proteinMin: 75 });
-    expect(screen.getByText("Week at a glance")).toBeInTheDocument();
+    expect(screen.getByText("At a glance")).toBeInTheDocument();
     expect(screen.getByText("~38g carbs/day")).toBeInTheDocument();
     expect(screen.getByText("~30g protein/day")).toBeInTheDocument();
     expect(screen.getByText("0/1 days meet 75g protein")).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("PlanTab", () => {
     const { container } = renderTab();
     const sheet = container.querySelector("#print-sheet");
     expect(sheet).toBeInTheDocument();
-    expect(within(sheet).getByText(/Meal plan — week of/)).toBeInTheDocument();
+    expect(within(sheet).getByText(/Meal plan —/)).toBeInTheDocument();
     // The Tuesday meal shows with its macros inside the sheet (scoped so it
     // doesn't collide with the on-screen card).
     expect(within(sheet).getByText(/Sheet-Pan Salmon \(38g carbs, 30g protein\)/)).toBeInTheDocument();
@@ -83,16 +83,27 @@ describe("PlanTab", () => {
 
   it("shuffles and generates via the header actions", () => {
     const { onShuffle, onGenerateAI } = renderTab();
-    fireEvent.click(screen.getByRole("button", { name: /Shuffle week/ }));
-    fireEvent.click(screen.getByRole("button", { name: /Generate Full Week/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Shuffle/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Generate/ }));
     expect(onShuffle).toHaveBeenCalledTimes(1);
     expect(onGenerateAI).toHaveBeenCalledTimes(1);
   });
 
   it("disables both header actions while a week is loading", () => {
     render(<Harness weekLoading />);
-    expect(screen.getByRole("button", { name: /Shuffle week/ })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /Generate Full Week/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Shuffle/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Generate/ })).toBeDisabled();
+  });
+
+  it("offers a day-count selector and start-date picker that drive generation", () => {
+    const onSetPlanDays = vi.fn(), onSetPlanStart = vi.fn();
+    render(<Harness planStart="2026-06-15" planDays={4} onSetPlanDays={onSetPlanDays} onSetPlanStart={onSetPlanStart} />);
+    const sel = screen.getByLabelText("Number of days to plan");
+    expect(sel).toHaveValue("4");
+    fireEvent.change(sel, { target: { value: "3" } });
+    expect(onSetPlanDays).toHaveBeenCalledWith(3);
+    fireEvent.change(screen.getByLabelText("Plan start date"), { target: { value: "2026-06-20" } });
+    expect(onSetPlanStart).toHaveBeenCalledWith("2026-06-20");
   });
 
   it("moves a meal by tapping its slot (tap-to-move)", () => {

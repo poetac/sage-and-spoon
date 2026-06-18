@@ -17,7 +17,7 @@ export function WeekHistory({ history, onRestore, onClose }) {
             return (
               <li key={i} className="card p-3 flex items-center justify-between gap-2">
                 <div>
-                  <div style={{ fontWeight: 700 }}>{fmtShort(dayDate(w.weekStart, 0))} – {fmtShort(dayDate(w.weekStart, 6))}</div>
+                  <div style={{ fontWeight: 700 }}>{fmtShort(dayDate(w.weekStart, 0))} – {fmtShort(dayDate(w.weekStart, (w.days?.length || 7) - 1))}</div>
                   <div className="t-soft text-xs">{filled} meal{filled === 1 ? "" : "s"} planned</div>
                 </div>
                 <button className="btn btn-soft" style={{ whiteSpace: "nowrap" }} onClick={() => onRestore(w)}>Use this week</button>

@@ -46,7 +46,7 @@ describe("App — navigation & placing", () => {
     seedPrefs();
     seedPlan();
     render(<App />);
-    await screen.findByText("This week's table");
+    await screen.findByText("Your meal plan");
     expect(screen.getByRole("heading", { level: 1, name: /Sage & Spoon/ })).toBeInTheDocument();
     const isCurrent = (name) => screen.getAllByRole("button", { name }).some((b) => b.getAttribute("aria-current") === "page");
     expect(isCurrent(/^Plan$/)).toBe(true); // Plan is active by default
@@ -77,11 +77,11 @@ describe("App — navigation & placing", () => {
 
     // The placing modal lists every day/slot; drop it into Monday breakfast.
     const dialog = screen.getByRole("dialog");
-    const monRow = within(dialog).getByText("Mon").parentElement;
-    fireEvent.click(within(monRow).getByText("Breakfast"));
+    // Day 0 is the plan's start; its Breakfast chip is the first enabled one.
+    fireEvent.click(within(dialog).getAllByRole("button", { name: "Breakfast" })[0]);
 
     await waitFor(() => expect(store.get(K.plan, null).days[0].breakfast).toBe(parfait.id));
-    expect(screen.getByText(/added to Mon Breakfast/)).toBeInTheDocument();
+    expect(screen.getByText(/added to .+ Breakfast/)).toBeInTheDocument();
   });
 
   it("favorites a cookbook recipe and persists it", async () => {
@@ -106,7 +106,7 @@ describe("App — navigation & placing", () => {
     const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
     fireEvent.click(within(card).getByRole("button", { name: `Add ${parfait.name} to the week` }));
     const dialog = screen.getByRole("dialog");
-    fireEvent.click(within(within(dialog).getByText("Mon").parentElement).getByText("Breakfast"));
+    fireEvent.click(within(dialog).getAllByRole("button", { name: "Breakfast" })[0]);
 
     await waitFor(() => expect(store.get(K.plan, null).days[0].breakfast).toBe(parfait.id));
     fireEvent.click(screen.getByRole("button", { name: "Undo" }));
@@ -129,9 +129,9 @@ describe("App — week history", () => {
     seedPlan();
     const beforeDays = store.get(K.plan, null).days;
     render(<App />);
-    await screen.findByText("This week's table");
+    await screen.findByText("Your meal plan");
 
-    fireEvent.click(screen.getByRole("button", { name: /Shuffle week/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Shuffle/ }));
     await waitFor(() => expect(store.get(K.history, []).length).toBe(1));
 
     fireEvent.click(screen.getByRole("button", { name: /History/ }));
