@@ -44,6 +44,7 @@ export default function App() {
   const [pantry, setPantryState] = useState(() => store.get(K.pantry, []));
   const [history, setHistoryState] = useState(() => store.get(K.history, []));
   const [notes, setNotesState] = useState(() => store.get(K.notes, {}));
+  const [hiddenIds, setHiddenIdsState] = useState(() => store.get(K.hidden, []));
   const [showHistory, setShowHistory] = useState(false);
   const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
@@ -78,6 +79,13 @@ export default function App() {
     const next = favorites.includes(id) ? favorites.filter((x) => x !== id) : [...favorites, id];
     setFavoritesState(next); store.set(K.favorites, next);
   };
+  const toggleHidden = (id) => {
+    const next = hiddenIds.includes(id) ? hiddenIds.filter((x) => x !== id) : [...hiddenIds, id];
+    setHiddenIdsState(next); store.set(K.hidden, next);
+    say(hiddenIds.includes(id) ? "Recipe restored to cookbook" : "Recipe hidden from cookbook", "ok",
+      { label: "Undo", onClick: () => { const prev = hiddenIds; setHiddenIdsState(prev); store.set(K.hidden, prev); say("Restored"); } });
+  };
+
   const setNote = (id, text) => {
     const next = { ...notes };
     if (text.trim()) next[id] = text; else delete next[id];
@@ -312,7 +320,7 @@ export default function App() {
 
   const resetAll = () => {
     store.clear(Object.values(K));
-    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]); setNotesState({});
+    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]); setNotesState({}); setHiddenIdsState([]);
     setSettingsState(DEFAULT_SETTINGS);
   };
 
@@ -351,6 +359,7 @@ export default function App() {
       setPantryState(store.get(K.pantry, []));
       setHistoryState(store.get(K.history, []));
       setNotesState(store.get(K.notes, {}));
+      setHiddenIdsState(store.get(K.hidden, []));
       setPlanState(store.get(K.plan, null));
       setPrefsState(store.get(K.prefs, null)); // last: may flip onboarding → app
       toastOk(dropped
@@ -399,7 +408,7 @@ export default function App() {
             <button className="btn btn-primary" onClick={shuffleWeek}>Build my week</button>
           </div>
         )}
-        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} />}
+        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} hiddenIds={hiddenIds} onToggleHidden={toggleHidden} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
         {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />}
@@ -413,7 +422,10 @@ export default function App() {
         {TABS.map((t) => (
           <button key={t.key} onClick={() => setTab(t.key)} aria-current={tab === t.key ? "page" : undefined}
             className="flex flex-col items-center gap-0.5 px-3 py-1"
-            style={{ color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 11, background: "none", border: "none", cursor: "pointer" }}>
+            style={{ position: "relative", color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 11, background: "none", border: "none", cursor: "pointer" }}>
+            {tab === t.key && (
+              <span aria-hidden="true" style={{ position: "absolute", top: -2, left: "20%", right: "20%", height: 3, borderRadius: "0 0 3px 3px", background: "var(--sage-deep)" }} />
+            )}
             <Icon d={ICONS[t.icon]} size={20} /> {t.label}
           </button>
         ))}

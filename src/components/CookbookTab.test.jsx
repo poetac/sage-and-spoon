@@ -127,8 +127,9 @@ describe("CookbookTab", () => {
     const onDetails = vi.fn();
     render(<CookbookTab {...base} onPlace={onPlace} onDetails={onDetails} />);
     const card = screen.getByText("Salmon Bowl").closest(".card");
+    // Add button is explicit; the whole card is the details click target.
     fireEvent.click(within(card).getByRole("button", { name: "Add Salmon Bowl to the week" }));
-    fireEvent.click(within(card).getByText("Details"));
+    fireEvent.click(card);
     expect(onPlace).toHaveBeenCalledWith(expect.objectContaining({ id: "a" }));
     expect(onDetails).toHaveBeenCalledWith(expect.objectContaining({ id: "a" }));
   });

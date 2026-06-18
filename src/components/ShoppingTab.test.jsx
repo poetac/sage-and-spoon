@@ -42,7 +42,7 @@ describe("ShoppingTab", () => {
 
   it("reports the total item count in the header", () => {
     const { container } = renderTab();
-    expect(container).toHaveTextContent("3 items from this week's plan");
+    expect(container).toHaveTextContent("3 items ·");
   });
 
   it("strikes through an item when its checkbox is ticked", () => {
@@ -73,7 +73,7 @@ describe("ShoppingTab", () => {
 
   it("renders nothing to buy as an empty grouping when there is no plan", () => {
     const { container } = renderTab({ plan: null });
-    expect(container).toHaveTextContent("0 items from this week's plan");
+    expect(container).toHaveTextContent("0 items");
   });
 
   it("marks an item as a pantry staple via its 'have it' button", () => {
@@ -87,7 +87,7 @@ describe("ShoppingTab", () => {
     const onTogglePantry = vi.fn();
     const { container } = renderTab({ pantry: ["broccoli"], onTogglePantry });
     // Dropped from the list (count falls from 3 to 2) and no Produce heading.
-    expect(container).toHaveTextContent("2 items from this week's plan");
+    expect(container).toHaveTextContent("2 items ·");
     expect(screen.queryByRole("heading", { level: 3, name: "Produce" })).toBeNull();
     // Listed in the staples section; tapping it puts it back.
     fireEvent.click(screen.getByRole("button", { name: "Stop always-having broccoli" }));

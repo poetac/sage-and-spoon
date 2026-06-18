@@ -2,20 +2,62 @@ import { useState, useMemo } from "react";
 import { CATEGORIES } from "../data/meals.js";
 import { lc, qtyLabel } from "../lib/utils.js";
 import { dayDate, fmtShort } from "../lib/dates.js";
-import { buildShoppingList, listToText } from "../lib/shopping.js";
+import { buildShoppingList } from "../lib/shopping.js";
 import { Icon, ICONS } from "./primitives.jsx";
 
 /* ------------------------------- shopping tab ---------------------------- */
 export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [], onTogglePantry, toastOk, toastErr }) {
   const [checked, setChecked] = useState({});
+  const [removedKeys, setRemovedKeys] = useState(() => new Set());
+  const [extraItems, setExtraItems] = useState([]);
+  const [newItemInput, setNewItemInput] = useState("");
+
   const pantrySet = useMemo(() => new Set(pantry.map(lc)), [pantry]);
   const grouped = useMemo(() => buildShoppingList(plan, mealsById, settings.servings, pantrySet), [plan, mealsById, settings.servings, pantrySet]);
   const weekLabel = plan ? `${fmtShort(dayDate(plan.weekStart, 0))} – ${fmtShort(dayDate(plan.weekStart, plan.days.length - 1))}` : "";
-  const asText = () => listToText(grouped, weekLabel, settings.servings);
-  const total = CATEGORIES.reduce((n, c) => n + (grouped[c]?.length || 0), 0);
+
+  const visibleTotal = CATEGORIES.reduce((n, c) => {
+    return n + (grouped[c] || []).filter((it) => !removedKeys.has(it.n + "|" + (it.u || ""))).length;
+  }, 0) + extraItems.length;
+
+  const buildExportText = () => {
+    const lines = [`SHOPPING LIST — ${weekLabel}`, `Scaled for ${settings.servings} serving${settings.servings === 1 ? "" : "s"} per meal`, ""];
+    for (const cat of CATEGORIES) {
+      const items = (grouped[cat] || []).filter((it) => !removedKeys.has(it.n + "|" + (it.u || "")));
+      if (!items.length) continue;
+      lines.push(cat.toUpperCase());
+      for (const it of items) {
+        const q = qtyLabel(it);
+        lines.push(`[ ] ${it.n}${q ? " — " + q : ""}`);
+      }
+      lines.push("");
+    }
+    if (extraItems.length) {
+      lines.push("EXTRAS");
+      for (const it of extraItems) lines.push(`[ ] ${it.n}`);
+      lines.push("");
+    }
+    return lines.join("\n");
+  };
+
+  const share = async () => {
+    const text = buildExportText();
+    if (navigator.share) {
+      try { await navigator.share({ title: "Shopping List", text }); }
+      catch (e) { if (e.name !== "AbortError") toastErr("Couldn't share — try Copy instead."); }
+    } else {
+      // Desktop fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(text);
+        toastOk("Shopping list copied");
+      } catch {
+        toastErr("Couldn't copy — try the download instead.");
+      }
+    }
+  };
 
   const copy = async () => {
-    const text = asText();
+    const text = buildExportText();
     try {
       await navigator.clipboard.writeText(text);
       toastOk("Shopping list copied");
@@ -27,8 +69,9 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
       document.body.removeChild(ta);
     }
   };
+
   const download = () => {
-    const blob = new Blob([asText()], { type: "text/plain" });
+    const blob = new Blob([buildExportText()], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "shopping-list.txt";
@@ -36,17 +79,28 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
     URL.revokeObjectURL(a.href);
   };
 
+  const addItem = () => {
+    const name = newItemInput.trim();
+    if (!name) return;
+    setExtraItems((items) => [...items, { n: name }]);
+    setNewItemInput("");
+  };
+
+  const removeItem = (key) => setRemovedKeys((prev) => new Set([...prev, key]));
+  const restoreRemoved = () => setRemovedKeys(new Set());
+
   return (
     <div className="max-w-3xl rise">
       <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
         <div>
           <h2 className="font-display text-2xl" style={{ fontWeight: 600 }}>Shopping list</h2>
-          <p className="t-soft text-sm">{total} items from this week's plan, {weekLabel}</p>
+          <p className="t-soft text-sm">{visibleTotal} item{visibleTotal === 1 ? "" : "s"} · {weekLabel}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button className="btn btn-ghost" onClick={() => window.print()}><Icon d={ICONS.print} size={14} /> Print</button>
           <button className="btn btn-ghost" onClick={copy}><Icon d={ICONS.copy} size={14} /> Copy</button>
-          <button className="btn btn-soft" onClick={download}><Icon d={ICONS.download} size={14} /> .txt</button>
+          <button className="btn btn-ghost" onClick={download}><Icon d={ICONS.download} size={14} /> .txt</button>
+          <button className="btn btn-primary" onClick={share}><Icon d={ICONS.share} size={14} /> Share</button>
         </div>
       </div>
 
@@ -77,9 +131,17 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
         </div>
       )}
 
+      {removedKeys.size > 0 && (
+        <div className="card p-3 mb-4 flex items-center justify-between gap-2"
+          style={{ background: "var(--amber-mist)", borderColor: "transparent" }}>
+          <span className="text-sm" style={{ color: "var(--amber)" }}>{removedKeys.size} item{removedKeys.size === 1 ? "" : "s"} removed from this list</span>
+          <button className="btn btn-ghost" style={{ padding: "4px 12px", fontSize: 12 }} onClick={restoreRemoved}>Restore all</button>
+        </div>
+      )}
+
       <div className="grid md:grid-cols-2 gap-4">
         {CATEGORIES.map((cat) => {
-          const items = grouped[cat] || [];
+          const items = (grouped[cat] || []).filter((it) => !removedKeys.has(it.n + "|" + (it.u || "")));
           if (!items.length) return null;
           return (
             <div key={cat} className="card p-4">
@@ -90,20 +152,27 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
                   const q = qtyLabel(it);
                   return (
                     <li key={key} className="flex items-start justify-between gap-2">
-                      <label className="flex items-start gap-2 cursor-pointer text-[14.5px]">
-                        <input type="checkbox" className="mt-1 accent-current" style={{ color: "var(--sage)" }}
+                      <label className="flex items-start gap-2 cursor-pointer text-[14.5px] flex-1 min-w-0">
+                        <input type="checkbox" className="mt-1 accent-current" style={{ color: "var(--sage)", flexShrink: 0 }}
                           checked={!!checked[key]} onChange={() => setChecked((c) => ({ ...c, [key]: !c[key] }))} />
                         <span style={checked[key] ? { textDecoration: "line-through", color: "var(--ink-soft)" } : null}>
                           {it.n}{q && <span className="t-soft"> — {q}</span>}
                         </span>
                       </label>
-                      {onTogglePantry && (
-                        <button onClick={() => onTogglePantry(it.n)} title="I always have this — hide from the list"
-                          aria-label={`Always have ${it.n}`}
-                          style={{ background: "none", border: "none", cursor: "pointer", fontSize: 11, color: "var(--ink-soft)", whiteSpace: "nowrap", padding: "1px 2px" }}>
-                          have it
+                      <div className="flex items-center gap-1 shrink-0">
+                        {onTogglePantry && (
+                          <button onClick={() => onTogglePantry(it.n)} title="I always have this — hide from the list"
+                            aria-label={`Always have ${it.n}`}
+                            style={{ background: "none", border: "none", cursor: "pointer", fontSize: 11, color: "var(--ink-soft)", whiteSpace: "nowrap", padding: "1px 2px" }}>
+                            have it
+                          </button>
+                        )}
+                        <button onClick={() => removeItem(key)} title="Remove from this list"
+                          aria-label={`Remove ${it.n}`}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "1px 4px", lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
+                          ×
                         </button>
-                      )}
+                      </div>
                     </li>
                   );
                 })}
@@ -113,12 +182,52 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
         })}
       </div>
 
+      {extraItems.length > 0 && (
+        <div className="card p-4 mt-4">
+          <h3 className="text-sm uppercase tracking-wide mb-2" style={{ fontWeight: 700, color: "var(--sage-deep)" }}>Added by you</h3>
+          <ul className="grid gap-1.5">
+            {extraItems.map((it, idx) => {
+              const key = `extra-${idx}`;
+              return (
+                <li key={idx} className="flex items-start justify-between gap-2">
+                  <label className="flex items-start gap-2 cursor-pointer text-[14.5px] flex-1">
+                    <input type="checkbox" className="mt-1 accent-current" style={{ color: "var(--sage)" }}
+                      checked={!!checked[key]} onChange={() => setChecked((c) => ({ ...c, [key]: !c[key] }))} />
+                    <span style={checked[key] ? { textDecoration: "line-through", color: "var(--ink-soft)" } : null}>{it.n}</span>
+                  </label>
+                  <button onClick={() => setExtraItems((items) => items.filter((_, i) => i !== idx))}
+                    title="Remove" aria-label={`Remove ${it.n}`}
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "1px 4px", lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
+                    ×
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      <div className="card p-4 mt-4">
+        <div className="t-soft text-xs uppercase tracking-wide mb-2" style={{ fontWeight: 700 }}>Add an item</div>
+        <div className="flex gap-2">
+          <input className="input" placeholder="e.g. sparkling water"
+            value={newItemInput}
+            onChange={(e) => setNewItemInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") addItem(); }}
+            aria-label="New item name"
+          />
+          <button className="btn btn-primary" style={{ whiteSpace: "nowrap" }} onClick={addItem} disabled={!newItemInput.trim()}>
+            <Icon d={ICONS.plus} size={14} /> Add
+          </button>
+        </div>
+      </div>
+
       {/* printable sheet */}
       <div id="print-sheet">
         <h1 style={{ fontSize: 22, marginBottom: 2 }}>Shopping list — {weekLabel}</h1>
         <p style={{ fontSize: 13, color: "#555", marginBottom: 16 }}>Scaled for {settings.servings} servings per meal · Sage &amp; Spoon</p>
         {CATEGORIES.map((cat) => {
-          const items = grouped[cat] || [];
+          const items = (grouped[cat] || []).filter((it) => !removedKeys.has(it.n + "|" + (it.u || "")));
           if (!items.length) return null;
           return (
             <div key={cat} style={{ marginBottom: 14, breakInside: "avoid" }}>
@@ -130,6 +239,14 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
             </div>
           );
         })}
+        {extraItems.length > 0 && (
+          <div style={{ marginBottom: 14, breakInside: "avoid" }}>
+            <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, borderBottom: "1px solid #ccc", paddingBottom: 3, marginBottom: 6 }}>Extras</h2>
+            {extraItems.map((it, i) => (
+              <div key={i} style={{ fontSize: 13.5, padding: "2.5px 0" }}>☐&nbsp; {it.n}</div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

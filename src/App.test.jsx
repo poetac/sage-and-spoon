@@ -149,7 +149,7 @@ describe("App — recipe notes", () => {
     goTo(/Cookbook/);
     fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
     const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
-    fireEvent.click(within(card).getByText("Details"));
+    fireEvent.click(card);
     fireEvent.change(screen.getByLabelText("Recipe notes"), { target: { value: "less granola" } });
     await waitFor(() => expect(store.get(K.notes, {})[parfait.id]).toBe("less granola"));
   });
