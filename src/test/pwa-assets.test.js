@@ -27,4 +27,11 @@ describe("service worker (PERF-5)", () => {
     expect(sw).toMatch(/isNavigation\(request\)\)\s*event\.respondWith\(networkFirst/);
     expect(sw).toMatch(/isHashedAsset\(url\)\)\s*event\.respondWith\(cacheFirst/);
   });
+  it("caches images (incl. cross-origin recipe photos) in a capped cache for offline", () => {
+    expect(sw).toMatch(/isImage\(request\)\)\s*\{\s*event\.respondWith\(imageCache/);
+    expect(sw).toMatch(/IMG_CACHE_MAX/);
+    expect(sw).toMatch(/trimCache/);
+    // opaque (no-cors) image responses must still be cached
+    expect(sw).toMatch(/response\.type === "opaque"/);
+  });
 });
