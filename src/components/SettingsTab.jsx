@@ -57,7 +57,7 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
           {[["breakfastMax", "Breakfast (g)"], ["mainMax", "Lunch & dinner (g)"], ["snackMax", "Snacks (g)"]].map(([k, label]) => (
             <label key={k} className="text-sm">
               <span className="t-soft block mb-1">{label}</span>
-              <input type="number" className="input" value={settings.targets[k]} onChange={(e) => setTarget(k, e.target.value)} min="5" />
+              <input type="number" className="input" value={settings.targets[k]} onChange={(e) => setTarget(k, e.target.value)} min="5" aria-describedby="carb-min-hint" />
               {settings.targets[k] > CARB_HINT_ABOVE[k] && (
                 <span role="note" className="block mt-1 text-[11px]" style={{ color: "var(--amber)", fontWeight: 600 }}>
                   Above typical GD guidance — worth double-checking with her dietitian.
@@ -66,6 +66,7 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
             </label>
           ))}
         </div>
+        <p id="carb-min-hint" className="t-soft text-[11px] mt-2">Values below 5&nbsp;g are raised to 5&nbsp;g.</p>
       </div>
 
       <div className="card p-5 mb-4">

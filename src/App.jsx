@@ -23,6 +23,7 @@ import { CookbookTab } from "./components/CookbookTab.jsx";
 import { ShoppingTab } from "./components/ShoppingTab.jsx";
 import { SettingsTab } from "./components/SettingsTab.jsx";
 import { A2HSBanner } from "./components/A2HSBanner.jsx";
+import { OfflineBanner } from "./components/OfflineBanner.jsx";
 
 /* ----------------------------------- app --------------------------------- */
 const TABS = [
@@ -465,6 +466,7 @@ export default function App() {
 
   return (
     <div className="ss-root">
+      <a href="#main-content" className="skip-link no-print">Skip to content</a>
       <header className="no-print sticky top-0 z-30 px-4 md:px-6 py-3 flex items-center gap-2"
         style={{ background: "rgba(250,247,241,.92)", backdropFilter: "blur(6px)", borderBottom: "1px solid var(--line)" }}>
         <span style={{ color: "var(--sage-deep)" }}><Icon d={ICONS.leaf} size={20} /></span>
@@ -480,7 +482,8 @@ export default function App() {
         </nav>
       </header>
 
-      <main className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto">
+      <main id="main-content" tabIndex={-1} className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto" style={{ outline: "none" }}>
+        <OfflineBanner />
         <A2HSBanner />
         <ErrorBoundary key={tab}>
         {/* Settings needs no cookbook data, so render it immediately rather than

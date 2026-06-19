@@ -184,7 +184,7 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
                         )}
                         <button onClick={() => removeItem(key)} title="Remove from this list"
                           aria-label={`Remove ${it.n}`}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "1px 4px", lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "4px 8px", minWidth: 28, minHeight: 28, lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
                           ×
                         </button>
                       </div>
@@ -212,7 +212,7 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
                   </label>
                   <button onClick={() => setExtraItems((items) => items.filter((_, i) => i !== idx))}
                     title="Remove" aria-label={`Remove ${it.n}`}
-                    style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "1px 4px", lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "4px 8px", minWidth: 28, minHeight: 28, lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
                     ×
                   </button>
                 </li>

@@ -98,9 +98,12 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
             aria-label="Previous photo">‹</button>
           <div style={{ display: "flex", gap: 5, flex: 1, justifyContent: "center" }}>
             {photos.map((_, i) => (
-              <span key={i} role="button" aria-label={`Photo ${i + 1}`} onClick={() => setIdx(i)}
-                style={{ width: 6, height: 6, borderRadius: "50%", cursor: "pointer", display: "inline-block",
+              <button key={i} type="button" aria-label={`Photo ${i + 1}`} aria-current={i === idx ? "true" : undefined}
+                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                style={{ background: "none", border: "none", padding: 8, cursor: "pointer", lineHeight: 0 }}>
+                <span aria-hidden="true" style={{ display: "block", width: 6, height: 6, borderRadius: "50%",
                   background: i === idx ? "currentColor" : "rgba(128,128,128,0.35)" }} />
+              </button>
             ))}
           </div>
           <button

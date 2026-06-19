@@ -55,6 +55,15 @@ describe("App — navigation & placing", () => {
     expect(isCurrent(/^Plan$/)).toBe(false);
   });
 
+  it("offers a skip-to-content link targeting the main landmark", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    expect(screen.getByText("Skip to content")).toHaveAttribute("href", "#main-content");
+    expect(document.getElementById("main-content")).not.toBeNull();
+  });
+
   it("opens the Cookbook tab and lists recipes", async () => {
     seedPrefs();
     seedPlan();
