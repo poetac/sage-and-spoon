@@ -89,6 +89,10 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 `PERF-8` (responsive `srcset`), `PERF-9` (PNG manifest icons), `IMG-LICENSE`
 (redistributable allowlist before self-hosting).
 
+**Security & cleanups — Sprint C** (359 tests): `SEC-1` (build-only CSP locking
+connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7`
+(tab-bar tap targets).
+
 ---
 
 ## P0 — Safety (do first)
@@ -135,7 +139,7 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 | 🔶 | A11Y-4 | Enter+Space activation ✅; gallery dots are real `<button>`s now ✅. Remaining: both cards are `role="button"` wrapping nested action buttons (invalid ARIA) — the cover-button restructure needs in-browser drag / tap-to-move / hit-test verification, so it's intentionally deferred. | Med | `MealCard.jsx`, `CookbookTab.jsx` | Cover-button pattern (container not a button; actions as siblings); verify drag + tap-to-move live. | M |
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
 | ✅ | A11Y-6 | Cap over-guidance hint ✅, cookbook skeleton has `aria-busy` ✅, and carb-target inputs announce the 5 g clamp via `aria-describedby` ✅. | Med | `SettingsTab.jsx`, `App.jsx` | (servings/protein inputs could get the same hint later.) | S |
-| 🔶 | A11Y-7 | Shopping remove buttons now ≥28px and gallery dots have an 8px tap pad ✅; the mobile tab bar text (11px) is still small. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | Bump the tab-bar targets to ≥44px. | S |
+| ✅ | A11Y-7 | Shopping remove buttons ≥28px, gallery dots an 8px tap pad, and the mobile tab bar bumped to 12px text with a 48px min target. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | — | S |
 | ✅ | A11Y-8 | Skip-to-content link → `#main-content` landmark ✅; an `OfflineBanner` (`navigator.onLine`, role=status) explains offline behavior ✅; iOS install affordance (A2HS) already shipped. | Low | `App.jsx`, `OfflineBanner.jsx` | (Android/desktop `beforeinstallprompt` button still optional.) | M |
 
 ## P3 — Testing & CI
@@ -160,7 +164,7 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 | ✅ | ARCH-3 | No error boundary. | `App.jsx` | `ErrorBoundary` wraps `<main>`. | S |
 | ✅ | ARCH-4 | Macro-pill markup duplicated. | components | `<NutritionPills>` primitive. | M |
 | ✅ | ARCH-5 | Busy resets outside `finally`. | `App.jsx` | Moved to `finally`. | S |
-| ⬜ | ARCH-6 | `extractJSON` first-`{`-to-last-`}` slice is brittle on multi-object/trailing-brace replies (fails closed, but cryptic). | `claude.js:47` | Try fenced block first; friendlier error. | S |
+| ✅ | ARCH-6 | `extractJSON` now prefers a fenced ```json block body, so a stray brace in trailing prose no longer breaks parsing. | `claude.js` | — | S |
 | ⬜ | ARCH-7 | `storage.js` treats quota errors as unavailability → silent in-memory switch, data lost on reload (same class as user-photo quota loss). | `storage.js` | Detect quota; surface a toast. | S |
 | ✅ | ARCH-8 | `vetNewMeals` deduped on a weaker name key than the pipeline. | `claude.js` | Now uses a punctuation-insensitive `nameKey` mirroring the pipeline. | S |
 | ✅ | ARCH-9 | "per 2 servings" magic constant. | utils | `RECIPE_SERVINGS` + `scaleIngredient`. | S |
@@ -173,7 +177,7 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 
 | St | ID | Item | Sev | Where | Fix | Eff |
 |---|---|---|---|---|---|---|
-| ⬜ | SEC-1 | No Content-Security-Policy on an app holding a live API key in localStorage — no defense-in-depth if a dep/asset is ever compromised. | Med | `index.html` | `<meta>` CSP: `connect-src 'self' https://api.anthropic.com`; `img-src` the image hosts + `data:`; lock the rest. | M |
+| ✅ | SEC-1 | No CSP on an app holding a live API key in localStorage. | Med | `src/lib/csp.js`, `vite.config.js` | Build-only `<meta>` CSP (dev/HMR untouched): `connect-src 'self' https://api.anthropic.com`, `script-src 'self'`, `object-src 'none'`, `base-uri 'self'`; img https/data/blob, fonts gstatic. Unit-tested; preview smoke clean. *(A real-browser console check before merge is still worthwhile.)* | M |
 | 🔶 | SEC-2 | Backup embedded the API key in plaintext; import trusted arbitrary JSON. | Low→Med | `App.jsx` export/import | Export now **redacts `apiKey`** ✅; import does minimal shape validation + re-vet. Consider stricter import schema validation. | S |
 | ✅ | SEC-3 | `normalizeAiMeal` now bounds model-output string lengths (name 120, tags 40, ingredient name 80 / unit 24) and caps ingredients at 30. | Low | `claude.js` | — | S |
 | 🔶 | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅. Remaining nit: model `claude-sonnet-4-6` is still hardcoded (a deliberate, valid choice) — document or expose an override if best-quality GD reasoning is wanted. | Med | `claude.js` | Optional model override/comment. | S |
