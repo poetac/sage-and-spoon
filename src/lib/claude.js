@@ -57,7 +57,7 @@ export function extractJSON(text) {
 // false positive (rejecting a fine meal) is acceptable here; a false negative
 // (serving an over-cap / high-GI / added-sugar meal) is not.
 const SUGAR_OK_PREV = new Set(["no", "low", "reduced", "zero", "without", "unsweetened"]);
-function hasGdBannedIngredient(text) {
+export function hasGdBannedIngredient(text) {
   if (/\bwhite rice\b/.test(text) || /\bwhite bread\b/.test(text)) return true;
   // Fruit juice — lemon/lime juice is an acid used in drops, not a sweet juice.
   for (const m of text.matchAll(/\bjuices?\b/g)) {

@@ -331,10 +331,13 @@ export default function App() {
     // is toggled off). Guarding here, not just by dimming slots, keeps the plan
     // safe regardless of how the meal was chosen.
     const overCap = meal.carbsG > capFor(slot.type, settings.targets);
-    if (overCap || violatesExclusions(meal, prefs)) {
+    const badGi = !["Low", "Medium"].includes(meal.gi);
+    if (overCap || badGi || violatesExclusions(meal, prefs)) {
       setPlacing(null);
       toastErr(overCap
         ? `Can't add "${meal.name}" to ${slot.label} — ${meal.carbsG}g carbs is over the ${capFor(slot.type, settings.targets)}g cap for that slot.`
+        : badGi
+        ? `Can't add "${meal.name}" — only low- or medium-GI meals can go in the plan.`
         : `Can't add "${meal.name}" — it contains an ingredient you're avoiding.`);
       return;
     }
@@ -388,6 +391,9 @@ export default function App() {
   const exportData = () => {
     const out = { app: "sage-and-spoon", version: 1, exportedAt: new Date().toISOString(), data: {} };
     for (const [name, key] of Object.entries(K)) out.data[name] = store.get(key, null);
+    // Never write the API key into a downloadable file — it would sit in cleartext
+    // in Downloads / cloud sync. A restore re-enters the key in Settings.
+    if (out.data.settings) out.data.settings = { ...out.data.settings, apiKey: "" };
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
     a.download = "sage-and-spoon-backup.json";

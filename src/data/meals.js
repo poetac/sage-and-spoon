@@ -27,7 +27,7 @@ export const QUIZ = {
   proteins: ["Chicken", "Turkey", "Salmon", "White fish", "Shrimp", "Beef", "Pork", "Eggs", "Tofu", "Beans & lentils", "Greek yogurt"],
   vegetables: ["Broccoli", "Spinach", "Bell peppers", "Zucchini", "Brussels sprouts", "Cauliflower", "Green beans", "Asparagus", "Carrots", "Cucumber", "Tomatoes", "Mushrooms"],
   dislikes: ["Mushrooms", "Olives", "Cilantro", "Onions", "Fish", "Spicy food", "Cottage cheese", "Tofu"],
-  allergies: ["Peanuts", "Tree nuts", "Shellfish", "Eggs", "Dairy", "Soy", "Wheat / gluten"],
+  allergies: ["Peanuts", "Tree nuts", "Shellfish", "Fish", "Eggs", "Dairy", "Soy", "Wheat / gluten"],
   textures: ["No soggy food", "Love crunchy", "Prefer soups & stews", "Prefer warm meals", "Prefer cold / fresh", "No mushy textures"],
   spice: ["Mild", "Medium", "Bold"],
   portion: ["Small & frequent", "Normal"],
@@ -48,10 +48,17 @@ export const EMPTY_PREFS = {
 // "garlic butter" (a real dairy gap before) is now caught. Coconut is grouped
 // under Tree nuts: the FDA labels it a tree-nut allergen, so the conservative
 // (safe) default for a tree-nut allergy is to exclude it.
+// Finned fish — a top-9 allergen that had no chip before, and a dislike that
+// only listed salmon/cod/tuna. Shared by both the Fish allergy and the Fish
+// dislike so the two can't drift, and broad enough to cover the white/oily fish
+// the cookbook actually uses (tilapia, halibut, trout, mackerel, sardines…).
+const FISH = ["fish", "salmon", "tuna", "cod", "tilapia", "halibut", "trout", "mackerel", "sardine", "anchovy", "anchovies", "haddock", "snapper", "sole", "herring", "pollock", "catfish", "swordfish", "whitefish", "white fish"];
+
 export const ALLERGEN_MAP = {
   "Peanuts": ["peanut", "groundnut"],
   "Tree nuts": ["almond", "walnut", "pecan", "cashew", "pistachio", "hazelnut", "macadamia", "coconut", "pine nut", "brazil nut"],
   "Shellfish": ["shrimp", "crab", "lobster", "prawn", "scallop", "clam", "mussel", "oyster", "crawfish", "crayfish"],
+  "Fish": FISH,
   "Eggs": ["egg"],
   "Dairy": ["yogurt", "cheese", "milk", "butter", "cream", "feta", "mozzarella", "parmesan", "ricotta", "cottage", "ghee", "casein", "whey", "buttermilk", "custard", "half-and-half"],
   "Soy": ["tofu", "soy", "edamame"],
@@ -61,9 +68,9 @@ export const DISLIKE_MAP = {
   "Mushrooms": ["mushroom"],
   "Olives": ["olives", "kalamata"],
   "Cilantro": ["cilantro"],
-  "Onions": ["onion", "scallion"],
-  "Fish": ["salmon", "cod", "tuna"],
-  "Spicy food": ["chili", "curry", "red pepper flakes", "jalapeno", "jalapeño"],
+  "Onions": ["onion", "scallion", "shallot", "leek", "chive"],
+  "Fish": FISH,
+  "Spicy food": ["chili", "curry", "red pepper flakes", "jalapeno", "jalapeño", "sriracha", "harissa", "cayenne", "chipotle", "hot sauce"],
   "Cottage cheese": ["cottage cheese"],
   "Tofu": ["tofu"],
 };

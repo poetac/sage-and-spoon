@@ -1,10 +1,15 @@
-// Normalization + vetting for pipeline recipes. Reuses the app's own safety
-// predicates (capFor, violatesExclusions) so the build-time gate is identical
-// to the runtime one — but, unlike claude.js's normalizeAiMeal, it preserves a
-// `steps` array, because a build-time library should ship cookable recipes.
+// Normalization + vetting for pipeline recipes. Applies the app's own GD safety
+// gates — carb cap + exclusions (capFor, violatesExclusions), GI ∈ {Low,Medium},
+// and the added-sugar/juice/white-rice-or-bread denylist (hasGdBannedIngredient)
+// — so the build-time gate matches the runtime GD rules instead of silently
+// coercing unknown GI to "Low". Unlike claude.js's normalizeAiMeal it preserves
+// a `steps` array (a build-time library should ship cookable recipes), and it
+// allows Medium GI where the live AI path requires "Low", since the curated
+// cookbook intentionally carries some medium-GI recipes.
 import { CATEGORIES, ALLERGEN_MAP, DISLIKE_MAP } from "../../src/data/meals.js";
 import { capFor } from "../../src/lib/utils.js";
 import { violatesExclusions } from "../../src/lib/planner.js";
+import { hasGdBannedIngredient } from "../../src/lib/claude.js";
 
 const VALID_TYPES = ["breakfast", "lunch", "dinner", "snack"];
 
@@ -39,7 +44,9 @@ export function normalizeMeal(raw, fallbackType = "dinner") {
       c: CATEGORIES.includes(i.c) ? i.c : "Pantry",
     })),
     carbsG: Number(raw.carbsG) || 0,
-    gi: raw.gi === "Medium" ? "Medium" : "Low",
+    // Preserve a valid GI; never coerce unknown/garbage to "Low" (rejectReason
+    // then drops it, matching the runtime normalizeAiMeal/gdCompliant behavior).
+    gi: ["Low", "Medium"].includes(raw.gi) ? raw.gi : null,
     prepMins: Number(raw.prepMins) || 15,
     cuisineTag: String(raw.cuisineTag || ""),
     proteinTag: String(raw.proteinTag || ""),
@@ -63,6 +70,9 @@ export function rejectReason(meal, { targets, prefs = {}, existingNames = new Se
   if (meal.ingredients.length > 8) return "more than 8 ingredients";
   if (meal.carbsG <= 0) return "carbsG must be positive";
   if (meal.carbsG > capFor(meal.type, targets)) return `${meal.carbsG}g carbs exceeds ${meal.type} cap`;
+  if (!["Low", "Medium"].includes(meal.gi)) return `GI must be Low or Medium (got ${meal.gi == null ? "unknown" : meal.gi})`;
+  const text = (meal.name + " " + meal.ingredients.map((i) => i.n).join(" ")).toLowerCase();
+  if (hasGdBannedIngredient(text)) return "contains added sugar, fruit juice, or white rice/bread";
   if (violatesExclusions(meal, prefs)) return "contains an excluded ingredient";
   return null;
 }

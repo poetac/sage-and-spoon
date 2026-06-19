@@ -105,6 +105,15 @@ describe("cookbook data integrity", () => {
       expect(m.fiberG, `${m.name} fibre`).toBeLessThanOrEqual(45);
     }
   });
+  it("pairs carbs with protein or fat on every carb-heavy meal (≥20g)", () => {
+    // The carb↔protein/fat pairing rule was only enforced on the AI path; this
+    // makes it a load-bearing invariant of the shipped cookbook too.
+    for (const m of MEAL_DB) {
+      if (m.carbsG >= 20) {
+        expect((m.proteinG || 0) + (m.fatG || 0), `${m.name} (${m.carbsG}g carbs)`).toBeGreaterThanOrEqual(5);
+      }
+    }
+  });
 });
 
 describe("nutrition table coverage", () => {
@@ -115,4 +124,24 @@ describe("nutrition table coverage", () => {
     // sharp drop means a new common ingredient slipped the table.
     expect(unmatched, `unmatched: ${unmatched.join(", ")}`).toHaveLength(0);
   });
+});
+
+describe("exclusions remove the targeted food, not just a subset", () => {
+  // An independent fish detector (name + ingredients + proteinTag) so this
+  // catches an *incomplete* keyword map — which the pool-size checks above never
+  // could. The "Fish" dislike used to list only salmon/cod/tuna while the
+  // cookbook ships tilapia, halibut, trout, mackerel, sardines… (FISH-1).
+  const fishRe = /\b(fish|salmon|tuna|cod|tilapia|halibut|trout|mackerel|sardines?|anchov\w*|haddock|herring|whitefish|snapper|sole|pollock|catfish|swordfish)\b/i;
+  const isFish = (m) =>
+    fishRe.test(m.name + " " + m.ingredients.map((i) => i.n).join(" ")) ||
+    /salmon|tuna|cod|fish|tilapia|halibut|trout|mackerel|sardine|anchov|herring/i.test(m.proteinTag || "");
+
+  for (const chip of [{ allergies: ["Fish"] }, { dislikes: ["Fish"] }]) {
+    const kind = chip.allergies ? "allergy" : "dislike";
+    it(`the Fish ${kind} removes every fish recipe`, () => {
+      const prefs = { ...EMPTY_PREFS, ...chip };
+      const leaked = MEAL_DB.filter((m) => isFish(m) && mealAllowed(m, prefs, T, m.type)).map((m) => m.name);
+      expect(leaked, `leaked fish: ${leaked.join(", ")}`).toEqual([]);
+    });
+  }
 });

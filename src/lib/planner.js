@@ -12,7 +12,8 @@ const ALLERGY_ALIASES = {
   nut: ["Tree nuts", "Peanuts"], nuts: ["Tree nuts", "Peanuts"],
   "tree nut": ["Tree nuts"], "tree nuts": ["Tree nuts"],
   peanut: ["Peanuts"], peanuts: ["Peanuts"], groundnut: ["Peanuts"],
-  shellfish: ["Shellfish"], "shell fish": ["Shellfish"], crustacean: ["Shellfish"], crustaceans: ["Shellfish"], seafood: ["Shellfish"],
+  shellfish: ["Shellfish"], "shell fish": ["Shellfish"], crustacean: ["Shellfish"], crustaceans: ["Shellfish"], seafood: ["Shellfish", "Fish"],
+  fish: ["Fish"], finfish: ["Fish"], "finned fish": ["Fish"],
   dairy: ["Dairy"], lactose: ["Dairy"], milk: ["Dairy"],
   egg: ["Eggs"], eggs: ["Eggs"],
   soy: ["Soy"], soya: ["Soy"], soybean: ["Soy"], soybeans: ["Soy"],
@@ -82,9 +83,14 @@ export function violatesExclusions(meal, prefs) {
   const text = lc(meal.name) + " " + meal.ingredients.map((i) => lc(i.n)).join(" ");
   return kws.some((kw) => keywordHit(text, kw));
 }
-// Hard rules only: carb cap + exclusions. These are never relaxed.
+// Hard rules only: carb cap + GI (Low/Medium) + exclusions. Never relaxed. The
+// GI gate closes a gap where the local/place/import path checked caps and
+// exclusions but not GI — so a custom or imported meal with a High/unknown GI
+// could be planned past the "Low or Medium GI only" rule. (The AI path is
+// stricter still, requiring an explicit "Low".)
 export function mealSafe(meal, prefs, targets, slotType) {
   if (meal.carbsG > capFor(slotType || meal.type, targets)) return false;
+  if (!["Low", "Medium"].includes(meal.gi)) return false;
   return !violatesExclusions(meal, prefs);
 }
 export function mealAllowed(meal, prefs, targets, slotType) {

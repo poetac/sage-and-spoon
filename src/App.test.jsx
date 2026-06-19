@@ -226,6 +226,29 @@ describe("App — backup restore", () => {
   });
 });
 
+describe("App — backup excludes the API key", () => {
+  it("redacts the API key from the downloaded backup (SEC-2)", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-ant-secret-123" });
+    let captured;
+    const origCreate = URL.createObjectURL;
+    const origRevoke = URL.revokeObjectURL;
+    URL.createObjectURL = (blob) => { captured = blob; return "blob:mock"; };
+    URL.revokeObjectURL = () => {};
+    try {
+      render(<App />);
+      goTo(/Settings/);
+      fireEvent.click(await screen.findByText("Download backup"));
+      const text = await captured.text();
+      expect(text).not.toContain("sk-ant-secret-123");
+      expect(JSON.parse(text).data.settings.apiKey).toBe("");
+    } finally {
+      URL.createObjectURL = origCreate;
+      URL.revokeObjectURL = origRevoke;
+    }
+  });
+});
+
 describe("App — reset", () => {
   it("clears storage and returns to onboarding after confirming", async () => {
     seedPrefs();
