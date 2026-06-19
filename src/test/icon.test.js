@@ -22,3 +22,14 @@ describe("apple-touch-icon.png", () => {
     expect(buf.readUInt32BE(20)).toBe(180);
   });
 });
+
+// Manifest PNG icons (PERF-9) — some platforms require a raster ≥192px.
+// Regenerate with: npm run icons:png
+describe.each([[192], [512]])("manifest icon-%ipx.png", (size) => {
+  const buf = readFileSync(join(process.cwd(), "public", `icon-${size}.png`));
+  it("is a valid PNG of the declared size", () => {
+    expect(buf.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+    expect(buf.readUInt32BE(16)).toBe(size);
+    expect(buf.readUInt32BE(20)).toBe(size);
+  });
+});

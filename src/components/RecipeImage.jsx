@@ -61,14 +61,21 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
 
   const isUser = !!img.userPhoto;
   // Data/blob URLs (cook photos) are used verbatim; remote URLs get a sized
-  // variant; self-hosted webp picks the 400px card / 800px detail file.
-  const local = /^(data:|blob:)/.test(img.src);
-  const remote = !local && /^https?:/.test(img.src);
-  const src = local
+  // variant; self-hosted webp picks the 400px card / 800px detail file as the
+  // default src, and offers both widths via srcset so retina cards stay crisp.
+  const isData = /^(data:|blob:)/.test(img.src);
+  const remote = !isData && /^https?:/.test(img.src);
+  const selfHosted = !isData && !remote;
+  const base = import.meta.env.BASE_URL;
+  const src = isData
     ? img.src
     : remote
       ? sizedSrc(img.src, height)
-      : import.meta.env.BASE_URL + (height > 140 ? img.src : img.src.replace(/\.webp$/, "-400.webp"));
+      : base + (height > 140 ? img.src : img.src.replace(/\.webp$/, "-400.webp"));
+  const srcSet = selfHosted
+    ? `${base}${img.src.replace(/\.webp$/, "-400.webp")} 400w, ${base}${img.src} 800w`
+    : undefined;
+  const sizes = selfHosted ? (height > 140 ? "(max-width: 768px) 92vw, 440px" : "(max-width: 768px) 46vw, 240px") : undefined;
 
   // Gallery controls only in detail modal (showCredit=true) with multiple photos.
   const canNav = showCredit && photos.length > 1;
@@ -76,7 +83,7 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
   return (
     <figure style={{ margin: 0 }}>
       <div style={wrap}>
-        <img src={src} alt={meal.name} title={isUser ? "Your photo" : img.credit ? `Photo: ${img.credit}` : undefined}
+        <img src={src} srcSet={srcSet} sizes={sizes} alt={meal.name} title={isUser ? "Your photo" : img.credit ? `Photo: ${img.credit}` : undefined}
           loading="lazy" decoding="async" referrerPolicy="no-referrer"
           onError={() => setIdx((i) => i + 1)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
