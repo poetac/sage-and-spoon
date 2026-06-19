@@ -23,8 +23,9 @@ export function prefsSummary(prefs) {
   });
 }
 
-export async function callClaude(apiKey, userPrompt, maxTokens) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+const RETRYABLE = new Set([429, 529]); // rate-limited / overloaded
+function postClaude(apiKey, userPrompt, maxTokens) {
+  return fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,8 +40,24 @@ export async function callClaude(apiKey, userPrompt, maxTokens) {
       messages: [{ role: "user", content: userPrompt }],
     }),
   });
-  const data = await res.json();
+}
+
+export async function callClaude(apiKey, userPrompt, maxTokens) {
+  let res = await postClaude(apiKey, userPrompt, maxTokens);
+  // One retry on rate-limit / overload, honoring Retry-After (capped) so a burst
+  // across the AI features degrades gracefully instead of failing on the spot.
+  if (RETRYABLE.has(res.status)) {
+    const wait = Math.min(Number(res.headers?.get?.("retry-after")) || 1, 10);
+    await new Promise((r) => setTimeout(r, wait * 1000));
+    res = await postClaude(apiKey, userPrompt, maxTokens);
+  }
+  // Parse defensively: a gateway error often returns HTML, and res.json() would
+  // throw a cryptic "Unexpected token" instead of surfacing the real HTTP status.
+  const body = await res.text();
+  let data;
+  try { data = JSON.parse(body); } catch { data = null; }
   if (!res.ok) throw new Error(data?.error?.message || `API error (${res.status})`);
+  if (!data) throw new Error("the API returned an unexpected (non-JSON) response");
   const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
   return extractJSON(text);
 }

@@ -1,6 +1,34 @@
-import { describe, it, expect } from "vitest";
-import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals, gdCompliant } from "./claude.js";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals, gdCompliant, callClaude } from "./claude.js";
 import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../data/meals.js";
+
+describe("callClaude (transport robustness)", () => {
+  const realFetch = global.fetch;
+  afterEach(() => { global.fetch = realFetch; vi.useRealTimers(); vi.restoreAllMocks(); });
+  const ok = (obj) => ({ ok: true, status: 200, headers: { get: () => null }, text: async () => JSON.stringify(obj) });
+
+  it("returns the JSON parsed from the model's text content", async () => {
+    global.fetch = vi.fn().mockResolvedValue(ok({ content: [{ type: "text", text: '{"a":1}' }] }));
+    await expect(callClaude("k", "p", 100)).resolves.toEqual({ a: 1 });
+  });
+
+  it("surfaces the HTTP status on a non-JSON error body (gateway HTML)", async () => {
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 502, headers: { get: () => null }, text: async () => "<html>Bad Gateway</html>" });
+    await expect(callClaude("k", "p", 100)).rejects.toThrow(/502/);
+  });
+
+  it("retries once on 429, honoring Retry-After, then succeeds", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({ ok: false, status: 429, headers: { get: () => "0" }, text: async () => "{}" })
+      .mockResolvedValueOnce(ok({ content: [{ type: "text", text: '{"ok":true}' }] }));
+    global.fetch = fetchMock;
+    const p = callClaude("k", "p", 100);
+    await vi.runAllTimersAsync();
+    await expect(p).resolves.toEqual({ ok: true });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+});
 
 describe("extractJSON", () => {
   it("parses bare JSON", () => {
