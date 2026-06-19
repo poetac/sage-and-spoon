@@ -89,9 +89,9 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 `PERF-8` (responsive `srcset`), `PERF-9` (PNG manifest icons), `IMG-LICENSE`
 (redistributable allowlist before self-hosting).
 
-**Security & cleanups — Sprint C** (359 tests): `SEC-1` (build-only CSP locking
+**Security & cleanups — Sprint C** (360 tests): `SEC-1` (build-only CSP locking
 connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7`
-(tab-bar tap targets).
+(tab-bar tap targets), `A11Y-8` (Android/desktop `beforeinstallprompt` install).
 
 ---
 
@@ -140,7 +140,7 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
 | ✅ | A11Y-6 | Cap over-guidance hint ✅, cookbook skeleton has `aria-busy` ✅, and carb-target inputs announce the 5 g clamp via `aria-describedby` ✅. | Med | `SettingsTab.jsx`, `App.jsx` | (servings/protein inputs could get the same hint later.) | S |
 | ✅ | A11Y-7 | Shopping remove buttons ≥28px, gallery dots an 8px tap pad, and the mobile tab bar bumped to 12px text with a 48px min target. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | — | S |
-| ✅ | A11Y-8 | Skip-to-content link → `#main-content` landmark ✅; an `OfflineBanner` (`navigator.onLine`, role=status) explains offline behavior ✅; iOS install affordance (A2HS) already shipped. | Low | `App.jsx`, `OfflineBanner.jsx` | (Android/desktop `beforeinstallprompt` button still optional.) | M |
+| ✅ | A11Y-8 | Skip-to-content link → `#main-content` ✅; `OfflineBanner` (`navigator.onLine`, role=status) ✅; iOS A2HS tip ✅; Android/desktop one-tap Install via `beforeinstallprompt` ✅. | Low | `App.jsx`, `OfflineBanner.jsx`, `A2HSBanner.jsx` | — | M |
 
 ## P3 — Testing & CI
 
