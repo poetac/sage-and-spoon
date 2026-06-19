@@ -62,9 +62,12 @@ export async function clearAllUserPhotos() {
   }
 }
 
-// Persist (or clear, when empty) the photo list for one recipe.
+// Persist (or clear, when empty) the photo list for one recipe. Returns true on
+// success — or when there's no IndexedDB (in-memory only is the contract, not an
+// error) — and false on a real write failure (e.g. quota exceeded), so the
+// caller can surface it instead of silently losing the photo on reload.
 export async function saveUserPhotos(id, photos) {
-  if (!hasIDB) return;
+  if (!hasIDB) return true;
   try {
     const db = await openDb();
     await new Promise((resolve, reject) => {
@@ -76,7 +79,8 @@ export async function saveUserPhotos(id, photos) {
       tx.onerror = () => reject(tx.error);
       tx.onabort = () => reject(tx.error || new Error("transaction aborted"));
     });
+    return true;
   } catch {
-    /* best-effort: the in-memory state still reflects this change for the session */
+    return false; // quota or write failure
   }
 }

@@ -118,13 +118,22 @@ export default function App() {
       { label: "Undo", onClick: () => { setHiddenIds(prev); say("Restored"); } });
   };
 
-  // User photos lead the gallery, newest first; persisted to IndexedDB.
-  const addUserPhoto = (id, dataUrl) => {
-    setUserPhotos((prev) => {
-      const list = [dataUrl, ...(prev[id] || [])];
-      saveUserPhotos(id, list);
-      return { ...prev, [id]: list };
-    });
+  // User photos lead the gallery, newest first; persisted to IndexedDB. If the
+  // write fails (e.g. storage quota), revert the optimistic add and say so
+  // rather than silently dropping the photo on the next reload.
+  const addUserPhoto = async (id, dataUrl) => {
+    const saved = [dataUrl, ...(userPhotos[id] || [])];
+    setUserPhotos((prev) => ({ ...prev, [id]: [dataUrl, ...(prev[id] || [])] }));
+    const ok = await saveUserPhotos(id, saved);
+    if (!ok) {
+      setUserPhotos((prev) => {
+        const arr = (prev[id] || []).filter((u) => u !== dataUrl);
+        const next = { ...prev };
+        if (arr.length) next[id] = arr; else delete next[id];
+        return next;
+      });
+      toastErr("Couldn't save that photo — this device's storage may be full.");
+    }
   };
   const removeUserPhoto = (id, idx) => {
     setUserPhotos((prev) => {
@@ -417,6 +426,7 @@ export default function App() {
     // Never write the API key into a downloadable file — it would sit in cleartext
     // in Downloads / cloud sync. A restore re-enters the key in Settings.
     if (out.data.settings) out.data.settings = { ...out.data.settings, apiKey: "" };
+    out.data.userPhotos = userPhotos; // IndexedDB, not in K — include so a backup is complete
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
     a.download = "sage-and-spoon-backup.json";
@@ -449,6 +459,10 @@ export default function App() {
       if (d.notes != null) setNotes(d.notes);
       if (d.hidden != null) setHiddenIds(d.hidden);
       if (d.shoppingEdits != null) store.set(K.shoppingEdits, d.shoppingEdits);
+      if (d.userPhotos && typeof d.userPhotos === "object") {
+        setUserPhotos(d.userPhotos);
+        for (const [pid, list] of Object.entries(d.userPhotos)) saveUserPhotos(pid, list);
+      }
       if (d.plan != null) setPlan(d.plan);
       if (d.prefs != null) setPrefs(d.prefs); // last: may flip onboarding → app
       toastOk(dropped
