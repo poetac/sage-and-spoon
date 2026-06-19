@@ -83,10 +83,11 @@ fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 (`TEST-7`), `dist` build-smoke (`TEST-8`), and `npm audit fix` (0 vulnerabilities).
 
-**Robustness, photos & perf polish — Sprints D/E** (353 tests): `SAFE-9` (broader
+**Robustness, photos & perf polish — Sprints D/E** (354 tests): `SAFE-9` (broader
 added-sugar denylist), `SEC-3` (bounded AI strings), `ARCH-8` (pipeline-aligned
 dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
-`PERF-8` (responsive `srcset`), `PERF-9` (PNG manifest icons).
+`PERF-8` (responsive `srcset`), `PERF-9` (PNG manifest icons), `IMG-LICENSE`
+(redistributable allowlist before self-hosting).
 
 ---
 
@@ -176,7 +177,7 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 | 🔶 | SEC-2 | Backup embedded the API key in plaintext; import trusted arbitrary JSON. | Low→Med | `App.jsx` export/import | Export now **redacts `apiKey`** ✅; import does minimal shape validation + re-vet. Consider stricter import schema validation. | S |
 | ✅ | SEC-3 | `normalizeAiMeal` now bounds model-output string lengths (name 120, tags 40, ingredient name 80 / unit 24) and caps ingredients at 30. | Low | `claude.js` | — | S |
 | 🔶 | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅. Remaining nit: model `claude-sonnet-4-6` is still hardcoded (a deliberate, valid choice) — document or expose an override if best-quality GD reasoning is wanted. | Med | `claude.js` | Optional model override/comment. | S |
-| ⬜ | IMG-LICENSE | No redistributable-license allowlist before `self-host` downloads/commits bytes; unrecognized licenses pass through; spoofed desktop User-Agent dodges 403s. | Med | `scripts/lib/commons.mjs:30`, `self-host-images.mjs:37,127` | Allowlist `cc0/pdm/by/by-sa` before download; assert credit renders for self-hosted copies; reconsider the UA. | S |
+| 🔶 | IMG-LICENSE | `isRedistributable` allowlist (cc0/pdm/by/by-sa) now gates self-host downloads ✅. Remaining (minor): the spoofed desktop User-Agent that dodges some 403s. | Med | `scripts/lib/commons.mjs`, `self-host-images.mjs` | Reconsider the UA. | S |
 
 > **Non-issues confirmed by the audits:** no `dangerouslySetInnerHTML`/`eval`/
 > `innerHTML`; AI output renders as escaped React text (no XSS); all image URLs
