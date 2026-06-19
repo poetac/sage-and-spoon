@@ -22,6 +22,7 @@ React 19 · Vite · Tailwind v4 (build-time plugin) · Vitest + Testing Library.
 npm run dev          # dev server
 npm run build        # production build (static, to dist/)
 npm test             # Vitest (run once)
+npm run test:coverage # Vitest + v8 coverage (CI gate; lenient ≥68% floor)
 npm run lint         # ESLint
 
 npm run recipes:report     # recipe-library coverage vs targets
