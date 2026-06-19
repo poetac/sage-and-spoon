@@ -22,6 +22,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { RECIPE_IMAGES } from "../src/data/recipe-images.js";
+import { isRedistributable } from "./lib/commons.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
@@ -111,7 +112,7 @@ async function main() {
   const alreadyLocal = Object.values(map).reduce((n, photos) => n + photos.filter((p) => !/^https?:/.test(p.src)).length, 0);
   console.log(`${Object.keys(map).length} recipes · ${alreadyLocal} local photos · ${todo.length} to fetch\n`);
 
-  let fetched = 0, skipped = 0, failed = 0;
+  let fetched = 0, skipped = 0, failed = 0, skippedLicense = 0;
   const failures = [];
 
   for (const { id, photoIdx } of todo) {
@@ -121,6 +122,13 @@ async function main() {
     if (existsSync(outPath)) {
       map[id][photoIdx] = { ...entry, src: variantSrc(key, 800) };
       skipped++;
+      continue;
+    }
+    // Only self-host (re-serve from our origin) images under a redistributable
+    // licence; anything else stays a remote URL so we don't republish it.
+    if (!isRedistributable(entry.license)) {
+      skippedLicense++;
+      process.stdout.write(`  ⚠ ${key} — license "${entry.license}" not redistributable; kept remote\n`);
       continue;
     }
     try {
@@ -155,7 +163,7 @@ async function main() {
     }
   }
 
-  console.log(`\nDone: ${fetched} fetched, ${skipped} skipped (already local), ${failed} failed (kept remote).`);
+  console.log(`\nDone: ${fetched} fetched, ${skipped} skipped (already local), ${failed} failed (kept remote)${skippedLicense ? `, ${skippedLicense} skipped (non-redistributable license)` : ""}.`);
   if (backfilled) console.log(`Backfilled ${backfilled} card variant(s) from existing 800px files.`);
   console.log(`Local images: ${files} files (${allLocalKeys.length} photos × 2 widths), ${(totalBytes / 1_048_576).toFixed(1)} MB total.`);
   if (failures.length) {

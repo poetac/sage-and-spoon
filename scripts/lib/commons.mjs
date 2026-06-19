@@ -20,6 +20,12 @@ export function commonsUrl(query, { limit = 6, thumb = 800 } = {}) {
 const PHOTO_EXT = /\.(jpe?g|png)$/i;
 const stripHtml = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
+// Licences whose images may be redistributed (re-served from our own origin) —
+// with visible attribution for by/by-sa. Anything else (an unmapped or
+// all-rights-reserved licence) must NOT be self-hosted; keep it remote or drop it.
+export const REDISTRIBUTABLE = new Set(["cc0", "pdm", "by", "by-sa"]);
+export const isRedistributable = (license) => REDISTRIBUTABLE.has(String(license || "").toLowerCase());
+
 // Map Commons' verbose licence names onto the short codes the app already shows.
 export function normLicense(short) {
   const s = String(short || "").toLowerCase();
