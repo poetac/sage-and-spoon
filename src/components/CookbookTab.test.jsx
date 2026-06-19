@@ -63,6 +63,20 @@ describe("CookbookTab", () => {
     expect(screen.queryByText("Salmon Bowl")).toBeNull();
   });
 
+  it("offers a Saved Recipes quick-link that filters to favorites", () => {
+    render(<CookbookTab {...base} favorites={["b"]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Show my 1 saved recipe" }));
+    expect(screen.getByText("1 recipe · filtered")).toBeInTheDocument();
+    expect(screen.getByText("Chicken Pasta")).toBeInTheDocument();
+    // the quick-link disappears once favorites-only is active
+    expect(screen.queryByRole("button", { name: /saved recipe/ })).toBeNull();
+  });
+
+  it("hides the Saved Recipes quick-link when nothing is favorited", () => {
+    render(<CookbookTab {...base} />);
+    expect(screen.queryByRole("button", { name: /saved recipe/ })).toBeNull();
+  });
+
   it("sorts by most fibre", () => {
     const withFibre = [
       meal({ id: "a", name: "Low Fibre", fiberG: 2 }),

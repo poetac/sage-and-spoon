@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ShoppingTab } from "./ShoppingTab.jsx";
+import { store, K } from "../lib/storage.js";
 
 const meal = {
   id: "m1", name: "Sheet-Pan Chicken", type: "dinner", carbsG: 35,
@@ -92,5 +93,36 @@ describe("ShoppingTab", () => {
     // Listed in the staples section; tapping it puts it back.
     fireEvent.click(screen.getByRole("button", { name: "Stop always-having broccoli" }));
     expect(onTogglePantry).toHaveBeenCalledWith("broccoli");
+  });
+
+  it("persists removed items and restores them on remount for the same week", () => {
+    store.set(K.shoppingEdits, null);
+    const { unmount } = renderTab();
+    fireEvent.click(screen.getByRole("button", { name: "Remove chicken breast" }));
+    expect(screen.getByText(/1 item removed/)).toBeInTheDocument();
+    unmount();
+    // Remount fresh: the removal is restored from storage (same weekStart).
+    renderTab();
+    expect(screen.getByText(/1 item removed/)).toBeInTheDocument();
+    expect(screen.queryByText("chicken breast")).toBeNull();
+  });
+
+  it("persists a manually added item across remounts", () => {
+    store.set(K.shoppingEdits, null);
+    const { unmount } = renderTab();
+    fireEvent.change(screen.getByLabelText("New item name"), { target: { value: "sparkling water" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Add$/ }));
+    expect(screen.getByText("sparkling water")).toBeInTheDocument();
+    unmount();
+    renderTab();
+    expect(screen.getByText("sparkling water")).toBeInTheDocument();
+  });
+
+  it("ignores edits saved for a different week", () => {
+    store.set(K.shoppingEdits, { weekStart: "1999-01-01", removed: ["chicken breast|lb"], extra: ["soda"] });
+    renderTab();
+    expect(screen.queryByText(/removed from this list/)).toBeNull();
+    expect(screen.getAllByText("chicken breast").length).toBeGreaterThan(0);
+    expect(screen.queryByText("soda")).toBeNull();
   });
 });

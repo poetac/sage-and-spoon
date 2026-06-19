@@ -155,6 +155,42 @@ describe("App — recipe notes", () => {
   });
 });
 
+describe("App — deleting a custom recipe", () => {
+  const customMeal = {
+    id: "ai-test-1", name: "Test AI Bowl", type: "lunch", gi: "Low", carbsG: 20, prepMins: 10,
+    cuisineTag: "Testish", proteinTag: "Tofu", proteinG: 22, fatG: 9, fiberG: 6,
+    ingredients: [{ n: "firm tofu", q: 1, u: "block", c: "Protein" }],
+  };
+
+  it("removes a custom meal from the cookbook and clears it from the plan", async () => {
+    seedPrefs();
+    store.set(K.custom, [customMeal]);
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS.targets);
+    plan.days[0].lunch = "ai-test-1";
+    store.set(K.plan, plan);
+
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Test AI Bowl" } });
+    fireEvent.click(screen.getByText("Test AI Bowl").closest(".card"));
+    fireEvent.click(screen.getByRole("button", { name: "Delete recipe" }));
+    fireEvent.click(screen.getByRole("button", { name: "Yes, delete" }));
+
+    await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(0));
+    expect(store.get(K.plan, null).days[0].lunch).toBeNull();
+  });
+
+  it("never offers delete for built-in library recipes", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    fireEvent.click(screen.getByText("Greek Yogurt Berry Parfait").closest(".card"));
+    expect(screen.queryByRole("button", { name: "Delete recipe" })).toBeNull();
+  });
+});
+
 describe("App — backup restore", () => {
   it("restores prefs and favorites from a backup file", async () => {
     seedPrefs();

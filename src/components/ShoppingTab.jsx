@@ -1,16 +1,31 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { CATEGORIES } from "../data/meals.js";
 import { lc, qtyLabel } from "../lib/utils.js";
 import { dayDate, fmtShort } from "../lib/dates.js";
 import { buildShoppingList } from "../lib/shopping.js";
+import { store, K } from "../lib/storage.js";
 import { Icon, ICONS } from "./primitives.jsx";
+
+// Restore the cook's manual add/remove edits only when they belong to the plan
+// currently on screen — a freshly generated week starts with a clean list.
+function loadEdits(plan) {
+  const s = store.get(K.shoppingEdits, null);
+  if (s && plan && s.weekStart === plan.weekStart) return { removed: s.removed || [], extra: s.extra || [] };
+  return { removed: [], extra: [] };
+}
 
 /* ------------------------------- shopping tab ---------------------------- */
 export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [], onTogglePantry, toastOk, toastErr }) {
   const [checked, setChecked] = useState({});
-  const [removedKeys, setRemovedKeys] = useState(() => new Set());
-  const [extraItems, setExtraItems] = useState([]);
+  const [removedKeys, setRemovedKeys] = useState(() => new Set(loadEdits(plan).removed));
+  const [extraItems, setExtraItems] = useState(() => loadEdits(plan).extra.map((n) => ({ n })));
   const [newItemInput, setNewItemInput] = useState("");
+
+  // Persist edits across sessions, scoped to the current week's start date.
+  useEffect(() => {
+    if (!plan) return;
+    store.set(K.shoppingEdits, { weekStart: plan.weekStart, removed: [...removedKeys], extra: extraItems.map((it) => it.n) });
+  }, [plan, removedKeys, extraItems]);
 
   const pantrySet = useMemo(() => new Set(pantry.map(lc)), [pantry]);
   const grouped = useMemo(() => buildShoppingList(plan, mealsById, settings.servings, pantrySet), [plan, mealsById, settings.servings, pantrySet]);

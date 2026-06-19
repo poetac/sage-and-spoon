@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { photosForRecipe } from "../data/recipe-images.js";
+import { Icon, ICONS } from "./primitives.jsx";
 
 /* ------------------------------ recipe image ----------------------------- */
 // Renders a photo from the per-recipe gallery when available, otherwise a
@@ -41,11 +42,12 @@ const sizedSrc = (src, height) => {
   return m ? `${m[1]}_${height > 140 ? "c" : "n"}.jpg` : src;
 };
 
-export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit = false }) {
-  const photos = photosForRecipe(meal.id);
+export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit = false, userPhotos = [], onRemovePhoto }) {
+  // Cook-supplied photos lead the gallery (index 0+), then the curated ones.
+  const photos = [...userPhotos.map((src) => ({ src, userPhoto: true })), ...photosForRecipe(meal.id)];
   const [idx, setIdx] = useState(0);
 
-  const wrap = { width: "100%", height, borderRadius: rounded, overflow: "hidden", flexShrink: 0 };
+  const wrap = { width: "100%", height, borderRadius: rounded, overflow: "hidden", flexShrink: 0, position: "relative" };
 
   const img = photos[idx] ?? null;
 
@@ -57,10 +59,16 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
     );
   }
 
-  const remote = /^https?:/.test(img.src);
-  const src = remote
-    ? sizedSrc(img.src, height)
-    : import.meta.env.BASE_URL + (height > 140 ? img.src : img.src.replace(/\.webp$/, "-400.webp"));
+  const isUser = !!img.userPhoto;
+  // Data/blob URLs (cook photos) are used verbatim; remote URLs get a sized
+  // variant; self-hosted webp picks the 400px card / 800px detail file.
+  const local = /^(data:|blob:)/.test(img.src);
+  const remote = !local && /^https?:/.test(img.src);
+  const src = local
+    ? img.src
+    : remote
+      ? sizedSrc(img.src, height)
+      : import.meta.env.BASE_URL + (height > 140 ? img.src : img.src.replace(/\.webp$/, "-400.webp"));
 
   // Gallery controls only in detail modal (showCredit=true) with multiple photos.
   const canNav = showCredit && photos.length > 1;
@@ -68,10 +76,19 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
   return (
     <figure style={{ margin: 0 }}>
       <div style={wrap}>
-        <img src={src} alt={meal.name} title={img.credit ? `Photo: ${img.credit}` : undefined}
+        <img src={src} alt={meal.name} title={isUser ? "Your photo" : img.credit ? `Photo: ${img.credit}` : undefined}
           loading="lazy" decoding="async" referrerPolicy="no-referrer"
           onError={() => setIdx((i) => i + 1)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        {isUser && onRemovePhoto && (
+          <button type="button" onClick={(e) => { e.stopPropagation(); onRemovePhoto(idx); }}
+            aria-label="Remove your photo" title="Remove your photo"
+            style={{ position: "absolute", top: 6, right: 6, width: 26, height: 26, borderRadius: 999,
+              background: "rgba(0,0,0,.55)", color: "#fff", border: "none", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 0 }}>
+            <Icon d={ICONS.trash} size={13} />
+          </button>
+        )}
       </div>
       {canNav && (
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
@@ -92,7 +109,11 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
             aria-label="Next photo">›</button>
         </div>
       )}
-      {showCredit && img.credit && (
+      {showCredit && (isUser ? (
+        <figcaption className="t-soft" style={{ fontSize: 10.5, marginTop: canNav ? 2 : 4 }}>
+          Your photo{photos.length > 1 ? ` · ${idx + 1}/${photos.length}` : ""}
+        </figcaption>
+      ) : img.credit ? (
         <figcaption className="t-soft" style={{ fontSize: 10.5, marginTop: canNav ? 2 : 4 }}>
           Photo{img.creditUrl
             ? <> · <a href={img.creditUrl} target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>{img.credit}</a></>
@@ -100,7 +121,7 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
           {img.license ? ` (${img.license.toUpperCase()})` : ""}
           {photos.length > 1 ? ` · ${idx + 1}/${photos.length}` : ""}
         </figcaption>
-      )}
+      ) : null)}
     </figure>
   );
 }

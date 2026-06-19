@@ -1,16 +1,54 @@
+import { useState } from "react";
 import { qtyLabel, scaleIngredient } from "../lib/utils.js";
-import { Icon, ICONS, GiPill, Modal } from "./primitives.jsx";
+import { fileToResizedDataUrl } from "../lib/image.js";
+import { Icon, ICONS, GiPill, Modal, Spinner } from "./primitives.jsx";
 import { NutritionPills } from "./NutritionPills.jsx";
 import { RecipeImage } from "./RecipeImage.jsx";
 
 /* ------------------------------- meal detail ------------------------------ */
 // Quantities in the meal DB are per RECIPE_SERVINGS; scale to the household's
 // current servings setting, same as the shopping list does.
-export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite, note, onSetNote }) {
+export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavorite, note, onSetNote,
+  userPhotos = [], onAddPhoto, onRemovePhoto, canDelete, onDelete }) {
   const scaled = meal.ingredients.map((ing) => scaleIngredient(ing, servings));
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoErr, setPhotoErr] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const handleFile = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = ""; // let the same file be picked again later
+    if (!file) return;
+    setPhotoErr("");
+    setPhotoBusy(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file);
+      await onAddPhoto(meal.id, dataUrl);
+    } catch {
+      setPhotoErr("Couldn't add that photo — try a different image.");
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
+
   return (
     <Modal title={meal.name} onClose={onClose}>
-      <div className="mb-4"><RecipeImage key={meal.id} meal={meal} height={160} showCredit /></div>
+      <div className="mb-4">
+        {/* Keying on the photo count resets the gallery to the newest photo on add/remove. */}
+        <RecipeImage key={`${meal.id}:${userPhotos.length}`} meal={meal} height={160} showCredit
+          userPhotos={userPhotos}
+          onRemovePhoto={onRemovePhoto ? (i) => onRemovePhoto(meal.id, i) : undefined} />
+        {onAddPhoto && (
+          <div className="flex items-center gap-2 mt-2">
+            <label className="btn btn-soft" style={{ padding: "5px 12px", fontSize: 12.5, cursor: photoBusy ? "default" : "pointer" }}>
+              <input type="file" accept="image/*" style={{ display: "none" }} disabled={photoBusy} onChange={handleFile} />
+              {photoBusy ? <Spinner size={13} /> : <Icon d={ICONS.camera} size={14} />}
+              {photoBusy ? "Adding…" : "Add your photo"}
+            </label>
+            {photoErr && <span className="text-xs" style={{ color: "var(--berry)" }}>{photoErr}</span>}
+          </div>
+        )}
+      </div>
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)", textTransform: "capitalize" }}>{meal.type}</span>
         <GiPill gi={meal.gi} />
@@ -70,6 +108,24 @@ export function MealDetail({ meal, servings, onClose, isFavorite, onToggleFavori
           <textarea className="input" rows={2} placeholder="Tweaks, what worked, who liked it…"
             aria-label="Recipe notes" value={note || ""} onChange={(e) => onSetNote(meal.id, e.target.value)} />
         </>
+      )}
+
+      {/* Only custom/AI meals can be deleted; the built-in library can only be hidden. */}
+      {canDelete && onDelete && (
+        <div className="mt-5 pt-4" style={{ borderTop: "1px solid var(--line)" }}>
+          {confirmDelete ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm" style={{ fontWeight: 600 }}>Delete this recipe permanently?</span>
+              <button className="btn ml-auto" style={{ background: "var(--berry)", color: "#fff", fontWeight: 700 }}
+                onClick={() => onDelete(meal.id)}>Yes, delete</button>
+              <button className="btn btn-ghost" onClick={() => setConfirmDelete(false)}>Cancel</button>
+            </div>
+          ) : (
+            <button className="btn btn-ghost" style={{ color: "var(--berry)" }} onClick={() => setConfirmDelete(true)}>
+              <Icon d={ICONS.trash} size={14} /> Delete recipe
+            </button>
+          )}
+        </div>
       )}
     </Modal>
   );

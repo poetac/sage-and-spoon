@@ -142,6 +142,20 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
       <h2 className="font-display text-2xl mb-1" style={{ fontWeight: 600 }}>Cookbook</h2>
       <p className="t-soft text-sm mb-4">Every GD-safe recipe in one place — search, filter, and drop any of them straight into your week.</p>
 
+      {favorites.length > 0 && !favOnly && (
+        <button type="button" onClick={() => setFavOnly(true)}
+          className="card p-4 mb-5 w-full flex items-center gap-3"
+          style={{ cursor: "pointer", textAlign: "left", borderColor: "var(--berry)" }}
+          aria-label={`Show my ${favorites.length} saved recipe${favorites.length === 1 ? "" : "s"}`}>
+          <span style={{ color: "var(--berry)", lineHeight: 0 }}><Icon d={ICONS.heart} size={22} fill="currentColor" /></span>
+          <div className="min-w-0">
+            <div style={{ fontWeight: 700 }}>My Saved Recipes ({favorites.length})</div>
+            <div className="t-soft text-sm">Jump straight to the recipes you've hearted.</div>
+          </div>
+          <span className="ml-auto t-soft text-lg" aria-hidden="true">›</span>
+        </button>
+      )}
+
       <div className="card p-4 mb-5 grid gap-3">
         <input className="input" placeholder="Search recipes or ingredients…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search recipes" />
         <div className="flex flex-wrap gap-2">

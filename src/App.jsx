@@ -6,6 +6,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
+import { loadAllUserPhotos, saveUserPhotos } from "./lib/userPhotos.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
@@ -20,6 +21,7 @@ import { IngredientsTab } from "./components/IngredientsTab.jsx";
 import { CookbookTab } from "./components/CookbookTab.jsx";
 import { ShoppingTab } from "./components/ShoppingTab.jsx";
 import { SettingsTab } from "./components/SettingsTab.jsx";
+import { A2HSBanner } from "./components/A2HSBanner.jsx";
 
 /* ----------------------------------- app --------------------------------- */
 const TABS = [
@@ -45,6 +47,7 @@ export default function App() {
   const [history, setHistoryState] = useState(() => store.get(K.history, []));
   const [notes, setNotesState] = useState(() => store.get(K.notes, {}));
   const [hiddenIds, setHiddenIdsState] = useState(() => store.get(K.hidden, []));
+  const [userPhotos, setUserPhotos] = useState({});   // { [mealId]: dataUrl[] } from IndexedDB
   const [showHistory, setShowHistory] = useState(false);
   const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
@@ -72,6 +75,13 @@ export default function App() {
     return () => { alive = false; };
   }, []);
 
+  // Cook-supplied recipe photos live in IndexedDB (too big for localStorage).
+  useEffect(() => {
+    let alive = true;
+    loadAllUserPhotos().then((m) => { if (alive && Object.keys(m).length) setUserPhotos(m); });
+    return () => { alive = false; };
+  }, []);
+
   const setPrefs = (p) => { setPrefsState(p); store.set(K.prefs, p); };
   const setPlan = (p) => { setPlanState(p); store.set(K.plan, p); };
   const setCustom = (m) => { setCustomState(m); store.set(K.custom, m); };
@@ -84,6 +94,24 @@ export default function App() {
     setHiddenIdsState(next); store.set(K.hidden, next);
     say(hiddenIds.includes(id) ? "Recipe restored to cookbook" : "Recipe hidden from cookbook", "ok",
       { label: "Undo", onClick: () => { const prev = hiddenIds; setHiddenIdsState(prev); store.set(K.hidden, prev); say("Restored"); } });
+  };
+
+  // User photos lead the gallery, newest first; persisted to IndexedDB.
+  const addUserPhoto = (id, dataUrl) => {
+    setUserPhotos((prev) => {
+      const list = [dataUrl, ...(prev[id] || [])];
+      saveUserPhotos(id, list);
+      return { ...prev, [id]: list };
+    });
+  };
+  const removeUserPhoto = (id, idx) => {
+    setUserPhotos((prev) => {
+      const list = (prev[id] || []).filter((_, i) => i !== idx);
+      saveUserPhotos(id, list);
+      const next = { ...prev };
+      if (list.length) next[id] = list; else delete next[id];
+      return next;
+    });
   };
 
   const setNote = (id, text) => {
@@ -318,6 +346,38 @@ export default function App() {
     commitPlan({ ...plan, days }, `"${meal.name}" added to ${weekdayShort(dayDate(plan.weekStart, dayIdx))} ${slot.label}`);
   };
 
+  // Permanently remove a custom/AI meal (built-in library recipes can only be
+  // hidden, never deleted). Also pull it from the plan and tidy up references,
+  // with a one-tap undo that restores everything it touched.
+  const removeCustomMeal = (id) => {
+    if (!customMeals.some((m) => m.id === id)) return;
+    const prev = { custom: customMeals, plan, favorites, notes, hidden: hiddenIds };
+    setCustom(customMeals.filter((m) => m.id !== id));
+    if (plan && plan.days.some((d) => Object.values(d).includes(id))) {
+      const days = plan.days.map((d) => {
+        const nd = { ...d };
+        for (const k of Object.keys(nd)) if (nd[k] === id) nd[k] = null;
+        return nd;
+      });
+      setPlan({ ...plan, days });
+    }
+    if (favorites.includes(id)) { const f = favorites.filter((x) => x !== id); setFavoritesState(f); store.set(K.favorites, f); }
+    if (notes[id]) { const n = { ...notes }; delete n[id]; setNotesState(n); store.set(K.notes, n); }
+    if (hiddenIds.includes(id)) { const h = hiddenIds.filter((x) => x !== id); setHiddenIdsState(h); store.set(K.hidden, h); }
+    setDetailMeal(null);
+    say("Recipe deleted", "ok", {
+      label: "Undo",
+      onClick: () => {
+        setCustom(prev.custom);
+        setPlan(prev.plan);
+        setFavoritesState(prev.favorites); store.set(K.favorites, prev.favorites);
+        setNotesState(prev.notes); store.set(K.notes, prev.notes);
+        setHiddenIdsState(prev.hidden); store.set(K.hidden, prev.hidden);
+        say("Restored");
+      },
+    });
+  };
+
   const resetAll = () => {
     store.clear(Object.values(K));
     setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]); setNotesState({}); setHiddenIdsState([]);
@@ -393,6 +453,7 @@ export default function App() {
       </header>
 
       <main className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto">
+        <A2HSBanner />
         {!cookbookReady ? (
           <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3">
             <Spinner size={20} />
@@ -455,7 +516,7 @@ export default function App() {
         </Modal>
       )}
 
-      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} note={notes[detailMeal.id] || ""} onSetNote={setNote} />}
+      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} note={notes[detailMeal.id] || ""} onSetNote={setNote} userPhotos={userPhotos[detailMeal.id] || []} onAddPhoto={addUserPhoto} onRemovePhoto={removeUserPhoto} canDelete={customMeals.some((m) => m.id === detailMeal.id)} onDelete={removeCustomMeal} />}
 
       {showHistory && <WeekHistory history={history} onRestore={restoreWeek} onClose={() => setShowHistory(false)} />}
 

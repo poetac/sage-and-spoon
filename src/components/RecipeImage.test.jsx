@@ -114,4 +114,32 @@ describe("RecipeImage", () => {
       expect(screen.getByText("🍗")).toBeInTheDocument();
     });
   });
+
+  describe("user photos", () => {
+    it("leads the gallery with cook photos before curated ones, labelled", () => {
+      images.m1 = [{ src: "https://example.com/a.jpg", credit: "Alice" }];
+      render(<RecipeImage meal={meal} showCredit userPhotos={["data:image/jpeg;base64,AAAA"]} />);
+      expect(screen.getByRole("img")).toHaveAttribute("src", "data:image/jpeg;base64,AAAA");
+      expect(screen.getByText(/Your photo/)).toBeInTheDocument();
+      expect(screen.getByText(/1\/2/)).toBeInTheDocument(); // 1 cook + 1 curated
+    });
+
+    it("uses a data URL verbatim, with no size-variant rewrite", () => {
+      render(<RecipeImage meal={meal} height={120} userPhotos={["data:image/png;base64,ZZZZ"]} />);
+      expect(screen.getByRole("img")).toHaveAttribute("src", "data:image/png;base64,ZZZZ");
+    });
+
+    it("removes a cook photo via its delete control", () => {
+      const onRemovePhoto = vi.fn();
+      render(<RecipeImage meal={meal} showCredit userPhotos={["data:image/jpeg;base64,AAAA"]} onRemovePhoto={onRemovePhoto} />);
+      fireEvent.click(screen.getByLabelText("Remove your photo"));
+      expect(onRemovePhoto).toHaveBeenCalledWith(0);
+    });
+
+    it("shows no delete control for curated photos", () => {
+      images.m1 = [{ src: "https://example.com/a.jpg", credit: "Alice" }];
+      render(<RecipeImage meal={meal} showCredit onRemovePhoto={() => {}} />);
+      expect(screen.queryByLabelText("Remove your photo")).not.toBeInTheDocument();
+    });
+  });
 });

@@ -88,4 +88,32 @@ describe("MealDetail", () => {
     render(<MealDetail meal={noSteps} servings={2} onClose={() => {}} />);
     expect(screen.queryByText("Steps")).toBeNull();
   });
+
+  it("shows the photo upload control only when wired", () => {
+    const { rerender } = render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(screen.queryByText("Add your photo")).toBeNull();
+    rerender(<MealDetail meal={meal} servings={2} onClose={() => {}} onAddPhoto={() => {}} userPhotos={[]} />);
+    expect(screen.getByText("Add your photo")).toBeInTheDocument();
+  });
+
+  it("rejects a non-image upload with an inline error and no callback", async () => {
+    const onAddPhoto = vi.fn();
+    render(<MealDetail meal={meal} servings={2} onClose={() => {}} onAddPhoto={onAddPhoto} userPhotos={[]} />);
+    const input = screen.getByLabelText("Add your photo");
+    fireEvent.change(input, { target: { files: [new File(["x"], "x.txt", { type: "text/plain" })] } });
+    expect(await screen.findByText(/Couldn't add that photo/)).toBeInTheDocument();
+    expect(onAddPhoto).not.toHaveBeenCalled();
+  });
+
+  it("offers a two-step delete only for custom recipes", () => {
+    const onDelete = vi.fn();
+    const { rerender } = render(<MealDetail meal={meal} servings={2} onClose={() => {}} />);
+    expect(screen.queryByRole("button", { name: "Delete recipe" })).toBeNull();
+
+    rerender(<MealDetail meal={meal} servings={2} onClose={() => {}} canDelete onDelete={onDelete} />);
+    fireEvent.click(screen.getByRole("button", { name: "Delete recipe" }));
+    expect(onDelete).not.toHaveBeenCalled(); // needs confirmation first
+    fireEvent.click(screen.getByRole("button", { name: "Yes, delete" }));
+    expect(onDelete).toHaveBeenCalledWith(meal.id);
+  });
 });
