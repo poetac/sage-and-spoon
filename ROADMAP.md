@@ -27,8 +27,9 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
 
 1. make the **local/bundled/import path** enforce the GD rules as strictly as the
    AI path (Phase 1 — ✅ done);
-2. **finish the offline story** (the SW image-cache cap silently evicts most
-   photos — `OFFLINE-CACHE`);
+2. **offline now holds** — self-hosted photos persist in a permanent SW cache
+   (`OFFLINE-CACHE` ✅); next, trim the eager main chunk / split the load gate
+   (`PERF-3`/`PERF-6`);
 3. pay down the **`App.jsx` god-component** before adding features (`ARCH-1/2`);
 4. decide the **backend-proxy** fork (blocks sharing, key security, and feeding
    user photos back into the shared library) — see P6.
@@ -61,9 +62,12 @@ IndexedDB), multi-photo gallery, clickable cards, shopping-list editing + Web
 Share, hide recipes, "My Saved Recipes" quick-link, delete custom recipes,
 persisted shopping edits, iOS A2HS banner.
 
-**Safety hardening — audit Phase 1** (commit on `claude/happy-newton-46jdxb`,
-339 tests): `FISH-1`, `GD-LOCAL`, `PIPELINE-DRIFT`, `SEC-2` (export side), plus
-new CI invariants. See P0 below.
+**Safety hardening — audit Phase 1** (339 tests): `FISH-1`, `GD-LOCAL`,
+`PIPELINE-DRIFT`, `SEC-2` (export side), plus new CI invariants. See P0 below.
+
+**Offline — audit Phase 2** (342 tests): `OFFLINE-CACHE` — self-hosted photos in
+a permanent (uncapped) SW cache + app-shell precache at install. `PERF-3`/`PERF-6`
+remain.
 
 ---
 
@@ -89,8 +93,8 @@ new CI invariants. See P0 below.
 
 | St | ID | Item | Sev | Where | Fix | Eff |
 |---|---|---|---|---|---|---|
-| ⬜ | **OFFLINE-CACHE** | "True offline" only partly holds: `IMG_CACHE_MAX=320` vs **1826 precached** files → most local photos evicted on first runtime fetch; and no `install`-time precache of the app shell / `/assets/*` / lazy `generated-meals` chunk → offline correctness depends on visit order. | High | `public/sw.js:16,20-31,62-80` | Size the image cap to the manifest (or drop the precache and use lazy per-view caching honestly); precache shell+hashed assets+cookbook chunk at install. | M |
-| 🔶 | PERF-1 | Self-host recipe photos for offline. | High | `sw.js`, `recipe-images.js` | Images self-hosted (913) ✅; offline retention blocked by `OFFLINE-CACHE`. | L |
+| ✅ | **OFFLINE-CACHE** | The SW precached ~1826 photos into one cache capped at 320 → most evicted on first runtime fetch; "true offline" didn't hold. | High | `public/sw.js` | Self-hosted photos now use a permanent, uncapped `LOCAL_IMG_CACHE` (never trimmed); cross-origin stays capped; app shell precached at install. Hashed `/assets/*` + cookbook chunk stay cache-first on first load (covered after one online session). | M |
+| ✅ | PERF-1 | Self-host recipe photos for offline. | High | `sw.js`, `recipe-images.js` | 913 self-hosted; offline retention now real via the permanent cache. | L |
 | 🔶 | PERF-2 | CC-BY/BY-SA require visible attribution wherever shown. | High | `RecipeImage.jsx`, `CookbookTab.jsx` | Detail modal shows credit ✅; **cards still title-only** (756 BY/BY-SA photos) — plumb `showCredit` to cards. | M |
 | ⬜ | PERF-3 | `recipe-images.js` (~180 KB) is statically imported into the **eager 486 KB main chunk** (via `RecipeImage.jsx:2`) though only Cookbook/detail use it. | Med | `RecipeImage.jsx` import path | Lazy-load behind the cookbook boundary (dynamic `import()` in `loadCookbook`, or lazy `CookbookTab`/`RecipeImage`). | M |
 | ✅ | PERF-4 | Render-blocking Google-Fonts `@import`. | High | `index.html` | Moved to `<link>` + preconnect; test-guarded. | S |
