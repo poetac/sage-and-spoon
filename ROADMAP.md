@@ -31,7 +31,9 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
    (`OFFLINE-CACHE` ✅), the image table is split out of the main chunk
    (`PERF-3` ✅, 124→96 KB gzip), and Settings no longer waits on the cookbook
    (`PERF-6` ✅);
-3. pay down the **`App.jsx` god-component** before adding features (`ARCH-1/2`);
+3. ✅ **architecture paydown landed** — `usePersistentState` (`ARCH-2`) and the
+   ingredient-names prop (`ARCH-1`); the App.jsx work left is prop-drilling /
+   card memoization (`PERF-7`);
 4. decide the **backend-proxy** fork (blocks sharing, key security, and feeding
    user photos back into the shared library) — see P6.
 
@@ -70,6 +72,11 @@ persisted shopping edits, iOS A2HS banner.
 SW photo cache + app-shell precache), `PERF-3` (image table code-split out of the
 main chunk: 124→96 KB gzip), `PERF-6` (Settings renders without waiting on the
 cookbook chunk).
+
+**Architecture & robustness — audit Phase 3** (345 tests): `ARCH-2`
+(`usePersistentState`), `ARCH-1` (ingredient-names prop), `PR41-SHOP` (week-keyed
+ShoppingTab), `A11Y-4` (MealCard Space activation), `CLAUDE-ROBUST` (defensive
+fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 
 ---
 
@@ -114,7 +121,7 @@ cookbook chunk).
 | ✅ | A11Y-1 | Toasts/moving-banner not announced. | High | `primitives.jsx`, `PlanTab.jsx` | `role`/`aria-live` regions. | S |
 | ✅ | A11Y-2 | No `aria-current`; no `<h1>`. | High | `App.jsx` | Added (test-locked). | S |
 | ✅ | A11Y-3 | Background scrolled behind modals. | Med | `primitives.jsx` `Modal` | Body scroll-lock on mount. | S |
-| 🔶 | A11Y-4 | Card keyboard/ARIA: `CookbookCard` handles Enter+Space ✅, but **`MealCard` ignores Space** (WCAG 2.1.1 on the primary surface) and both cards are `role="button"` wrapping nested buttons (invalid ARIA). RecipeImage gallery dots are mouse-only `role="button"` spans. | Med | `MealCard.jsx:13`, `CookbookTab.jsx:37`, `RecipeImage.jsx:101` | Handle Space; restructure so actions are siblings of (not inside) the activatable region; make dots real buttons. | M |
+| 🔶 | A11Y-4 | Both cards now activate on Enter+Space ✅. Remaining: both are `role="button"` wrapping nested action buttons (invalid ARIA), and RecipeImage gallery dots are mouse-only `role="button"` spans. | Med | `MealCard.jsx`, `CookbookTab.jsx`, `RecipeImage.jsx` | Restructure so actions are siblings of (not inside) the activatable region; make dots real buttons. | M |
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
 | 🔶 | A11Y-6 | Cap over-guidance hint ✅ and the cookbook skeleton now has `aria-busy` ✅; number inputs still clamp silently with no announcement. | Med | `SettingsTab.jsx` | Announce clamps (`aria-describedby` + message). | S |
 | ⬜ | A11Y-7 | Small tap targets/text: mobile tab bar (`fontSize:11`), pill ✕ (`padding:1px 4px`), gallery dots 6×6. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | Bump to ≥24–44px. | S |
@@ -137,8 +144,8 @@ cookbook chunk).
 
 | St | ID | Item | Where | Fix | Eff |
 |---|---|---|---|---|---|
-| ⬜ | ARCH-1 | `INGREDIENT_NAMES` is an ESM `let` re-bound in `loadCookbook` and read in render → the "never include" picker is **frozen to core-only vocabulary** for the session; the comment claims it upgrades (ESM live bindings don't re-render React). | `meals.js:270,278`, `PrefsFields.jsx:36` | Thread the loaded cookbook's ingredient names as a prop/context; drop the `export let` and its comment. | M |
-| ⬜ | ARCH-2 | ~13 set-and-persist wrappers + `K`-enumeration in **4 places** (`resetAll`/`exportData`/`importData`×2); `removeCustomMeal`/undo re-inline persistence. Adding a key needs 4 manual edits. | `App.jsx:382,390,403,418` | `usePersistentState(key, initial)` hook + single generic `K` iteration. | M |
+| ✅ | ARCH-1 | `INGREDIENT_NAMES` was an ESM `let` re-bound in `loadCookbook` and read in render → the picker was frozen to core-only vocabulary. | `meals.js`, `PrefsFields.jsx`, `App.jsx` | Dropped the live binding; App derives ingredient names from the loaded cookbook and threads them as a prop through Onboarding/SettingsTab → PrefsFields. | M |
+| ✅ | ARCH-2 | ~13 set-and-persist wrappers + `K`-enumeration in 4 places; `removeCustomMeal`/undo re-inlined persistence. | `App.jsx` | `usePersistentState(key, initial, hydrate)` hook; reset/import drive the setters; the inline per-key persistence is gone. | M |
 | ✅ | ARCH-3 | No error boundary. | `App.jsx` | `ErrorBoundary` wraps `<main>`. | S |
 | ✅ | ARCH-4 | Macro-pill markup duplicated. | components | `<NutritionPills>` primitive. | M |
 | ✅ | ARCH-5 | Busy resets outside `finally`. | `App.jsx` | Moved to `finally`. | S |
@@ -148,8 +155,8 @@ cookbook chunk).
 | ✅ | ARCH-9 | "per 2 servings" magic constant. | utils | `RECIPE_SERVINGS` + `scaleIngredient`. | S |
 | ✅ | ARCH-10 | `buildWeek` double `setPlan`. | `App.jsx` | Single set (branch on empty). | S |
 | ⬜ | ARCH-11 | `fetch-images.mjs` 429 retry has no ceiling (unverified). | `scripts/fetch-images.mjs` | Add a max-attempts cap. | S |
-| ⬜ | **PR41-SHOP** | ShoppingTab seeds removed/extra edits once at mount; a plan/week change while the tab is mounted keeps stale edits and clobbers the new week's persisted record. | `ShoppingTab.jsx:21,25-28` | Derive/reset edits from `plan.weekStart` (key-on-weekStart or effect). | S |
-| ⬜ | **PR41-PHOTOS** | User photos are excluded from backups (IndexedDB outside `K`); `saveUserPhotos` swallows `QuotaExceededError` (silent data loss); canvas resize doesn't apply EXIF orientation (sideways iPhone photos). | `userPhotos.js`, `image.js`, `App.jsx:390` | Include photos in export/import (or warn backup is partial); detect quota → toast; auto-orient via bitmap/EXIF. | M |
+| ✅ | **PR41-SHOP** | ShoppingTab seeded edits once at mount; a plan/week change while mounted kept stale edits and clobbered the new week's record. | `App.jsx`, `ShoppingTab.jsx` | ShoppingTab is keyed on `plan.weekStart`, so a week change remounts it with that week's stored edits. | S |
+| 🔶 | **PR41-PHOTOS** | Reset now clears IndexedDB photos ✅. Remaining: user photos are excluded from backups (IndexedDB outside `K`); `saveUserPhotos` swallows `QuotaExceededError` (silent data loss); canvas resize doesn't apply EXIF orientation (sideways iPhone photos). | `userPhotos.js`, `image.js`, `App.jsx` | Include photos in export/import (or warn backup is partial); detect quota → toast; auto-orient via bitmap/EXIF. | M |
 
 ## P5 — Security & robustness hardening
 
@@ -158,7 +165,7 @@ cookbook chunk).
 | ⬜ | SEC-1 | No Content-Security-Policy on an app holding a live API key in localStorage — no defense-in-depth if a dep/asset is ever compromised. | Med | `index.html` | `<meta>` CSP: `connect-src 'self' https://api.anthropic.com`; `img-src` the image hosts + `data:`; lock the rest. | M |
 | 🔶 | SEC-2 | Backup embedded the API key in plaintext; import trusted arbitrary JSON. | Low→Med | `App.jsx` export/import | Export now **redacts `apiKey`** ✅; import does minimal shape validation + re-vet. Consider stricter import schema validation. | S |
 | ⬜ | SEC-3 | `normalizeAiMeal` doesn't bound model-output string lengths. | Low | `claude.js` | Cap field lengths to avoid localStorage bloat. | S |
-| ⬜ | CLAUDE-ROBUST | No 429/`retry-after` backoff; `res.json()` throws on non-JSON error bodies (gateway HTML) → opaque toasts. Model `claude-sonnet-4-6` hardcoded with no override/comment (valid; `claude-opus-4-8` would give stronger GD reasoning). | Med | `claude.js:7,42` | `res.text()`→parse defensively; surface HTTP status; single `retry-after`-aware retry on 429/529; document/override the model. | M |
+| 🔶 | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅. Remaining nit: model `claude-sonnet-4-6` is still hardcoded (a deliberate, valid choice) — document or expose an override if best-quality GD reasoning is wanted. | Med | `claude.js` | Optional model override/comment. | S |
 | ⬜ | IMG-LICENSE | No redistributable-license allowlist before `self-host` downloads/commits bytes; unrecognized licenses pass through; spoofed desktop User-Agent dodges 403s. | Med | `scripts/lib/commons.mjs:30`, `self-host-images.mjs:37,127` | Allowlist `cc0/pdm/by/by-sa` before download; assert credit renders for self-hosted copies; reconsider the UA. | S |
 
 > **Non-issues confirmed by the audits:** no `dangerouslySetInnerHTML`/`eval`/
