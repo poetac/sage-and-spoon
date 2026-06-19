@@ -27,9 +27,10 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
 
 1. make the **local/bundled/import path** enforce the GD rules as strictly as the
    AI path (Phase 1 — ✅ done);
-2. **offline now holds** — self-hosted photos persist in a permanent SW cache
-   (`OFFLINE-CACHE` ✅); next, trim the eager main chunk / split the load gate
-   (`PERF-3`/`PERF-6`);
+2. **offline + load-time** — photos persist in a permanent SW cache
+   (`OFFLINE-CACHE` ✅), the image table is split out of the main chunk
+   (`PERF-3` ✅, 124→96 KB gzip), and Settings no longer waits on the cookbook
+   (`PERF-6` ✅);
 3. pay down the **`App.jsx` god-component** before adding features (`ARCH-1/2`);
 4. decide the **backend-proxy** fork (blocks sharing, key security, and feeding
    user photos back into the shared library) — see P6.
@@ -65,9 +66,10 @@ persisted shopping edits, iOS A2HS banner.
 **Safety hardening — audit Phase 1** (339 tests): `FISH-1`, `GD-LOCAL`,
 `PIPELINE-DRIFT`, `SEC-2` (export side), plus new CI invariants. See P0 below.
 
-**Offline — audit Phase 2** (342 tests): `OFFLINE-CACHE` — self-hosted photos in
-a permanent (uncapped) SW cache + app-shell precache at install. `PERF-3`/`PERF-6`
-remain.
+**Offline & load-time — audit Phase 2** (342 tests): `OFFLINE-CACHE` (permanent
+SW photo cache + app-shell precache), `PERF-3` (image table code-split out of the
+main chunk: 124→96 KB gzip), `PERF-6` (Settings renders without waiting on the
+cookbook chunk).
 
 ---
 
@@ -96,10 +98,10 @@ remain.
 | ✅ | **OFFLINE-CACHE** | The SW precached ~1826 photos into one cache capped at 320 → most evicted on first runtime fetch; "true offline" didn't hold. | High | `public/sw.js` | Self-hosted photos now use a permanent, uncapped `LOCAL_IMG_CACHE` (never trimmed); cross-origin stays capped; app shell precached at install. Hashed `/assets/*` + cookbook chunk stay cache-first on first load (covered after one online session). | M |
 | ✅ | PERF-1 | Self-host recipe photos for offline. | High | `sw.js`, `recipe-images.js` | 913 self-hosted; offline retention now real via the permanent cache. | L |
 | 🔶 | PERF-2 | CC-BY/BY-SA require visible attribution wherever shown. | High | `RecipeImage.jsx`, `CookbookTab.jsx` | Detail modal shows credit ✅; **cards still title-only** (756 BY/BY-SA photos) — plumb `showCredit` to cards. | M |
-| ⬜ | PERF-3 | `recipe-images.js` (~180 KB) is statically imported into the **eager 486 KB main chunk** (via `RecipeImage.jsx:2`) though only Cookbook/detail use it. | Med | `RecipeImage.jsx` import path | Lazy-load behind the cookbook boundary (dynamic `import()` in `loadCookbook`, or lazy `CookbookTab`/`RecipeImage`). | M |
+| ✅ | PERF-3 | `recipe-images.js` (~168 KB) was statically imported into the eager main chunk via `RecipeImage`. | Med | `recipe-image-store.js`, `RecipeImage.jsx`, `App.jsx` | Split behind a dynamic-import store; App loads it alongside the cookbook chunk. Main chunk 486→318 KB (124→96 KB gzip). | M |
 | ✅ | PERF-4 | Render-blocking Google-Fonts `@import`. | High | `index.html` | Moved to `<link>` + preconnect; test-guarded. | S |
 | ✅ | PERF-5 | Cache-first navigations served a stale shell after deploy. | Med | `public/sw.js` | Network-first for HTML; cache-first only for hashed assets; test-guarded. | S |
-| ⬜ | PERF-6 | `!cookbookReady` gate blanks all tabs (even Plan/Onboarding, which only need `CORE_DB`) until the lazy chunk resolves. | Med | `App.jsx:457` | Render CORE_DB-only views immediately; gate only full-DB views. | M |
+| ✅ | PERF-6 | The `!cookbookReady` gate blanked every tab — even Settings, which needs no cookbook data. | Med | `App.jsx` | Settings renders immediately; planner/cookbook/ingredients/shopping still wait (a saved plan resolves generated/custom ids against the full MEAL_DB, so they genuinely need it). Skeleton gains `aria-busy`. | S |
 | ⬜ | PERF-7 | `planProps` rebuilt inline every render (`App.jsx:436`) + un-memoized cards → 42 cards re-render on every toast/selection tick. | Med | `App.jsx`, `MealCard.jsx`, `CookbookTab.jsx` | `useCallback`/memo handlers; `React.memo` cards. | M |
 | 🔶 | PERF-8 | Images lazy-load + height-based 400/800 variant ✅, but no `width`/`height`/`aspect-ratio` and no `srcset`. | Low | `RecipeImage.jsx` | Add intrinsic size + 1x/2x `srcset`. | S |
 | ⬜ | PERF-9 | Manifest ships SVG-only icons. | Low | `manifest.webmanifest` | Add 192/512 PNG icons. | S |
@@ -114,7 +116,7 @@ remain.
 | ✅ | A11Y-3 | Background scrolled behind modals. | Med | `primitives.jsx` `Modal` | Body scroll-lock on mount. | S |
 | 🔶 | A11Y-4 | Card keyboard/ARIA: `CookbookCard` handles Enter+Space ✅, but **`MealCard` ignores Space** (WCAG 2.1.1 on the primary surface) and both cards are `role="button"` wrapping nested buttons (invalid ARIA). RecipeImage gallery dots are mouse-only `role="button"` spans. | Med | `MealCard.jsx:13`, `CookbookTab.jsx:37`, `RecipeImage.jsx:101` | Handle Space; restructure so actions are siblings of (not inside) the activatable region; make dots real buttons. | M |
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
-| 🔶 | A11Y-6 | Cap over-guidance hint added ✅; number inputs still clamp silently and the cookbook skeleton isn't `aria-busy`/announced. | Med | `SettingsTab.jsx`, `App.jsx:457` | Announce clamps; `aria-busy`/live region on the skeleton. | S |
+| 🔶 | A11Y-6 | Cap over-guidance hint ✅ and the cookbook skeleton now has `aria-busy` ✅; number inputs still clamp silently with no announcement. | Med | `SettingsTab.jsx` | Announce clamps (`aria-describedby` + message). | S |
 | ⬜ | A11Y-7 | Small tap targets/text: mobile tab bar (`fontSize:11`), pill ✕ (`padding:1px 4px`), gallery dots 6×6. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | Bump to ≥24–44px. | S |
 | 🔶 | A11Y-8 | Install affordance added (A2HS, iOS-only) ✅; still **no skip-link, no `navigator.onLine` offline indicator** (AI fails cryptically offline), no Android/desktop `beforeinstallprompt`. | Low | `App.jsx`, `A2HSBanner.jsx` | Skip-to-content; offline banner; `beforeinstallprompt` button. | M |
 
