@@ -83,6 +83,11 @@ fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 (`TEST-7`), `dist` build-smoke (`TEST-8`), and `npm audit fix` (0 vulnerabilities).
 
+**Robustness, photos & perf polish — Sprints D/E** (353 tests): `SAFE-9` (broader
+added-sugar denylist), `SEC-3` (bounded AI strings), `ARCH-8` (pipeline-aligned
+dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
+`PERF-8` (responsive `srcset`), `PERF-9` (PNG manifest icons).
+
 ---
 
 ## P0 — Safety (do first)
@@ -101,7 +106,7 @@ announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 | ✅ | **PIPELINE-DRIFT** | Promote pipeline coerced unknown GI→"Low" and never applied the GD predicate; header falsely claimed gate parity. | High | `scripts/lib/recipe.mjs` | Preserve valid GI (else null); `rejectReason` enforces GI∈{Low,Medium} + added-sugar denylist (shared `hasGdBannedIngredient`); corrected the header claim. | M |
 | ✅ | **CI-INV** | The carb↔protein/fat pairing and "no incomplete exclusion map" rules weren't CI-guarded. | Med | `coverage.test.js` | Assert every ≥20g-carb meal pairs carbs w/ protein+fat≥5; independent fish detector proves the Fish exclusion removes every fish recipe. | S |
 | ⬜ | SAFE-8 | `nutrition.js` `lookupIngredient` uses substring (not word-boundary) matching, unlike the exclusion matcher → silent mis-estimate for novel AI/custom ingredient names; calibration guard is statistical (per-recipe errors >15g pass). | Low | `nutrition.js:232` | Make `lookupIngredient` boundary-aware; have `proteinEstimateReliable` also flag recognized-but-implausible (0-protein Protein-category) ingredients. | M |
-| ⬜ | SAFE-9 | `hasGdBannedIngredient` added-sugar list misses some sugars (date/rice-malt syrup, dextrose, "palm sugar"); single-word negator lookback. | Low | `claude.js:60` | Extend the denylist; widen negator handling. Backstop only (cap + carb cross-check carry the metabolic risk). | S |
+| ✅ | SAFE-9 | `hasGdBannedIngredient` now also catches syrups/malts/refined sugars with no "sugar"/"juice" substring (date/rice/golden syrup, rice/barley malt, dextrose, maltodextrin, turbinado/demerara/muscovado). | Low | `claude.js` | (single-word negator lookback unchanged — backstop only.) | S |
 
 ## P1 — Performance / PWA
 
@@ -115,8 +120,8 @@ announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 | ✅ | PERF-5 | Cache-first navigations served a stale shell after deploy. | Med | `public/sw.js` | Network-first for HTML; cache-first only for hashed assets; test-guarded. | S |
 | ✅ | PERF-6 | The `!cookbookReady` gate blanked every tab — even Settings, which needs no cookbook data. | Med | `App.jsx` | Settings renders immediately; planner/cookbook/ingredients/shopping still wait (a saved plan resolves generated/custom ids against the full MEAL_DB, so they genuinely need it). Skeleton gains `aria-busy`. | S |
 | ⬜ | PERF-7 | `planProps` rebuilt inline every render (`App.jsx:436`) + un-memoized cards → 42 cards re-render on every toast/selection tick. | Med | `App.jsx`, `MealCard.jsx`, `CookbookTab.jsx` | `useCallback`/memo handlers; `React.memo` cards. | M |
-| 🔶 | PERF-8 | Images lazy-load + height-based 400/800 variant ✅, but no `width`/`height`/`aspect-ratio` and no `srcset`. | Low | `RecipeImage.jsx` | Add intrinsic size + 1x/2x `srcset`. | S |
-| ⬜ | PERF-9 | Manifest ships SVG-only icons. | Low | `manifest.webmanifest` | Add 192/512 PNG icons. | S |
+| ✅ | PERF-8 | Lazy-load + height-based variant ✅; self-hosted photos now also ship a `srcset` (400w/800w) + `sizes` so retina cards stay crisp. The fixed-height wrapper already bounds CLS. | Low | `RecipeImage.jsx` | — | S |
+| ✅ | PERF-9 | Manifest shipped SVG-only icons. | Low | `manifest.webmanifest`, `scripts/generate-icons.mjs` | Added 192/512 PNGs ("any maskable") via `npm run icons:png`. | S |
 | ⬜ | IMG-REMOTE | 76 photos remain remote (rawpixel/stocksnap/pd.w.org — permanent 403s the self-host script skips): third-party dependency, not precached, break offline-before-view. | Med | `recipe-images.js`, `self-host-images.mjs` | Re-source replacements from redistributable hosts, or accept gradient fallback and document. | M |
 
 ## P2 — Accessibility (WCAG A/AA)
@@ -156,12 +161,12 @@ announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 | ✅ | ARCH-5 | Busy resets outside `finally`. | `App.jsx` | Moved to `finally`. | S |
 | ⬜ | ARCH-6 | `extractJSON` first-`{`-to-last-`}` slice is brittle on multi-object/trailing-brace replies (fails closed, but cryptic). | `claude.js:47` | Try fenced block first; friendlier error. | S |
 | ⬜ | ARCH-7 | `storage.js` treats quota errors as unavailability → silent in-memory switch, data lost on reload (same class as user-photo quota loss). | `storage.js` | Detect quota; surface a toast. | S |
-| ⬜ | ARCH-8 | `vetNewMeals` dedupes on a weaker name key than the pipeline `nameKey`. | `claude.js:109` | Reuse `nameKey` normalization. | S |
+| ✅ | ARCH-8 | `vetNewMeals` deduped on a weaker name key than the pipeline. | `claude.js` | Now uses a punctuation-insensitive `nameKey` mirroring the pipeline. | S |
 | ✅ | ARCH-9 | "per 2 servings" magic constant. | utils | `RECIPE_SERVINGS` + `scaleIngredient`. | S |
 | ✅ | ARCH-10 | `buildWeek` double `setPlan`. | `App.jsx` | Single set (branch on empty). | S |
 | ⬜ | ARCH-11 | `fetch-images.mjs` 429 retry has no ceiling (unverified). | `scripts/fetch-images.mjs` | Add a max-attempts cap. | S |
 | ✅ | **PR41-SHOP** | ShoppingTab seeded edits once at mount; a plan/week change while mounted kept stale edits and clobbered the new week's record. | `App.jsx`, `ShoppingTab.jsx` | ShoppingTab is keyed on `plan.weekStart`, so a week change remounts it with that week's stored edits. | S |
-| 🔶 | **PR41-PHOTOS** | Reset now clears IndexedDB photos ✅. Remaining: user photos are excluded from backups (IndexedDB outside `K`); `saveUserPhotos` swallows `QuotaExceededError` (silent data loss); canvas resize doesn't apply EXIF orientation (sideways iPhone photos). | `userPhotos.js`, `image.js`, `App.jsx` | Include photos in export/import (or warn backup is partial); detect quota → toast; auto-orient via bitmap/EXIF. | M |
+| ✅ | **PR41-PHOTOS** | Reset clears IndexedDB photos ✅; backups now round-trip user photos ✅; `saveUserPhotos` reports failure so `addUserPhoto` reverts + toasts on quota ✅; `image.js` auto-orients via `createImageBitmap` ✅. | `userPhotos.js`, `image.js`, `App.jsx` | — | M |
 
 ## P5 — Security & robustness hardening
 
@@ -169,7 +174,7 @@ announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
 |---|---|---|---|---|---|---|
 | ⬜ | SEC-1 | No Content-Security-Policy on an app holding a live API key in localStorage — no defense-in-depth if a dep/asset is ever compromised. | Med | `index.html` | `<meta>` CSP: `connect-src 'self' https://api.anthropic.com`; `img-src` the image hosts + `data:`; lock the rest. | M |
 | 🔶 | SEC-2 | Backup embedded the API key in plaintext; import trusted arbitrary JSON. | Low→Med | `App.jsx` export/import | Export now **redacts `apiKey`** ✅; import does minimal shape validation + re-vet. Consider stricter import schema validation. | S |
-| ⬜ | SEC-3 | `normalizeAiMeal` doesn't bound model-output string lengths. | Low | `claude.js` | Cap field lengths to avoid localStorage bloat. | S |
+| ✅ | SEC-3 | `normalizeAiMeal` now bounds model-output string lengths (name 120, tags 40, ingredient name 80 / unit 24) and caps ingredients at 30. | Low | `claude.js` | — | S |
 | 🔶 | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅. Remaining nit: model `claude-sonnet-4-6` is still hardcoded (a deliberate, valid choice) — document or expose an override if best-quality GD reasoning is wanted. | Med | `claude.js` | Optional model override/comment. | S |
 | ⬜ | IMG-LICENSE | No redistributable-license allowlist before `self-host` downloads/commits bytes; unrecognized licenses pass through; spoofed desktop User-Agent dodges 403s. | Med | `scripts/lib/commons.mjs:30`, `self-host-images.mjs:37,127` | Allowlist `cc0/pdm/by/by-sa` before download; assert credit renders for self-hosted copies; reconsider the UA. | S |
 
