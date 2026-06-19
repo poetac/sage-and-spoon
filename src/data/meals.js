@@ -266,15 +266,12 @@ const CORE_MEALS = [
 export const assembleMealDB = (generated) => [...CORE_MEALS, ...generated].map(withMacros);
 export const CORE_DB = CORE_MEALS.map(withMacros);
 
-const namesOf = (meals) =>
+// Ingredient vocabulary for the "never include" picker — derived from the full
+// loaded cookbook and threaded as a prop (App → Onboarding / SettingsTab), so it
+// always reflects the assembled MEAL_DB rather than a stale module live-binding.
+export const namesOf = (meals) =>
   [...new Map(meals.flatMap((m) => m.ingredients.map((i) => [i.n.toLowerCase(), i.n]))).values()]
     .sort((a, b) => a.localeCompare(b));
-
-// Ingredient vocabulary for the "never include" picker. A live binding: it
-// starts with the core recipes (available synchronously) and widens to the full
-// cookbook once loadCookbook resolves, so the picker upgrades without prop
-// threading and the data chunk stays off the critical path.
-export let INGREDIENT_NAMES = namesOf(CORE_DB);
 
 let cookbook = null; // memoized full MEAL_DB once the generated chunk has loaded
 
@@ -282,6 +279,5 @@ export async function loadCookbook() {
   if (cookbook) return cookbook;
   const { GENERATED_MEALS } = await import("./generated-meals.js");
   cookbook = assembleMealDB(GENERATED_MEALS);
-  INGREDIENT_NAMES = namesOf(cookbook);
   return cookbook;
 }

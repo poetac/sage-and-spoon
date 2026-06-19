@@ -45,6 +45,23 @@ export async function loadAllUserPhotos() {
   }
 }
 
+// Wipe every cook-supplied photo (used by Settings → Start over).
+export async function clearAllUserPhotos() {
+  if (!hasIDB) return;
+  try {
+    const db = await openDb();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE, "readwrite");
+      tx.objectStore(STORE).clear();
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error || new Error("transaction aborted"));
+    });
+  } catch {
+    /* best-effort */
+  }
+}
+
 // Persist (or clear, when empty) the photo list for one recipe.
 export async function saveUserPhotos(id, photos) {
   if (!hasIDB) return;

@@ -3,10 +3,10 @@
 // src/data, planner/shopping/Claude logic in src/lib, UI in src/components.
 // The Claude API key is entered in Settings and stays on this device.
 
-import { useState, useMemo, useRef, useEffect } from "react";
-import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS, namesOf } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
-import { loadAllUserPhotos, saveUserPhotos } from "./lib/userPhotos.js";
+import { loadAllUserPhotos, saveUserPhotos, clearAllUserPhotos } from "./lib/userPhotos.js";
 import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
@@ -39,18 +39,40 @@ const emptySlotCount = (p) => p.days.reduce((n, d) => n + SLOTS.filter((s) => !d
 // slots at ≤2 uses each need 11 distinct snacks.
 const POOL_NEED = { breakfast: 7, lunch: 7, dinner: 7, snack: 11 };
 
+// localStorage-backed useState: one home for the set-and-persist pattern that was
+// repeated across ~13 wrappers (and the K enumeration in reset/export/import).
+// `hydrate` lets a slot merge its stored value onto defaults (used by settings).
+// Persisting inside the updater keeps functional updates correct; it's an
+// idempotent write, so StrictMode's dev double-invoke is harmless.
+function usePersistentState(key, initial, hydrate) {
+  const [value, setValue] = useState(() => {
+    const raw = store.get(key, null);
+    if (hydrate) return hydrate(raw);
+    return raw == null ? initial : raw;
+  });
+  const set = useCallback((next) => {
+    setValue((prev) => {
+      const v = typeof next === "function" ? next(prev) : next;
+      store.set(key, v);
+      return v;
+    });
+  }, [key]);
+  return [value, set];
+}
+
 export default function App() {
-  const [prefs, setPrefsState] = useState(() => store.get(K.prefs, null));
-  const [plan, setPlanState] = useState(() => store.get(K.plan, null));
-  const [customMeals, setCustomState] = useState(() => store.get(K.custom, []));
-  const [favorites, setFavoritesState] = useState(() => store.get(K.favorites, []));
-  const [pantry, setPantryState] = useState(() => store.get(K.pantry, []));
-  const [history, setHistoryState] = useState(() => store.get(K.history, []));
-  const [notes, setNotesState] = useState(() => store.get(K.notes, {}));
-  const [hiddenIds, setHiddenIdsState] = useState(() => store.get(K.hidden, []));
+  const [prefs, setPrefs] = usePersistentState(K.prefs, null);
+  const [plan, setPlan] = usePersistentState(K.plan, null);
+  const [customMeals, setCustom] = usePersistentState(K.custom, []);
+  const [favorites, setFavorites] = usePersistentState(K.favorites, []);
+  const [pantry, setPantry] = usePersistentState(K.pantry, []);
+  const [history, setHistory] = usePersistentState(K.history, []);
+  const [notes, setNotes] = usePersistentState(K.notes, {});
+  const [hiddenIds, setHiddenIds] = usePersistentState(K.hidden, []);
   const [userPhotos, setUserPhotos] = useState({});   // { [mealId]: dataUrl[] } from IndexedDB
   const [showHistory, setShowHistory] = useState(false);
-  const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
+  const [settings, setSettings] = usePersistentState(K.settings, DEFAULT_SETTINGS,
+    (raw) => ({ ...DEFAULT_SETTINGS, ...(raw || {}), targets: { ...DEFAULT_SETTINGS.targets, ...((raw || {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
   const [planStart, setPlanStart] = useState(todayIso);  // first day of the next generated plan
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
@@ -86,18 +108,13 @@ export default function App() {
     return () => { alive = false; };
   }, []);
 
-  const setPrefs = (p) => { setPrefsState(p); store.set(K.prefs, p); };
-  const setPlan = (p) => { setPlanState(p); store.set(K.plan, p); };
-  const setCustom = (m) => { setCustomState(m); store.set(K.custom, m); };
-  const toggleFavorite = (id) => {
-    const next = favorites.includes(id) ? favorites.filter((x) => x !== id) : [...favorites, id];
-    setFavoritesState(next); store.set(K.favorites, next);
-  };
+  const toggleFavorite = (id) => setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
   const toggleHidden = (id) => {
-    const next = hiddenIds.includes(id) ? hiddenIds.filter((x) => x !== id) : [...hiddenIds, id];
-    setHiddenIdsState(next); store.set(K.hidden, next);
-    say(hiddenIds.includes(id) ? "Recipe restored to cookbook" : "Recipe hidden from cookbook", "ok",
-      { label: "Undo", onClick: () => { const prev = hiddenIds; setHiddenIdsState(prev); store.set(K.hidden, prev); say("Restored"); } });
+    const wasHidden = hiddenIds.includes(id);
+    const prev = hiddenIds;
+    setHiddenIds(wasHidden ? hiddenIds.filter((x) => x !== id) : [...hiddenIds, id]);
+    say(wasHidden ? "Recipe restored to cookbook" : "Recipe hidden from cookbook", "ok",
+      { label: "Undo", onClick: () => { setHiddenIds(prev); say("Restored"); } });
   };
 
   // User photos lead the gallery, newest first; persisted to IndexedDB.
@@ -118,23 +135,23 @@ export default function App() {
     });
   };
 
-  const setNote = (id, text) => {
-    const next = { ...notes };
+  const setNote = (id, text) => setNotes((n) => {
+    const next = { ...n };
     if (text.trim()) next[id] = text; else delete next[id];
-    setNotesState(next); store.set(K.notes, next);
-  };
+    return next;
+  });
   const togglePantry = (name) => {
     const k = name.toLowerCase();
-    const next = pantry.includes(k) ? pantry.filter((x) => x !== k) : [...pantry, k];
-    setPantryState(next); store.set(K.pantry, next);
+    setPantry((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
   };
-  const setSettings = (s) => { setSettingsState(s); store.set(K.settings, s); };
   const planDays = Math.min(7, Math.max(1, settings.planDays || 7));
   const setPlanDays = (n) => setSettings({ ...settings, planDays: Math.min(7, Math.max(1, Number(n) || 7)) });
 
   const cookbookReady = cookbook != null;
   const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
+  // Vocabulary for the "never include" picker, from the full loaded cookbook (ARCH-1).
+  const ingredientNames = useMemo(() => namesOf(allMeals), [allMeals]);
   const favSet = useMemo(() => new Set(favorites), [favorites]);
   const inWeek = useMemo(() => new Set(plan ? plan.days.flatMap((d) => Object.values(d)).filter(Boolean) : []), [plan]);
   const notedIds = useMemo(() => new Set(Object.keys(notes)), [notes]);
@@ -167,7 +184,7 @@ export default function App() {
     if (!p) return;
     if (history[0] && JSON.stringify(history[0].days) === JSON.stringify(p.days)) return;
     const next = [{ weekStart: p.weekStart, days: p.days }, ...history].slice(0, 8);
-    setHistoryState(next); store.set(K.history, next);
+    setHistory(next);
   };
   const restoreWeek = (w) => {
     setShowHistory(false);
@@ -201,7 +218,7 @@ export default function App() {
   const finishOnboarding = (newPrefs, favIds = []) => {
     setPrefs(newPrefs);
     const favs = new Set(favIds);
-    if (favIds.length) { setFavoritesState(favIds); store.set(K.favorites, favIds); }
+    if (favIds.length) setFavorites(favIds);
     buildWeek(
       newPrefs,
       favIds.length ? "Welcome! Your starter week leads with your favorites ♥" : "Welcome! Here's a starter week — generate with AI anytime.",
@@ -368,18 +385,18 @@ export default function App() {
       });
       setPlan({ ...plan, days });
     }
-    if (favorites.includes(id)) { const f = favorites.filter((x) => x !== id); setFavoritesState(f); store.set(K.favorites, f); }
-    if (notes[id]) { const n = { ...notes }; delete n[id]; setNotesState(n); store.set(K.notes, n); }
-    if (hiddenIds.includes(id)) { const h = hiddenIds.filter((x) => x !== id); setHiddenIdsState(h); store.set(K.hidden, h); }
+    if (favorites.includes(id)) setFavorites(favorites.filter((x) => x !== id));
+    if (notes[id]) setNotes((n) => { const x = { ...n }; delete x[id]; return x; });
+    if (hiddenIds.includes(id)) setHiddenIds(hiddenIds.filter((x) => x !== id));
     setDetailMeal(null);
     say("Recipe deleted", "ok", {
       label: "Undo",
       onClick: () => {
         setCustom(prev.custom);
         setPlan(prev.plan);
-        setFavoritesState(prev.favorites); store.set(K.favorites, prev.favorites);
-        setNotesState(prev.notes); store.set(K.notes, prev.notes);
-        setHiddenIdsState(prev.hidden); store.set(K.hidden, prev.hidden);
+        setFavorites(prev.favorites);
+        setNotes(prev.notes);
+        setHiddenIds(prev.hidden);
         say("Restored");
       },
     });
@@ -387,8 +404,9 @@ export default function App() {
 
   const resetAll = () => {
     store.clear(Object.values(K));
-    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]); setNotesState({}); setHiddenIdsState([]);
-    setSettingsState(DEFAULT_SETTINGS);
+    clearAllUserPhotos(); setUserPhotos({});
+    setPrefs(null); setPlan(null); setCustom([]); setFavorites([]); setPantry([]); setHistory([]); setNotes({}); setHiddenIds([]);
+    setSettings(DEFAULT_SETTINGS);
   };
 
   // Everything lives in localStorage, so a backup is just those keys as JSON.
@@ -410,28 +428,28 @@ export default function App() {
       const parsed = JSON.parse(await file.text());
       const d = parsed && parsed.data ? parsed.data : parsed; // tolerate a bare key map
       if (!d || typeof d !== "object" || (!d.prefs && !d.settings)) throw new Error("not a Sage & Spoon backup");
-      for (const [name, key] of Object.entries(K)) if (d[name] != null) store.set(key, d[name]);
-      // Re-hydrate state from the restored store (settings merged onto defaults).
-      const s = store.get(K.settings, {});
-      const targets = { ...DEFAULT_SETTINGS.targets, ...(s.targets || {}) };
-      setSettingsState({ ...DEFAULT_SETTINGS, ...s, targets });
+      // Keys absent from the backup keep their current value; present keys replace.
+      // Settings merge onto defaults so new target keys survive an older backup.
+      const baseSettings = d.settings != null ? d.settings : settings;
+      const targets = { ...DEFAULT_SETTINGS.targets, ...(baseSettings.targets || {}) };
+      setSettings({ ...DEFAULT_SETTINGS, ...baseSettings, targets });
       // Re-vet restored custom meals against the restored caps/exclusions — a
       // backup made under looser settings could otherwise reintroduce an
-      // over-cap or now-excluded meal. Drop any that no longer pass (the hard
-      // rules only) and tell the cook how many were skipped.
-      const importedPrefs = store.get(K.prefs, null) || EMPTY_PREFS;
-      const rawCustom = store.get(K.custom, []);
+      // over-cap or now-excluded meal. Drop any that no longer pass and tell the
+      // cook how many were skipped.
+      const importedPrefs = (d.prefs != null ? d.prefs : prefs) || EMPTY_PREFS;
+      const rawCustom = Array.isArray(d.custom != null ? d.custom : customMeals) ? (d.custom != null ? d.custom : customMeals) : [];
       const safeCustom = rawCustom.filter((m) => m && m.ingredients && mealSafe(m, importedPrefs, targets, m.type));
       const dropped = rawCustom.length - safeCustom.length;
-      if (dropped) store.set(K.custom, safeCustom);
-      setCustomState(safeCustom);
-      setFavoritesState(store.get(K.favorites, []));
-      setPantryState(store.get(K.pantry, []));
-      setHistoryState(store.get(K.history, []));
-      setNotesState(store.get(K.notes, {}));
-      setHiddenIdsState(store.get(K.hidden, []));
-      setPlanState(store.get(K.plan, null));
-      setPrefsState(store.get(K.prefs, null)); // last: may flip onboarding → app
+      setCustom(safeCustom);
+      if (d.favorites != null) setFavorites(d.favorites);
+      if (d.pantry != null) setPantry(d.pantry);
+      if (d.history != null) setHistory(d.history);
+      if (d.notes != null) setNotes(d.notes);
+      if (d.hidden != null) setHiddenIds(d.hidden);
+      if (d.shoppingEdits != null) store.set(K.shoppingEdits, d.shoppingEdits);
+      if (d.plan != null) setPlan(d.plan);
+      if (d.prefs != null) setPrefs(d.prefs); // last: may flip onboarding → app
       toastOk(dropped
         ? `Backup restored — skipped ${dropped} saved meal${dropped === 1 ? "" : "s"} that no longer fit your carb caps or exclusions.`
         : "Backup restored");
@@ -441,7 +459,7 @@ export default function App() {
   };
 
   /* --------------------------------- render -------------------------------- */
-  if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
+  if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} ingredientNames={ingredientNames} />;
 
   const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin, historyCount: history.length, onShowHistory: () => setShowHistory(true), planStart, onSetPlanStart: setPlanStart, planDays, onSetPlanDays: setPlanDays };
 
@@ -470,7 +488,7 @@ export default function App() {
             shopping tabs resolve plan meal ids against the full MEAL_DB, so they
             wait for it. */}
         {tab === "settings" ? (
-          <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />
+          <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} ingredientNames={ingredientNames} />
         ) : !cookbookReady ? (
           <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />
@@ -488,7 +506,7 @@ export default function App() {
         )}
         {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} hiddenIds={hiddenIds} onToggleHidden={toggleHidden} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
-        {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
+        {tab === "shopping" && <ShoppingTab key={plan?.weekStart} plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
           </>
         )}
         </ErrorBoundary>

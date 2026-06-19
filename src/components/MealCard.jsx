@@ -10,7 +10,7 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails
     return (
       <div className={"t-soft text-xs italic p-2 cursor-pointer" + (selected ? " meal-card selected" : "")}
         role="button" tabIndex={0} aria-pressed={!!selected} onClick={onSelect}
-        onKeyDown={(e) => { if (e.key === "Enter") onSelect(); }}>
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}>
         {selected ? "moving — tap a slot to drop here" : "empty — add from Ingredients, or relax a dislike"}
       </div>
     );

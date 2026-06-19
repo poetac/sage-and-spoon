@@ -3,7 +3,7 @@ import { EMPTY_PREFS } from "../data/meals.js";
 import { Icon, ICONS, Chip } from "./primitives.jsx";
 import { PrefsFields, QUIZ_STEPS } from "./PrefsFields.jsx";
 
-export function Onboarding({ onDone, starterMeals = [] }) {
+export function Onboarding({ onDone, starterMeals = [], ingredientNames = [] }) {
   const [step, setStep] = useState(0);
   const [prefs, setPrefs] = useState(EMPTY_PREFS);
   const [favs, setFavs] = useState([]);
@@ -46,7 +46,7 @@ export function Onboarding({ onDone, starterMeals = [] }) {
             <>
               <h2 className="font-display text-xl mt-2" style={{ fontWeight: 600 }}>{QUIZ_STEPS[step].title}</h2>
               <p className="t-soft text-sm mb-5">{QUIZ_STEPS[step].blurb}</p>
-              <PrefsFields step={step} prefs={prefs} set={set} />
+              <PrefsFields step={step} prefs={prefs} set={set} ingredientNames={ingredientNames} />
             </>
           )}
           <div className="flex justify-between mt-6">

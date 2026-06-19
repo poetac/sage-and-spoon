@@ -8,7 +8,7 @@ const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner
 const CARB_HINT_ABOVE = { breakfastMax: 45, mainMax: 60, snackMax: 30 };
 
 /* -------------------------------- settings ------------------------------- */
-export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport }) {
+export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport, ingredientNames = [] }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch) => setPrefs({ ...prefs, ...patch });
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
@@ -19,9 +19,9 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
 
       <div className="card p-5 mb-4">
         <h3 className="font-display text-lg mb-4" style={{ fontWeight: 600 }}>Her preferences</h3>
-        <PrefsFields step={0} prefs={prefs} set={set} />
-        <PrefsFields step={1} prefs={prefs} set={set} />
-        <div className="mt-5"><PrefsFields step={2} prefs={prefs} set={set} /></div>
+        <PrefsFields step={0} prefs={prefs} set={set} ingredientNames={ingredientNames} />
+        <PrefsFields step={1} prefs={prefs} set={set} ingredientNames={ingredientNames} />
+        <div className="mt-5"><PrefsFields step={2} prefs={prefs} set={set} ingredientNames={ingredientNames} /></div>
         <button className="btn btn-soft mt-2" onClick={onRegenerate}><Icon d={ICONS.swap} size={14} /> Rebuild week with these preferences</button>
       </div>
 
