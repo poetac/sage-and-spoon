@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 // The component reads the photo array by id; mock it so we can drive both
 // single-photo, multi-photo, and the generated-thumbnail fallback paths.
 const images = {};
-vi.mock("../data/recipe-images.js", () => ({
+vi.mock("../data/recipe-image-store.js", () => ({
   photosForRecipe: (id) => images[id] || [],
 }));
 

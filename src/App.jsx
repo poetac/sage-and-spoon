@@ -7,6 +7,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
 import { loadAllUserPhotos, saveUserPhotos } from "./lib/userPhotos.js";
+import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
@@ -68,9 +69,12 @@ export default function App() {
   // still works rather than hanging on the skeleton.
   useEffect(() => {
     let alive = true;
+    // Load the cookbook chunk and the (separately-chunked, PERF-3) recipe-image
+    // table in parallel; reveal the UI only once both resolve so cards render
+    // with photos. loadRecipeImages never rejects (gradient fallback on failure).
     loadCookbook().then(
-      (db) => { if (alive) setCookbook(db); },
-      () => { if (alive) setCookbook(CORE_DB); },
+      (db) => loadRecipeImages().then(() => { if (alive) setCookbook(db); }),
+      () => loadRecipeImages().then(() => { if (alive) setCookbook(CORE_DB); }),
     );
     return () => { alive = false; };
   }, []);
@@ -460,13 +464,20 @@ export default function App() {
 
       <main className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto">
         <A2HSBanner />
-        {!cookbookReady ? (
-          <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3">
+        <ErrorBoundary key={tab}>
+        {/* Settings needs no cookbook data, so render it immediately rather than
+            blocking on the chunk (PERF-6). The planner/cookbook/ingredients/
+            shopping tabs resolve plan meal ids against the full MEAL_DB, so they
+            wait for it. */}
+        {tab === "settings" ? (
+          <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />
+        ) : !cookbookReady ? (
+          <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />
             <p className="t-soft text-sm">Loading your cookbook…</p>
           </div>
         ) : (
-          <ErrorBoundary key={tab}>
+          <>
         {tab === "plan" && plan && <PlanTab {...planProps} />}
         {tab === "plan" && !plan && (
           <div className="card p-8 text-center max-w-md mx-auto rise">
@@ -478,9 +489,9 @@ export default function App() {
         {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} hiddenIds={hiddenIds} onToggleHidden={toggleHidden} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
         {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
-        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />}
-          </ErrorBoundary>
+          </>
         )}
+        </ErrorBoundary>
       </main>
 
       {/* mobile tab bar */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { photosForRecipe } from "../data/recipe-images.js";
+import { photosForRecipe } from "../data/recipe-image-store.js";
 import { Icon, ICONS } from "./primitives.jsx";
 
 /* ------------------------------ recipe image ----------------------------- */
