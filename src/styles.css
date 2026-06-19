@@ -50,6 +50,10 @@
 @keyframes spin{ to{ transform:rotate(360deg);} }
 .spin{ animation:spin .8s linear infinite; }
 *:focus-visible{ outline:2px solid var(--sage); outline-offset:2px; }
+.skip-link{ position:absolute; left:8px; top:-48px; z-index:60; background:var(--sage-deep);
+  color:#fff; padding:8px 14px; border-radius:0 0 10px 10px; font-weight:700;
+  text-decoration:none; transition:top .15s ease; }
+.skip-link:focus{ top:0; }
 @media (prefers-reduced-motion: reduce){
   .rise{ animation:none; } .btn, .chip, .meal-card{ transition:none; }
 }

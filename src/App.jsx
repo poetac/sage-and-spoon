@@ -3,9 +3,11 @@
 // src/data, planner/shopping/Claude logic in src/lib, UI in src/components.
 // The Claude API key is entered in Settings and stays on this device.
 
-import { useState, useMemo, useRef, useEffect } from "react";
-import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS } from "./data/meals.js";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS, namesOf } from "./data/meals.js";
 import { store, K } from "./lib/storage.js";
+import { loadAllUserPhotos, saveUserPhotos, clearAllUserPhotos } from "./lib/userPhotos.js";
+import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
@@ -20,6 +22,8 @@ import { IngredientsTab } from "./components/IngredientsTab.jsx";
 import { CookbookTab } from "./components/CookbookTab.jsx";
 import { ShoppingTab } from "./components/ShoppingTab.jsx";
 import { SettingsTab } from "./components/SettingsTab.jsx";
+import { A2HSBanner } from "./components/A2HSBanner.jsx";
+import { OfflineBanner } from "./components/OfflineBanner.jsx";
 
 /* ----------------------------------- app --------------------------------- */
 const TABS = [
@@ -36,16 +40,40 @@ const emptySlotCount = (p) => p.days.reduce((n, d) => n + SLOTS.filter((s) => !d
 // slots at ≤2 uses each need 11 distinct snacks.
 const POOL_NEED = { breakfast: 7, lunch: 7, dinner: 7, snack: 11 };
 
+// localStorage-backed useState: one home for the set-and-persist pattern that was
+// repeated across ~13 wrappers (and the K enumeration in reset/export/import).
+// `hydrate` lets a slot merge its stored value onto defaults (used by settings).
+// Persisting inside the updater keeps functional updates correct; it's an
+// idempotent write, so StrictMode's dev double-invoke is harmless.
+function usePersistentState(key, initial, hydrate) {
+  const [value, setValue] = useState(() => {
+    const raw = store.get(key, null);
+    if (hydrate) return hydrate(raw);
+    return raw == null ? initial : raw;
+  });
+  const set = useCallback((next) => {
+    setValue((prev) => {
+      const v = typeof next === "function" ? next(prev) : next;
+      store.set(key, v);
+      return v;
+    });
+  }, [key]);
+  return [value, set];
+}
+
 export default function App() {
-  const [prefs, setPrefsState] = useState(() => store.get(K.prefs, null));
-  const [plan, setPlanState] = useState(() => store.get(K.plan, null));
-  const [customMeals, setCustomState] = useState(() => store.get(K.custom, []));
-  const [favorites, setFavoritesState] = useState(() => store.get(K.favorites, []));
-  const [pantry, setPantryState] = useState(() => store.get(K.pantry, []));
-  const [history, setHistoryState] = useState(() => store.get(K.history, []));
-  const [notes, setNotesState] = useState(() => store.get(K.notes, {}));
+  const [prefs, setPrefs] = usePersistentState(K.prefs, null);
+  const [plan, setPlan] = usePersistentState(K.plan, null);
+  const [customMeals, setCustom] = usePersistentState(K.custom, []);
+  const [favorites, setFavorites] = usePersistentState(K.favorites, []);
+  const [pantry, setPantry] = usePersistentState(K.pantry, []);
+  const [history, setHistory] = usePersistentState(K.history, []);
+  const [notes, setNotes] = usePersistentState(K.notes, {});
+  const [hiddenIds, setHiddenIds] = usePersistentState(K.hidden, []);
+  const [userPhotos, setUserPhotos] = useState({});   // { [mealId]: dataUrl[] } from IndexedDB
   const [showHistory, setShowHistory] = useState(false);
-  const [settings, setSettingsState] = useState(() => ({ ...DEFAULT_SETTINGS, ...store.get(K.settings, {}), targets: { ...DEFAULT_SETTINGS.targets, ...(store.get(K.settings, {}).targets || {}) } }));
+  const [settings, setSettings] = usePersistentState(K.settings, DEFAULT_SETTINGS,
+    (raw) => ({ ...DEFAULT_SETTINGS, ...(raw || {}), targets: { ...DEFAULT_SETTINGS.targets, ...((raw || {}).targets || {}) } }));
   const [tab, setTab] = useState("plan");
   const [planStart, setPlanStart] = useState(todayIso);  // first day of the next generated plan
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
@@ -64,37 +92,76 @@ export default function App() {
   // still works rather than hanging on the skeleton.
   useEffect(() => {
     let alive = true;
+    // Load the cookbook chunk and the (separately-chunked, PERF-3) recipe-image
+    // table in parallel; reveal the UI only once both resolve so cards render
+    // with photos. loadRecipeImages never rejects (gradient fallback on failure).
     loadCookbook().then(
-      (db) => { if (alive) setCookbook(db); },
-      () => { if (alive) setCookbook(CORE_DB); },
+      (db) => loadRecipeImages().then(() => { if (alive) setCookbook(db); }),
+      () => loadRecipeImages().then(() => { if (alive) setCookbook(CORE_DB); }),
     );
     return () => { alive = false; };
   }, []);
 
-  const setPrefs = (p) => { setPrefsState(p); store.set(K.prefs, p); };
-  const setPlan = (p) => { setPlanState(p); store.set(K.plan, p); };
-  const setCustom = (m) => { setCustomState(m); store.set(K.custom, m); };
-  const toggleFavorite = (id) => {
-    const next = favorites.includes(id) ? favorites.filter((x) => x !== id) : [...favorites, id];
-    setFavoritesState(next); store.set(K.favorites, next);
+  // Cook-supplied recipe photos live in IndexedDB (too big for localStorage).
+  useEffect(() => {
+    let alive = true;
+    loadAllUserPhotos().then((m) => { if (alive && Object.keys(m).length) setUserPhotos(m); });
+    return () => { alive = false; };
+  }, []);
+
+  const toggleFavorite = (id) => setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
+  const toggleHidden = (id) => {
+    const wasHidden = hiddenIds.includes(id);
+    const prev = hiddenIds;
+    setHiddenIds(wasHidden ? hiddenIds.filter((x) => x !== id) : [...hiddenIds, id]);
+    say(wasHidden ? "Recipe restored to cookbook" : "Recipe hidden from cookbook", "ok",
+      { label: "Undo", onClick: () => { setHiddenIds(prev); say("Restored"); } });
   };
-  const setNote = (id, text) => {
-    const next = { ...notes };
+
+  // User photos lead the gallery, newest first; persisted to IndexedDB. If the
+  // write fails (e.g. storage quota), revert the optimistic add and say so
+  // rather than silently dropping the photo on the next reload.
+  const addUserPhoto = async (id, dataUrl) => {
+    const saved = [dataUrl, ...(userPhotos[id] || [])];
+    setUserPhotos((prev) => ({ ...prev, [id]: [dataUrl, ...(prev[id] || [])] }));
+    const ok = await saveUserPhotos(id, saved);
+    if (!ok) {
+      setUserPhotos((prev) => {
+        const arr = (prev[id] || []).filter((u) => u !== dataUrl);
+        const next = { ...prev };
+        if (arr.length) next[id] = arr; else delete next[id];
+        return next;
+      });
+      toastErr("Couldn't save that photo — this device's storage may be full.");
+    }
+  };
+  const removeUserPhoto = (id, idx) => {
+    setUserPhotos((prev) => {
+      const list = (prev[id] || []).filter((_, i) => i !== idx);
+      saveUserPhotos(id, list);
+      const next = { ...prev };
+      if (list.length) next[id] = list; else delete next[id];
+      return next;
+    });
+  };
+
+  const setNote = (id, text) => setNotes((n) => {
+    const next = { ...n };
     if (text.trim()) next[id] = text; else delete next[id];
-    setNotesState(next); store.set(K.notes, next);
-  };
+    return next;
+  });
   const togglePantry = (name) => {
     const k = name.toLowerCase();
-    const next = pantry.includes(k) ? pantry.filter((x) => x !== k) : [...pantry, k];
-    setPantryState(next); store.set(K.pantry, next);
+    setPantry((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
   };
-  const setSettings = (s) => { setSettingsState(s); store.set(K.settings, s); };
   const planDays = Math.min(7, Math.max(1, settings.planDays || 7));
   const setPlanDays = (n) => setSettings({ ...settings, planDays: Math.min(7, Math.max(1, Number(n) || 7)) });
 
   const cookbookReady = cookbook != null;
   const allMeals = useMemo(() => [...(cookbook || CORE_DB), ...customMeals], [cookbook, customMeals]);
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
+  // Vocabulary for the "never include" picker, from the full loaded cookbook (ARCH-1).
+  const ingredientNames = useMemo(() => namesOf(allMeals), [allMeals]);
   const favSet = useMemo(() => new Set(favorites), [favorites]);
   const inWeek = useMemo(() => new Set(plan ? plan.days.flatMap((d) => Object.values(d)).filter(Boolean) : []), [plan]);
   const notedIds = useMemo(() => new Set(Object.keys(notes)), [notes]);
@@ -127,7 +194,7 @@ export default function App() {
     if (!p) return;
     if (history[0] && JSON.stringify(history[0].days) === JSON.stringify(p.days)) return;
     const next = [{ weekStart: p.weekStart, days: p.days }, ...history].slice(0, 8);
-    setHistoryState(next); store.set(K.history, next);
+    setHistory(next);
   };
   const restoreWeek = (w) => {
     setShowHistory(false);
@@ -161,7 +228,7 @@ export default function App() {
   const finishOnboarding = (newPrefs, favIds = []) => {
     setPrefs(newPrefs);
     const favs = new Set(favIds);
-    if (favIds.length) { setFavoritesState(favIds); store.set(K.favorites, favIds); }
+    if (favIds.length) setFavorites(favIds);
     buildWeek(
       newPrefs,
       favIds.length ? "Welcome! Your starter week leads with your favorites ♥" : "Welcome! Here's a starter week — generate with AI anytime.",
@@ -295,10 +362,13 @@ export default function App() {
     // is toggled off). Guarding here, not just by dimming slots, keeps the plan
     // safe regardless of how the meal was chosen.
     const overCap = meal.carbsG > capFor(slot.type, settings.targets);
-    if (overCap || violatesExclusions(meal, prefs)) {
+    const badGi = !["Low", "Medium"].includes(meal.gi);
+    if (overCap || badGi || violatesExclusions(meal, prefs)) {
       setPlacing(null);
       toastErr(overCap
         ? `Can't add "${meal.name}" to ${slot.label} — ${meal.carbsG}g carbs is over the ${capFor(slot.type, settings.targets)}g cap for that slot.`
+        : badGi
+        ? `Can't add "${meal.name}" — only low- or medium-GI meals can go in the plan.`
         : `Can't add "${meal.name}" — it contains an ingredient you're avoiding.`);
       return;
     }
@@ -310,16 +380,53 @@ export default function App() {
     commitPlan({ ...plan, days }, `"${meal.name}" added to ${weekdayShort(dayDate(plan.weekStart, dayIdx))} ${slot.label}`);
   };
 
+  // Permanently remove a custom/AI meal (built-in library recipes can only be
+  // hidden, never deleted). Also pull it from the plan and tidy up references,
+  // with a one-tap undo that restores everything it touched.
+  const removeCustomMeal = (id) => {
+    if (!customMeals.some((m) => m.id === id)) return;
+    const prev = { custom: customMeals, plan, favorites, notes, hidden: hiddenIds };
+    setCustom(customMeals.filter((m) => m.id !== id));
+    if (plan && plan.days.some((d) => Object.values(d).includes(id))) {
+      const days = plan.days.map((d) => {
+        const nd = { ...d };
+        for (const k of Object.keys(nd)) if (nd[k] === id) nd[k] = null;
+        return nd;
+      });
+      setPlan({ ...plan, days });
+    }
+    if (favorites.includes(id)) setFavorites(favorites.filter((x) => x !== id));
+    if (notes[id]) setNotes((n) => { const x = { ...n }; delete x[id]; return x; });
+    if (hiddenIds.includes(id)) setHiddenIds(hiddenIds.filter((x) => x !== id));
+    setDetailMeal(null);
+    say("Recipe deleted", "ok", {
+      label: "Undo",
+      onClick: () => {
+        setCustom(prev.custom);
+        setPlan(prev.plan);
+        setFavorites(prev.favorites);
+        setNotes(prev.notes);
+        setHiddenIds(prev.hidden);
+        say("Restored");
+      },
+    });
+  };
+
   const resetAll = () => {
     store.clear(Object.values(K));
-    setPrefsState(null); setPlanState(null); setCustomState([]); setFavoritesState([]); setPantryState([]); setHistoryState([]); setNotesState({});
-    setSettingsState(DEFAULT_SETTINGS);
+    clearAllUserPhotos(); setUserPhotos({});
+    setPrefs(null); setPlan(null); setCustom([]); setFavorites([]); setPantry([]); setHistory([]); setNotes({}); setHiddenIds([]);
+    setSettings(DEFAULT_SETTINGS);
   };
 
   // Everything lives in localStorage, so a backup is just those keys as JSON.
   const exportData = () => {
     const out = { app: "sage-and-spoon", version: 1, exportedAt: new Date().toISOString(), data: {} };
     for (const [name, key] of Object.entries(K)) out.data[name] = store.get(key, null);
+    // Never write the API key into a downloadable file — it would sit in cleartext
+    // in Downloads / cloud sync. A restore re-enters the key in Settings.
+    if (out.data.settings) out.data.settings = { ...out.data.settings, apiKey: "" };
+    out.data.userPhotos = userPhotos; // IndexedDB, not in K — include so a backup is complete
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
     a.download = "sage-and-spoon-backup.json";
@@ -332,27 +439,32 @@ export default function App() {
       const parsed = JSON.parse(await file.text());
       const d = parsed && parsed.data ? parsed.data : parsed; // tolerate a bare key map
       if (!d || typeof d !== "object" || (!d.prefs && !d.settings)) throw new Error("not a Sage & Spoon backup");
-      for (const [name, key] of Object.entries(K)) if (d[name] != null) store.set(key, d[name]);
-      // Re-hydrate state from the restored store (settings merged onto defaults).
-      const s = store.get(K.settings, {});
-      const targets = { ...DEFAULT_SETTINGS.targets, ...(s.targets || {}) };
-      setSettingsState({ ...DEFAULT_SETTINGS, ...s, targets });
+      // Keys absent from the backup keep their current value; present keys replace.
+      // Settings merge onto defaults so new target keys survive an older backup.
+      const baseSettings = d.settings != null ? d.settings : settings;
+      const targets = { ...DEFAULT_SETTINGS.targets, ...(baseSettings.targets || {}) };
+      setSettings({ ...DEFAULT_SETTINGS, ...baseSettings, targets });
       // Re-vet restored custom meals against the restored caps/exclusions — a
       // backup made under looser settings could otherwise reintroduce an
-      // over-cap or now-excluded meal. Drop any that no longer pass (the hard
-      // rules only) and tell the cook how many were skipped.
-      const importedPrefs = store.get(K.prefs, null) || EMPTY_PREFS;
-      const rawCustom = store.get(K.custom, []);
+      // over-cap or now-excluded meal. Drop any that no longer pass and tell the
+      // cook how many were skipped.
+      const importedPrefs = (d.prefs != null ? d.prefs : prefs) || EMPTY_PREFS;
+      const rawCustom = Array.isArray(d.custom != null ? d.custom : customMeals) ? (d.custom != null ? d.custom : customMeals) : [];
       const safeCustom = rawCustom.filter((m) => m && m.ingredients && mealSafe(m, importedPrefs, targets, m.type));
       const dropped = rawCustom.length - safeCustom.length;
-      if (dropped) store.set(K.custom, safeCustom);
-      setCustomState(safeCustom);
-      setFavoritesState(store.get(K.favorites, []));
-      setPantryState(store.get(K.pantry, []));
-      setHistoryState(store.get(K.history, []));
-      setNotesState(store.get(K.notes, {}));
-      setPlanState(store.get(K.plan, null));
-      setPrefsState(store.get(K.prefs, null)); // last: may flip onboarding → app
+      setCustom(safeCustom);
+      if (d.favorites != null) setFavorites(d.favorites);
+      if (d.pantry != null) setPantry(d.pantry);
+      if (d.history != null) setHistory(d.history);
+      if (d.notes != null) setNotes(d.notes);
+      if (d.hidden != null) setHiddenIds(d.hidden);
+      if (d.shoppingEdits != null) store.set(K.shoppingEdits, d.shoppingEdits);
+      if (d.userPhotos && typeof d.userPhotos === "object") {
+        setUserPhotos(d.userPhotos);
+        for (const [pid, list] of Object.entries(d.userPhotos)) saveUserPhotos(pid, list);
+      }
+      if (d.plan != null) setPlan(d.plan);
+      if (d.prefs != null) setPrefs(d.prefs); // last: may flip onboarding → app
       toastOk(dropped
         ? `Backup restored — skipped ${dropped} saved meal${dropped === 1 ? "" : "s"} that no longer fit your carb caps or exclusions.`
         : "Backup restored");
@@ -362,12 +474,13 @@ export default function App() {
   };
 
   /* --------------------------------- render -------------------------------- */
-  if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} />;
+  if (!prefs) return <Onboarding onDone={finishOnboarding} starterMeals={starterMeals} ingredientNames={ingredientNames} />;
 
   const planProps = { plan, mealsById, selected, dragRef, onCellAction, onDrop, onSwap: localSwap, onAiSwap: aiSwap, onDetails: setDetailMeal, aiBusyKey, hasKey, weekLoading, onGenerateAI: generateAIWeek, onShuffle: shuffleWeek, proteinMin: settings.targets.proteinMin, historyCount: history.length, onShowHistory: () => setShowHistory(true), planStart, onSetPlanStart: setPlanStart, planDays, onSetPlanDays: setPlanDays };
 
   return (
     <div className="ss-root">
+      <a href="#main-content" className="skip-link no-print">Skip to content</a>
       <header className="no-print sticky top-0 z-30 px-4 md:px-6 py-3 flex items-center gap-2"
         style={{ background: "rgba(250,247,241,.92)", backdropFilter: "blur(6px)", borderBottom: "1px solid var(--line)" }}>
         <span style={{ color: "var(--sage-deep)" }}><Icon d={ICONS.leaf} size={20} /></span>
@@ -383,14 +496,23 @@ export default function App() {
         </nav>
       </header>
 
-      <main className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto">
-        {!cookbookReady ? (
-          <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3">
+      <main id="main-content" tabIndex={-1} className="no-print px-4 md:px-6 py-5 pb-24 md:pb-10 max-w-[1500px] mx-auto" style={{ outline: "none" }}>
+        <OfflineBanner />
+        <A2HSBanner />
+        <ErrorBoundary key={tab}>
+        {/* Settings needs no cookbook data, so render it immediately rather than
+            blocking on the chunk (PERF-6). The planner/cookbook/ingredients/
+            shopping tabs resolve plan meal ids against the full MEAL_DB, so they
+            wait for it. */}
+        {tab === "settings" ? (
+          <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} ingredientNames={ingredientNames} />
+        ) : !cookbookReady ? (
+          <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />
             <p className="t-soft text-sm">Loading your cookbook…</p>
           </div>
         ) : (
-          <ErrorBoundary key={tab}>
+          <>
         {tab === "plan" && plan && <PlanTab {...planProps} />}
         {tab === "plan" && !plan && (
           <div className="card p-8 text-center max-w-md mx-auto rise">
@@ -399,12 +521,12 @@ export default function App() {
             <button className="btn btn-primary" onClick={shuffleWeek}>Build my week</button>
           </div>
         )}
-        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} />}
+        {tab === "cookbook" && <CookbookTab allMeals={allMeals} prefs={prefs} favorites={favorites} onToggleFavorite={toggleFavorite} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} onDetails={setDetailMeal} inWeek={inWeek} notedIds={notedIds} hiddenIds={hiddenIds} onToggleHidden={toggleHidden} />}
         {tab === "ingredients" && <IngredientsTab plan={plan} mealsById={mealsById} allMeals={allMeals} prefs={prefs} settings={settings} onPlace={(m) => (plan ? setPlacing(m) : toastErr("Build a weekly plan first."))} toastErr={toastErr} hasKey={hasKey} />}
-        {tab === "shopping" && <ShoppingTab plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
-        {tab === "settings" && <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} />}
-          </ErrorBoundary>
+        {tab === "shopping" && <ShoppingTab key={plan?.weekStart} plan={plan} mealsById={mealsById} settings={settings} setSettings={setSettings} pantry={pantry} onTogglePantry={togglePantry} toastOk={toastOk} toastErr={toastErr} />}
+          </>
         )}
+        </ErrorBoundary>
       </main>
 
       {/* mobile tab bar */}
@@ -413,7 +535,10 @@ export default function App() {
         {TABS.map((t) => (
           <button key={t.key} onClick={() => setTab(t.key)} aria-current={tab === t.key ? "page" : undefined}
             className="flex flex-col items-center gap-0.5 px-3 py-1"
-            style={{ color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 11, background: "none", border: "none", cursor: "pointer" }}>
+            style={{ position: "relative", minHeight: 48, color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 12, background: "none", border: "none", cursor: "pointer" }}>
+            {tab === t.key && (
+              <span aria-hidden="true" style={{ position: "absolute", top: -2, left: "20%", right: "20%", height: 3, borderRadius: "0 0 3px 3px", background: "var(--sage-deep)" }} />
+            )}
             <Icon d={ICONS[t.icon]} size={20} /> {t.label}
           </button>
         ))}
@@ -443,7 +568,7 @@ export default function App() {
         </Modal>
       )}
 
-      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} note={notes[detailMeal.id] || ""} onSetNote={setNote} />}
+      {detailMeal && <MealDetail meal={detailMeal} servings={settings.servings} onClose={() => setDetailMeal(null)} isFavorite={favorites.includes(detailMeal.id)} onToggleFavorite={toggleFavorite} note={notes[detailMeal.id] || ""} onSetNote={setNote} userPhotos={userPhotos[detailMeal.id] || []} onAddPhoto={addUserPhoto} onRemovePhoto={removeUserPhoto} canDelete={customMeals.some((m) => m.id === detailMeal.id)} onDelete={removeCustomMeal} />}
 
       {showHistory && <WeekHistory history={history} onRestore={restoreWeek} onClose={() => setShowHistory(false)} />}
 

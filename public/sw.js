@@ -5,17 +5,35 @@
 //  - hashed build assets (/assets/*): cache-first — Vite fingerprints the
 //    filenames, so a cached copy is always correct and instant.
 //  - everything else same-origin (icons, manifest): stale-while-revalidate.
-// Recipe photos are cross-origin (Flickr / Wikimedia / rawpixel / StockSnap);
-// they get their own capped runtime cache so they keep showing offline once
-// viewed (the lighter alternative to self-hosting). Other cross-origin requests
-// (the Claude API, Google Fonts) are left to the network.
+// Recipe photos: self-hosted WebP go in a permanent, uncapped cache (precached
+// from manifest.json so the whole library is offline before first view); the
+// remaining cross-origin photos (Flickr / rawpixel / StockSnap) get a capped
+// runtime cache, kept once viewed. Other cross-origin requests (the Claude API,
+// Google Fonts) are left to the network.
 const CACHE = "sage-spoon-v2";
-const IMG_CACHE = "sage-spoon-img-v1";
-const IMG_CACHE_MAX = 320; // ~one full cookbook's worth of viewed photos
+const IMG_CACHE = "sage-spoon-img-v2"; // transient cross-origin photos (capped)
+// Self-hosted recipe photos get their own permanent, uncapped cache so the whole
+// offline library survives — the capped cache above would evict most of it. Bump
+// this (-v1 → -v2) when self-hosted image *bytes* change under a stable filename
+// (cache-first won't otherwise refetch); new ids cache on their own.
+const LOCAL_IMG_CACHE = "sage-spoon-local-img-v1";
+const IMG_CACHE_MAX = 320; // cap applies to cross-origin photos only
 
-const KEEP = new Set([CACHE, IMG_CACHE]);
+const KEEP = new Set([CACHE, IMG_CACHE, LOCAL_IMG_CACHE]);
 
-self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    // Precache the app-shell entry so a cold navigation works offline. Hashed
+    // /assets/* and the lazy cookbook chunk are cached cache-first on first load
+    // (every visit fetches them), so they're covered after one online session;
+    // the shell is the one thing a navigation needs up front.
+    try {
+      const cache = await caches.open(CACHE);
+      await cache.add(new Request(self.registration.scope, { cache: "reload" }));
+    } catch { /* offline install — runtime caching still covers it */ }
+    await self.skipWaiting();
+  })());
+});
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
@@ -25,24 +43,29 @@ self.addEventListener("activate", (event) => {
       await self.clients.claim();
     })(),
   );
+  precacheLocalImages(); // non-blocking background warm-up
 });
 
 const isNavigation = (request) => request.mode === "navigate";
 const isHashedAsset = (url) => url.pathname.includes("/assets/");
 const isImage = (request) => request.destination === "image";
+const isLocalRecipeImage = (url) => url.origin === self.location.origin && url.pathname.includes("recipe-images/");
 
 // Cache-first for images (incl. cross-origin recipe photos), so a viewed photo
 // loads instantly and survives going offline. Opaque (no-cors) responses can't
 // be inspected, so they're cached as-is; the cache is trimmed to a cap. A miss
 // while offline rejects, and RecipeImage falls back to its gradient.
 async function imageCache(request) {
-  const cache = await caches.open(IMG_CACHE);
+  // Self-hosted recipe photos → permanent cache (never trimmed); cross-origin
+  // photos → capped cache. Both cache-first so a viewed photo survives offline.
+  const local = isLocalRecipeImage(new URL(request.url));
+  const cache = await caches.open(local ? LOCAL_IMG_CACHE : IMG_CACHE);
   const cached = await cache.match(request);
   if (cached) return cached;
   const response = await fetch(request);
   if (response && (response.ok || response.type === "opaque")) {
     await cache.put(request, response.clone());
-    trimCache(IMG_CACHE, IMG_CACHE_MAX);
+    if (!local) trimCache(IMG_CACHE, IMG_CACHE_MAX); // local library is permanent
   }
   return response;
 }
@@ -51,6 +74,29 @@ async function trimCache(name, max) {
   const cache = await caches.open(name);
   const keys = await cache.keys();
   for (const key of keys.slice(0, keys.length - max)) await cache.delete(key); // evict oldest first
+}
+
+// After activation, warm the image cache with all self-hosted recipe photos so
+// they're available offline before first view. Non-blocking — a miss just falls
+// back to the gradient placeholder, same as before self-hosting.
+async function precacheLocalImages() {
+  try {
+    const base = self.registration.scope;
+    const res = await fetch(base + "recipe-images/manifest.json");
+    if (!res.ok) return;
+    const paths = await res.json();
+    if (!Array.isArray(paths)) return;
+    const cache = await caches.open(LOCAL_IMG_CACHE);
+    for (const path of paths) {
+      if (typeof path !== "string") continue;
+      const url = base + path;
+      if (await cache.match(url)) continue;
+      try {
+        const r = await fetch(url);
+        if (r.ok) await cache.put(url, r);
+      } catch { /* skip individual failures */ }
+    }
+  } catch { /* non-fatal */ }
 }
 
 async function networkFirst(request) {

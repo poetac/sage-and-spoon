@@ -55,6 +55,15 @@ describe("App — navigation & placing", () => {
     expect(isCurrent(/^Plan$/)).toBe(false);
   });
 
+  it("offers a skip-to-content link targeting the main landmark", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    expect(screen.getByText("Skip to content")).toHaveAttribute("href", "#main-content");
+    expect(document.getElementById("main-content")).not.toBeNull();
+  });
+
   it("opens the Cookbook tab and lists recipes", async () => {
     seedPrefs();
     seedPlan();
@@ -149,9 +158,45 @@ describe("App — recipe notes", () => {
     goTo(/Cookbook/);
     fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
     const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
-    fireEvent.click(within(card).getByText("Details"));
+    fireEvent.click(card);
     fireEvent.change(screen.getByLabelText("Recipe notes"), { target: { value: "less granola" } });
     await waitFor(() => expect(store.get(K.notes, {})[parfait.id]).toBe("less granola"));
+  });
+});
+
+describe("App — deleting a custom recipe", () => {
+  const customMeal = {
+    id: "ai-test-1", name: "Test AI Bowl", type: "lunch", gi: "Low", carbsG: 20, prepMins: 10,
+    cuisineTag: "Testish", proteinTag: "Tofu", proteinG: 22, fatG: 9, fiberG: 6,
+    ingredients: [{ n: "firm tofu", q: 1, u: "block", c: "Protein" }],
+  };
+
+  it("removes a custom meal from the cookbook and clears it from the plan", async () => {
+    seedPrefs();
+    store.set(K.custom, [customMeal]);
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS.targets);
+    plan.days[0].lunch = "ai-test-1";
+    store.set(K.plan, plan);
+
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Test AI Bowl" } });
+    fireEvent.click(screen.getByText("Test AI Bowl").closest(".card"));
+    fireEvent.click(screen.getByRole("button", { name: "Delete recipe" }));
+    fireEvent.click(screen.getByRole("button", { name: "Yes, delete" }));
+
+    await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(0));
+    expect(store.get(K.plan, null).days[0].lunch).toBeNull();
+  });
+
+  it("never offers delete for built-in library recipes", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    fireEvent.click(screen.getByText("Greek Yogurt Berry Parfait").closest(".card"));
+    expect(screen.queryByRole("button", { name: "Delete recipe" })).toBeNull();
   });
 });
 
@@ -187,6 +232,29 @@ describe("App — backup restore", () => {
     // The shrimp snack violates the restored Shellfish allergy → skipped.
     await waitFor(() => expect(store.get(K.custom, []).map((m) => m.id)).toEqual(["cust-ok"]));
     expect(screen.getByText(/skipped 1 saved meal/)).toBeInTheDocument();
+  });
+});
+
+describe("App — backup excludes the API key", () => {
+  it("redacts the API key from the downloaded backup (SEC-2)", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-ant-secret-123" });
+    let captured;
+    const origCreate = URL.createObjectURL;
+    const origRevoke = URL.revokeObjectURL;
+    URL.createObjectURL = (blob) => { captured = blob; return "blob:mock"; };
+    URL.revokeObjectURL = () => {};
+    try {
+      render(<App />);
+      goTo(/Settings/);
+      fireEvent.click(await screen.findByText("Download backup"));
+      const text = await captured.text();
+      expect(text).not.toContain("sk-ant-secret-123");
+      expect(JSON.parse(text).data.settings.apiKey).toBe("");
+    } finally {
+      URL.createObjectURL = origCreate;
+      URL.revokeObjectURL = origRevoke;
+    }
   });
 });
 

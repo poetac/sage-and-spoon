@@ -8,7 +8,7 @@ const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner
 const CARB_HINT_ABOVE = { breakfastMax: 45, mainMax: 60, snackMax: 30 };
 
 /* -------------------------------- settings ------------------------------- */
-export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport }) {
+export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenerate, onResetAll, poolHealth, poolNeed, onGrow, growing, hasKey, onExport, onImport, ingredientNames = [] }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch) => setPrefs({ ...prefs, ...patch });
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
@@ -19,9 +19,9 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
 
       <div className="card p-5 mb-4">
         <h3 className="font-display text-lg mb-4" style={{ fontWeight: 600 }}>Her preferences</h3>
-        <PrefsFields step={0} prefs={prefs} set={set} />
-        <PrefsFields step={1} prefs={prefs} set={set} />
-        <div className="mt-5"><PrefsFields step={2} prefs={prefs} set={set} /></div>
+        <PrefsFields step={0} prefs={prefs} set={set} ingredientNames={ingredientNames} />
+        <PrefsFields step={1} prefs={prefs} set={set} ingredientNames={ingredientNames} />
+        <div className="mt-5"><PrefsFields step={2} prefs={prefs} set={set} ingredientNames={ingredientNames} /></div>
         <button className="btn btn-soft mt-2" onClick={onRegenerate}><Icon d={ICONS.swap} size={14} /> Rebuild week with these preferences</button>
       </div>
 
@@ -57,7 +57,7 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
           {[["breakfastMax", "Breakfast (g)"], ["mainMax", "Lunch & dinner (g)"], ["snackMax", "Snacks (g)"]].map(([k, label]) => (
             <label key={k} className="text-sm">
               <span className="t-soft block mb-1">{label}</span>
-              <input type="number" className="input" value={settings.targets[k]} onChange={(e) => setTarget(k, e.target.value)} min="5" />
+              <input type="number" className="input" value={settings.targets[k]} onChange={(e) => setTarget(k, e.target.value)} min="5" aria-describedby="carb-min-hint" />
               {settings.targets[k] > CARB_HINT_ABOVE[k] && (
                 <span role="note" className="block mt-1 text-[11px]" style={{ color: "var(--amber)", fontWeight: 600 }}>
                   Above typical GD guidance — worth double-checking with her dietitian.
@@ -66,6 +66,7 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
             </label>
           ))}
         </div>
+        <p id="carb-min-hint" className="t-soft text-[11px] mt-2">Values below 5&nbsp;g are raised to 5&nbsp;g.</p>
       </div>
 
       <div className="card p-5 mb-4">

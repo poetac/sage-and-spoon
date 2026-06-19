@@ -68,6 +68,9 @@ describe("mealAllowed — dislikes and cook time", () => {
     const prefs = { ...EMPTY_PREFS, dislikes: ["Fish"] };
     expect(mealAllowed(byId.d1, prefs, TARGETS, "dinner")).toBe(false); // salmon
     expect(mealAllowed(byId.d3, prefs, TARGETS, "dinner")).toBe(true); // chicken
+    // FISH-1: white/oily fish must be excluded too, not just salmon/cod/tuna.
+    const whiteFish = MEAL_DB.find((m) => /tilapia|halibut|trout|mackerel/i.test(m.name + " " + m.ingredients.map((i) => i.n).join(" ")));
+    expect(mealAllowed(whiteFish, prefs, TARGETS, whiteFish.type), whiteFish && whiteFish.name).toBe(false);
   });
   it("excludes free-text dislikes", () => {
     const prefs = { ...EMPTY_PREFS, dislikeText: "avocado" };

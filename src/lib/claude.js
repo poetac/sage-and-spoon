@@ -23,8 +23,9 @@ export function prefsSummary(prefs) {
   });
 }
 
-export async function callClaude(apiKey, userPrompt, maxTokens) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+const RETRYABLE = new Set([429, 529]); // rate-limited / overloaded
+function postClaude(apiKey, userPrompt, maxTokens) {
+  return fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,17 +40,38 @@ export async function callClaude(apiKey, userPrompt, maxTokens) {
       messages: [{ role: "user", content: userPrompt }],
     }),
   });
-  const data = await res.json();
+}
+
+export async function callClaude(apiKey, userPrompt, maxTokens) {
+  let res = await postClaude(apiKey, userPrompt, maxTokens);
+  // One retry on rate-limit / overload, honoring Retry-After (capped) so a burst
+  // across the AI features degrades gracefully instead of failing on the spot.
+  if (RETRYABLE.has(res.status)) {
+    const wait = Math.min(Number(res.headers?.get?.("retry-after")) || 1, 10);
+    await new Promise((r) => setTimeout(r, wait * 1000));
+    res = await postClaude(apiKey, userPrompt, maxTokens);
+  }
+  // Parse defensively: a gateway error often returns HTML, and res.json() would
+  // throw a cryptic "Unexpected token" instead of surfacing the real HTTP status.
+  const body = await res.text();
+  let data;
+  try { data = JSON.parse(body); } catch { data = null; }
   if (!res.ok) throw new Error(data?.error?.message || `API error (${res.status})`);
+  if (!data) throw new Error("the API returned an unexpected (non-JSON) response");
   const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
   return extractJSON(text);
 }
 export function extractJSON(text) {
-  const cleaned = text.replace(/```json|```/g, "").trim();
-  const start = cleaned.indexOf("{");
-  const end = cleaned.lastIndexOf("}");
+  const str = String(text || "");
+  // Prefer the contents of a fenced ```json block when present — the most
+  // reliable boundary; otherwise fall back to the outermost { … } slice. Using
+  // the fenced body first avoids a stray brace in trailing prose breaking parse.
+  const fenced = str.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = fenced ? fenced[1] : str;
+  const start = candidate.indexOf("{");
+  const end = candidate.lastIndexOf("}");
   if (start < 0 || end < 0) throw new Error("The model reply contained no JSON.");
-  return JSON.parse(cleaned.slice(start, end + 1));
+  return JSON.parse(candidate.slice(start, end + 1));
 }
 // Runtime GD safety predicate. The prompt asks the model to honour the GD
 // rules, but a prompt is not a guarantee — this enforces them on every meal an
@@ -57,15 +79,16 @@ export function extractJSON(text) {
 // false positive (rejecting a fine meal) is acceptable here; a false negative
 // (serving an over-cap / high-GI / added-sugar meal) is not.
 const SUGAR_OK_PREV = new Set(["no", "low", "reduced", "zero", "without", "unsweetened"]);
-function hasGdBannedIngredient(text) {
+export function hasGdBannedIngredient(text) {
   if (/\bwhite rice\b/.test(text) || /\bwhite bread\b/.test(text)) return true;
   // Fruit juice — lemon/lime juice is an acid used in drops, not a sweet juice.
   for (const m of text.matchAll(/\bjuices?\b/g)) {
     const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
     if (prev !== "lemon" && prev !== "lime") return true;
   }
-  // Named added sugars / syrups.
-  if (/\b(honey|agave|molasses|maple syrup|corn syrup|brown sugar|cane sugar|powdered sugar|coconut sugar)\b/.test(text)) return true;
+  // Named added sugars / syrups (the ones that don't contain "sugar"/"juice"
+  // and so slip the generic checks above): syrups, malts, and refined sugars.
+  if (/\b(honey|agave|molasses|maple syrup|corn syrup|rice syrup|date syrup|golden syrup|rice malt|barley malt|brown sugar|cane sugar|powdered sugar|coconut sugar|palm sugar|turbinado|demerara|muscovado|dextrose|maltodextrin)\b/.test(text)) return true;
   // Bare "sugar", minus the safe near-matches (sugar snap peas, no-sugar/sugar-free).
   for (const m of text.matchAll(/\bsugars?\b/g)) {
     const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
@@ -105,35 +128,42 @@ export function gdCompliant(meal, targets) {
 // the batch), anything failing the GD safety rules (cap, GI, added sugar,
 // carb↔protein/fat pairing), and anything containing an excluded ingredient.
 // Returns only the keepers.
+// Normalized dedupe key — lowercase, alphanumerics only — so "Turkey Taco Bowl"
+// and "turkey-taco bowl" collide. Mirrors the pipeline's nameKey (ARCH-8).
+const nameKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
 export function vetNewMeals(raws, existingMeals, prefs, targets) {
-  const seenNames = new Set(existingMeals.map((m) => m.name.toLowerCase()));
+  const seenNames = new Set(existingMeals.map((m) => nameKey(m.name)));
   const kept = [];
   for (const raw of Array.isArray(raws) ? raws : []) {
     const meal = normalizeAiMeal(raw, "dinner");
     if (!meal) continue;
-    const nameKey = meal.name.toLowerCase();
-    if (seenNames.has(nameKey)) continue;
+    const key = nameKey(meal.name);
+    if (seenNames.has(key)) continue;
     if (!gdCompliant(meal, targets)) continue;
     if (violatesExclusions(meal, prefs)) continue;
-    seenNames.add(nameKey);
+    seenNames.add(key);
     kept.push(meal);
   }
   return kept;
 }
 
 let aiSeq = 0;
+// Bound model-output strings so a runaway/abusive reply can't bloat localStorage
+// (SEC-3). Generous caps — real recipes sit well under them.
+const clamp = (s, n) => String(s == null ? "" : s).slice(0, n);
 export function normalizeAiMeal(raw, fallbackType) {
   if (!raw || !raw.name) return null;
   const type = ["breakfast", "lunch", "dinner", "snack"].includes(raw.type) ? raw.type : fallbackType;
   // Estimate macros from ingredients so AI swaps match cookbook recipes.
   return withMacros({
     id: `ai-${Date.now()}-${aiSeq++}`,
-    name: String(raw.name),
+    name: clamp(raw.name, 120),
     type,
-    ingredients: (Array.isArray(raw.ingredients) ? raw.ingredients : []).map((i) => ({
-      n: String(i.n || i.name || "ingredient"),
+    ingredients: (Array.isArray(raw.ingredients) ? raw.ingredients : []).slice(0, 30).map((i) => ({
+      n: clamp(i.n || i.name || "ingredient", 80),
       q: typeof i.q === "number" ? i.q : null,
-      u: String(i.u || ""),
+      u: clamp(i.u || "", 24),
       c: CATEGORIES.includes(i.c) ? i.c : "Pantry",
     })),
     carbsG: Number(raw.carbsG) || 0,
@@ -141,7 +171,7 @@ export function normalizeAiMeal(raw, fallbackType) {
     // "Low" — gdCompliant rejects anything that isn't an explicit "Low".
     gi: ["Low", "Medium"].includes(raw.gi) ? raw.gi : null,
     prepMins: Number(raw.prepMins) || 15,
-    cuisineTag: String(raw.cuisineTag || ""),
-    proteinTag: String(raw.proteinTag || ""),
+    cuisineTag: clamp(raw.cuisineTag || "", 40),
+    proteinTag: clamp(raw.proteinTag || "", 40),
   });
 }

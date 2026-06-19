@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { commonsUrl, normLicense, normalizeCommons } from "./commons.mjs";
+import { commonsUrl, normLicense, normalizeCommons, isRedistributable } from "./commons.mjs";
+
+describe("isRedistributable", () => {
+  it("allows cc0/pdm/by/by-sa and rejects everything else", () => {
+    for (const ok of ["cc0", "pdm", "by", "by-sa", "BY-SA"]) expect(isRedistributable(ok)).toBe(true);
+    for (const no of ["", "all-rights-reserved", "gfdl", "by-nc", undefined, null]) expect(isRedistributable(no)).toBe(false);
+  });
+});
 
 describe("commonsUrl", () => {
   it("builds a File-namespace image search with a sized thumbnail", () => {

@@ -90,6 +90,17 @@ describe("recipe vetting", () => {
     expect(rejectReason(normalizeMeal(base), { targets: TARGETS })).toBeNull();
   });
 
+  it("rejects unknown/High GI instead of coercing it to Low", () => {
+    expect(normalizeMeal({ ...base, gi: "High" }).gi).toBeNull();
+    expect(rejectReason(normalizeMeal({ ...base, gi: "High" }), { targets: TARGETS })).toMatch(/GI must be/);
+    expect(rejectReason(normalizeMeal({ ...base, gi: undefined }), { targets: TARGETS })).toMatch(/GI must be/);
+  });
+
+  it("rejects added sugar / juice / white rice or bread", () => {
+    const sugary = normalizeMeal({ ...base, ingredients: [{ n: "honey", q: 1, u: "tbsp", c: "Pantry" }] });
+    expect(rejectReason(sugary, { targets: TARGETS })).toMatch(/added sugar/);
+  });
+
   it("dedupes within a batch and against existing names", () => {
     const raws = [
       { ...base, name: "Alpha" },

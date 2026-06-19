@@ -30,9 +30,14 @@ const pill = (text) => (
   <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}>{text}</span>
 );
 
-function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, isInWeek, isNoted }) {
+function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, isInWeek, isNoted, onHide }) {
   return (
-    <div className="card p-4 flex flex-col gap-2">
+    <div className="card p-4 flex flex-col gap-2"
+      style={{ cursor: "pointer", transition: "box-shadow .12s ease, transform .12s ease" }}
+      role="button" tabIndex={0}
+      aria-label={`View details for ${meal.name}`}
+      onClick={() => onDetails(meal)}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onDetails(meal); } }}>
       <RecipeImage meal={meal} height={104} />
       <div className="flex items-start justify-between gap-2">
         <div className="text-[14px] leading-snug" style={{ fontWeight: 700 }}>
@@ -40,7 +45,8 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, 
           {isInWeek && <span className="pill ml-1.5" style={{ background: "var(--sage-mist)", color: "var(--sage-deep)", fontSize: 10, fontWeight: 700, verticalAlign: "middle" }}>in your week</span>}
           {isNoted && <span className="pill ml-1.5" style={{ background: "#F3F0E8", color: "var(--ink-soft)", fontSize: 10, fontWeight: 700, verticalAlign: "middle" }}>note</span>}
         </div>
-        <button onClick={() => onToggleFavorite(meal.id)} title={isFavorite ? "Remove from favorites" : "Save to favorites"}
+        <button onClick={(e) => { e.stopPropagation(); onToggleFavorite(meal.id); }}
+          title={isFavorite ? "Remove from favorites" : "Save to favorites"}
           aria-label={isFavorite ? `Unfavorite ${meal.name}` : `Favorite ${meal.name}`} aria-pressed={isFavorite}
           style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: isFavorite ? "var(--berry)" : "var(--ink-soft)", lineHeight: 0 }}>
           <Icon d={ICONS.heart} size={17} fill={isFavorite ? "currentColor" : "none"} />
@@ -53,11 +59,16 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, 
         <span className="pill" style={{ background: "#F3F0E8", color: "var(--ink-soft)" }}><Icon d={ICONS.clock} size={11} /> {meal.prepMins}m</span>
         {meal.cuisineTag && pill(meal.cuisineTag)}
       </div>
-      <div className="flex gap-1 mt-1">
-        <button className="btn btn-soft" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => onDetails(meal)}>
-          <Icon d={ICONS.info} size={13} /> Details
-        </button>
-        <button className="btn btn-primary ml-auto" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => onPlace(meal)} aria-label={`Add ${meal.name} to the week`}>
+      <div className="flex items-center gap-1 mt-1">
+        {onHide && (
+          <button onClick={(e) => { e.stopPropagation(); onHide(meal.id); }}
+            title="Hide this recipe" aria-label={`Hide ${meal.name}`}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 6px", color: "var(--ink-soft)", lineHeight: 0, opacity: 0.6 }}>
+            <Icon d={ICONS.eyeOff} size={14} />
+          </button>
+        )}
+        <button className="btn btn-primary ml-auto" style={{ padding: "4px 10px", fontSize: 12 }}
+          onClick={(e) => { e.stopPropagation(); onPlace(meal); }} aria-label={`Add ${meal.name} to the week`}>
           <Icon d={ICONS.plus} size={13} /> Add
         </button>
       </div>
@@ -65,7 +76,7 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, 
   );
 }
 
-export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite, onPlace, onDetails, inWeek, notedIds }) {
+export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite, onPlace, onDetails, inWeek, notedIds, hiddenIds = [], onToggleHidden }) {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
   const [cuisine, setCuisine] = useState("all");
@@ -75,9 +86,11 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
   const [quick, setQuick] = useState(false);
   const [respect, setRespect] = useState(true);
   const [favOnly, setFavOnly] = useState(false);
+  const [showHidden, setShowHidden] = useState(false);
   const [limit, setLimit] = useState(PAGE);
 
   const favSet = useMemo(() => new Set(favorites), [favorites]);
+  const hiddenSet = useMemo(() => new Set(hiddenIds), [hiddenIds]);
 
   const cuisines = useMemo(() => [...new Set(allMeals.map((m) => m.cuisineTag).filter(Boolean))].sort(), [allMeals]);
   const proteins = useMemo(() => [...new Set(allMeals.map((m) => m.proteinTag).filter(Boolean))].sort(), [allMeals]);
@@ -87,6 +100,7 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
     const hits = (m) => tokens.every((t) => lc(m.name).includes(t) || m.ingredients.some((i) => lc(i.n).includes(t)));
     const carbCap = maxCarbs === "all" ? Infinity : Number(maxCarbs);
     const list = allMeals.filter((m) =>
+      (showHidden ? hiddenSet.has(m.id) : !hiddenSet.has(m.id)) &&
       (type === "all" || m.type === type) &&
       (cuisine === "all" || m.cuisineTag === cuisine) &&
       (protein === "all" || m.proteinTag === protein) &&
@@ -105,11 +119,11 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
       time: (a, b) => a.prepMins - b.prepMins || byName(a, b),
     }[sort];
     return [...list].sort(cmp);
-  }, [allMeals, prefs, favSet, q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, sort]);
+  }, [allMeals, prefs, favSet, hiddenSet, showHidden, q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, sort]);
 
   // Any filter change collapses the view back to the first page. Resetting
   // during render (React's documented pattern) avoids a state-setting effect.
-  const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, sort].join("|");
+  const sig = [q, type, cuisine, protein, maxCarbs, quick, respect, favOnly, showHidden, sort].join("|");
   const [prevSig, setPrevSig] = useState(sig);
   if (sig !== prevSig) { setPrevSig(sig); setLimit(PAGE); }
 
@@ -117,7 +131,7 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
   // isn't a narrowing the user needs to clear.
   const active = !!q || type !== "all" || cuisine !== "all" || protein !== "all" || maxCarbs !== "all" || quick || favOnly || !respect;
   const clearFilters = () => {
-    setQ(""); setType("all"); setCuisine("all"); setProtein("all"); setMaxCarbs("all"); setQuick(false); setRespect(true); setFavOnly(false);
+    setQ(""); setType("all"); setCuisine("all"); setProtein("all"); setMaxCarbs("all"); setQuick(false); setRespect(true); setFavOnly(false); setShowHidden(false);
   };
 
   const shown = filtered.slice(0, limit);
@@ -127,6 +141,20 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
     <div className="max-w-5xl rise">
       <h2 className="font-display text-2xl mb-1" style={{ fontWeight: 600 }}>Cookbook</h2>
       <p className="t-soft text-sm mb-4">Every GD-safe recipe in one place — search, filter, and drop any of them straight into your week.</p>
+
+      {favorites.length > 0 && !favOnly && (
+        <button type="button" onClick={() => setFavOnly(true)}
+          className="card p-4 mb-5 w-full flex items-center gap-3"
+          style={{ cursor: "pointer", textAlign: "left", borderColor: "var(--berry)" }}
+          aria-label={`Show my ${favorites.length} saved recipe${favorites.length === 1 ? "" : "s"}`}>
+          <span style={{ color: "var(--berry)", lineHeight: 0 }}><Icon d={ICONS.heart} size={22} fill="currentColor" /></span>
+          <div className="min-w-0">
+            <div style={{ fontWeight: 700 }}>My Saved Recipes ({favorites.length})</div>
+            <div className="t-soft text-sm">Jump straight to the recipes you've hearted.</div>
+          </div>
+          <span className="ml-auto t-soft text-lg" aria-hidden="true">›</span>
+        </button>
+      )}
 
       <div className="card p-4 mb-5 grid gap-3">
         <input className="input" placeholder="Search recipes or ingredients…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search recipes" />
@@ -154,6 +182,9 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
           <button className="chip" style={quick ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setQuick((v) => !v)} aria-pressed={quick}>Quick &lt; 20m</button>
           <button className="chip" style={respect ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setRespect((v) => !v)} aria-pressed={respect}>Respect my exclusions</button>
           <button className="chip" style={favOnly ? { borderColor: "var(--berry)", color: "var(--berry)" } : { opacity: 0.6 }} onClick={() => setFavOnly((v) => !v)} aria-pressed={favOnly}>♥ Favorites{favorites.length ? ` (${favorites.length})` : ""}</button>
+          {hiddenIds.length > 0 && (
+            <button className="chip" style={showHidden ? { borderColor: "var(--ink-soft)" } : { opacity: 0.6 }} onClick={() => setShowHidden((v) => !v)} aria-pressed={showHidden}>Hidden ({hiddenIds.length})</button>
+          )}
           {active && (
             <button className="btn btn-ghost ml-auto" style={{ padding: "4px 10px", fontSize: 12 }} onClick={clearFilters}>
               <Icon d={ICONS.x} size={12} /> Clear filters
@@ -162,13 +193,13 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
         </div>
       </div>
 
-      <div className="t-soft text-sm mb-3">{filtered.length} recipe{filtered.length === 1 ? "" : "s"}{active ? " · filtered" : ""}</div>
+      <div className="t-soft text-sm mb-3">{filtered.length} recipe{filtered.length === 1 ? "" : "s"}{active ? " · filtered" : ""}{showHidden ? " · showing hidden" : ""}</div>
       {filtered.length === 0 ? (
         <p className="t-soft text-sm">No recipes match those filters — try clearing the search or a facet.</p>
       ) : (
         <>
           <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
-            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} isFavorite={favSet.has(m.id)} onToggleFavorite={onToggleFavorite} isInWeek={!!inWeek && inWeek.has(m.id)} isNoted={!!notedIds && notedIds.has(m.id)} />)}
+            {shown.map((m) => <CookbookCard key={m.id} meal={m} onDetails={onDetails} onPlace={onPlace} isFavorite={favSet.has(m.id)} onToggleFavorite={onToggleFavorite} isInWeek={!!inWeek && inWeek.has(m.id)} isNoted={!!notedIds && notedIds.has(m.id)} onHide={onToggleHidden ? () => onToggleHidden(m.id) : null} />)}
           </div>
           {filtered.length > limit && (
             <div className="flex justify-center mt-5">

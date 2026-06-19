@@ -11,7 +11,7 @@ import { EMPTY_PREFS } from "../data/meals.js";
 function Harness({ step = 0, initial = EMPTY_PREFS, onChange }) {
   const [prefs, setPrefs] = useState(initial);
   const set = (patch) => setPrefs((p) => { const next = { ...p, ...patch }; onChange?.(next); return next; });
-  return <PrefsFields step={step} prefs={prefs} set={set} />;
+  return <PrefsFields step={step} prefs={prefs} set={set} ingredientNames={["quinoa", "brown rice", "greek yogurt", "spinach", "onion"]} />;
 }
 
 describe("PrefsFields", () => {

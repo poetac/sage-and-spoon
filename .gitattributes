@@ -1,0 +1,4 @@
+# Suppress binary diff noise for committed WebP recipe photos.
+public/recipe-images/*.webp binary
+# Keep the image directory out of GitHub's language detection stats.
+public/recipe-images/* linguist-generated=true

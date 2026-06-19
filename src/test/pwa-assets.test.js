@@ -34,4 +34,27 @@ describe("service worker (PERF-5)", () => {
     // opaque (no-cors) image responses must still be cached
     expect(sw).toMatch(/response\.type === "opaque"/);
   });
+  it("pre-caches local recipe images non-blocking after activation", () => {
+    expect(sw).toContain("precacheLocalImages");
+    expect(sw).toContain("recipe-images/manifest.json");
+    // must be non-blocking (not awaited in event.waitUntil)
+    expect(sw).toMatch(/self\.clients\.claim[\s\S]*?precacheLocalImages\(\)/);
+  });
+});
+
+describe("service worker — offline library (OFFLINE-CACHE)", () => {
+  const sw = read("public/sw.js");
+  it("keeps self-hosted photos in a permanent, uncapped cache (not the capped one)", () => {
+    expect(sw).toMatch(/LOCAL_IMG_CACHE/);
+    expect(sw).toMatch(/isLocalRecipeImage/);
+    // local recipe images are NOT trimmed — only the cross-origin cache is capped
+    expect(sw).toMatch(/if \(!local\) trimCache/);
+  });
+  it("precaches the library into the permanent cache", () => {
+    expect(sw).toMatch(/caches\.open\(LOCAL_IMG_CACHE\)/);
+  });
+  it("precaches the app shell at install", () => {
+    expect(sw).toMatch(/addEventListener\("install"/);
+    expect(sw).toMatch(/cache\.add\(new Request\(self\.registration\.scope/);
+  });
 });
