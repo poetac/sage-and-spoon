@@ -169,7 +169,7 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 | ✅ | ARCH-8 | `vetNewMeals` deduped on a weaker name key than the pipeline. | `claude.js` | Now uses a punctuation-insensitive `nameKey` mirroring the pipeline. | S |
 | ✅ | ARCH-9 | "per 2 servings" magic constant. | utils | `RECIPE_SERVINGS` + `scaleIngredient`. | S |
 | ✅ | ARCH-10 | `buildWeek` double `setPlan`. | `App.jsx` | Single set (branch on empty). | S |
-| ⬜ | ARCH-11 | `fetch-images.mjs` 429 retry has no ceiling (unverified). | `scripts/fetch-images.mjs` | Add a max-attempts cap. | S |
+| ✅ | ARCH-11 | Non-issue: `fetch-images.mjs` already bounds 429 retries (`MAX_429_RETRIES = 5`) with backoff and throws after. | `scripts/fetch-images.mjs` | — | S |
 | ✅ | **PR41-SHOP** | ShoppingTab seeded edits once at mount; a plan/week change while mounted kept stale edits and clobbered the new week's record. | `App.jsx`, `ShoppingTab.jsx` | ShoppingTab is keyed on `plan.weekStart`, so a week change remounts it with that week's stored edits. | S |
 | ✅ | **PR41-PHOTOS** | Reset clears IndexedDB photos ✅; backups now round-trip user photos ✅; `saveUserPhotos` reports failure so `addUserPhoto` reverts + toasts on quota ✅; `image.js` auto-orients via `createImageBitmap` ✅. | `userPhotos.js`, `image.js`, `App.jsx` | — | M |
 
