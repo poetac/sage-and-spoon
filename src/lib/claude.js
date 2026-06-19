@@ -62,11 +62,16 @@ export async function callClaude(apiKey, userPrompt, maxTokens) {
   return extractJSON(text);
 }
 export function extractJSON(text) {
-  const cleaned = text.replace(/```json|```/g, "").trim();
-  const start = cleaned.indexOf("{");
-  const end = cleaned.lastIndexOf("}");
+  const str = String(text || "");
+  // Prefer the contents of a fenced ```json block when present — the most
+  // reliable boundary; otherwise fall back to the outermost { … } slice. Using
+  // the fenced body first avoids a stray brace in trailing prose breaking parse.
+  const fenced = str.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = fenced ? fenced[1] : str;
+  const start = candidate.indexOf("{");
+  const end = candidate.lastIndexOf("}");
   if (start < 0 || end < 0) throw new Error("The model reply contained no JSON.");
-  return JSON.parse(cleaned.slice(start, end + 1));
+  return JSON.parse(candidate.slice(start, end + 1));
 }
 // Runtime GD safety predicate. The prompt asks the model to honour the GD
 // rules, but a prompt is not a guarantee — this enforces them on every meal an

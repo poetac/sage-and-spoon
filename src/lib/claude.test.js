@@ -43,6 +43,9 @@ describe("extractJSON", () => {
   it("throws when there is no JSON at all", () => {
     expect(() => extractJSON("sorry, I cannot do that")).toThrow(/no JSON/);
   });
+  it("uses the fenced block body, ignoring stray braces in trailing prose (ARCH-6)", () => {
+    expect(extractJSON('```json\n{"a":1}\n```\nthanks! :}')).toEqual({ a: 1 });
+  });
   it("throws on malformed JSON", () => {
     expect(() => extractJSON('{"a": oops}')).toThrow();
   });

@@ -535,7 +535,7 @@ export default function App() {
         {TABS.map((t) => (
           <button key={t.key} onClick={() => setTab(t.key)} aria-current={tab === t.key ? "page" : undefined}
             className="flex flex-col items-center gap-0.5 px-3 py-1"
-            style={{ position: "relative", color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 11, background: "none", border: "none", cursor: "pointer" }}>
+            style={{ position: "relative", minHeight: 48, color: tab === t.key ? "var(--sage-deep)" : "var(--ink-soft)", fontWeight: tab === t.key ? 700 : 500, fontSize: 12, background: "none", border: "none", cursor: "pointer" }}>
             {tab === t.key && (
               <span aria-hidden="true" style={{ position: "absolute", top: -2, left: "20%", right: "20%", height: 3, borderRadius: "0 0 3px 3px", background: "var(--sage-deep)" }} />
             )}
