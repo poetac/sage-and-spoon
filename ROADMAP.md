@@ -78,6 +78,11 @@ cookbook chunk).
 ShoppingTab), `A11Y-4` (MealCard Space activation), `CLAUDE-ROBUST` (defensive
 fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 
+**Accessibility & CI gates — Sprints A/B** (347 tests): skip-link + `OfflineBanner`
+(`A11Y-8`), real gallery-dot buttons (`A11Y-4`), tap targets (`A11Y-7`), clamp
+announce (`A11Y-6`); coverage gate (`TEST-6`, ≥68%), Node 22 LTS + `engines`
+(`TEST-7`), `dist` build-smoke (`TEST-8`), and `npm audit fix` (0 vulnerabilities).
+
 ---
 
 ## P0 — Safety (do first)
@@ -121,11 +126,11 @@ fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 | ✅ | A11Y-1 | Toasts/moving-banner not announced. | High | `primitives.jsx`, `PlanTab.jsx` | `role`/`aria-live` regions. | S |
 | ✅ | A11Y-2 | No `aria-current`; no `<h1>`. | High | `App.jsx` | Added (test-locked). | S |
 | ✅ | A11Y-3 | Background scrolled behind modals. | Med | `primitives.jsx` `Modal` | Body scroll-lock on mount. | S |
-| 🔶 | A11Y-4 | Both cards now activate on Enter+Space ✅. Remaining: both are `role="button"` wrapping nested action buttons (invalid ARIA), and RecipeImage gallery dots are mouse-only `role="button"` spans. | Med | `MealCard.jsx`, `CookbookTab.jsx`, `RecipeImage.jsx` | Restructure so actions are siblings of (not inside) the activatable region; make dots real buttons. | M |
+| 🔶 | A11Y-4 | Enter+Space activation ✅; gallery dots are real `<button>`s now ✅. Remaining: both cards are `role="button"` wrapping nested action buttons (invalid ARIA) — the cover-button restructure needs in-browser drag / tap-to-move / hit-test verification, so it's intentionally deferred. | Med | `MealCard.jsx`, `CookbookTab.jsx` | Cover-button pattern (container not a button; actions as siblings); verify drag + tap-to-move live. | M |
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
-| 🔶 | A11Y-6 | Cap over-guidance hint ✅ and the cookbook skeleton now has `aria-busy` ✅; number inputs still clamp silently with no announcement. | Med | `SettingsTab.jsx` | Announce clamps (`aria-describedby` + message). | S |
-| ⬜ | A11Y-7 | Small tap targets/text: mobile tab bar (`fontSize:11`), pill ✕ (`padding:1px 4px`), gallery dots 6×6. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | Bump to ≥24–44px. | S |
-| 🔶 | A11Y-8 | Install affordance added (A2HS, iOS-only) ✅; still **no skip-link, no `navigator.onLine` offline indicator** (AI fails cryptically offline), no Android/desktop `beforeinstallprompt`. | Low | `App.jsx`, `A2HSBanner.jsx` | Skip-to-content; offline banner; `beforeinstallprompt` button. | M |
+| ✅ | A11Y-6 | Cap over-guidance hint ✅, cookbook skeleton has `aria-busy` ✅, and carb-target inputs announce the 5 g clamp via `aria-describedby` ✅. | Med | `SettingsTab.jsx`, `App.jsx` | (servings/protein inputs could get the same hint later.) | S |
+| 🔶 | A11Y-7 | Shopping remove buttons now ≥28px and gallery dots have an 8px tap pad ✅; the mobile tab bar text (11px) is still small. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | Bump the tab-bar targets to ≥44px. | S |
+| ✅ | A11Y-8 | Skip-to-content link → `#main-content` landmark ✅; an `OfflineBanner` (`navigator.onLine`, role=status) explains offline behavior ✅; iOS install affordance (A2HS) already shipped. | Low | `App.jsx`, `OfflineBanner.jsx` | (Android/desktop `beforeinstallprompt` button still optional.) | M |
 
 ## P3 — Testing & CI
 
@@ -136,9 +141,9 @@ fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 | 🔶 | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet covered; `loadCookbook` reject→`CORE_DB` fallback and null-slot rendering still untested. | M |
 | ✅ | TEST-4 | `placeMeal` guard. | `App.jsx` | Cap/exclusion/GI placement guards exercised (delete-from-plan + place tests). | S |
 | ⬜ | TEST-5 | `pickBest` randomness. | `planner.js` | `vi.spyOn(Math,'random')`-seeded ranking test. | S |
-| ⬜ | TEST-6 | No coverage tooling/gate. | CI | `@vitest/coverage-v8`, `test:coverage`, lenient threshold, CI step. | M |
-| ⬜ | TEST-7 | Node drift: CI/deploy pin **24**, docs say 20+, no `engines`. | `package.json`, `.github/workflows/*` | Add `engines:">=20"`; align CI/deploy to one documented LTS. | S |
-| 🔶 | TEST-8 | CI runs `build` (so a break fails) but no `dist/index.html` smoke and no a11y check. | CI | Assert `dist/index.html`; add `jest-axe` smoke on Onboarding. | S |
+| ✅ | TEST-6 | No coverage tooling/gate. | CI, `vite.config.js` | `@vitest/coverage-v8` + `test:coverage` + a lenient ≥68% v8 threshold (current ~74–77%); CI runs it. | M |
+| ✅ | TEST-7 | Node drift: CI/deploy pinned 24, docs say 20+, no `engines`. | `package.json`, `.github/workflows/*` | `engines: node >=20`; CI + deploy aligned to Node 22 LTS. | S |
+| 🔶 | TEST-8 | `dist/index.html` build-smoke added to CI + deploy ✅. Remaining: a `jest-axe` a11y smoke on Onboarding. | CI | Add `jest-axe` smoke. | S |
 
 ## P4 — Architecture & maintainability
 
@@ -174,10 +179,8 @@ fetch parse + 429/529 retry); reset now also clears IndexedDB photos.
 > return; the cookbook chunk is correctly lazy-loaded; `generated-meals.js` ids
 > are stable (`g`-prefixed, append-only) and macros are recomputed (no stale
 > fields).
-> **Correction:** the earlier "npm audit clean" note is now stale — `npm audit`
-> reports **1 high (undici)**, but it is a **dev/build-only** transitive
-> dependency (prod deps are only react/react-dom), ships nothing to the browser,
-> and uses no SOCKS5 proxy → negligible risk. `npm audit fix` is safe to run.
+> **npm audit:** clean again (0 vulnerabilities) after `npm audit fix` cleared a
+> dev/build-only undici advisory; prod deps are only react/react-dom.
 > **Dormant by design:** `recipes:generate` is a no-op until `COVERAGE_TARGETS`
 > are raised above achieved counts (a regression guard, not a bug).
 
