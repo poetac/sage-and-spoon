@@ -44,13 +44,19 @@ src/
                            the generated chunk and assembles the macro-enriched MEAL_DB
   data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit;
                            a dynamic chunk (loadCookbook), kept off the first-paint critical path
+  data/recipe-images.js    per-recipe photo galleries: { id: Photo[] } (self-hosted WebP + a few
+                           remote URLs), with CC attribution; rendered by components/RecipeImage
   data/coverage.test.js    CI-enforced coverage + integrity properties of the cookbook
-  lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition, utils, dates, storage
-  components/              primitives + MealCard, Onboarding, PrefsFields, and the four tabs
+  lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition,
+                           utils, dates, storage, image (canvas resize), userPhotos (IndexedDB), pwa
+  components/              primitives, NutritionPills, RecipeImage, MealCard, MealDetail, Onboarding,
+                           PrefsFields, WeekHistory, ErrorBoundary, A2HSBanner, and the four tabs
 scripts/                   recipe-library pipeline (see scripts/README.md)
 ```
 
-State persists to `localStorage` (`ss_*` keys) with an in-memory fallback.
+State persists to `localStorage` (`ss_*` keys) with an in-memory fallback;
+cook-supplied recipe photos live in IndexedDB (`ss_user_photos`, too big for
+localStorage).
 
 ## Meal data model
 
@@ -75,9 +81,13 @@ State persists to `localStorage` (`ss_*` keys) with an in-memory fallback.
 - Quantities are **per 2 servings**; the UI scales to the household setting.
 - Allergy/dislike filtering is **keyword-based** over name + ingredient names
   (`ALLERGEN_MAP` / `DISLIKE_MAP` in `meals.js`, applied by `violatesExclusions`
-  in `lib/planner.js`). Watch for substring traps: "coconut **milk**" trips the
-  dairy filter, "**egg**plant" trips eggs, "buck**wheat**" trips wheat. Generated
-  dairy/egg/wheat-free recipes avoid those substrings on purpose.
+  in `lib/planner.js`). Matching is **compound-aware** (`keywordHit`): word-boundary
+  + simple plurals, plus a plant-qualifier guard so bare `butter`/`cream`/`milk`
+  sit under Dairy without tripping almond butter / coconut cream / oat milk, and the
+  old over-match traps (egg**plant**→eggs, buck**wheat**→wheat, **mussel**↔Brussels)
+  are handled. The real risk now is an *incomplete map*, not a substring trap — when
+  you broaden a map, add a removal test (see the fish guard in `coverage.test.js`); a
+  pool-size check can't catch a keyword the map simply omits (that was the `FISH-1` bug).
 
 ## Recipe pipeline (`scripts/`)
 
@@ -90,7 +100,9 @@ Grows the **offline** cookbook gap-first: **report → generate → curate → p
   dislike; **overall** (across types) for cuisine/protein, since many type×cuisine
   combos are naturally sparse.
 - `scripts/lib/recipe.mjs` — normalization + vetting, reusing the app's own
-  `violatesExclusions`/`capFor` so build-time and runtime safety rules can't drift.
+  `violatesExclusions`/`capFor`/`hasGdBannedIngredient` and requiring GI ∈ {Low,
+  Medium}, so the build-time gate matches the runtime GD rules (it no longer coerces
+  an unknown GI to "Low").
 - `promote` assigns stable `g`-ids, writes `src/data/generated-meals.js`, dedupes
   by normalized name, and **flags** (doesn't drop) near-duplicate recipes.
 
@@ -104,7 +116,9 @@ by hand and promote it through the same gates (that is how the library was built
   re-run `recipes:promote`.
 - Keep `CORE_MEALS` (the original 77) stable unless deliberately revising them.
 - New cookbook recipes must keep `coverage.test.js` green: unique ids/names,
-  within carb caps, valid categories/GI, and deep single-exclusion pools.
+  within carb caps, GI ∈ {Low, Medium}, valid categories, carbs paired with
+  protein/fat on every ≥20g-carb meal, exclusions that actually remove the food,
+  and deep single-exclusion pools.
 - Never commit an API key. The browser-direct API call is fine for personal use;
   anything shared should route through a backend proxy.
 - Match the surrounding code's terse, comment-light-but-purposeful style.

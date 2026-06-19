@@ -27,8 +27,9 @@ prioritized **worklist** of the largest gaps — exactly what the generator walk
 ## 2. Generate — `recipes:generate`
 
 Walks the worklist, asks Claude for recipes that fill each gap, vets them with
-the app's **own** safety gates (carb caps, allergen/dislike exclusions, category
-validity, ≤8 ingredients, required cooking `steps`), and appends the keepers to
+the app's **own** safety gates (carb caps, GI ∈ {Low, Medium}, allergen/dislike
+exclusions, an added-sugar/juice/white-rice-or-bread denylist, category validity,
+≤8 ingredients, required cooking `steps`), and appends the keepers to
 `scripts/generated/pending-recipes.json`. It never touches the bundle.
 
 ```
@@ -87,8 +88,10 @@ npm run recipes:promote -- --in scripts/generated/curated-recipes.batch9.json
 
 ## Recipe images
 
-Per-recipe preview photos live in `src/data/recipe-images.js` (`{ id: { src,
-credit, creditUrl, license } }`). Two offline-authoring steps maintain them:
+Per-recipe preview photos live in `src/data/recipe-images.js` as a 1–3 photo
+gallery per recipe (`{ id: [{ src, credit, creditUrl, license }, …] }`) — the
+detail modal browses them, cards show the first. Two offline-authoring steps
+maintain them:
 
 ```
 npm run images:fetch        # resolve openly-licensed photos (Openverse + Commons)
