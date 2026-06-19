@@ -81,8 +81,9 @@ export function hasGdBannedIngredient(text) {
     const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
     if (prev !== "lemon" && prev !== "lime") return true;
   }
-  // Named added sugars / syrups.
-  if (/\b(honey|agave|molasses|maple syrup|corn syrup|brown sugar|cane sugar|powdered sugar|coconut sugar)\b/.test(text)) return true;
+  // Named added sugars / syrups (the ones that don't contain "sugar"/"juice"
+  // and so slip the generic checks above): syrups, malts, and refined sugars.
+  if (/\b(honey|agave|molasses|maple syrup|corn syrup|rice syrup|date syrup|golden syrup|rice malt|barley malt|brown sugar|cane sugar|powdered sugar|coconut sugar|palm sugar|turbinado|demerara|muscovado|dextrose|maltodextrin)\b/.test(text)) return true;
   // Bare "sugar", minus the safe near-matches (sugar snap peas, no-sugar/sugar-free).
   for (const m of text.matchAll(/\bsugars?\b/g)) {
     const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";
@@ -122,35 +123,42 @@ export function gdCompliant(meal, targets) {
 // the batch), anything failing the GD safety rules (cap, GI, added sugar,
 // carb↔protein/fat pairing), and anything containing an excluded ingredient.
 // Returns only the keepers.
+// Normalized dedupe key — lowercase, alphanumerics only — so "Turkey Taco Bowl"
+// and "turkey-taco bowl" collide. Mirrors the pipeline's nameKey (ARCH-8).
+const nameKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
 export function vetNewMeals(raws, existingMeals, prefs, targets) {
-  const seenNames = new Set(existingMeals.map((m) => m.name.toLowerCase()));
+  const seenNames = new Set(existingMeals.map((m) => nameKey(m.name)));
   const kept = [];
   for (const raw of Array.isArray(raws) ? raws : []) {
     const meal = normalizeAiMeal(raw, "dinner");
     if (!meal) continue;
-    const nameKey = meal.name.toLowerCase();
-    if (seenNames.has(nameKey)) continue;
+    const key = nameKey(meal.name);
+    if (seenNames.has(key)) continue;
     if (!gdCompliant(meal, targets)) continue;
     if (violatesExclusions(meal, prefs)) continue;
-    seenNames.add(nameKey);
+    seenNames.add(key);
     kept.push(meal);
   }
   return kept;
 }
 
 let aiSeq = 0;
+// Bound model-output strings so a runaway/abusive reply can't bloat localStorage
+// (SEC-3). Generous caps — real recipes sit well under them.
+const clamp = (s, n) => String(s == null ? "" : s).slice(0, n);
 export function normalizeAiMeal(raw, fallbackType) {
   if (!raw || !raw.name) return null;
   const type = ["breakfast", "lunch", "dinner", "snack"].includes(raw.type) ? raw.type : fallbackType;
   // Estimate macros from ingredients so AI swaps match cookbook recipes.
   return withMacros({
     id: `ai-${Date.now()}-${aiSeq++}`,
-    name: String(raw.name),
+    name: clamp(raw.name, 120),
     type,
-    ingredients: (Array.isArray(raw.ingredients) ? raw.ingredients : []).map((i) => ({
-      n: String(i.n || i.name || "ingredient"),
+    ingredients: (Array.isArray(raw.ingredients) ? raw.ingredients : []).slice(0, 30).map((i) => ({
+      n: clamp(i.n || i.name || "ingredient", 80),
       q: typeof i.q === "number" ? i.q : null,
-      u: String(i.u || ""),
+      u: clamp(i.u || "", 24),
       c: CATEGORIES.includes(i.c) ? i.c : "Pantry",
     })),
     carbsG: Number(raw.carbsG) || 0,
@@ -158,7 +166,7 @@ export function normalizeAiMeal(raw, fallbackType) {
     // "Low" — gdCompliant rejects anything that isn't an explicit "Low".
     gi: ["Low", "Medium"].includes(raw.gi) ? raw.gi : null,
     prepMins: Number(raw.prepMins) || 15,
-    cuisineTag: String(raw.cuisineTag || ""),
-    proteinTag: String(raw.proteinTag || ""),
+    cuisineTag: clamp(raw.cuisineTag || "", 40),
+    proteinTag: clamp(raw.proteinTag || "", 40),
   });
 }

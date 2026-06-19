@@ -87,6 +87,17 @@ describe("normalizeAiMeal", () => {
   it("treats non-numeric carbs as 0 (later clamped by the caller)", () => {
     expect(normalizeAiMeal({ name: "X", carbsG: "lots" }, "snack").carbsG).toBe(0);
   });
+  it("bounds field lengths and ingredient count (SEC-3)", () => {
+    const meal = normalizeAiMeal({
+      name: "A".repeat(500),
+      cuisineTag: "C".repeat(500),
+      ingredients: Array.from({ length: 60 }, (_, i) => ({ n: `ing${i} ${"x".repeat(500)}`, c: "Produce" })),
+    }, "lunch");
+    expect(meal.name).toHaveLength(120);
+    expect(meal.cuisineTag).toHaveLength(40);
+    expect(meal.ingredients.length).toBeLessThanOrEqual(30);
+    expect(meal.ingredients[0].n.length).toBeLessThanOrEqual(80);
+  });
 });
 
 describe("vetNewMeals (cookbook-growth gate)", () => {
@@ -123,6 +134,16 @@ describe("vetNewMeals (cookbook-growth gate)", () => {
   it("drops ideas with added sugar", () => {
     const sweet = raw({ name: "Honey Oats", ingredients: [{ n: "honey", q: 1, u: "tbsp", c: "Pantry" }] });
     expect(vetNewMeals([sweet], existing, EMPTY_PREFS, T)).toHaveLength(0);
+  });
+  it("drops less-obvious added sugars too (SAFE-9)", () => {
+    for (const sugar of ["date syrup", "rice malt", "dextrose", "maltodextrin"]) {
+      const m = raw({ name: `Sweet ${sugar}`, ingredients: [{ n: sugar, q: 1, u: "tbsp", c: "Pantry" }] });
+      expect(vetNewMeals([m], existing, EMPTY_PREFS, T), sugar).toHaveLength(0);
+    }
+  });
+  it("dedupes on a punctuation-insensitive name key (ARCH-8)", () => {
+    const kept = vetNewMeals([raw({ name: "Turkey-Taco Bowl!" })], [{ name: "turkey taco bowl", ingredients: [] }], EMPTY_PREFS, T);
+    expect(kept).toHaveLength(0);
   });
   it("drops candidates whose ingredients imply far more carbs than claimed (SAFE-4)", () => {
     const understated = raw({ name: "Date Bites", type: "snack", carbsG: 18, ingredients: [{ n: "medjool dates", q: 6, u: "", c: "Pantry" }] });
