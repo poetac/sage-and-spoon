@@ -112,6 +112,7 @@ npm run images:self-host    # download the fetchable ones → local optimised We
   `import.meta.env.BASE_URL` at render time and picks the variant by height.
 
 > **Updating an image:** filenames are stable per id, so changing a photo's bytes
-> without changing its id won't bust the SW image cache. Bump `IMG_CACHE` in
-> `public/sw.js` (`-img-v1` → `-v2`) when you replace existing image bytes; new
-> ids cache fine on their own.
+> without changing its id won't bust the SW image cache. Self-hosted photos live in
+> a permanent, uncapped cache (so the whole library survives offline); bump
+> `LOCAL_IMG_CACHE` in `public/sw.js` (`-local-img-v1` → `-v2`) when you replace
+> existing self-hosted image bytes. New ids cache fine on their own.
