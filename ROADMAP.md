@@ -93,6 +93,10 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7`
 (tab-bar tap targets), `A11Y-8` (Android/desktop `beforeinstallprompt` install).
 
+**Accessibility & test depth** (364 tests): `A11Y-4` (card nested-interactive
+violation resolved by de-roling, drag preserved), `TEST-5` (seeded `pickBest`),
+`TEST-2/3` (AI-swap error path + malformed-backup coverage).
+
 ---
 
 ## P0 — Safety (do first)
@@ -136,7 +140,7 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 | ✅ | A11Y-1 | Toasts/moving-banner not announced. | High | `primitives.jsx`, `PlanTab.jsx` | `role`/`aria-live` regions. | S |
 | ✅ | A11Y-2 | No `aria-current`; no `<h1>`. | High | `App.jsx` | Added (test-locked). | S |
 | ✅ | A11Y-3 | Background scrolled behind modals. | Med | `primitives.jsx` `Modal` | Body scroll-lock on mount. | S |
-| 🔶 | A11Y-4 | Enter+Space activation ✅; gallery dots are real `<button>`s now ✅. Remaining: both cards are `role="button"` wrapping nested action buttons (invalid ARIA) — the cover-button restructure needs in-browser drag / tap-to-move / hit-test verification, so it's intentionally deferred. | Med | `MealCard.jsx`, `CookbookTab.jsx` | Cover-button pattern (container not a button; actions as siblings); verify drag + tap-to-move live. | M |
+| ✅ | A11Y-4 | Enter+Space activation ✅; gallery dots are real `<button>`s ✅; the nested-interactive violation is resolved by de-roling the card containers (focusable `tabIndex`+`onClick`+`onKeyDown`, no longer ARIA buttons, so nested action buttons are valid) ✅ — drag-and-drop preserved. | Med | `MealCard.jsx`, `CookbookTab.jsx` | — | M |
 | 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
 | ✅ | A11Y-6 | Cap over-guidance hint ✅, cookbook skeleton has `aria-busy` ✅, and carb-target inputs announce the 5 g clamp via `aria-describedby` ✅. | Med | `SettingsTab.jsx`, `App.jsx` | (servings/protein inputs could get the same hint later.) | S |
 | ✅ | A11Y-7 | Shopping remove buttons ≥28px, gallery dots an 8px tap pad, and the mobile tab bar bumped to 12px text with a 48px min target. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | — | S |
@@ -147,10 +151,10 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 | St | ID | Item | Where | Add | Eff |
 |---|---|---|---|---|---|
 | ✅ | TEST-1 | Servings scaling. | `MealDetail.test.jsx` | Scaling 2→4→1 covered. | S |
-| 🔶 | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx` | `claude.js` unit-tested; App AI paths (week/swap/grow/ingredients) still largely unmocked. | M |
-| 🔶 | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet covered; `loadCookbook` reject→`CORE_DB` fallback and null-slot rendering still untested. | M |
+| 🔶 | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx` | `callClaude` transport unit-tested; App AI-swap **error path** now covered (mocked, plan-untouched). Remaining: success paths for week/grow/ingredients. | M |
+| 🔶 | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet covered ✅. Remaining: `loadCookbook` reject→`CORE_DB` fallback and null-slot rendering. | M |
 | ✅ | TEST-4 | `placeMeal` guard. | `App.jsx` | Cap/exclusion/GI placement guards exercised (delete-from-plan + place tests). | S |
-| ⬜ | TEST-5 | `pickBest` randomness. | `planner.js` | `vi.spyOn(Math,'random')`-seeded ranking test. | S |
+| ✅ | TEST-5 | `pickBest` randomness. | `planner.test.js` | Seeded (`vi.spyOn(Math,'random')`) ranking + exclude/fallback/empty-pool edges. | S |
 | ✅ | TEST-6 | No coverage tooling/gate. | CI, `vite.config.js` | `@vitest/coverage-v8` + `test:coverage` + a lenient ≥68% v8 threshold (current ~74–77%); CI runs it. | M |
 | ✅ | TEST-7 | Node drift: CI/deploy pinned 24, docs say 20+, no `engines`. | `package.json`, `.github/workflows/*` | `engines: node >=20`; CI + deploy aligned to Node 22 LTS. | S |
 | 🔶 | TEST-8 | `dist/index.html` build-smoke added to CI + deploy ✅. Remaining: a `jest-axe` a11y smoke on Onboarding. | CI | Add `jest-axe` smoke. | S |
