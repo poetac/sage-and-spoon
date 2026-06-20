@@ -1,7 +1,8 @@
 // Download, resize, and commit recipe preview photos as local WebP files,
-// removing the runtime CDN dependency for fetchable images. Images that
-// return a non-200 response (e.g. rawpixel/StockSnap 403s) stay as remote
-// URLs — the service worker caches them after first view.
+// removing the runtime CDN dependency for fetchable images. Any image that
+// returns a non-200 response stays a remote URL — the service worker caches it
+// after first view. (The fetcher only sources self-hostable hosts now, so this
+// is a backstop rather than the rule — see fetch-images.mjs / IMG-REMOTE.)
 //
 // Usage:
 //   npm run images:self-host
@@ -35,7 +36,11 @@ const args = process.argv.slice(2);
 const flag = (name, fb) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : fb; };
 const delay = Number(flag("--delay", 200));
 
-const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+// Honest, descriptive User-Agent (tool + contact), per Wikimedia's UA policy.
+// The old spoofed-Chrome string only existed to dodge rawpixel/StockSnap 403s;
+// those hosts are no longer sourced (IMG-REMOTE), and Commons + Flickr both
+// serve fine to a descriptive agent — so impersonating a browser buys nothing.
+const UA = "sage-and-spoon recipe-image self-host (poet.ac@gmail.com)";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchBytes(url) {
