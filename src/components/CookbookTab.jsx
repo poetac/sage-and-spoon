@@ -179,11 +179,11 @@ export function CookbookTab({ allMeals, prefs, favorites = [], onToggleFavorite,
           </select>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <button className="chip" style={quick ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setQuick((v) => !v)} aria-pressed={quick}>Quick &lt; 20m</button>
-          <button className="chip" style={respect ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setRespect((v) => !v)} aria-pressed={respect}>Respect my exclusions</button>
-          <button className="chip" style={favOnly ? { borderColor: "var(--berry)", color: "var(--berry)" } : { opacity: 0.6 }} onClick={() => setFavOnly((v) => !v)} aria-pressed={favOnly}>♥ Favorites{favorites.length ? ` (${favorites.length})` : ""}</button>
+          <button className="chip" style={quick ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setQuick((v) => !v)} aria-pressed={quick}>{quick && <Icon d={ICONS.check} size={12} style={{ marginRight: 4 }} />}Quick &lt; 20m</button>
+          <button className="chip" style={respect ? { borderColor: "var(--sage)" } : { opacity: 0.6 }} onClick={() => setRespect((v) => !v)} aria-pressed={respect}>{respect && <Icon d={ICONS.check} size={12} style={{ marginRight: 4 }} />}Respect my exclusions</button>
+          <button className="chip" style={favOnly ? { borderColor: "var(--berry)", color: "var(--berry)" } : { opacity: 0.6 }} onClick={() => setFavOnly((v) => !v)} aria-pressed={favOnly}>{favOnly ? <Icon d={ICONS.check} size={12} style={{ marginRight: 4 }} /> : "♥ "}Favorites{favorites.length ? ` (${favorites.length})` : ""}</button>
           {hiddenIds.length > 0 && (
-            <button className="chip" style={showHidden ? { borderColor: "var(--ink-soft)" } : { opacity: 0.6 }} onClick={() => setShowHidden((v) => !v)} aria-pressed={showHidden}>Hidden ({hiddenIds.length})</button>
+            <button className="chip" style={showHidden ? { borderColor: "var(--ink-soft)" } : { opacity: 0.6 }} onClick={() => setShowHidden((v) => !v)} aria-pressed={showHidden}>{showHidden && <Icon d={ICONS.check} size={12} style={{ marginRight: 4 }} />}Hidden ({hiddenIds.length})</button>
           )}
           {active && (
             <button className="btn btn-ghost ml-auto" style={{ padding: "4px 10px", fontSize: 12 }} onClick={clearFilters}>

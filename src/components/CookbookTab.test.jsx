@@ -128,6 +128,19 @@ describe("CookbookTab", () => {
     expect(screen.queryByText("Chicken Pasta")).toBeNull();
   });
 
+  it("marks active toggle chips with a visible check cue, not colour alone", () => {
+    render(<CookbookTab {...base} />);
+    // 'Respect my exclusions' defaults on → carries the check icon.
+    const respect = screen.getByRole("button", { name: "Respect my exclusions" });
+    expect(respect).toHaveAttribute("aria-pressed", "true");
+    expect(respect.querySelector("svg")).toBeInTheDocument();
+    // 'Quick < 20m' defaults off → no check icon until toggled.
+    const quick = screen.getByRole("button", { name: "Quick < 20m" });
+    expect(quick.querySelector("svg")).not.toBeInTheDocument();
+    fireEvent.click(quick);
+    expect(screen.getByRole("button", { name: "Quick < 20m" }).querySelector("svg")).toBeInTheDocument();
+  });
+
   it("hides excluded recipes while 'respect exclusions' is on", () => {
     const prefs = { ...EMPTY_PREFS, dislikes: ["Tofu"] };
     render(<CookbookTab {...base} prefs={prefs} />);

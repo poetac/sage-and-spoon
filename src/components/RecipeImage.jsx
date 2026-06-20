@@ -96,6 +96,20 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
             <Icon d={ICONS.trash} size={13} />
           </button>
         )}
+        {/* Cards have no figcaption, so CC-BY/BY-SA attribution rides on the
+            image itself as a non-interactive overlay (full TASL credit + link
+            lives in the detail modal's figcaption). pointerEvents:none keeps
+            the card click/drag intact. */}
+        {!isUser && !showCredit && img.credit && (
+          <div className="recipe-credit" aria-label={`Photo credit: ${img.credit}${img.license ? `, ${img.license.toUpperCase()}` : ""}`}
+            style={{ position: "absolute", left: 0, right: 0, bottom: 0, pointerEvents: "none",
+              padding: "12px 7px 3px", color: "#fff", fontSize: 9.5, lineHeight: 1.2,
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+              textShadow: "0 1px 2px rgba(0,0,0,.75)",
+              background: "linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0))" }}>
+            {img.credit}{img.license ? ` · ${img.license.toUpperCase()}` : ""}
+          </div>
+        )}
       </div>
       {canNav && (
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
