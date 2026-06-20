@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { store, K } from "./storage.js";
+import { describe, it, expect, vi } from "vitest";
+import { store, K, onStorageFull } from "./storage.js";
 
 // In node there is no `window`, so every localStorage access throws and the
 // store must fall back to its in-memory map — the same path used by
@@ -25,5 +25,35 @@ describe("store (in-memory fallback)", () => {
 describe("storage keys", () => {
   it("uses the ss_ namespace", () => {
     expect(Object.values(K).every((k) => k.startsWith("ss_"))).toBe(true);
+  });
+});
+
+describe("store — quota overflow (ARCH-7)", () => {
+  it("reports success when a write persists", () => {
+    expect(store.set("t_ok", 1)).toBe(true);
+  });
+
+  it("reports failure and fires the storage-full listener on a quota error", () => {
+    let fired = 0;
+    onStorageFull(() => { fired++; });
+    const spy = vi.spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => { throw new DOMException("full", "QuotaExceededError"); });
+    const ok = store.set("t_quota", { big: "x" });
+    spy.mockRestore();
+    onStorageFull(null);
+    expect(ok).toBe(false);
+    expect(fired).toBe(1);
+  });
+
+  it("stays silent for a non-quota write failure", () => {
+    let fired = 0;
+    onStorageFull(() => { fired++; });
+    const spy = vi.spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => { throw new Error("nope"); });
+    const ok = store.set("t_other", 1);
+    spy.mockRestore();
+    onStorageFull(null);
+    expect(ok).toBe(false);
+    expect(fired).toBe(0);
   });
 });

@@ -110,6 +110,16 @@ bundled ingredient lines, calibration still green), and `proteinEstimateReliable
 flags a protein-category ingredient that mis-matches a near-zero-protein entry,
 not just unrecognised ones. **All P0 (safety) items are now resolved.**
 
+**Robustness & coverage — Sprint H** (375 tests): `ARCH-7` (quota-overflow toast —
+`store.set` reports persistence + a one-shot `onStorageFull` listener, distinct
+from an absent store) and `TEST-2` (AI-swap **success** path: a GD-passing idea
+commits with a "Swapped in" toast, alongside the existing error path).
+*Note for `PERF-7`:* the build runs `@vitejs/plugin-react` **without**
+`babel-plugin-react-compiler` (only the compiler-aware lint rules are on), so
+components aren't auto-memoized at runtime — manual memo still helps, but the
+`react-hooks/preserve-manual-memoization` rule constrains it; **enabling the React
+Compiler may be the cleaner PERF-7 fix** than hand-rolled `useCallback`/`memo`.
+
 ---
 
 ## P0 — Safety (do first)
@@ -164,7 +174,7 @@ not just unrecognised ones. **All P0 (safety) items are now resolved.**
 | St | ID | Item | Where | Add | Eff |
 |---|---|---|---|---|---|
 | ✅ | TEST-1 | Servings scaling. | `MealDetail.test.jsx` | Scaling 2→4→1 covered. | S |
-| 🔶 | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx` | `callClaude` transport unit-tested; App AI-swap **error path** now covered (mocked, plan-untouched). Remaining: success paths for week/grow/ingredients. | M |
+| 🔶 | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx` | `callClaude` transport unit-tested; App AI-swap **error and success** paths now covered (mocked — error leaves the plan untouched; a GD-passing idea commits with a "Swapped in" toast). Remaining: success paths for generate-week / grow-cookbook / ingredients. | M |
 | 🔶 | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet covered ✅. Remaining: `loadCookbook` reject→`CORE_DB` fallback and null-slot rendering. | M |
 | ✅ | TEST-4 | `placeMeal` guard. | `App.jsx` | Cap/exclusion/GI placement guards exercised (delete-from-plan + place tests). | S |
 | ✅ | TEST-5 | `pickBest` randomness. | `planner.test.js` | Seeded (`vi.spyOn(Math,'random')`) ranking + exclude/fallback/empty-pool edges. | S |
@@ -182,7 +192,7 @@ not just unrecognised ones. **All P0 (safety) items are now resolved.**
 | ✅ | ARCH-4 | Macro-pill markup duplicated. | components | `<NutritionPills>` primitive. | M |
 | ✅ | ARCH-5 | Busy resets outside `finally`. | `App.jsx` | Moved to `finally`. | S |
 | ✅ | ARCH-6 | `extractJSON` now prefers a fenced ```json block body, so a stray brace in trailing prose no longer breaks parsing. | `claude.js` | — | S |
-| ⬜ | ARCH-7 | `storage.js` treats quota errors as unavailability → silent in-memory switch, data lost on reload (same class as user-photo quota loss). | `storage.js` | Detect quota; surface a toast. | S |
+| ✅ | ARCH-7 | `storage.js` treated quota errors as plain unavailability → silent in-memory switch, data lost on reload (same class as user-photo quota loss). | `storage.js`, `App.jsx` | `store.set` now reports whether the write persisted and fires a one-shot `onStorageFull` listener on a genuine quota overflow (cross-browser `isQuotaError`, distinct from an absent/sandboxed store which stays silent); App subscribes and toasts so the cook can export a backup or free space. | S |
 | ✅ | ARCH-8 | `vetNewMeals` deduped on a weaker name key than the pipeline. | `claude.js` | Now uses a punctuation-insensitive `nameKey` mirroring the pipeline. | S |
 | ✅ | ARCH-9 | "per 2 servings" magic constant. | utils | `RECIPE_SERVINGS` + `scaleIngredient`. | S |
 | ✅ | ARCH-10 | `buildWeek` double `setPlan`. | `App.jsx` | Single set (branch on empty). | S |

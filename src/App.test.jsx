@@ -286,6 +286,27 @@ describe("App — error handling (TEST-2/3)", () => {
     expect(await screen.findByText(/AI swap didn't work/)).toBeInTheDocument();
     expect(JSON.stringify(store.get(K.plan, null))).toBe(before);
   });
+
+  it("applies an AI swap when the returned idea passes the GD rules (TEST-2)", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-test" });
+    seedPlan();
+    callClaude.mockReset();
+    // A GD-safe snack (≤20 g carbs, Low GI, real protein): passes gdCompliant for
+    // any slot, so the swap commits regardless of which cell's button is first.
+    callClaude.mockResolvedValue({
+      name: "Almond Yogurt Cup", type: "snack", carbsG: 12, gi: "Low", prepMins: 5,
+      cuisineTag: "American", proteinTag: "Greek yogurt",
+      ingredients: [
+        { n: "plain greek yogurt", q: 1, u: "cup", c: "Protein" },
+        { n: "sliced almonds", q: 2, u: "tbsp", c: "Nuts" },
+      ],
+    });
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    fireEvent.click((await screen.findAllByRole("button", { name: /AI swap/ }))[0]);
+    expect(await screen.findByText(/Swapped in "Almond Yogurt Cup"/)).toBeInTheDocument();
+  });
 });
 
 describe("App — reset", () => {

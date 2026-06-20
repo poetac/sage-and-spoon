@@ -5,7 +5,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { SLOTS, DEFAULT_SETTINGS, CORE_DB, loadCookbook, EMPTY_PREFS, namesOf } from "./data/meals.js";
-import { store, K } from "./lib/storage.js";
+import { store, K, onStorageFull } from "./lib/storage.js";
 import { loadAllUserPhotos, saveUserPhotos, clearAllUserPhotos } from "./lib/userPhotos.js";
 import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
@@ -187,6 +187,19 @@ export default function App() {
   };
   const toastOk = (m) => say(m, "ok");
   const toastErr = (m) => say(m, "error");
+
+  // A localStorage quota overflow otherwise fails silently (the write drops to an
+  // in-memory map and is lost on reload). Surface it once so the cook can export a
+  // backup or free space before changes start vanishing on reload. Self-contained
+  // (only the stable setter + timer ref) so the subscription is mount-only.
+  useEffect(() => {
+    onStorageFull(() => {
+      clearTimeout(toastTimer.current);
+      setToast({ msg: "Your device storage is full — recent changes may not be saved. Export a backup or free up space, then reload.", kind: "error", action: null });
+      toastTimer.current = setTimeout(() => setToast(null), 4000);
+    });
+    return () => onStorageFull(null);
+  }, []);
 
   // Archive a week being replaced so it can be revisited/reused. Newest first,
   // capped, and skips a no-op when the latest entry is identical.
