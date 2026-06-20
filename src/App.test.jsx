@@ -309,6 +309,69 @@ describe("App — error handling (TEST-2/3)", () => {
   });
 });
 
+describe("App — AI success paths (TEST-2)", () => {
+  // A GD-safe meal for any slot: ≤20 g carbs (so the pairing floor isn't
+  // enforced), Low GI, light ingredients → passes gdCompliant for every type.
+  const aiSlotMeal = (type) => ({
+    name: `AI ${type} idea`, type, carbsG: 18, gi: "Low", prepMins: 10,
+    cuisineTag: "Test", proteinTag: "Chicken",
+    ingredients: [
+      { n: "chicken breast", q: 1, u: "", c: "Protein" },
+      { n: "spinach", q: 1, u: "cup", c: "Produce" },
+    ],
+  });
+  const aiDay = () => ({
+    breakfast: aiSlotMeal("breakfast"), amSnack: aiSlotMeal("snack"),
+    lunch: aiSlotMeal("lunch"), pmSnack: aiSlotMeal("snack"),
+    dinner: aiSlotMeal("dinner"), bedSnack: aiSlotMeal("snack"),
+  });
+
+  it("builds a 7-day AI plan and persists the new meals when every slot passes", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-test" });
+    seedPlan();
+    callClaude.mockReset();
+    callClaude.mockResolvedValue({ days: Array.from({ length: 7 }, aiDay) });
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+    // No swaps needed → the clean success message (not the "ideas swapped" one).
+    expect(await screen.findByText("Your personalized plan is ready ✦")).toBeInTheDocument();
+    await waitFor(() => expect(store.get(K.plan, null)?.days).toHaveLength(7));
+    expect(store.get(K.custom, [])).toHaveLength(42); // 7 days × 6 slots, all kept
+  });
+
+  it("grows the cookbook with vetted AI meals (TEST-2)", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-test" });
+    seedPlan();
+    callClaude.mockReset();
+    const grown = (name) => ({
+      name, type: "lunch", carbsG: 18, gi: "Low", prepMins: 12,
+      cuisineTag: "Testish", proteinTag: "Chicken",
+      ingredients: [{ n: "chicken breast", q: 1, u: "", c: "Protein" }, { n: "kale", q: 1, u: "cup", c: "Produce" }],
+    });
+    callClaude.mockResolvedValue({ meals: [grown("Test Grow Bowl Alpha"), grown("Test Grow Bowl Beta")] });
+    render(<App />);
+    goTo(/Settings/);
+    fireEvent.click(await screen.findByRole("button", { name: /Grow cookbook with AI/ }));
+    expect(await screen.findByText(/Added 2 new meals to the cookbook/)).toBeInTheDocument();
+    await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(2));
+  });
+});
+
+describe("App — null plan slots render safely (TEST-3)", () => {
+  it("shows the empty-slot affordance for a null slot without crashing", async () => {
+    seedPrefs();
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS.targets);
+    plan.days[0].lunch = null; // a slot no meal could fill
+    store.set(K.plan, plan);
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    expect((await screen.findAllByText(/empty — add from Ingredients/)).length).toBeGreaterThan(0);
+  });
+});
+
 describe("App — reset", () => {
   it("clears storage and returns to onboarding after confirming", async () => {
     seedPrefs();

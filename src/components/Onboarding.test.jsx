@@ -1,7 +1,27 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe, toHaveNoViolations } from "jest-axe";
 import { Onboarding } from "./Onboarding.jsx";
+
+expect.extend(toHaveNoViolations);
+
+describe("Onboarding — accessibility smoke (TEST-8)", () => {
+  it("has no axe violations on the first step", async () => {
+    const { container } = render(<Onboarding onDone={vi.fn()} />);
+    // Onboarding renders standalone (the app shell provides the page-level
+    // landmark/h1), so skip the document-structure rules that don't apply to an
+    // isolated component and keep the meaningful label/name/aria checks.
+    const results = await axe(container, {
+      rules: {
+        region: { enabled: false },
+        "landmark-one-main": { enabled: false },
+        "page-has-heading-one": { enabled: false },
+      },
+    });
+    expect(results).toHaveNoViolations();
+  });
+});
 
 describe("Onboarding", () => {
   it("walks the three quiz steps and returns the collected prefs", async () => {

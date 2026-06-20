@@ -121,6 +121,17 @@ whole app auto-memoizes (the ~42 plan cards no longer re-render on every
 toast/selection tick) without hand-rolled `useCallback`/`memo`. Verified the
 built bundle emits the memo-cache runtime; tests/lint/build/CSP all still green.
 
+**Test depth — Sprint J** (382 tests): closed the last three testing gaps.
+`TEST-2` — AI **success** paths now covered end to end: generate-week (a 7-day
+plan whose slots all pass `gdCompliant` commits + persists the new meals),
+grow-cookbook (vetted ideas land in `custom` with the success toast), and
+ingredient suggestions (Claude's vetted matches render under "Fresh ideas from
+Claude", and a GD-breaking idea is filtered before display). `TEST-3` —
+`loadCookbook` reject → `CORE_DB` fallback (the shell resolves instead of hanging
+on the skeleton) and null-slot rendering (empty-slot affordance, no crash).
+`TEST-8` — added a `jest-axe` accessibility smoke on Onboarding (page-structure
+rules scoped out since the component renders standalone).
+
 ---
 
 ## P0 — Safety (do first)
@@ -175,13 +186,13 @@ built bundle emits the memo-cache runtime; tests/lint/build/CSP all still green.
 | St | ID | Item | Where | Add | Eff |
 |---|---|---|---|---|---|
 | ✅ | TEST-1 | Servings scaling. | `MealDetail.test.jsx` | Scaling 2→4→1 covered. | S |
-| 🔶 | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx` | `callClaude` transport unit-tested; App AI-swap **error and success** paths now covered (mocked — error leaves the plan untouched; a GD-passing idea commits with a "Swapped in" toast). Remaining: success paths for generate-week / grow-cookbook / ingredients. | M |
-| 🔶 | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet covered ✅. Remaining: `loadCookbook` reject→`CORE_DB` fallback and null-slot rendering. | M |
+| ✅ | TEST-2 | AI paths / `callClaude`. | `claude.test.js`, `App.jsx`, `IngredientsTab.jsx` | `callClaude` transport unit-tested; every App AI path now covered (mocked, real vetting): AI-swap error (plan untouched) + success ("Swapped in"); generate-week success (7-day plan commits + new meals persist); grow-cookbook success (vetted meals land + toast); ingredient suggestions success ("Fresh ideas from Claude") + GD-breaking idea filtered out. | M |
+| ✅ | TEST-3 | Error branches. | `App.jsx` | `importData` malformed + re-vet ✅; `loadCookbook` reject→`CORE_DB` fallback (shell resolves, no skeleton hang) ✅; null-slot rendering (empty-slot affordance, no crash) ✅. | M |
 | ✅ | TEST-4 | `placeMeal` guard. | `App.jsx` | Cap/exclusion/GI placement guards exercised (delete-from-plan + place tests). | S |
 | ✅ | TEST-5 | `pickBest` randomness. | `planner.test.js` | Seeded (`vi.spyOn(Math,'random')`) ranking + exclude/fallback/empty-pool edges. | S |
 | ✅ | TEST-6 | No coverage tooling/gate. | CI, `vite.config.js` | `@vitest/coverage-v8` + `test:coverage` + a lenient ≥68% v8 threshold (current ~74–77%); CI runs it. | M |
 | ✅ | TEST-7 | Node drift: CI/deploy pinned 24, docs say 20+, no `engines`. | `package.json`, `.github/workflows/*` | `engines: node >=20`; CI + deploy aligned to Node 22 LTS. | S |
-| 🔶 | TEST-8 | `dist/index.html` build-smoke added to CI + deploy ✅. Remaining: a `jest-axe` a11y smoke on Onboarding. | CI | Add `jest-axe` smoke. | S |
+| ✅ | TEST-8 | `dist/index.html` build-smoke in CI + deploy ✅; `jest-axe` a11y smoke on Onboarding ✅ (document-structure rules scoped out for the standalone component). | CI | — | S |
 
 ## P4 — Architecture & maintainability
 
