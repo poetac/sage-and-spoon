@@ -103,6 +103,13 @@ suppressed for cook photos and where the detail figcaption already credits), and
 `A11Y-5` (filter toggle chips gain a check-icon on-state cue so state isn't
 colour/opacity alone).
 
+**Nutrition matcher — Sprint G** (371 tests): `SAFE-8` (last open P0) —
+`lookupIngredient` is now word-boundary aware like the exclusion matcher (no more
+"graham cracker"→ham cross-word mis-estimates; 0 recognition loss across all 2341
+bundled ingredient lines, calibration still green), and `proteinEstimateReliable`
+flags a protein-category ingredient that mis-matches a near-zero-protein entry,
+not just unrecognised ones. **All P0 (safety) items are now resolved.**
+
 ---
 
 ## P0 — Safety (do first)
@@ -120,7 +127,7 @@ colour/opacity alone).
 | ✅ | **GD-LOCAL** | GD rules enforced on the AI path but only cap+exclusions on the local/place/import path — a custom/imported High/unknown-GI meal could be planned. | High | `planner.js` `mealSafe`; `App.jsx` `placeMeal`/`importData` | `mealSafe` rejects non-{Low,Medium} GI; `placeMeal` guards GI; import re-vet inherits it. | S |
 | ✅ | **PIPELINE-DRIFT** | Promote pipeline coerced unknown GI→"Low" and never applied the GD predicate; header falsely claimed gate parity. | High | `scripts/lib/recipe.mjs` | Preserve valid GI (else null); `rejectReason` enforces GI∈{Low,Medium} + added-sugar denylist (shared `hasGdBannedIngredient`); corrected the header claim. | M |
 | ✅ | **CI-INV** | The carb↔protein/fat pairing and "no incomplete exclusion map" rules weren't CI-guarded. | Med | `coverage.test.js` | Assert every ≥20g-carb meal pairs carbs w/ protein+fat≥5; independent fish detector proves the Fish exclusion removes every fish recipe. | S |
-| ⬜ | SAFE-8 | `nutrition.js` `lookupIngredient` uses substring (not word-boundary) matching, unlike the exclusion matcher → silent mis-estimate for novel AI/custom ingredient names; calibration guard is statistical (per-recipe errors >15g pass). | Low | `nutrition.js:232` | Make `lookupIngredient` boundary-aware; have `proteinEstimateReliable` also flag recognized-but-implausible (0-protein Protein-category) ingredients. | M |
+| ✅ | SAFE-8 | `lookupIngredient` matched raw substrings (unlike the exclusion matcher) → silent macro mis-estimate for novel AI/custom names ("graham cracker"→ham, "spears"→pear). | Low | `nutrition.js` | `lookupIngredient` is now word-boundary aware (with light plural handling), mirroring the exclusion matcher — verified 0 recognition loss across all 2341 bundled ingredient lines, calibration still green. `proteinEstimateReliable` also flags a protein-category ingredient that *mis-matches* a near-zero-protein entry (oil/seasoning/produce), not just unrecognised ones (5 g/100g floor; leanest real protein is tofu at 9 g). | M |
 | ✅ | SAFE-9 | `hasGdBannedIngredient` now also catches syrups/malts/refined sugars with no "sugar"/"juice" substring (date/rice/golden syrup, rice/barley malt, dextrose, maltodextrin, turbinado/demerara/muscovado). | Low | `claude.js` | (single-word negator lookback unchanged — backstop only.) | S |
 
 ## P1 — Performance / PWA

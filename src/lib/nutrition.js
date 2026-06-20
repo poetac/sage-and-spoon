@@ -219,17 +219,21 @@ const TABLE = [
 ];
 
 // Build a flat [key, entry] list sorted longest-key-first so the most specific
-// match wins, then resolve once per name and memoise.
-const KEYS = TABLE.flatMap((entry) => entry.keys.map((k) => [k, entry]))
-  .sort((a, b) => b[0].length - a[0].length);
+// match wins, then resolve once per name and memoise. Matching is word-boundary
+// aware (with light plural handling) — mirroring the exclusion matcher — so a
+// key can't match across a word boundary (e.g. "ham" inside "graham cracker",
+// "pear" inside "spears"); a plain substring match silently mis-estimated those.
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const KEYS = TABLE.flatMap((entry) => entry.keys.map((k) => ({ entry, re: new RegExp(`\\b${escapeRe(k)}(?:e?s)?\\b`, "i"), len: k.length })))
+  .sort((a, b) => b.len - a.len);
 const cache = new Map();
 
 export function lookupIngredient(name) {
   const n = lc(name);
   if (cache.has(n)) return cache.get(n);
   let hit = null;
-  for (const [k, entry] of KEYS) {
-    if (n.includes(k)) { hit = entry; break; }
+  for (const { entry, re } of KEYS) {
+    if (re.test(n)) { hit = entry; break; }
   }
   cache.set(n, hit);
   return hit;
@@ -268,10 +272,21 @@ export function estimateMacros(meal) {
 // wrong number. A meal with no protein-category ingredient reads honestly low,
 // so it stays trusted. The bundled cookbook recognises every ingredient, so this
 // only ever flags novel AI recipes.
+//
+// A protein-category ingredient also counts as "recognised" only if it resolves
+// to an entry that actually carries protein: a keyword *mis-match* to a near-zero
+// -protein entry (an oil, a seasoning, a vegetable) would read just as
+// misleadingly low as an unrecognised name. The leanest real protein in the
+// table is tofu at 9 g/100g, so the 5 g floor only ever trips on a missing or
+// wrong match, never a legitimately lean protein.
+const MIN_PLAUSIBLE_PROTEIN = 5; // g per 100g
 export function proteinEstimateReliable(meal) {
   const proteins = (meal.ingredients || []).filter((i) => i.c === "Protein");
   if (!proteins.length) return true;
-  return proteins.some((i) => lookupIngredient(i.n));
+  return proteins.some((i) => {
+    const entry = lookupIngredient(i.n);
+    return entry && entry.p >= MIN_PLAUSIBLE_PROTEIN;
+  });
 }
 
 // Estimated carbs for a meal, per single serving. Not used for display —
