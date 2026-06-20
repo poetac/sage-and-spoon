@@ -132,6 +132,16 @@ on the skeleton) and null-slot rendering (empty-slot affordance, no crash).
 `TEST-8` — added a `jest-axe` accessibility smoke on Onboarding (page-structure
 rules scoped out since the component renders standalone).
 
+**Offline images — Sprint K** (383 tests): `IMG-REMOTE` — the library is now
+**fully self-hosted (zero remote photos)**. Root cause: `fetch-images.mjs`
+sourced from (and even *preferred*) rawpixel/StockSnap/WordPress, which 403 a
+server-side download, so those photos could never be self-hosted and always
+stayed a runtime dependency. Taught the fetcher to reject non-self-hostable
+hosts and to accept an `--ids` target list, re-sourced the 57 affected recipes
+from Wikimedia Commons + Flickr, self-hosted them to local WebP (962 photos ×
+2 widths), and renormalised filenames to positional keys. 3 recipes with no
+on-topic redistributable match fall back to the clean gradient.
+
 ---
 
 ## P0 — Safety (do first)
@@ -166,7 +176,7 @@ rules scoped out since the component renders standalone).
 | ✅ | PERF-7 | `planProps` rebuilt inline every render + un-memoized cards → ~42 cards re-rendered on every toast/selection tick. | Med | `vite.config.js` | Enabled the **React Compiler** (`babel-plugin-react-compiler`, `target: '19'`) in the Vite React plugin, so components/hooks auto-memoize app-wide — no hand-rolled `useCallback`/`memo` to maintain (and none fighting the `react-hooks` recommended lint rules, which are the compiler's own). Verified the built bundle emits the memo-cache runtime (`useMemoCache`/`_c`), all 375 tests + lint + build stay green, and the CSP/`script-src 'self'` still holds. | M |
 | ✅ | PERF-8 | Lazy-load + height-based variant ✅; self-hosted photos now also ship a `srcset` (400w/800w) + `sizes` so retina cards stay crisp. The fixed-height wrapper already bounds CLS. | Low | `RecipeImage.jsx` | — | S |
 | ✅ | PERF-9 | Manifest shipped SVG-only icons. | Low | `manifest.webmanifest`, `scripts/generate-icons.mjs` | Added 192/512 PNGs ("any maskable") via `npm run icons:png`. | S |
-| ⬜ | IMG-REMOTE | 76 photos remain remote (rawpixel/stocksnap/pd.w.org — permanent 403s the self-host script skips): third-party dependency, not precached, break offline-before-view. | Med | `recipe-images.js`, `self-host-images.mjs` | Re-source replacements from redistributable hosts, or accept gradient fallback and document. | M |
+| ✅ | IMG-REMOTE | 76 photos remained remote (rawpixel/StockSnap/pd.w.org — permanent 403s the self-host script can't download): a runtime third-party dependency, not precached, broke offline-before-view. | Med | `recipe-images.js`, `fetch-images.mjs` | **Zero remote photos now.** Taught `fetch-images.mjs` to skip non-self-hostable hosts (rawpixel/StockSnap/WordPress all 403 a server-side download — they were even *preferred* via a quality bonus) and added `--ids` targeting; re-sourced the 57 affected recipes from Commons + Flickr, self-hosted them to local WebP, and renormalised filenames to positional keys. 53/57 got self-hosted galleries; 3 with no on-topic redistributable match (g173/g290/g387) fall back to the clean gradient. | M |
 
 ## P2 — Accessibility (WCAG A/AA)
 

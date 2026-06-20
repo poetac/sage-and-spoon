@@ -100,7 +100,12 @@ npm run images:self-host    # download the fetchable ones → local optimised We
 
 - **`images:fetch`** (`fetch-images.mjs`) fills gaps gap-first, gated for quality
   and relevance, and writes durable source URLs into the library. `images:audit`
-  re-scores without writing.
+  re-scores without writing. `--ids a,b,c` restricts processing to specific
+  recipes (e.g. re-sourcing only ones whose photos were just dropped). It only
+  picks images from **self-hostable hosts** (Wikimedia Commons + Flickr);
+  rawpixel / StockSnap / the WordPress photo directory are skipped because they
+  403 a server-side download, so a photo from them could only ever be a runtime
+  remote dependency (`IMG-REMOTE`).
 - **`images:self-host`** (`self-host-images.mjs`) downloads each remote `src`,
   optimises it with `sharp` into two widths — `public/recipe-images/<id>.webp`
   (800px, detail modal) and `<id>-400.webp` (400px, cards) — and rewrites `src` to

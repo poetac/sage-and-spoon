@@ -49,6 +49,11 @@ const maxPerRecipe = Number(flag("--max-per-recipe", 3));
 const force = args.includes("--force");
 const audit = args.includes("--audit");
 const dryRun = args.includes("--dry-run") || audit;
+// Restrict processing to a comma-separated id list (e.g. re-sourcing only the
+// recipes whose remote photos were just stripped), leaving every other recipe
+// untouched.
+const onlyIds = flag("--ids", "");
+const idSet = onlyIds ? new Set(onlyIds.split(",").map((s) => s.trim()).filter(Boolean)) : null;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -119,8 +124,20 @@ async function commonsFor(q) {
 
 // Photos from professionally-curated sources read better than the Flickr pool,
 // so nudge them ahead of equally-relevant amateur shots.
-const QUALITY_SOURCES = new Set(["wikimedia_commons", "wikimedia", "rawpixel", "stocksnap"]);
+const QUALITY_SOURCES = new Set(["wikimedia_commons", "wikimedia"]);
 const sourceBonus = (hit) => (QUALITY_SOURCES.has(hit.source) ? 3 : 0);
+
+// Hosts we can't self-host from: rawpixel / StockSnap / the WordPress photo
+// directory all return 403 to a server-side download (hotlink protection), so a
+// photo from them can only ever be a runtime remote dependency — exactly what
+// IMG-REMOTE is removing. Reject them at the source so the pipeline only ever
+// picks images we can download, optimise, and serve offline (Commons + Flickr).
+const BLOCKED_SOURCES = new Set(["rawpixel", "stocksnap", "wordpress"]);
+const BLOCKED_HOSTS = /(^|\.)(rawpixel\.com|stocksnap\.io|w\.org|wp\.com)$/i;
+function isFetchableHost(hit) {
+  if (BLOCKED_SOURCES.has(hit.source)) return false;
+  try { return !BLOCKED_HOSTS.test(new URL(hit.url).host); } catch { return false; }
+}
 
 // Resolve the best usable photo for a meal that hasn't already been used.
 // Returns null when nothing is confidently on-topic (→ gradient fallback).
@@ -129,6 +146,7 @@ async function fetchOneImage(meal, used) {
   const queries = queriesFor(meal);
   const consider = (hit, q) => {
     if (used.has(hit.url)) return;
+    if (!isFetchableHost(hit)) return; // skip hosts we can't self-host (IMG-REMOTE)
     const score = acceptScore(meal, hit, { minScore });
     if (score === 0) return;
     const qual = qualityScore(hit) + sourceBonus(hit);
@@ -202,7 +220,7 @@ async function main() {
 
   const revet = force || audit;
   // Recipes to process: in revet mode all; otherwise those with fewer photos than target.
-  const todo = MEAL_DB.filter((m) => revet || (map[m.id]?.length ?? 0) < maxPerRecipe);
+  const todo = MEAL_DB.filter((m) => (revet || (map[m.id]?.length ?? 0) < maxPerRecipe) && (!idSet || idSet.has(m.id)));
 
   // Pre-populate used URLs so new picks stay distinct across the whole cookbook.
   const used = new Set();
