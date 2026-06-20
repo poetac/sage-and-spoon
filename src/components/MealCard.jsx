@@ -22,10 +22,9 @@ export function MealCard({ meal, selected, onSelect, onSwap, onAiSwap, onDetails
       onDragStart={onDragStart}
       onClick={onSelect}
       title={meal.ingredients.map((i) => `${i.n} (${qtyLabel(i)})`).join(", ")}
-      role="button"
       tabIndex={0}
-      aria-pressed={!!selected}
-      onKeyDown={(e) => { if (e.key === "Enter") onSelect(); }}
+      aria-label={`${meal.name}${selected ? " — selected, choose a slot to move it" : " — activate to move"}`}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}
     >
       <div className="text-[13.5px] leading-snug" style={{ fontWeight: 700 }}>{meal.name}</div>
       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
