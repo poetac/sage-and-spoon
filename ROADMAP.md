@@ -31,9 +31,9 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
    (`OFFLINE-CACHE` ✅), the image table is split out of the main chunk
    (`PERF-3` ✅, 124→96 KB gzip), and Settings no longer waits on the cookbook
    (`PERF-6` ✅);
-3. ✅ **architecture paydown landed** — `usePersistentState` (`ARCH-2`) and the
-   ingredient-names prop (`ARCH-1`); the App.jsx work left is prop-drilling /
-   card memoization (`PERF-7`);
+3. ✅ **architecture & perf paydown landed** — `usePersistentState` (`ARCH-2`),
+   the ingredient-names prop (`ARCH-1`), and card-render perf via the React
+   Compiler (`PERF-7`, app-wide auto-memoization);
 4. decide the **backend-proxy** fork (blocks sharing, key security, and feeding
    user photos back into the shared library) — see P6.
 
@@ -114,11 +114,12 @@ not just unrecognised ones. **All P0 (safety) items are now resolved.**
 `store.set` reports persistence + a one-shot `onStorageFull` listener, distinct
 from an absent store) and `TEST-2` (AI-swap **success** path: a GD-passing idea
 commits with a "Swapped in" toast, alongside the existing error path).
-*Note for `PERF-7`:* the build runs `@vitejs/plugin-react` **without**
-`babel-plugin-react-compiler` (only the compiler-aware lint rules are on), so
-components aren't auto-memoized at runtime — manual memo still helps, but the
-`react-hooks/preserve-manual-memoization` rule constrains it; **enabling the React
-Compiler may be the cleaner PERF-7 fix** than hand-rolled `useCallback`/`memo`.
+
+**Performance — Sprint I** (375 tests): `PERF-7` — enabled the **React Compiler**
+(`babel-plugin-react-compiler`, `target: '19'`) in the Vite React plugin, so the
+whole app auto-memoizes (the ~42 plan cards no longer re-render on every
+toast/selection tick) without hand-rolled `useCallback`/`memo`. Verified the
+built bundle emits the memo-cache runtime; tests/lint/build/CSP all still green.
 
 ---
 
@@ -151,7 +152,7 @@ Compiler may be the cleaner PERF-7 fix** than hand-rolled `useCallback`/`memo`.
 | ✅ | PERF-4 | Render-blocking Google-Fonts `@import`. | High | `index.html` | Moved to `<link>` + preconnect; test-guarded. | S |
 | ✅ | PERF-5 | Cache-first navigations served a stale shell after deploy. | Med | `public/sw.js` | Network-first for HTML; cache-first only for hashed assets; test-guarded. | S |
 | ✅ | PERF-6 | The `!cookbookReady` gate blanked every tab — even Settings, which needs no cookbook data. | Med | `App.jsx` | Settings renders immediately; planner/cookbook/ingredients/shopping still wait (a saved plan resolves generated/custom ids against the full MEAL_DB, so they genuinely need it). Skeleton gains `aria-busy`. | S |
-| ⬜ | PERF-7 | `planProps` rebuilt inline every render (`App.jsx:436`) + un-memoized cards → 42 cards re-render on every toast/selection tick. | Med | `App.jsx`, `MealCard.jsx`, `CookbookTab.jsx` | `useCallback`/memo handlers; `React.memo` cards. | M |
+| ✅ | PERF-7 | `planProps` rebuilt inline every render + un-memoized cards → ~42 cards re-rendered on every toast/selection tick. | Med | `vite.config.js` | Enabled the **React Compiler** (`babel-plugin-react-compiler`, `target: '19'`) in the Vite React plugin, so components/hooks auto-memoize app-wide — no hand-rolled `useCallback`/`memo` to maintain (and none fighting the `react-hooks` recommended lint rules, which are the compiler's own). Verified the built bundle emits the memo-cache runtime (`useMemoCache`/`_c`), all 375 tests + lint + build stay green, and the CSP/`script-src 'self'` still holds. | M |
 | ✅ | PERF-8 | Lazy-load + height-based variant ✅; self-hosted photos now also ship a `srcset` (400w/800w) + `sizes` so retina cards stay crisp. The fixed-height wrapper already bounds CLS. | Low | `RecipeImage.jsx` | — | S |
 | ✅ | PERF-9 | Manifest shipped SVG-only icons. | Low | `manifest.webmanifest`, `scripts/generate-icons.mjs` | Added 192/512 PNGs ("any maskable") via `npm run icons:png`. | S |
 | ⬜ | IMG-REMOTE | 76 photos remain remote (rawpixel/stocksnap/pd.w.org — permanent 403s the self-host script skips): third-party dependency, not precached, break offline-before-view. | Med | `recipe-images.js`, `self-host-images.mjs` | Re-source replacements from redistributable hosts, or accept gradient fallback and document. | M |

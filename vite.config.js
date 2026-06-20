@@ -16,7 +16,11 @@ const injectCsp = {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), injectCsp],
+  // React Compiler (babel-plugin-react-compiler) auto-memoizes components and
+  // hooks, so render-heavy spots — the ~42 plan cards re-rendering on every
+  // toast/selection tick (PERF-7) — are optimised without hand-rolled
+  // useCallback/memo (which the react-hooks lint rules actively constrain).
+  plugins: [react({ babel: { plugins: [['babel-plugin-react-compiler', { target: '19' }]] } }), tailwindcss(), injectCsp],
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.js'],
