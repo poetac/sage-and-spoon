@@ -20,6 +20,7 @@ export const DEFAULT_SETTINGS = {
   servings: 2,
   planDays: 7, // how many days a generated plan covers (1–7, set on the Plan tab)
   apiKey: "",
+  model: "claude-sonnet-4-6", // overridable in Settings (see AI_MODELS in lib/claude.js)
 };
 
 export const QUIZ = {

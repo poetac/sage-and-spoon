@@ -259,7 +259,7 @@ export default function App() {
     try {
       const n = planDays;
       const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nCreate a personalized ${n}-day plan. Each day has six slots: breakfast, amSnack, lunch, pmSnack, dinner, bedSnack (the three snack slots are snacks). No main meal (breakfast/lunch/dinner) may repeat across the plan; a snack may appear at most twice. ${MEAL_SHAPE}\nReturn ONLY JSON: {"days":[{"breakfast":MEAL,"amSnack":MEAL,"lunch":MEAL,"pmSnack":MEAL,"dinner":MEAL,"bedSnack":MEAL}, ...${n} items]}`;
-      const data = await callClaude(settings.apiKey, prompt, 16000);
+      const data = await callClaude(settings.apiKey, prompt, 16000, settings.model);
       if (!Array.isArray(data.days) || data.days.length !== n) throw new Error("unexpected plan shape");
       const newMeals = [];
       const replacedUsed = new Set();
@@ -333,7 +333,7 @@ export default function App() {
     try {
       const avoid = plan.days.flatMap((day) => Object.values(day)).map((id) => mealsById[id]?.name).filter(Boolean);
       const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nSuggest ONE new ${slot.type} (max ${capFor(slot.type, settings.targets)}g carbs) that is different from all of these: ${avoid.join("; ")}. ${MEAL_SHAPE}\nReturn ONLY the MEAL JSON object.`;
-      const data = await callClaude(settings.apiKey, prompt, 1500);
+      const data = await callClaude(settings.apiKey, prompt, 1500, settings.model);
       const meal = normalizeAiMeal(data, slot.type);
       if (!meal) throw new Error("unexpected reply");
       if (violatesExclusions(meal, prefs)) throw new Error("the idea contained an avoided ingredient");
@@ -354,7 +354,7 @@ export default function App() {
     try {
       const thin = Object.entries(poolHealth).filter(([t, n]) => n < POOL_NEED[t]).map(([t, n]) => `${t} (only ${n} fit her preferences)`);
       const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nGenerate 10 NEW meals for a permanent personal cookbook — a mix of breakfasts, lunches, dinners, and snacks${thin.length ? `, prioritizing ${thin.join(" and ")}` : ""}. Every meal must strictly avoid all allergies, dislikes, and never-include ingredients above. Do not duplicate any of these existing meals: ${allMeals.map((m) => m.name).join("; ")}. ${MEAL_SHAPE}\nReturn ONLY JSON: {"meals":[MEAL, ...]}`;
-      const data = await callClaude(settings.apiKey, prompt, 8000);
+      const data = await callClaude(settings.apiKey, prompt, 8000, settings.model);
       const vetted = vetNewMeals(data.meals, allMeals, prefs, settings.targets);
       if (!vetted.length) throw new Error("none of the ideas passed the preference checks");
       setCustom([...customMeals, ...vetted]);

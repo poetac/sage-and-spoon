@@ -142,6 +142,20 @@ from Wikimedia Commons + Flickr, self-hosted them to local WebP (962 photos ×
 2 widths), and renormalised filenames to positional keys. 3 recipes with no
 on-topic redistributable match fall back to the clean gradient.
 
+**Final polish — Sprint L** (387 tests): closed the last two open nits, so every
+backlog table item is now ✅. `IMG-LICENSE` — the self-host fetch uses an honest,
+descriptive User-Agent (per Wikimedia's UA policy) instead of a spoofed Chrome
+string; the spoof only existed for rawpixel/StockSnap, which IMG-REMOTE no longer
+sources. `CLAUDE-ROBUST` — the AI model is now a Settings picker (`AI_MODELS`:
+Sonnet 4.6 default · Opus 4.8 best-quality · Haiku 4.5 fastest), threaded through
+every `callClaude` path; `resolveModel` clamps any stray/imported id back to the
+default. The default stays Sonnet 4.6 — raising it would silently increase the
+cook's API spend; best-quality is one tap away for sharper GD reasoning.
+
+> **Backlog status:** every P0–P5 item is resolved. What remains is **P6** —
+> product direction and the deliberate backend-proxy fork — which are decisions,
+> not defects.
+
 ---
 
 ## P0 — Safety (do first)
@@ -229,7 +243,7 @@ on-topic redistributable match fall back to the clean gradient.
 | ✅ | SEC-1 | No CSP on an app holding a live API key in localStorage. | Med | `src/lib/csp.js`, `vite.config.js` | Build-only `<meta>` CSP (dev/HMR untouched): `connect-src 'self' https://api.anthropic.com`, `script-src 'self'`, `object-src 'none'`, `base-uri 'self'`; img https/data/blob, fonts gstatic. Unit-tested; preview smoke clean. *(A real-browser console check before merge is still worthwhile.)* | M |
 | ✅ | SEC-2 | Backup embedded the API key in plaintext; import trusted arbitrary JSON. | Low→Med | `App.jsx` export/import | Export **redacts `apiKey`** ✅; import now **type-validates every field** before applying it (arrays/objects where expected; a plan must carry a `days` array) so a hand-edited/corrupt backup can't poison state or crash the planner — malformed fields are ignored, well-formed ones replace — on top of the custom-meal re-vet. | S |
 | ✅ | SEC-3 | `normalizeAiMeal` now bounds model-output string lengths (name 120, tags 40, ingredient name 80 / unit 24) and caps ingredients at 30. | Low | `claude.js` | — | S |
-| 🔶 | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅. Remaining nit: model `claude-sonnet-4-6` is still hardcoded (a deliberate, valid choice) — document or expose an override if best-quality GD reasoning is wanted. | Med | `claude.js` | Optional model override/comment. | S |
+| ✅ | CLAUDE-ROBUST | Defensive parse (text→JSON, HTTP status surfaced) + one Retry-After-aware retry on 429/529 ✅; the model is now **a Settings picker** (`AI_MODELS` allowlist: Sonnet 4.6 default · Opus 4.8 best-quality · Haiku 4.5 fastest) threaded through every `callClaude` path. Default stays Sonnet 4.6 (changing it would silently raise the cook's API spend); `resolveModel` clamps any stray/imported id back to the default so a bad value can't reach the API. | Med | `claude.js`, `SettingsTab.jsx`, `meals.js` | — | S |
 | ✅ | IMG-LICENSE | `isRedistributable` allowlist (cc0/pdm/by/by-sa) gates self-host downloads ✅; the self-host fetch now uses an **honest, descriptive User-Agent** (tool + contact, per Wikimedia's UA policy) instead of a spoofed Chrome string — the spoof only existed for rawpixel/StockSnap, which are no longer sourced (IMG-REMOTE), and Commons + Flickr serve fine to a descriptive agent. | Med | `self-host-images.mjs` | — | S |
 
 > **Non-issues confirmed by the audits:** no `dangerouslySetInnerHTML`/`eval`/

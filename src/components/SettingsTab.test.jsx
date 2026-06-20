@@ -67,6 +67,14 @@ describe("SettingsTab", () => {
     expect(props.setSettings).toHaveBeenLastCalledWith(expect.objectContaining({ servings: 8 }));
   });
 
+  it("exposes an AI model picker defaulting to the current model (CLAUDE-ROBUST)", () => {
+    const { props } = renderTab();
+    const picker = screen.getByLabelText("AI model");
+    expect(picker.value).toBe(DEFAULT_SETTINGS.model);
+    fireEvent.change(picker, { target: { value: "claude-opus-4-8" } });
+    expect(props.setSettings).toHaveBeenLastCalledWith(expect.objectContaining({ model: "claude-opus-4-8" }));
+  });
+
   it("hides the AI grow action without a key and shows a hint instead", () => {
     renderTab({ hasKey: false });
     expect(screen.queryByRole("button", { name: /Grow cookbook with AI/ })).toBeNull();
