@@ -93,6 +93,12 @@ dedupe), `PR41-PHOTOS` (backup round-trip + quota toast + EXIF auto-orient),
 connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7`
 (tab-bar tap targets), `A11Y-8` (Android/desktop `beforeinstallprompt` install).
 
+**Attribution & contrast — Sprint F** (364 tests): `PERF-2` (visible CC-BY/BY-SA
+credit overlay on cookbook cards — creator · LICENSE, `pointerEvents:none`,
+suppressed for cook photos and where the detail figcaption already credits), and
+`A11Y-5` (filter toggle chips gain a check-icon on-state cue so state isn't
+colour/opacity alone).
+
 ---
 
 ## P0 — Safety (do first)
@@ -119,7 +125,7 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 |---|---|---|---|---|---|---|
 | ✅ | **OFFLINE-CACHE** | The SW precached ~1826 photos into one cache capped at 320 → most evicted on first runtime fetch; "true offline" didn't hold. | High | `public/sw.js` | Self-hosted photos now use a permanent, uncapped `LOCAL_IMG_CACHE` (never trimmed); cross-origin stays capped; app shell precached at install. Hashed `/assets/*` + cookbook chunk stay cache-first on first load (covered after one online session). | M |
 | ✅ | PERF-1 | Self-host recipe photos for offline. | High | `sw.js`, `recipe-images.js` | 913 self-hosted; offline retention now real via the permanent cache. | L |
-| 🔶 | PERF-2 | CC-BY/BY-SA require visible attribution wherever shown. | High | `RecipeImage.jsx`, `CookbookTab.jsx` | Detail modal shows credit ✅; **cards still title-only** (756 BY/BY-SA photos) — plumb `showCredit` to cards. | M |
+| ✅ | PERF-2 | CC-BY/BY-SA require visible attribution wherever shown. | High | `RecipeImage.jsx`, `CookbookTab.jsx` | Detail modal shows full linked TASL ✅; **cards now carry a visible non-interactive credit overlay** (creator · LICENSE) on the photo (`pointerEvents:none` so card click/drag stay intact), covering all 756 BY/BY-SA photos. Cook photos and the detail figcaption suppress the overlay so the credit never double-renders. | M |
 | ✅ | PERF-3 | `recipe-images.js` (~168 KB) was statically imported into the eager main chunk via `RecipeImage`. | Med | `recipe-image-store.js`, `RecipeImage.jsx`, `App.jsx` | Split behind a dynamic-import store; App loads it alongside the cookbook chunk. Main chunk 486→318 KB (124→96 KB gzip). | M |
 | ✅ | PERF-4 | Render-blocking Google-Fonts `@import`. | High | `index.html` | Moved to `<link>` + preconnect; test-guarded. | S |
 | ✅ | PERF-5 | Cache-first navigations served a stale shell after deploy. | Med | `public/sw.js` | Network-first for HTML; cache-first only for hashed assets; test-guarded. | S |
@@ -137,7 +143,7 @@ connect-src to self + Anthropic), `ARCH-6` (fenced-block `extractJSON`), `A11Y-7
 | ✅ | A11Y-2 | No `aria-current`; no `<h1>`. | High | `App.jsx` | Added (test-locked). | S |
 | ✅ | A11Y-3 | Background scrolled behind modals. | Med | `primitives.jsx` `Modal` | Body scroll-lock on mount. | S |
 | 🔶 | A11Y-4 | Enter+Space activation ✅; gallery dots are real `<button>`s now ✅. Remaining: both cards are `role="button"` wrapping nested action buttons (invalid ARIA) — the cover-button restructure needs in-browser drag / tap-to-move / hit-test verification, so it's intentionally deferred. | Med | `MealCard.jsx`, `CookbookTab.jsx` | Cover-button pattern (container not a button; actions as siblings); verify drag + tap-to-move live. | M |
-| 🔶 | A11Y-5 | Color-only states: tabs now have underline+aria ✅; cookbook filter chips still color-only (aria-pressed covers SR). | Med | `CookbookTab.jsx`, `App.jsx` | Add text/icon cues to chips/dimmed slots. | S |
+| ✅ | A11Y-5 | Color-only states: tabs have underline+aria ✅; cookbook filter toggle chips now carry a visible check-icon cue in the on-state (not colour/opacity alone) ✅; dimmed plan slots already carry descriptive text ("empty — add… or relax a dislike"). | Med | `CookbookTab.jsx`, `App.jsx` | — | S |
 | ✅ | A11Y-6 | Cap over-guidance hint ✅, cookbook skeleton has `aria-busy` ✅, and carb-target inputs announce the 5 g clamp via `aria-describedby` ✅. | Med | `SettingsTab.jsx`, `App.jsx` | (servings/protein inputs could get the same hint later.) | S |
 | ✅ | A11Y-7 | Shopping remove buttons ≥28px, gallery dots an 8px tap pad, and the mobile tab bar bumped to 12px text with a 48px min target. | Low | `App.jsx`, `ShoppingTab.jsx`, `RecipeImage.jsx` | — | S |
 | ✅ | A11Y-8 | Skip-to-content link → `#main-content` ✅; `OfflineBanner` (`navigator.onLine`, role=status) ✅; iOS A2HS tip ✅; Android/desktop one-tap Install via `beforeinstallprompt` ✅. | Low | `App.jsx`, `OfflineBanner.jsx`, `A2HSBanner.jsx` | — | M |

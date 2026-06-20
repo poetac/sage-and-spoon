@@ -36,6 +36,28 @@ describe("RecipeImage", () => {
     expect(screen.getByText(/\(BY\)/)).toBeInTheDocument();
   });
 
+  it("shows visible card attribution (creator + license) without showCredit", () => {
+    images.m1 = [{ src: "https://example.com/a.jpg", credit: "Jane Doe", license: "by-sa" }];
+    const { container } = render(<RecipeImage meal={meal} height={104} />);
+    // Cards carry no figcaption; the credit rides on the image as an overlay.
+    expect(container.querySelector("figcaption")).toBeNull();
+    expect(screen.getByText(/Jane Doe · BY-SA/)).toBeInTheDocument();
+  });
+
+  it("omits the card overlay for cook photos", () => {
+    images.m1 = [{ src: "https://example.com/a.jpg", credit: "Jane Doe", license: "by" }];
+    render(<RecipeImage meal={meal} height={104} userPhotos={["data:image/jpeg;base64,AAAA"]} />);
+    // Leading photo is the user's — no third-party credit to show.
+    expect(screen.queryByText(/Jane Doe/)).not.toBeInTheDocument();
+  });
+
+  it("does not double up the credit when showCredit renders the figcaption", () => {
+    images.m1 = [{ src: "https://example.com/a.jpg", credit: "Jane Doe", license: "by" }];
+    render(<RecipeImage meal={meal} showCredit />);
+    // figcaption carries the credit; the overlay must not also render it.
+    expect(screen.getAllByText(/Jane Doe/)).toHaveLength(1);
+  });
+
   it("falls back to the thumbnail when the stored photo fails to load", () => {
     images.m1 = [{ src: "https://example.com/broken.jpg", credit: "Jane Doe" }];
     render(<RecipeImage meal={meal} />);
