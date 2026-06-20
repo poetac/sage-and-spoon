@@ -66,7 +66,7 @@ export function IngredientsTab({ plan, mealsById, allMeals, prefs, settings, onP
     if (hasKey) {
       try {
         const prompt = `${gdRules(settings.targets)}\n\nHer saved preferences: ${prefsSummary(prefs)}\n\nThe chef has these ingredients on hand: ${tokens.join(", ")}.\nMeals already planned this week (avoid duplicating): ${[...planIds].map((id) => mealsById[id]?.name).filter(Boolean).join("; ")}.\n\nSuggest up to 10 GD-compliant meals ranked by how many of the on-hand ingredients each uses (most overlap first). ${MEAL_SHAPE}\nReturn ONLY JSON: {"suggestions":[{ ...MEAL, "matched":[on-hand ingredient names this meal uses], "missing":[ingredient names still needed] }]}`;
-        const data = await callClaude(settings.apiKey, prompt, 6000);
+        const data = await callClaude(settings.apiKey, prompt, 6000, settings.model);
         suggestions = (data.suggestions || []).map((raw) => {
           const meal = normalizeAiMeal(raw, "dinner");
           if (!meal) return null;

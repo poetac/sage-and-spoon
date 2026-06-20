@@ -4,7 +4,19 @@ import { violatesExclusions } from "./planner.js";
 import { withMacros, estimateCarbs } from "./nutrition.js";
 
 /* ------------------------------- Claude API ------------------------------ */
-const MODEL = "claude-sonnet-4-6";
+// The model is overridable in Settings (CLAUDE-ROBUST). Sonnet 4.6 stays the
+// default — a solid GD-reasoning/cost balance — but a cook who wants the best
+// reasoning (or the cheapest/fastest calls) can switch. Anything outside this
+// allowlist falls back to the default, so a stray/imported value can't send a
+// bogus model id to the API.
+export const DEFAULT_MODEL = "claude-sonnet-4-6";
+export const AI_MODELS = [
+  { id: "claude-sonnet-4-6", label: "Balanced — Sonnet 4.6 (default)" },
+  { id: "claude-opus-4-8", label: "Best quality — Opus 4.8" },
+  { id: "claude-haiku-4-5", label: "Fastest & cheapest — Haiku 4.5" },
+];
+const MODEL_IDS = new Set(AI_MODELS.map((m) => m.id));
+export const resolveModel = (m) => (MODEL_IDS.has(m) ? m : DEFAULT_MODEL);
 
 export function gdRules(targets) {
   return `All meals must comply with gestational diabetes dietary guidelines: low glycemic index carbohydrates only, carbs always paired with protein or healthy fat, max ${targets.mainMax}g carbs per main meal (max ${targets.breakfastMax}g at breakfast due to morning insulin resistance) and ${targets.snackMax}g per snack, no added sugars, no fruit juice, no white rice or white bread, high fiber preferred. Variety is important — avoid repeating meals within the same week.`;
@@ -24,7 +36,7 @@ export function prefsSummary(prefs) {
 }
 
 const RETRYABLE = new Set([429, 529]); // rate-limited / overloaded
-function postClaude(apiKey, userPrompt, maxTokens) {
+function postClaude(apiKey, userPrompt, maxTokens, model) {
   return fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -34,7 +46,7 @@ function postClaude(apiKey, userPrompt, maxTokens) {
       "anthropic-dangerous-direct-browser-access": "true",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: resolveModel(model),
       max_tokens: maxTokens,
       system: "You are a registered dietitian specializing in gestational diabetes meal planning. Respond ONLY with valid JSON — no markdown fences, no preamble, no commentary.",
       messages: [{ role: "user", content: userPrompt }],
@@ -42,14 +54,14 @@ function postClaude(apiKey, userPrompt, maxTokens) {
   });
 }
 
-export async function callClaude(apiKey, userPrompt, maxTokens) {
-  let res = await postClaude(apiKey, userPrompt, maxTokens);
+export async function callClaude(apiKey, userPrompt, maxTokens, model) {
+  let res = await postClaude(apiKey, userPrompt, maxTokens, model);
   // One retry on rate-limit / overload, honoring Retry-After (capped) so a burst
   // across the AI features degrades gracefully instead of failing on the spot.
   if (RETRYABLE.has(res.status)) {
     const wait = Math.min(Number(res.headers?.get?.("retry-after")) || 1, 10);
     await new Promise((r) => setTimeout(r, wait * 1000));
-    res = await postClaude(apiKey, userPrompt, maxTokens);
+    res = await postClaude(apiKey, userPrompt, maxTokens, model);
   }
   // Parse defensively: a gateway error often returns HTML, and res.json() would
   // throw a cryptic "Unexpected token" instead of surfacing the real HTTP status.

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon, ICONS, Spinner } from "./primitives.jsx";
 import { PrefsFields } from "./PrefsFields.jsx";
+import { AI_MODELS, DEFAULT_MODEL } from "../lib/claude.js";
 
 const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner", "Dinners"], ["snack", "Snacks"]];
 // Caps comfortably above common GD per-meal guidance; crossing one shows a
@@ -91,6 +92,13 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
         <input type="password" className="input" placeholder="sk-ant-..." value={settings.apiKey}
           onChange={(e) => setSettings({ ...settings, apiKey: e.target.value.trim() })} autoComplete="off" />
         <p className="t-soft text-xs mt-2">Note: calling the API straight from a browser exposes the key to this device; for anything beyond personal use, route calls through a small backend proxy instead.</p>
+
+        <label className="block text-sm mt-4 mb-1" htmlFor="ai-model" style={{ fontWeight: 600 }}>AI model</label>
+        <select id="ai-model" className="input" value={settings.model || DEFAULT_MODEL}
+          onChange={(e) => setSettings({ ...settings, model: e.target.value })}>
+          {AI_MODELS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+        </select>
+        <p className="t-soft text-xs mt-2">Which Claude model powers the AI features. The default is a good balance; pick the best-quality model for sharper GD reasoning, or the fastest for quicker, cheaper calls.</p>
       </div>
 
       <div className="card p-5 mb-4">

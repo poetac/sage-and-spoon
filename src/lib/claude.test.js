@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals, gdCompliant, callClaude } from "./claude.js";
+import { extractJSON, normalizeAiMeal, gdRules, vetNewMeals, gdCompliant, callClaude, resolveModel, AI_MODELS, DEFAULT_MODEL } from "./claude.js";
 import { EMPTY_PREFS, DEFAULT_SETTINGS } from "../data/meals.js";
 
 describe("callClaude (transport robustness)", () => {
@@ -15,6 +15,16 @@ describe("callClaude (transport robustness)", () => {
   it("surfaces the HTTP status on a non-JSON error body (gateway HTML)", async () => {
     global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 502, headers: { get: () => null }, text: async () => "<html>Bad Gateway</html>" });
     await expect(callClaude("k", "p", 100)).rejects.toThrow(/502/);
+  });
+
+  it("sends the chosen model, falling back to the default for missing/unknown ids (CLAUDE-ROBUST)", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(ok({ content: [{ type: "text", text: "{}" }] }));
+    global.fetch = fetchMock;
+    await callClaude("k", "p", 100);                       // no model → default
+    await callClaude("k", "p", 100, "claude-opus-4-8");    // valid override
+    await callClaude("k", "p", 100, "evil; drop tables");  // junk → default
+    const models = fetchMock.mock.calls.map((c) => JSON.parse(c[1].body).model);
+    expect(models).toEqual([DEFAULT_MODEL, "claude-opus-4-8", DEFAULT_MODEL]);
   });
 
   it("retries once on 429, honoring Retry-After, then succeeds", async () => {
@@ -208,6 +218,20 @@ describe("gdCompliant (runtime GD predicate)", () => {
     // A faithful number for an ingredient-light meal corroborates and passes.
     const honest = base({ carbsG: 30, ingredients: [{ n: "quinoa", q: 0.5, u: "cup", c: "Grains" }, { n: "chicken breast", q: 2, u: "", c: "Protein" }] });
     expect(gdCompliant(honest, T)).toBe(true);
+  });
+});
+
+describe("resolveModel / AI_MODELS (model allowlist)", () => {
+  it("includes the default and a best-quality option, all with ids + labels", () => {
+    expect(AI_MODELS.some((m) => m.id === DEFAULT_MODEL)).toBe(true);
+    expect(AI_MODELS.some((m) => m.id === "claude-opus-4-8")).toBe(true);
+    for (const m of AI_MODELS) { expect(m.id).toBeTruthy(); expect(m.label).toBeTruthy(); }
+  });
+  it("passes through allowed ids and falls back to the default otherwise", () => {
+    for (const m of AI_MODELS) expect(resolveModel(m.id)).toBe(m.id);
+    expect(resolveModel("claude-3-opus-20240229")).toBe(DEFAULT_MODEL); // not offered
+    expect(resolveModel(undefined)).toBe(DEFAULT_MODEL);
+    expect(resolveModel("")).toBe(DEFAULT_MODEL);
   });
 });
 
