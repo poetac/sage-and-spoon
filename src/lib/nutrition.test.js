@@ -16,12 +16,28 @@ describe("proteinEstimateReliable", () => {
   it("trusts a meal where at least one protein ingredient is recognised", () => {
     expect(proteinEstimateReliable({ ingredients: [{ n: "seitan strips", c: "Protein" }, { n: "shrimp", c: "Protein" }] })).toBe(true);
   });
+  it("flags a protein-category ingredient that mis-matches a zero-protein entry", () => {
+    // "garlic powder" resolves to the seasoning entry (0 g protein): recognised,
+    // but treating it as the meal's protein source would read misleadingly low.
+    expect(proteinEstimateReliable({ ingredients: [{ n: "garlic powder", c: "Protein" }] })).toBe(false);
+  });
+  it("still trusts the meal when a real protein sits beside a zero-protein match", () => {
+    expect(proteinEstimateReliable({ ingredients: [{ n: "garlic powder", c: "Protein" }, { n: "chicken breast", c: "Protein" }] })).toBe(true);
+  });
 });
 
 describe("lookupIngredient — keyword matching", () => {
-  it("matches case-insensitively over substrings of the ingredient name", () => {
+  it("matches case-insensitively over the ingredient name", () => {
     expect(lookupIngredient("Baby Spinach")).toBe(lookupIngredient("spinach"));
     expect(lookupIngredient("organic cherry tomatoes")).toBe(lookupIngredient("tomato"));
+  });
+
+  it("matches on word boundaries, not raw substrings", () => {
+    // "ham" must not match inside "graham"; "graham cracker" isn't in the table,
+    // so the line is honestly unrecognised rather than mis-read as cured ham.
+    expect(lookupIngredient("graham cracker crust")).toBeNull();
+    // a genuine ham ingredient still resolves to the ham entry.
+    expect(lookupIngredient("sliced ham")).toBe(lookupIngredient("ham"));
   });
 
   it("prefers the most specific (longest) key over a generic one", () => {
