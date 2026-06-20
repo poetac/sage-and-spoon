@@ -239,6 +239,36 @@ describe("App — backup restore", () => {
   });
 });
 
+describe("App — import schema validation (SEC-2)", () => {
+  it("ignores malformed backup fields instead of corrupting state or crashing", async () => {
+    seedPrefs();
+    store.set(K.favorites, ["keep"]);
+    render(<App />);
+    goTo(/Settings/);
+    const backup = {
+      app: "sage-and-spoon", version: 1,
+      data: {
+        prefs: { ...EMPTY_PREFS, cuisines: ["Thai"] }, // valid → applied
+        settings: DEFAULT_SETTINGS,
+        favorites: "not-an-array",                     // malformed → ignored
+        plan: { days: "nope" },                        // malformed → ignored (would crash the planner)
+        history: { bad: true },                        // malformed → ignored
+      },
+    };
+    const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+
+    expect(await screen.findByText(/Backup restored/)).toBeInTheDocument();
+    expect(store.get(K.prefs, null).cuisines).toEqual(["Thai"]); // valid field applied
+    expect(store.get(K.favorites, [])).toEqual(["keep"]);        // malformed array ignored, current kept
+    expect(store.get(K.plan, null)).toBeNull();                  // malformed plan never set
+
+    // And the app didn't crash on the bad plan — the planner shell still renders.
+    goTo(/^Plan$/);
+    expect(await screen.findByText("No plan yet")).toBeInTheDocument();
+  });
+});
+
 describe("App — backup excludes the API key", () => {
   it("redacts the API key from the downloaded backup (SEC-2)", async () => {
     seedPrefs();

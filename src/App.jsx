@@ -454,30 +454,38 @@ export default function App() {
       if (!d || typeof d !== "object" || (!d.prefs && !d.settings)) throw new Error("not a Sage & Spoon backup");
       // Keys absent from the backup keep their current value; present keys replace.
       // Settings merge onto defaults so new target keys survive an older backup.
-      const baseSettings = d.settings != null ? d.settings : settings;
-      const targets = { ...DEFAULT_SETTINGS.targets, ...(baseSettings.targets || {}) };
+      // Validate each field's shape before applying it — a hand-edited or
+      // corrupt backup must never crash the app or poison state (e.g. a string
+      // where an array/object is expected). Malformed fields are ignored so the
+      // current value survives; only well-formed ones replace (SEC-2).
+      const asArr = (v) => (Array.isArray(v) ? v : null);
+      const asObj = (v) => (v && typeof v === "object" && !Array.isArray(v) ? v : null);
+      const baseSettings = asObj(d.settings) || settings;
+      const targets = { ...DEFAULT_SETTINGS.targets, ...(asObj(baseSettings.targets) || {}) };
       setSettings({ ...DEFAULT_SETTINGS, ...baseSettings, targets });
       // Re-vet restored custom meals against the restored caps/exclusions — a
       // backup made under looser settings could otherwise reintroduce an
       // over-cap or now-excluded meal. Drop any that no longer pass and tell the
       // cook how many were skipped.
-      const importedPrefs = (d.prefs != null ? d.prefs : prefs) || EMPTY_PREFS;
-      const rawCustom = Array.isArray(d.custom != null ? d.custom : customMeals) ? (d.custom != null ? d.custom : customMeals) : [];
+      const importedPrefs = asObj(d.prefs) || prefs || EMPTY_PREFS;
+      const rawCustom = asArr(d.custom) || customMeals;
       const safeCustom = rawCustom.filter((m) => m && m.ingredients && mealSafe(m, importedPrefs, targets, m.type));
       const dropped = rawCustom.length - safeCustom.length;
       setCustom(safeCustom);
-      if (d.favorites != null) setFavorites(d.favorites);
-      if (d.pantry != null) setPantry(d.pantry);
-      if (d.history != null) setHistory(d.history);
-      if (d.notes != null) setNotes(d.notes);
-      if (d.hidden != null) setHiddenIds(d.hidden);
-      if (d.shoppingEdits != null) store.set(K.shoppingEdits, d.shoppingEdits);
-      if (d.userPhotos && typeof d.userPhotos === "object") {
-        setUserPhotos(d.userPhotos);
-        for (const [pid, list] of Object.entries(d.userPhotos)) saveUserPhotos(pid, list);
+      const fav = asArr(d.favorites); if (fav) setFavorites(fav);
+      const pan = asArr(d.pantry); if (pan) setPantry(pan);
+      const his = asArr(d.history); if (his) setHistory(his);
+      const nts = asObj(d.notes); if (nts) setNotes(nts);
+      const hid = asArr(d.hidden); if (hid) setHiddenIds(hid);
+      const sed = asObj(d.shoppingEdits); if (sed) store.set(K.shoppingEdits, sed);
+      const photos = asObj(d.userPhotos);
+      if (photos) {
+        setUserPhotos(photos);
+        for (const [pid, list] of Object.entries(photos)) saveUserPhotos(pid, list);
       }
-      if (d.plan != null) setPlan(d.plan);
-      if (d.prefs != null) setPrefs(d.prefs); // last: may flip onboarding → app
+      // A plan must carry a days array or the planner render crashes on it.
+      if (asObj(d.plan) && Array.isArray(d.plan.days)) setPlan(d.plan);
+      if (asObj(d.prefs)) setPrefs(d.prefs); // last: may flip onboarding → app
       toastOk(dropped
         ? `Backup restored — skipped ${dropped} saved meal${dropped === 1 ? "" : "s"} that no longer fit your carb caps or exclusions.`
         : "Backup restored");
