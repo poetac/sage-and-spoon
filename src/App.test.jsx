@@ -1,9 +1,13 @@
-import { describe, it, expect, beforeAll, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent, within, waitFor } from "@testing-library/react";
+// Mock the network call only; every other claude.js export (gdRules,
+// normalizeAiMeal, gdCompliant, …) stays real so the AI paths vet for real.
+vi.mock("./lib/claude.js", async () => ({ ...(await vi.importActual("./lib/claude.js")), callClaude: vi.fn() }));
 import App from "./App.jsx";
 import { store, K } from "./lib/storage.js";
 import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS } from "./data/meals.js";
 import { generateLocalWeek } from "./lib/planner.js";
+import { callClaude } from "./lib/claude.js";
 
 // App.jsx owns state, persistence, and composition; these exercise the offline
 // flows (no Claude key) end to end. The cookbook loads as a dynamic chunk, so
@@ -255,6 +259,32 @@ describe("App — backup excludes the API key", () => {
       URL.createObjectURL = origCreate;
       URL.revokeObjectURL = origRevoke;
     }
+  });
+});
+
+describe("App — error handling (TEST-2/3)", () => {
+  it("rejects a file that isn't a Sage & Spoon backup", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Settings/);
+    const file = new File(['{"nope":true}'], "x.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+    expect(await screen.findByText(/Couldn't read that backup/)).toBeInTheDocument();
+  });
+
+  it("surfaces an error and leaves the plan untouched when an AI swap fails", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-test" });
+    seedPlan();
+    callClaude.mockReset();
+    callClaude.mockRejectedValue(new Error("boom"));
+    const before = JSON.stringify(store.get(K.plan, null));
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    fireEvent.click((await screen.findAllByRole("button", { name: /AI swap/ }))[0]);
+    expect(await screen.findByText(/AI swap didn't work/)).toBeInTheDocument();
+    expect(JSON.stringify(store.get(K.plan, null))).toBe(before);
   });
 });
 

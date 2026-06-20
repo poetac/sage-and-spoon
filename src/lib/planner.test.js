@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, vi } from "vitest";
 import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS, SLOTS } from "../data/meals.js";
 import { capFor } from "./utils.js";
-import { mealAllowed, violatesExclusions, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal } from "./planner.js";
+import { mealAllowed, violatesExclusions, generateLocalWeek, pickLocalSwap, parseIngredientInput, matchMeal, pickBest } from "./planner.js";
 import { todayIso } from "./dates.js";
 
 const TARGETS = DEFAULT_SETTINGS.targets;
@@ -330,6 +330,29 @@ describe("generateLocalWeek — favorites", () => {
     const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, TARGETS, new Set([favBreakfast]));
     const breakfasts = plan.days.map((d) => d.breakfast);
     expect(breakfasts.filter((id) => id === favBreakfast)).toHaveLength(1);
+  });
+});
+
+describe("pickBest — deterministic ranking with seeded jitter (TEST-5)", () => {
+  const card = (id, over = {}) => ({ id, type: "dinner", carbsG: 20, gi: "Low", prepMins: 10, cuisineTag: "", proteinTag: "", ingredients: [], ...over });
+  it("ranks by preference score once the random jitter is fixed", () => {
+    const spy = vi.spyOn(Math, "random").mockReturnValue(0); // no jitter
+    try {
+      const pool = [card("x", { cuisineTag: "Thai" }), card("y", { cuisineTag: "Italian" })];
+      const prefs = { ...EMPTY_PREFS, cuisines: ["Italian"] };
+      // +2 for the matching cuisine beats the (now-zero) jitter on x.
+      expect(pickBest(pool, prefs, new Set()).id).toBe("y");
+      // a saved favorite outranks any inferred preference (FAVORITE_BOOST > 8).
+      expect(pickBest(pool, prefs, new Set(), new Set(["x"])).id).toBe("x");
+    } finally { spy.mockRestore(); }
+  });
+  it("skips excluded ids but falls back to the full pool when all are excluded", () => {
+    vi.spyOn(Math, "random").mockReturnValue(0);
+    const pool = [card("a"), card("b")];
+    expect(pickBest(pool, EMPTY_PREFS, new Set(["a"])).id).toBe("b");
+    expect(pickBest(pool, EMPTY_PREFS, new Set(["a", "b"]))).not.toBeNull(); // exhausted → reuse
+    expect(pickBest([], EMPTY_PREFS, new Set())).toBeNull();
+    vi.restoreAllMocks();
   });
 });
 

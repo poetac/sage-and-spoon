@@ -34,7 +34,7 @@ function CookbookCard({ meal, onDetails, onPlace, isFavorite, onToggleFavorite, 
   return (
     <div className="card p-4 flex flex-col gap-2"
       style={{ cursor: "pointer", transition: "box-shadow .12s ease, transform .12s ease" }}
-      role="button" tabIndex={0}
+      tabIndex={0}
       aria-label={`View details for ${meal.name}`}
       onClick={() => onDetails(meal)}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onDetails(meal); } }}>
