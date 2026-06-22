@@ -212,6 +212,31 @@ describe("App — deleting a custom recipe", () => {
     expect(store.get(K.plan, null).days[0].lunch).toBeNull();
   });
 
+  it("restores the meal, plan slot, favorite, and note when delete is undone", async () => {
+    seedPrefs();
+    store.set(K.custom, [customMeal]);
+    store.set(K.favorites, [customMeal.id]);
+    store.set(K.notes, { [customMeal.id]: "extra firm, pressed" });
+    const plan = generateLocalWeek(MEAL_DB, EMPTY_PREFS, DEFAULT_SETTINGS.targets);
+    plan.days[0].lunch = customMeal.id;
+    store.set(K.plan, plan);
+
+    render(<App />);
+    goTo(/Cookbook/);
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Test AI Bowl" } });
+    fireEvent.click(screen.getByText("Test AI Bowl").closest(".card"));
+    fireEvent.click(screen.getByRole("button", { name: "Delete recipe" }));
+    fireEvent.click(screen.getByRole("button", { name: "Yes, delete" }));
+    await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(0));
+
+    // One tap of Undo brings back every reference the delete tore out.
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(1));
+    expect(store.get(K.plan, null).days[0].lunch).toBe(customMeal.id);
+    expect(store.get(K.favorites, [])).toEqual([customMeal.id]);
+    expect(store.get(K.notes, {})[customMeal.id]).toBe("extra firm, pressed");
+  });
+
   it("never offers delete for built-in library recipes", async () => {
     seedPrefs();
     seedPlan();
