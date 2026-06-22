@@ -9727,7 +9727,7 @@ export const GENERATED_MEALS = [
       },
       {
         "n": "almonds",
-        "q": 8,
+        "q": 16,
         "u": "",
         "c": "Pantry"
       }
@@ -9739,7 +9739,7 @@ export const GENERATED_MEALS = [
     "proteinTag": "nuts",
     "steps": [
       "Slit dates and remove pits.",
-      "Stuff each with a few almonds."
+      "Stuff each with almonds and serve any extra alongside."
     ]
   },
   {
