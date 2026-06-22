@@ -135,14 +135,28 @@ export default function App() {
       toastErr("Couldn't save that photo — this device's storage may be full.");
     }
   };
-  const removeUserPhoto = (id, idx) => {
+  // Mirror addUserPhoto: optimistic remove, await the IndexedDB write, and on
+  // failure put the photo back and say so — otherwise a failed delete looks
+  // gone but reappears on reload (and the write must not run inside the state
+  // updater, which React may invoke twice).
+  const removeUserPhoto = async (id, idx) => {
+    const current = userPhotos[id] || [];
+    const removed = current[idx];
+    const list = current.filter((_, i) => i !== idx);
     setUserPhotos((prev) => {
-      const list = (prev[id] || []).filter((_, i) => i !== idx);
-      saveUserPhotos(id, list);
       const next = { ...prev };
       if (list.length) next[id] = list; else delete next[id];
       return next;
     });
+    const ok = await saveUserPhotos(id, list);
+    if (!ok) {
+      setUserPhotos((prev) => {
+        const arr = [...(prev[id] || [])];
+        arr.splice(idx, 0, removed);
+        return { ...prev, [id]: arr };
+      });
+      toastErr("Couldn't remove that photo — this device's storage may be full.");
+    }
   };
 
   const setNote = (id, text) => setNotes((n) => {
@@ -220,8 +234,13 @@ export default function App() {
   const commitPlan = (next, msg) => {
     const prev = plan;
     setPlan(next);
-    say(msg, "ok", prev ? { label: "Undo", onClick: () => { setPlan(prev); say("Reverted"); } } : null);
+    clearPlanPicks(); // a stale tap-to-move/placement could point at a slot the new plan lacks
+    say(msg, "ok", prev ? { label: "Undo", onClick: () => { setPlan(prev); clearPlanPicks(); say("Reverted"); } } : null);
   };
+  // Drop any in-progress tap-to-move pick or pending placement whenever the board
+  // is replaced wholesale (shuffle/generate/restore/shorter week) — a stale {d,s}
+  // can index a day the new plan no longer has, swapping against a missing slot.
+  const clearPlanPicks = () => { setSelected(null); setPlacing(null); };
 
   /* ------------------------------ plan actions ----------------------------- */
   const buildWeek = async (forPrefs, okMsg, favs = favSet) => {
@@ -234,7 +253,7 @@ export default function App() {
     const empty = emptySlotCount(week);
     // commitPlan sets the plan (with undo); the empty branch sets it directly
     // and surfaces a fix-it nudge instead of an undo toast.
-    if (empty) { setPlan(week); toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`); }
+    if (empty) { setPlan(week); clearPlanPicks(); toastErr(`${empty} slot${empty === 1 ? " has" : "s have"} no meal matching every preference — add one from the Ingredients tab, or relax a dislike in Settings.`); }
     else commitPlan(week, okMsg);
   };
 
@@ -484,7 +503,7 @@ export default function App() {
         for (const [pid, list] of Object.entries(photos)) saveUserPhotos(pid, list);
       }
       // A plan must carry a days array or the planner render crashes on it.
-      if (asObj(d.plan) && Array.isArray(d.plan.days)) setPlan(d.plan);
+      if (asObj(d.plan) && Array.isArray(d.plan.days)) { setPlan(d.plan); clearPlanPicks(); }
       if (asObj(d.prefs)) setPrefs(d.prefs); // last: may flip onboarding → app
       toastOk(dropped
         ? `Backup restored — skipped ${dropped} saved meal${dropped === 1 ? "" : "s"} that no longer fit your carb caps or exclusions.`

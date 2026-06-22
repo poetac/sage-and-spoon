@@ -1,7 +1,11 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ShoppingTab } from "./ShoppingTab.jsx";
 import { store, K } from "../lib/storage.js";
+
+// Edits persist to localStorage scoped to the week; reset between tests so one
+// test's added/removed items can't leak into the next.
+beforeEach(() => store.set(K.shoppingEdits, null));
 
 const meal = {
   id: "m1", name: "Sheet-Pan Chicken", type: "dinner", carbsG: 35,
@@ -52,6 +56,23 @@ describe("ShoppingTab", () => {
     expect(checkbox).not.toBeChecked();
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
+  });
+
+  it("keeps each added item's checked state with its own row after a mid-list removal", () => {
+    renderTab();
+    const add = (name) => {
+      fireEvent.change(screen.getByLabelText("New item name"), { target: { value: name } });
+      fireEvent.click(screen.getByRole("button", { name: /Add/ }));
+    };
+    add("almond flour");
+    add("sparkling water");
+    // Tick the first added item, then delete it.
+    fireEvent.click(screen.getByText("almond flour"));
+    expect(screen.getByText("almond flour")).toHaveStyle("text-decoration: line-through");
+    fireEvent.click(screen.getByRole("button", { name: "Remove almond flour" }));
+    // The survivor must NOT inherit the deleted row's struck-through state
+    // (the array-index key bug would re-bind it to the now-vacated index 0).
+    expect(screen.getByText("sparkling water")).not.toHaveStyle("text-decoration: line-through");
   });
 
   it("clamps the servings stepper between 1 and 8", () => {
