@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useId } from "react";
 
 /* ------------------------------ UI primitives ---------------------------- */
 export const Icon = ({ d, size = 18, ...rest }) => (
@@ -77,6 +77,7 @@ export function Toast({ toast }) {
 
 export function Modal({ title, onClose, children }) {
   const ref = useRef(null);
+  const titleId = useId(); // label the dialog by its visible heading, not a duplicated aria-label
   // Keep the latest onClose without re-running the setup effect each render
   // (callers pass a fresh inline arrow every time).
   const onCloseRef = useRef(onClose);
@@ -113,9 +114,9 @@ export function Modal({ title, onClose, children }) {
       style={{ background: "rgba(60,58,53,.4)" }} onClick={onClose}>
       <div ref={ref} tabIndex={-1} className="card rise w-full md:max-w-md m-0 md:m-4 p-5"
         style={{ borderRadius: "20px 20px 0 0", maxHeight: "85vh", overflowY: "auto", outline: "none" }}
-        onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={title}>
+        onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-display text-lg" style={{ fontWeight: 600 }}>{title}</h3>
+          <h3 id={titleId} className="font-display text-lg" style={{ fontWeight: 600 }}>{title}</h3>
           <button className="btn btn-ghost" style={{ padding: 8 }} onClick={onClose} aria-label="Close">
             <Icon d={ICONS.x} size={16} />
           </button>
