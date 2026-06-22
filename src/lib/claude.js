@@ -127,6 +127,14 @@ export function hasGdBannedIngredient(text) {
 // figure); a lower estimate is harmless.
 const CARB_DIVERGENCE = 20;
 
+// Carbs at or above this need protein/fat alongside them to blunt the glucose
+// spike. Tightened from 20g to 12g on the AI path so a low-protein ~15g snack
+// (e.g. mostly dried fruit) can't pass — GD guidance pairs all meaningful carbs,
+// not just large ones. The shipped cookbook keeps the looser 20g invariant in
+// coverage.test.js (it's human-curated; the AI/free-text surface is the one that
+// needs the stricter, automatic gate).
+const CARB_PAIRING_MIN = 12;
+
 // True when a meal satisfies the hard GD rules: within its slot's carb cap,
 // explicitly low-GI (Medium/unknown is rejected, never assumed Low), free of
 // added sugar / fruit juice / white rice / white bread, with authored carbs that
@@ -140,7 +148,7 @@ export function gdCompliant(meal, targets) {
   const text = lc(meal.name) + " " + (meal.ingredients || []).map((i) => lc(i.n)).join(" ");
   if (hasGdBannedIngredient(text)) return false;
   if (estimateCarbs(meal) > meal.carbsG + CARB_DIVERGENCE) return false; // authored carbs under-report
-  if (meal.carbsG >= 20 && (meal.proteinG || 0) + (meal.fatG || 0) < 5) return false;
+  if (meal.carbsG >= CARB_PAIRING_MIN && (meal.proteinG || 0) + (meal.fatG || 0) < 5) return false;
   return true;
 }
 

@@ -171,6 +171,10 @@ silent-failure, stale tap-to-move/placement picks surviving a plan regenerate,
 shopping-extras keyed by array index) and locked the two load-bearing AI/manual
 GD rails with end-to-end tests (an over-cap AI slot is swapped for a safe
 cookbook meal; an excluded cookbook meal can't be placed into the plan).
+Follow-ups (`SAFE-PAIR`): tightened the AI carb-pairing gate (`gdCompliant`)
+from ≥20g to **≥12g** so a low-protein ~15g snack can't pass — the shipped
+cookbook keeps its 20g invariant (it's human-curated; the AI/free-text surface
+is the one that needs the stricter automatic gate).
 
 > **Backlog status:** every P0–P5 item is resolved. What remains is **P6** —
 > product direction and the deliberate backend-proxy fork — which are decisions,
