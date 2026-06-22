@@ -18,7 +18,12 @@ function loadEdits(plan) {
 export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [], onTogglePantry, toastOk, toastErr }) {
   const [checked, setChecked] = useState({});
   const [removedKeys, setRemovedKeys] = useState(() => new Set(loadEdits(plan).removed));
-  const [extraItems, setExtraItems] = useState(() => loadEdits(plan).extra.map((n) => ({ n })));
+  // Each extra carries a stable, UI-only id so its checkbox/strike-through state
+  // and React key survive a mid-list removal (an array index would re-bind to the
+  // wrong row after a delete). Ids are monotonic from the initial count; only the
+  // names are persisted (see the effect below).
+  const [extraItems, setExtraItems] = useState(() => loadEdits(plan).extra.map((n, i) => ({ id: i, n })));
+  const [nextExtraId, setNextExtraId] = useState(() => loadEdits(plan).extra.length);
   const [newItemInput, setNewItemInput] = useState("");
 
   // Persist edits across sessions, scoped to the current week's start date.
@@ -97,7 +102,8 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
   const addItem = () => {
     const name = newItemInput.trim();
     if (!name) return;
-    setExtraItems((items) => [...items, { n: name }]);
+    setExtraItems((items) => [...items, { id: nextExtraId, n: name }]);
+    setNextExtraId((n) => n + 1);
     setNewItemInput("");
   };
 
@@ -201,16 +207,16 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
         <div className="card p-4 mt-4">
           <h3 className="text-sm uppercase tracking-wide mb-2" style={{ fontWeight: 700, color: "var(--sage-deep)" }}>Added by you</h3>
           <ul className="grid gap-1.5">
-            {extraItems.map((it, idx) => {
-              const key = `extra-${idx}`;
+            {extraItems.map((it) => {
+              const key = `extra-${it.id}`;
               return (
-                <li key={idx} className="flex items-start justify-between gap-2">
+                <li key={it.id} className="flex items-start justify-between gap-2">
                   <label className="flex items-start gap-2 cursor-pointer text-[14.5px] flex-1">
                     <input type="checkbox" className="mt-1 accent-current" style={{ color: "var(--sage)" }}
                       checked={!!checked[key]} onChange={() => setChecked((c) => ({ ...c, [key]: !c[key] }))} />
                     <span style={checked[key] ? { textDecoration: "line-through", color: "var(--ink-soft)" } : null}>{it.n}</span>
                   </label>
-                  <button onClick={() => setExtraItems((items) => items.filter((_, i) => i !== idx))}
+                  <button onClick={() => setExtraItems((items) => items.filter((x) => x.id !== it.id))}
                     title="Remove" aria-label={`Remove ${it.n}`}
                     style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink-soft)", padding: "4px 8px", minWidth: 28, minHeight: 28, lineHeight: 1, fontSize: 18, opacity: 0.5 }}>
                     ×
@@ -257,8 +263,8 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
         {extraItems.length > 0 && (
           <div style={{ marginBottom: 14, breakInside: "avoid" }}>
             <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, borderBottom: "1px solid #ccc", paddingBottom: 3, marginBottom: 6 }}>Extras</h2>
-            {extraItems.map((it, i) => (
-              <div key={i} style={{ fontSize: 13.5, padding: "2.5px 0" }}>☐&nbsp; {it.n}</div>
+            {extraItems.map((it) => (
+              <div key={it.id} style={{ fontSize: 13.5, padding: "2.5px 0" }}>☐&nbsp; {it.n}</div>
             ))}
           </div>
         )}
