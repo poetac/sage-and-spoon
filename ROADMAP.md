@@ -288,9 +288,18 @@ dietitian fix. Edited in both `generated-meals.js` and its curated source
 
 ## P6 — Product direction (after hardening)
 
-Not defects — directions once P0–P2 land: glucose/notes logging + weekly
-nutrition trends; meal ratings feeding the planner; richer print/export; raise
-cookbook coverage targets and add cuisines.
+Not defects — directions once P0–P2 land: ~~glucose logging + weekly trends~~
+(shipped — see below); meal ratings feeding the planner; richer print/export;
+raise cookbook coverage targets and add cuisines.
+
+**Shipped — `GLUCOSE-1` blood-sugar log.** A new **Log** tab records the four
+standard GD checks (fasting + one hour after each main meal) in mg/dL, flags each
+reading against editable targets (fasting ≤95, post-meal ≤140 — Settings) with
+text-and-colour cues, and shows a 7-day in-range trend plus recent days you can
+tap to backfill. Pure logic in `lib/glucose.js` (classification + stats); state
+persists to `ss_glucose` and rides the existing backup/restore/reset paths.
+Follow-ups if wanted: a sparkline/chart, CSV export for appointments, optional
+2-hour-post-meal mode, and a bedtime reading.
 
 **Strategic fork — backend proxy.** Sharing plans, real API-key security, and
 "feed user photos back into the shared library" (the original wishlist item) are

@@ -13,6 +13,8 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch) => setPrefs({ ...prefs, ...patch });
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
+  const glucoseTargets = settings.glucoseTargets || { fastingMax: 95, postMealMax: 140 };
+  const setGlucoseTarget = (k, v) => setSettings({ ...settings, glucoseTargets: { ...glucoseTargets, [k]: Math.max(40, Number(v) || 0) } });
   return (
     <div className="max-w-2xl rise">
       <h2 className="font-display text-2xl mb-1" style={{ fontWeight: 600 }}>Settings</h2>
@@ -77,6 +79,19 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
           <span className="t-soft block mb-1">Protein per day (g)</span>
           <input type="number" className="input" style={{ maxWidth: 120 }} value={settings.targets.proteinMin} onChange={(e) => setTarget("proteinMin", e.target.value)} min="5" />
         </label>
+      </div>
+
+      <div className="card p-5 mb-4">
+        <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Blood-sugar targets</h3>
+        <p className="t-soft text-sm mb-4">The Log tab flags readings (mg/dL) against these. Defaults follow common GD guidance — set them to match her care team's plan. Not medical advice.</p>
+        <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 280 }}>
+          {[["fastingMax", "Fasting ≤"], ["postMealMax", "After meals ≤"]].map(([k, label]) => (
+            <label key={k} className="text-sm">
+              <span className="t-soft block mb-1">{label}</span>
+              <input type="number" className="input" value={glucoseTargets[k]} onChange={(e) => setGlucoseTarget(k, e.target.value)} min="40" aria-label={`${label.replace(" ≤", "")} target`} />
+            </label>
+          ))}
+        </div>
       </div>
 
       <div className="card p-5 mb-4">

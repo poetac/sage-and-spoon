@@ -22,6 +22,7 @@ import { PlanTab } from "./components/PlanTab.jsx";
 import { IngredientsTab } from "./components/IngredientsTab.jsx";
 import { CookbookTab } from "./components/CookbookTab.jsx";
 import { ShoppingTab } from "./components/ShoppingTab.jsx";
+import { GlucoseTab } from "./components/GlucoseTab.jsx";
 import { SettingsTab } from "./components/SettingsTab.jsx";
 import { A2HSBanner } from "./components/A2HSBanner.jsx";
 import { OfflineBanner } from "./components/OfflineBanner.jsx";
@@ -32,6 +33,7 @@ const TABS = [
   { key: "cookbook", label: "Cookbook", icon: "leaf" },
   { key: "ingredients", label: "Ingredients", icon: "basket" },
   { key: "shopping", label: "Shopping List", icon: "cart" },
+  { key: "log", label: "Log", icon: "drop" },
   { key: "settings", label: "Settings", icon: "gear" },
 ];
 
@@ -74,7 +76,10 @@ export default function App() {
   const [userPhotos, setUserPhotos] = useState({});   // { [mealId]: dataUrl[] } from IndexedDB
   const [showHistory, setShowHistory] = useState(false);
   const [settings, setSettings] = usePersistentState(K.settings, DEFAULT_SETTINGS,
-    (raw) => ({ ...DEFAULT_SETTINGS, ...(raw || {}), targets: { ...DEFAULT_SETTINGS.targets, ...((raw || {}).targets || {}) } }));
+    (raw) => ({ ...DEFAULT_SETTINGS, ...(raw || {}),
+      targets: { ...DEFAULT_SETTINGS.targets, ...((raw || {}).targets || {}) },
+      glucoseTargets: { ...DEFAULT_SETTINGS.glucoseTargets, ...((raw || {}).glucoseTargets || {}) } }));
+  const [glucose, setGlucose] = usePersistentState(K.glucose, {});
   const [tab, setTab] = useState("plan");
   const [planStart, setPlanStart] = useState(todayIso);  // first day of the next generated plan
   const [selected, setSelected] = useState(null);       // { d, s } card picked up for moving
@@ -163,6 +168,15 @@ export default function App() {
   const setNote = (id, text) => setNotes((n) => {
     const next = { ...n };
     if (text.trim()) next[id] = text; else delete next[id];
+    return next;
+  });
+  // One blood-glucose reading for a day/slot; a non-finite value clears it (and an
+  // emptied day drops out of the store so it doesn't linger as `{}`).
+  const setGlucoseReading = (dateIso, slot, value) => setGlucose((g) => {
+    const day = { ...(g[dateIso] || {}) };
+    if (Number.isFinite(value)) day[slot] = value; else delete day[slot];
+    const next = { ...g };
+    if (Object.keys(day).length) next[dateIso] = day; else delete next[dateIso];
     return next;
   });
   const togglePantry = (name) => {
@@ -448,7 +462,7 @@ export default function App() {
   const resetAll = () => {
     store.clear(Object.values(K));
     clearAllUserPhotos(); setUserPhotos({});
-    setPrefs(null); setPlan(null); setCustom([]); setFavorites([]); setPantry([]); setHistory([]); setNotes({}); setHiddenIds([]);
+    setPrefs(null); setPlan(null); setCustom([]); setFavorites([]); setPantry([]); setHistory([]); setNotes({}); setHiddenIds([]); setGlucose({});
     setSettings(DEFAULT_SETTINGS);
   };
 
@@ -493,6 +507,7 @@ export default function App() {
       const his = asArr(d.history); if (his) setHistory(his);
       const nts = asObj(d.notes); if (nts) setNotes(nts);
       const hid = asArr(d.hidden); if (hid) setHiddenIds(hid);
+      const glu = asObj(d.glucose); if (glu) setGlucose(glu);
       const sed = asObj(d.shoppingEdits); if (sed) store.set(K.shoppingEdits, sed);
       const photos = asObj(d.userPhotos);
       if (photos) {
@@ -543,6 +558,8 @@ export default function App() {
             wait for it. */}
         {tab === "settings" ? (
           <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} ingredientNames={ingredientNames} />
+        ) : tab === "log" ? (
+          <GlucoseTab glucose={glucose} onSetReading={setGlucoseReading} targets={settings.glucoseTargets} />
         ) : !cookbookReady ? (
           <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />

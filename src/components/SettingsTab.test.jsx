@@ -67,6 +67,14 @@ describe("SettingsTab", () => {
     expect(props.setSettings).toHaveBeenLastCalledWith(expect.objectContaining({ servings: 8 }));
   });
 
+  it("clamps a blood-sugar target to a sane 40 floor", () => {
+    const { props } = renderTab();
+    fireEvent.change(screen.getByLabelText("Fasting target"), { target: { value: "10" } });
+    expect(props.setSettings).toHaveBeenLastCalledWith(
+      expect.objectContaining({ glucoseTargets: expect.objectContaining({ fastingMax: 40 }) }),
+    );
+  });
+
   it("exposes an AI model picker defaulting to the current model (CLAUDE-ROBUST)", () => {
     const { props } = renderTab();
     const picker = screen.getByLabelText("AI model");
