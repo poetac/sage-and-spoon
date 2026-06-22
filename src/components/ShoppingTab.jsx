@@ -4,6 +4,8 @@ import { lc, qtyLabel } from "../lib/utils.js";
 import { dayDate, fmtShort } from "../lib/dates.js";
 import { buildShoppingList } from "../lib/shopping.js";
 import { store, K } from "../lib/storage.js";
+import { downloadFile } from "../lib/download.js";
+import { copyText } from "../lib/clipboard.js";
 import { Icon, ICONS } from "./primitives.jsx";
 
 // Restore the cook's manual add/remove edits only when they belong to the plan
@@ -65,39 +67,19 @@ export function ShoppingTab({ plan, mealsById, settings, setSettings, pantry = [
     if (navigator.share) {
       try { await navigator.share({ title: "Shopping List", text }); }
       catch (e) { if (e.name !== "AbortError") toastErr("Couldn't share — try Copy instead."); }
+    } else if (await copyText(text)) {
+      toastOk("Shopping list copied");
     } else {
-      // Desktop fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(text);
-        toastOk("Shopping list copied");
-      } catch {
-        toastErr("Couldn't copy — try the download instead.");
-      }
+      toastErr("Couldn't copy — try the download instead.");
     }
   };
 
   const copy = async () => {
-    const text = buildExportText();
-    try {
-      await navigator.clipboard.writeText(text);
-      toastOk("Shopping list copied");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); toastOk("Shopping list copied"); }
-      catch { toastErr("Couldn't copy — try the download instead."); }
-      document.body.removeChild(ta);
-    }
+    if (await copyText(buildExportText())) toastOk("Shopping list copied");
+    else toastErr("Couldn't copy — try the download instead.");
   };
 
-  const download = () => {
-    const blob = new Blob([buildExportText()], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "shopping-list.txt";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
-  };
+  const download = () => downloadFile(buildExportText(), "shopping-list.txt");
 
   const addItem = () => {
     const name = newItemInput.trim();
