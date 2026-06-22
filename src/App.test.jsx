@@ -134,6 +134,25 @@ describe("App — navigation & placing", () => {
     expect(screen.getByText(/Build a weekly plan first/)).toBeInTheDocument();
     expect(screen.queryByRole("dialog")).toBeNull();
   });
+
+  it("refuses to place a cookbook meal that violates an exclusion, leaving the plan untouched", async () => {
+    seedPrefs({ allergies: ["Dairy"] });
+    seedPlan();
+    const parfait = MEAL_DB.find((m) => m.name === "Greek Yogurt Berry Parfait"); // contains yogurt → dairy
+    const before = store.get(K.plan, null).days[0].breakfast;
+    render(<App />);
+    goTo(/Cookbook/);
+    // Turn off "Respect my exclusions" so the excluded dairy recipe is shown and
+    // can reach the place flow — the hard rail must still block it.
+    fireEvent.click(await screen.findByRole("button", { name: /Respect my exclusions/ }));
+    fireEvent.change(await screen.findByLabelText("Search recipes"), { target: { value: "Greek Yogurt Berry Parfait" } });
+    const card = screen.getByText("Greek Yogurt Berry Parfait").closest(".card");
+    fireEvent.click(within(card).getByRole("button", { name: `Add ${parfait.name} to the week` }));
+    fireEvent.click(within(screen.getByRole("dialog")).getAllByRole("button", { name: "Breakfast" })[0]);
+    // Rejected with a clear reason, and the original meal is still in the slot.
+    expect(await screen.findByText(/it contains an ingredient you're avoiding/)).toBeInTheDocument();
+    expect(store.get(K.plan, null).days[0].breakfast).toBe(before);
+  });
 });
 
 describe("App — week history", () => {
@@ -387,6 +406,33 @@ describe("App — AI success paths (TEST-2)", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Grow cookbook with AI/ }));
     expect(await screen.findByText(/Added 2 new meals to the cookbook/)).toBeInTheDocument();
     await waitFor(() => expect(store.get(K.custom, [])).toHaveLength(2));
+  });
+
+  it("substitutes a safe cookbook meal for an AI slot that breaks a GD rule (TEST-2)", async () => {
+    seedPrefs();
+    store.set(K.settings, { ...DEFAULT_SETTINGS, apiKey: "sk-test" });
+    seedPlan();
+    callClaude.mockReset();
+    const days = Array.from({ length: 7 }, aiDay);
+    // One slot is way over its carb cap (and uses white rice) → fails gdCompliant
+    // and must be swapped for a known-safe cookbook meal, not served as-is.
+    days[0].breakfast = {
+      name: "Over-cap White-Rice Bowl", type: "breakfast", carbsG: 99, gi: "Low", prepMins: 5,
+      cuisineTag: "Test", proteinTag: "Chicken",
+      ingredients: [{ n: "white rice", q: 2, u: "cup", c: "Grains" }],
+    };
+    callClaude.mockResolvedValue({ days });
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+    // Exactly one slot was swapped — and the message says so.
+    expect(await screen.findByText(/1 idea swapped from the cookbook/)).toBeInTheDocument();
+    await waitFor(() => expect(store.get(K.plan, null)?.days).toHaveLength(7));
+    const breakfastId = store.get(K.plan, null).days[0].breakfast;
+    // The unsafe meal was dropped: the slot holds a real cookbook breakfast, and
+    // only the 41 compliant AI meals were persisted (the rejected one was not).
+    expect(MEAL_DB.some((m) => m.id === breakfastId && m.type === "breakfast")).toBe(true);
+    expect(store.get(K.custom, [])).toHaveLength(41);
   });
 });
 
