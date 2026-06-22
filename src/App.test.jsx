@@ -384,8 +384,9 @@ describe("App — error handling (TEST-2/3)", () => {
 });
 
 describe("App — AI success paths (TEST-2)", () => {
-  // A GD-safe meal for any slot: ≤20 g carbs (so the pairing floor isn't
-  // enforced), Low GI, light ingredients → passes gdCompliant for every type.
+  // A GD-safe meal for any slot: within every type's carb cap, Low GI, and its
+  // 18g carbs are paired (the chicken breast gives it estimated protein well
+  // above the 5g floor) → passes gdCompliant for every type.
   const aiSlotMeal = (type) => ({
     name: `AI ${type} idea`, type, carbsG: 18, gi: "Low", prepMins: 10,
     cuisineTag: "Test", proteinTag: "Chicken",

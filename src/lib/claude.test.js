@@ -214,10 +214,11 @@ describe("gdCompliant (runtime GD predicate)", () => {
     for (const n of ["unsweetened almond milk", "brown rice", "wild rice"])
       expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n }] }), T), n).toBe(true);
   });
-  it("requires carbs to be paired with protein/fat once carbs are non-trivial", () => {
+  it("requires carbs ≥12g to be paired with protein/fat (AI gate)", () => {
     expect(gdCompliant(base({ carbsG: 25, proteinG: 0, fatG: 0 }), T)).toBe(false); // bare carbs
-    expect(gdCompliant(base({ carbsG: 25, proteinG: 3, fatG: 3 }), T)).toBe(true); // 6 ≥ 5 floor
-    expect(gdCompliant(base({ type: "snack", carbsG: 18, proteinG: 0, fatG: 0 }), T)).toBe(true); // <20g: floor not enforced
+    expect(gdCompliant(base({ carbsG: 25, proteinG: 3, fatG: 3 }), T)).toBe(true);  // 6 ≥ 5 floor
+    expect(gdCompliant(base({ type: "snack", carbsG: 15, proteinG: 0, fatG: 0 }), T)).toBe(false); // 15 ≥ 12 → now enforced
+    expect(gdCompliant(base({ type: "snack", carbsG: 10, proteinG: 0, fatG: 0 }), T)).toBe(true);  // <12g → a small-carb snack is fine unpaired
   });
   it("rejects a meal whose ingredients imply far more carbs than authored (SAFE-4)", () => {
     // ~8 dates ≈ 72g carbs/serving, but the model claims only 20g.
