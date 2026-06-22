@@ -291,6 +291,34 @@ describe("compound-aware exclusion matching (SAFE-3)", () => {
     expect(has(meal("Hot Bowl", "jalapeño", "chicken breast"), { ...EMPTY_PREFS, dislikes: ["Spicy food"] })).toBe(true);
     expect(has(meal("Hot Bowl", "jalapenos", "chicken breast"), { ...EMPTY_PREFS, dislikes: ["Spicy food"] })).toBe(true);
   });
+
+  // GD-SAFE: the maps were broadened for the AI / free-text surface, where an
+  // allergen can arrive under a name that contains none of the old keywords
+  // (the "incomplete map" failure mode — see ALLERGEN_MAP comment). A pool-size
+  // check can't catch an omitted keyword, so assert removal directly.
+  it("catches named cheeses that don't contain 'cheese' under a Dairy allergy", () => {
+    for (const c of ["paneer", "halloumi", "mascarpone", "gruyère", "provolone", "brie", "burrata", "gouda", "queso fresco", "kefir", "labneh"])
+      expect(has(meal("Cheese Dish", c, "spinach"), dairy), c).toBe(true);
+  });
+  it("catches molluscs and other shellfish names", () => {
+    const shell = allergic("Shellfish");
+    for (const s of ["calamari", "squid", "octopus", "langoustine", "cuttlefish", "scampi"])
+      expect(has(meal("Seafood", s, "garlic"), shell), s).toBe(true);
+  });
+  it("catches pastas, breads, and wheat grains by name under a gluten allergy", () => {
+    const wheat = allergic("Wheat / gluten");
+    for (const w of ["couscous", "pasta", "spaghetti", "orzo", "naan", "pita", "baguette", "ciabatta", "seitan", "semolina", "rye flour", "pearl barley", "spelt", "panko"])
+      expect(has(meal("Grain Bowl", w, "chicken breast"), wheat), w).toBe(true);
+  });
+  it("catches soy products and hidden-egg items", () => {
+    for (const s of ["tempeh", "miso paste", "tamari"]) expect(has(meal("Bowl", s, "rice"), allergic("Soy")), s).toBe(true);
+    for (const e of ["mayonnaise", "mayo", "aioli", "meringue"]) expect(has(meal("Dish", e, "lettuce"), allergic("Eggs")), e).toBe(true);
+  });
+  it("does not over-match the new keywords (tamarind, rice noodles, pitaya)", () => {
+    expect(has(meal("Pad Thai", "tamarind paste", "rice noodles"), allergic("Soy"))).toBe(false); // tamarind ≠ tamari
+    expect(has(meal("Stir-fry", "rice noodles", "tofu"), allergic("Wheat / gluten"))).toBe(false); // rice noodles are GF
+    expect(has(meal("Fruit Bowl", "pitaya", "kiwi"), allergic("Wheat / gluten"))).toBe(false); // pitaya ≠ pita
+  });
 });
 
 describe("pickLocalSwap", () => {

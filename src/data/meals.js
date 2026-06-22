@@ -55,15 +55,23 @@ export const EMPTY_PREFS = {
 // the cookbook actually uses (tilapia, halibut, trout, mackerel, sardines…).
 const FISH = ["fish", "salmon", "tuna", "cod", "tilapia", "halibut", "trout", "mackerel", "sardine", "anchovy", "anchovies", "haddock", "snapper", "sole", "herring", "pollock", "catfish", "swordfish", "whitefish", "white fish"];
 
+// The maps below were broadened (GD-SAFE) to cover the AI / free-text surface,
+// where ingredient names are unconstrained: named cheeses that don't contain
+// "cheese" (paneer, halloumi, gruyère…), molluscs (calamari, squid, octopus),
+// pastas/breads/wheat grains by name (couscous, naan, seitan, rye…), soy
+// products (tempeh, miso, tamari), and hidden-egg items (mayonnaise, aioli).
+// This is the "incomplete map" failure mode CLAUDE.md flags as load-bearing
+// (the FISH-1 bug); broadening stays safe because keywordHit is word-boundary +
+// plant-qualifier guarded (tamarind≠tamari, oat milk≠dairy, eggplant≠egg).
 export const ALLERGEN_MAP = {
   "Peanuts": ["peanut", "groundnut"],
   "Tree nuts": ["almond", "walnut", "pecan", "cashew", "pistachio", "hazelnut", "macadamia", "coconut", "pine nut", "brazil nut"],
-  "Shellfish": ["shrimp", "crab", "lobster", "prawn", "scallop", "clam", "mussel", "oyster", "crawfish", "crayfish"],
+  "Shellfish": ["shrimp", "crab", "lobster", "prawn", "scallop", "clam", "mussel", "oyster", "crawfish", "crayfish", "calamari", "squid", "octopus", "langoustine", "cuttlefish", "scampi", "abalone"],
   "Fish": FISH,
-  "Eggs": ["egg"],
-  "Dairy": ["yogurt", "cheese", "milk", "butter", "cream", "feta", "mozzarella", "parmesan", "ricotta", "cottage", "ghee", "casein", "whey", "buttermilk", "custard", "half-and-half"],
-  "Soy": ["tofu", "soy", "edamame"],
-  "Wheat / gluten": ["bread", "tortilla", "cracker", "crispbread", "farro", "bulgur", "oats"],
+  "Eggs": ["egg", "mayonnaise", "mayo", "aioli", "meringue"],
+  "Dairy": ["yogurt", "cheese", "milk", "butter", "cream", "feta", "mozzarella", "parmesan", "ricotta", "cottage", "ghee", "casein", "whey", "buttermilk", "custard", "half-and-half", "paneer", "halloumi", "mascarpone", "gruyere", "gruyère", "provolone", "brie", "burrata", "gouda", "manchego", "asiago", "gorgonzola", "camembert", "queso", "kefir", "labneh", "creme fraiche", "crème fraîche"],
+  "Soy": ["tofu", "soy", "edamame", "tempeh", "miso", "tamari", "natto"],
+  "Wheat / gluten": ["bread", "tortilla", "cracker", "crispbread", "farro", "bulgur", "oats", "wheat", "couscous", "pasta", "spaghetti", "penne", "macaroni", "orzo", "lasagna", "lasagne", "ravioli", "gnocchi", "linguine", "fettuccine", "fusilli", "rigatoni", "tagliatelle", "naan", "pita", "roti", "chapati", "paratha", "baguette", "ciabatta", "focaccia", "brioche", "challah", "sourdough", "bagel", "croissant", "pretzel", "crouton", "breadcrumb", "panko", "matzo", "matzah", "semolina", "durum", "spelt", "rye", "barley", "kamut", "freekeh", "seitan", "graham"],
 };
 export const DISLIKE_MAP = {
   "Mushrooms": ["mushroom"],
