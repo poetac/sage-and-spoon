@@ -93,6 +93,15 @@ export function extractJSON(text) {
 const SUGAR_OK_PREV = new Set(["no", "low", "reduced", "zero", "without", "unsweetened"]);
 export function hasGdBannedIngredient(text) {
   if (/\bwhite rice\b/.test(text) || /\bwhite bread\b/.test(text)) return true;
+  // White-by-nature high-GI rices and refined white breads that aren't the
+  // literal "white rice"/"white bread" strings (GD-SAFE: "no white rice/bread").
+  if (/\b(jasmine|sushi|sticky|glutinous) rice\b/.test(text)) return true;
+  if (/\b(baguette|ciabatta|naan)\b/.test(text)) return true;
+  // Sugary sauces / condiments / spreads — added sugar that the sugar/juice
+  // checks below miss because the name contains neither word.
+  if (/\b(teriyaki|hoisin|oyster sauce|duck sauce|plum sauce|sweet and sour|sweet chili|sweet chilli|barbecue sauce|bbq sauce|ketchup|jam|jelly|marmalade)\b/.test(text)) return true;
+  // "sweetened" added sugar — \b keeps it from matching "unsweetened".
+  if (/\bsweetened\b/.test(text)) return true;
   // Fruit juice — lemon/lime juice is an acid used in drops, not a sweet juice.
   for (const m of text.matchAll(/\bjuices?\b/g)) {
     const prev = text.slice(0, m.index).match(/([a-z]+)[^a-z]*$/)?.[1] || "";

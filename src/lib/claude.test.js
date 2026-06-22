@@ -206,6 +206,14 @@ describe("gdCompliant (runtime GD predicate)", () => {
     expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n: "sugar snap peas" }] }), T)).toBe(true);
     expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n: "no-sugar beef jerky" }] }), T)).toBe(true);
   });
+  it("rejects sugary sauces, sweetened items, and white-by-nature carbs (GD-SAFE)", () => {
+    for (const n of ["teriyaki sauce", "hoisin sauce", "sweet chili sauce", "ketchup", "raspberry jam", "strawberry jelly", "marmalade", "sweetened dried cranberries", "jasmine rice", "sushi rice", "baguette", "naan"])
+      expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n }] }), T), n).toBe(false);
+  });
+  it("keeps GD-safe near-matches of the new denylist", () => {
+    for (const n of ["unsweetened almond milk", "brown rice", "wild rice"])
+      expect(gdCompliant(base({ ingredients: [{ n: "chicken breast" }, { n }] }), T), n).toBe(true);
+  });
   it("requires carbs to be paired with protein/fat once carbs are non-trivial", () => {
     expect(gdCompliant(base({ carbsG: 25, proteinG: 0, fatG: 0 }), T)).toBe(false); // bare carbs
     expect(gdCompliant(base({ carbsG: 25, proteinG: 3, fatG: 3 }), T)).toBe(true); // 6 ≥ 5 floor

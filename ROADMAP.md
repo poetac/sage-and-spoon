@@ -152,6 +152,22 @@ every `callClaude` path; `resolveModel` clamps any stray/imported id back to the
 default. The default stays Sonnet 4.6 — raising it would silently increase the
 cook's API spend; best-quality is one tap away for sharper GD reasoning.
 
+**Audit hardening — Sprint M** (394 tests): a top-to-bottom audit surfaced two
+GD-safety gaps of the load-bearing "incomplete map" class (the FISH-1 failure
+mode), both on the AI / free-text surface where ingredient names are
+unconstrained. `SAFE-ALLERGEN` — broadened `ALLERGEN_MAP`: named cheeses that
+don't contain "cheese" (paneer, halloumi, gruyère…), molluscs (calamari, squid,
+octopus, langoustine), pastas/breads/wheat grains by name (couscous, naan,
+seitan, rye, panko…), soy products (tempeh, miso, tamari), and hidden-egg items
+(mayonnaise, aioli, meringue) — all word-boundary/plant-guarded so tamarind≠
+tamari, rice-noodles≠wheat, pitaya≠pita. `SAFE-SUGAR` — broadened
+`hasGdBannedIngredient`: sugary sauces/condiments (teriyaki, hoisin, sweet
+chili, ketchup, jam/jelly/marmalade), `\bsweetened\b` (minus unsweetened), and
+white-by-nature carbs (jasmine/sushi/sticky rice, baguette/ciabatta/naan). Both
+verified against the live matchers and added removal tests; the reassembled
+cookbook still passes every compliance/pool-depth assertion (zero false
+positives).
+
 > **Backlog status:** every P0–P5 item is resolved. What remains is **P6** —
 > product direction and the deliberate backend-proxy fork — which are decisions,
 > not defects.
