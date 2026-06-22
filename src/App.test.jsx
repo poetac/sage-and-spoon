@@ -7,6 +7,7 @@ import App from "./App.jsx";
 import { store, K } from "./lib/storage.js";
 import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS } from "./data/meals.js";
 import { generateLocalWeek } from "./lib/planner.js";
+import { todayIso } from "./lib/dates.js";
 import { callClaude } from "./lib/claude.js";
 
 // App.jsx owns state, persistence, and composition; these exercise the offline
@@ -471,6 +472,32 @@ describe("App — null plan slots render safely (TEST-3)", () => {
     render(<App />);
     await screen.findByText("Your meal plan");
     expect((await screen.findAllByText(/empty — add from Ingredients/)).length).toBeGreaterThan(0);
+  });
+});
+
+describe("App — glucose logging", () => {
+  it("logs a reading from the Log tab and persists it", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    await screen.findByText("Your meal plan");
+    goTo(/^Log$/);
+    fireEvent.change(await screen.findByLabelText(/Fasting reading/), { target: { value: "92" } });
+    await waitFor(() => expect(store.get(K.glucose, {})[todayIso()]?.fasting).toBe(92));
+  });
+
+  it("includes glucose in a backup and restores it", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Settings/);
+    const backup = {
+      app: "sage-and-spoon", version: 1,
+      data: { prefs: { ...EMPTY_PREFS }, glucose: { "2026-06-20": { fasting: 88, postDinner: 150 } } },
+    };
+    const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+    await waitFor(() => expect(store.get(K.glucose, {})["2026-06-20"]).toEqual({ fasting: 88, postDinner: 150 }));
   });
 });
 

@@ -21,6 +21,9 @@ export const DEFAULT_SETTINGS = {
   planDays: 7, // how many days a generated plan covers (1–7, set on the Plan tab)
   apiKey: "",
   model: "claude-sonnet-4-6", // overridable in Settings (see AI_MODELS in lib/claude.js)
+  // Blood-glucose targets (mg/dL) for the Log tab — common GD guidance, editable.
+  // fasting on waking, ≤140 one hour after each main meal. NOT medical advice.
+  glucoseTargets: { fastingMax: 95, postMealMax: 140 },
 };
 
 export const QUIZ = {
