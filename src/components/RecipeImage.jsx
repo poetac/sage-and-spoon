@@ -139,7 +139,7 @@ export function RecipeImage({ meal, height = 120, rounded = "12px", showCredit =
         </figcaption>
       ) : img.credit ? (
         <figcaption className="t-soft" style={{ fontSize: 10.5, marginTop: canNav ? 2 : 4 }}>
-          Photo{img.creditUrl
+          Photo{/^https?:\/\//i.test(img.creditUrl || "")
             ? <> · <a href={img.creditUrl} target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>{img.credit}</a></>
             : <> · {img.credit}</>}
           {img.license ? ` (${img.license.toUpperCase()})` : ""}

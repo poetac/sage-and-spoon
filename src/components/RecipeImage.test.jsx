@@ -36,6 +36,19 @@ describe("RecipeImage", () => {
     expect(screen.getByText(/\(BY\)/)).toBeInTheDocument();
   });
 
+  it("links attribution only for http(s) creditUrls, never a script URL (XSS guard)", () => {
+    images.safe = [{ src: "https://example.com/a.jpg", credit: "Safe Source", creditUrl: "https://example.com", license: "by" }];
+    images.bad = [{ src: "https://example.com/a.jpg", credit: "Sketchy Source", creditUrl: "javascript:alert(1)", license: "by" }];
+    const { container, rerender } = render(<RecipeImage meal={{ ...meal, id: "safe" }} showCredit />);
+    const safeCap = container.querySelector("figcaption");
+    expect(safeCap).toHaveTextContent("Safe Source");
+    expect(safeCap.querySelector("a")).toHaveAttribute("href", "https://example.com");
+    rerender(<RecipeImage meal={{ ...meal, id: "bad" }} showCredit />);
+    const badCap = container.querySelector("figcaption");
+    expect(badCap).toHaveTextContent("Sketchy Source"); // credit still shown…
+    expect(badCap.querySelector("a")).toBeNull();        // …but never as a link
+  });
+
   it("shows visible card attribution (creator + license) without showCredit", () => {
     images.m1 = [{ src: "https://example.com/a.jpg", credit: "Jane Doe", license: "by-sa" }];
     const { container } = render(<RecipeImage meal={meal} height={104} />);
