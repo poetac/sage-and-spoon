@@ -105,11 +105,12 @@ describe("cookbook data integrity", () => {
       expect(m.fiberG, `${m.name} fibre`).toBeLessThanOrEqual(45);
     }
   });
-  it("pairs carbs with protein or fat on every carb-heavy meal (≥20g)", () => {
-    // The carb↔protein/fat pairing rule was only enforced on the AI path; this
-    // makes it a load-bearing invariant of the shipped cookbook too.
+  it("pairs carbs with protein or fat on every meaningful-carb meal (≥12g)", () => {
+    // The carb↔protein/fat pairing rule is a load-bearing invariant of the
+    // shipped cookbook, aligned with the AI gate (gdCompliant's CARB_PAIRING_MIN)
+    // at 12g: GD guidance pairs all meaningful carbs, not just large ones.
     for (const m of MEAL_DB) {
-      if (m.carbsG >= 20) {
+      if (m.carbsG >= 12) {
         expect((m.proteinG || 0) + (m.fatG || 0), `${m.name} (${m.carbsG}g carbs)`).toBeGreaterThanOrEqual(5);
       }
     }
