@@ -10,6 +10,7 @@ import { loadAllUserPhotos, saveUserPhotos, clearAllUserPhotos } from "./lib/use
 import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
+import { downloadFile } from "./lib/download.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
@@ -459,11 +460,7 @@ export default function App() {
     // in Downloads / cloud sync. A restore re-enters the key in Settings.
     if (out.data.settings) out.data.settings = { ...out.data.settings, apiKey: "" };
     out.data.userPhotos = userPhotos; // IndexedDB, not in K — include so a backup is complete
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
-    a.download = "sage-and-spoon-backup.json";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
+    downloadFile(JSON.stringify(out, null, 2), "sage-and-spoon-backup.json", "application/json");
     toastOk("Backup downloaded");
   };
   const importData = async (file) => {
