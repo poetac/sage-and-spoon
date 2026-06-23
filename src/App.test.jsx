@@ -486,6 +486,28 @@ describe("App — glucose logging", () => {
     await waitFor(() => expect(store.get(K.glucose, {})[todayIso()]?.fasting).toBe(92));
   });
 
+  it("exports the glucose log as a CSV for appointments", async () => {
+    seedPrefs();
+    seedPlan();
+    store.set(K.glucose, { "2026-06-20": { fasting: 88, postDinner: 150 } });
+    let captured;
+    const origCreate = URL.createObjectURL;
+    const origRevoke = URL.revokeObjectURL;
+    URL.createObjectURL = (blob) => { captured = blob; return "blob:mock"; };
+    URL.revokeObjectURL = () => {};
+    try {
+      render(<App />);
+      goTo(/^Log$/);
+      fireEvent.click(await screen.findByRole("button", { name: "Export CSV" }));
+      const text = await captured.text();
+      expect(text).toContain("Date,Fasting (≤95)");
+      expect(text).toContain("2026-06-20,88,,,150");
+    } finally {
+      URL.createObjectURL = origCreate;
+      URL.revokeObjectURL = origRevoke;
+    }
+  });
+
   it("includes glucose in a backup and restores it", async () => {
     seedPrefs();
     seedPlan();

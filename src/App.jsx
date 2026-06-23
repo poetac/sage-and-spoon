@@ -11,6 +11,7 @@ import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { downloadFile } from "./lib/download.js";
+import { glucoseToCSV } from "./lib/glucose.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
@@ -477,6 +478,12 @@ export default function App() {
     downloadFile(JSON.stringify(out, null, 2), "sage-and-spoon-backup.json", "application/json");
     toastOk("Backup downloaded");
   };
+  // A human-readable CSV of just the glucose log — for appointments, separate from
+  // the JSON backup (which is for restoring the whole app).
+  const exportGlucoseCsv = () => {
+    downloadFile(glucoseToCSV(glucose, settings.glucoseTargets), "sage-and-spoon-glucose.csv", "text/csv");
+    toastOk("Glucose log downloaded");
+  };
   const importData = async (file) => {
     try {
       const parsed = JSON.parse(await file.text());
@@ -559,7 +566,7 @@ export default function App() {
         {tab === "settings" ? (
           <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} ingredientNames={ingredientNames} />
         ) : tab === "log" ? (
-          <GlucoseTab glucose={glucose} onSetReading={setGlucoseReading} targets={settings.glucoseTargets} />
+          <GlucoseTab glucose={glucose} onSetReading={setGlucoseReading} targets={settings.glucoseTargets} onExportCsv={exportGlucoseCsv} />
         ) : !cookbookReady ? (
           <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />

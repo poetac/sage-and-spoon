@@ -8,7 +8,8 @@ const today = todayIso();
 
 function renderTab(glucose = {}) {
   const onSetReading = vi.fn();
-  return { ...render(<GlucoseTab glucose={glucose} onSetReading={onSetReading} targets={T} />), onSetReading };
+  const onExportCsv = vi.fn();
+  return { ...render(<GlucoseTab glucose={glucose} onSetReading={onSetReading} targets={T} onExportCsv={onExportCsv} />), onSetReading, onExportCsv };
 }
 
 describe("GlucoseTab", () => {
@@ -46,5 +47,15 @@ describe("GlucoseTab", () => {
     fireEvent.click(screen.getByRole("button", { name: "Previous day" }));
     fireEvent.change(screen.getByLabelText(/Fasting reading/), { target: { value: "85" } });
     expect(onSetReading).toHaveBeenCalledWith(iso(dayDate(today, -1)), "fasting", 85);
+  });
+
+  it("disables CSV export until something is logged, then exports", () => {
+    const { rerender, onExportCsv } = renderTab();
+    expect(screen.getByRole("button", { name: "Export CSV" })).toBeDisabled();
+    rerender(<GlucoseTab glucose={{ [today]: { fasting: 92 } }} onSetReading={vi.fn()} targets={T} onExportCsv={onExportCsv} />);
+    const btn = screen.getByRole("button", { name: "Export CSV" });
+    expect(btn).toBeEnabled();
+    fireEvent.click(btn);
+    expect(onExportCsv).toHaveBeenCalledTimes(1);
   });
 });
