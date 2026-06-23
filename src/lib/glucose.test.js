@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, LOW_THRESHOLD } from "./glucose.js";
+import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, slotSeries, LOW_THRESHOLD } from "./glucose.js";
 
 const T = { fastingMax: 95, postMealMax: 140 };
 
@@ -86,5 +86,21 @@ describe("glucoseToCSV", () => {
   });
   it("returns just the header when nothing is logged", () => {
     expect(glucoseToCSV({}, T).split("\n")).toHaveLength(1);
+  });
+});
+
+describe("slotSeries", () => {
+  const glucose = {
+    "2026-06-20": { fasting: 90 },
+    "2026-06-21": {},
+    "2026-06-22": { fasting: 98, postLunch: 120 },
+  };
+  it("collects one slot's finite values in the given date order", () => {
+    const asc = ["2026-06-20", "2026-06-21", "2026-06-22"];
+    expect(slotSeries(glucose, asc, "fasting")).toEqual([90, 98]);
+    expect(slotSeries(glucose, asc, "postLunch")).toEqual([120]);
+  });
+  it("is empty when the slot has no readings", () => {
+    expect(slotSeries(glucose, ["2026-06-20"], "postDinner")).toEqual([]);
   });
 });

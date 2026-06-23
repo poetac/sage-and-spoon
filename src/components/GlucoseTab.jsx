@@ -1,9 +1,10 @@
 import { useState } from "react";
 import {
   GLUCOSE_SLOTS, GLUCOSE_UNIT, STATUS_LABEL, MIN_READING, MAX_READING,
-  classifyReading, targetFor, glucoseStats,
+  classifyReading, targetFor, glucoseStats, slotSeries,
 } from "../lib/glucose.js";
 import { todayIso, dayDate, iso, fmtShort, weekdayShort } from "../lib/dates.js";
+import { Sparkline } from "./Sparkline.jsx";
 
 // Colour + text together (the label carries the meaning, not the colour alone).
 const STATUS_STYLE = {
@@ -27,6 +28,7 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = 
   const hasAny = Object.values(glucose).some((d) => d && Object.values(d).some(Number.isFinite));
 
   const week = recentDays(7);
+  const weekAsc = [...week].reverse(); // oldest → newest, for left-to-right sparklines
   const stats = glucoseStats(glucose, week, targets);
   const loggedDays = recentDays(14).filter((d) => glucose[d] && Object.keys(glucose[d]).length);
 
@@ -92,6 +94,7 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = 
                   <div key={s.key} className="card p-3" style={{ background: "#F7F5EF" }}>
                     <div className="t-soft text-xs" style={{ fontWeight: 700 }}>{s.short}</div>
                     <div className="text-lg" style={{ fontWeight: 700 }}>{ps.avg ?? "—"}{ps.avg != null && <span className="t-soft text-xs" style={{ fontWeight: 400 }}> avg</span>}</div>
+                    <div className="my-1"><Sparkline values={slotSeries(glucose, weekAsc, s.key)} target={targetFor(s.key, targets)} statusOf={(v) => classifyReading(v, s.key, targets)} /></div>
                     <div className="t-soft text-[11px]">{ps.count ? `${ps.inRangePct}% in range · ${ps.count} logged` : "none logged"}</div>
                   </div>
                 );

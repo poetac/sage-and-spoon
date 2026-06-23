@@ -300,9 +300,12 @@ tap to backfill. Pure logic in `lib/glucose.js` (classification + stats); state
 persists to `ss_glucose` and rides the existing backup/restore/reset paths.
 A built-in **CSV export** (Log tab → "Export CSV") writes a printable, oldest-first
 log with each slot's target in the header — for handing to a care team, separate
-from the JSON app backup. Follow-ups if wanted: a sparkline/chart, optional
-2-hour-post-meal mode, a bedtime reading, and meal↔reading insights (which
-deferred — it needs a product call on sample-size/causation framing).
+from the JSON app backup. Each weekly-summary slot card also draws a small
+inline-SVG **trend sparkline** (target reference line + status-coloured points,
+no chart dependency; decorative/aria-hidden since the avg + in-range % carry the
+data textually). Follow-ups if wanted: optional 2-hour-post-meal mode, a bedtime
+reading, and meal↔reading insights (deferred — it needs a product call on
+sample-size/causation framing).
 
 **Strategic fork — backend proxy.** Sharing plans, real API-key security, and
 "feed user photos back into the shared library" (the original wishlist item) are
