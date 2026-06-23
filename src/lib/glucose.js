@@ -74,6 +74,12 @@ export function glucoseStats(glucose, dates, targets) {
   return { perSlot, total, inRange: inCount, inRangePct: total ? Math.round((inCount / total) * 100) : null };
 }
 
+// The logged values for one slot across the given dates, in the order given
+// (pass dates oldest-first for a left-to-right trend). Missing days are dropped.
+export function slotSeries(glucose, dates, slotKey) {
+  return dates.map((d) => glucose?.[d]?.[slotKey]).filter(Number.isFinite);
+}
+
 // A printable/spreadsheet CSV of the log — one row per logged day, oldest first,
 // with each slot's target in the header (handy to hand to a care team). Values
 // are mg/dL; a missing reading is left blank.

@@ -37,6 +37,16 @@ describe("GlucoseTab", () => {
     expect(screen.getAllByText(/in range/i).length).toBeGreaterThan(0);
   });
 
+  it("draws a trend sparkline for a slot with two or more weekly readings", () => {
+    const { container } = renderTab({ [today]: { fasting: 90 }, [iso(dayDate(today, -1))]: { fasting: 100 } });
+    expect(container.querySelector("svg polyline")).not.toBeNull();
+  });
+
+  it("omits the sparkline when a slot has a single reading", () => {
+    const { container } = renderTab({ [today]: { fasting: 90 } });
+    expect(container.querySelector("svg polyline")).toBeNull();
+  });
+
   it("invites the first reading when the week is empty", () => {
     renderTab();
     expect(screen.getByText(/No readings yet this week/)).toBeInTheDocument();
