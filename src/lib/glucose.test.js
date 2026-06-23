@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, slotSeries, LOW_THRESHOLD } from "./glucose.js";
+import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, slotSeries, slotLabel, POST_MEAL_TARGETS, LOW_THRESHOLD } from "./glucose.js";
 
 const T = { fastingMax: 95, postMealMax: 140 };
 
@@ -27,6 +27,17 @@ describe("targetFor", () => {
   it("returns each slot's ceiling", () => {
     expect(targetFor("fasting", T)).toBe(95);
     expect(targetFor("postBreakfast", T)).toBe(140);
+  });
+});
+
+describe("slotLabel / POST_MEAL_TARGETS", () => {
+  it("labels post-meal slots with the check timing and leaves fasting alone", () => {
+    expect(slotLabel("fasting", 1)).toBe("Fasting");
+    expect(slotLabel("postBreakfast", 1)).toBe("1h after breakfast");
+    expect(slotLabel("postLunch", 2)).toBe("2h after lunch");
+  });
+  it("maps each timing to its standard cap", () => {
+    expect(POST_MEAL_TARGETS).toEqual({ 1: 140, 2: 120 });
   });
 });
 
@@ -72,17 +83,15 @@ describe("glucoseToCSV", () => {
     "2026-06-20": { fasting: 90, postBreakfast: 150 },
     "2026-06-22": {}, // an empty day is skipped
   };
-  it("emits a header carrying each slot's target", () => {
-    const [header] = glucoseToCSV(glucose, T).split("\n");
-    expect(header).toBe("Date,Fasting (≤95),After breakfast (≤140),After lunch (≤140),After dinner (≤140)");
+  it("emits a header carrying each slot's target and the check timing", () => {
+    expect(glucoseToCSV(glucose, T).split("\n")[0])
+      .toBe("Date,Fasting (≤95),1h after breakfast (≤140),1h after lunch (≤140),1h after dinner (≤140)");
+    expect(glucoseToCSV(glucose, { fastingMax: 95, postMealMax: 120 }, 2).split("\n")[0])
+      .toBe("Date,Fasting (≤95),2h after breakfast (≤120),2h after lunch (≤120),2h after dinner (≤120)");
   });
   it("writes one row per logged day, oldest first, with blanks for missing slots", () => {
     const lines = glucoseToCSV(glucose, T).split("\n");
-    expect(lines).toEqual([
-      "Date,Fasting (≤95),After breakfast (≤140),After lunch (≤140),After dinner (≤140)",
-      "2026-06-20,90,150,,",
-      "2026-06-21,100,,130,",
-    ]);
+    expect(lines.slice(1)).toEqual(["2026-06-20,90,150,,", "2026-06-21,100,,130,"]);
   });
   it("returns just the header when nothing is logged", () => {
     expect(glucoseToCSV({}, T).split("\n")).toHaveLength(1);

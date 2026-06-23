@@ -75,6 +75,17 @@ describe("SettingsTab", () => {
     );
   });
 
+  it("switching to a 2-hour post-meal check sets the regimen and its ≤120 cap", () => {
+    const { props } = renderTab();
+    fireEvent.click(screen.getByRole("radio", { name: /2 hours after meals/ }));
+    expect(props.setSettings).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        glucosePostMealHours: 2,
+        glucoseTargets: expect.objectContaining({ postMealMax: 120 }),
+      }),
+    );
+  });
+
   it("exposes an AI model picker defaulting to the current model (CLAUDE-ROBUST)", () => {
     const { props } = renderTab();
     const picker = screen.getByLabelText("AI model");

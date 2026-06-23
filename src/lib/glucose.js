@@ -7,10 +7,21 @@ export const GLUCOSE_UNIT = "mg/dL";
 
 export const GLUCOSE_SLOTS = [
   { key: "fasting", label: "Fasting", short: "Fasting", target: "fastingMax" },
-  { key: "postBreakfast", label: "After breakfast", short: "Breakfast", target: "postMealMax" },
-  { key: "postLunch", label: "After lunch", short: "Lunch", target: "postMealMax" },
-  { key: "postDinner", label: "After dinner", short: "Dinner", target: "postMealMax" },
+  { key: "postBreakfast", label: "After breakfast", short: "Breakfast", meal: "breakfast", target: "postMealMax" },
+  { key: "postLunch", label: "After lunch", short: "Lunch", meal: "lunch", target: "postMealMax" },
+  { key: "postDinner", label: "After dinner", short: "Dinner", meal: "dinner", target: "postMealMax" },
 ];
+
+// Standard post-meal ceilings by check timing — care plans use either a 1-hour
+// (≤140) or a 2-hour (≤120) reading. Picking the timing in Settings sets the cap.
+export const POST_MEAL_TARGETS = { 1: 140, 2: 120 };
+
+// Display label for a slot, timing-aware for post-meal checks ("2h after lunch").
+export function slotLabel(slotKey, hours = 1) {
+  const slot = GLUCOSE_SLOTS.find((s) => s.key === slotKey);
+  if (!slot) return slotKey;
+  return slot.meal ? `${hours}h after ${slot.meal}` : slot.label;
+}
 
 // Below this is hypoglycemia — flagged separately from a high reading so a low
 // isn't quietly treated as "in range".
@@ -83,9 +94,9 @@ export function slotSeries(glucose, dates, slotKey) {
 // A printable/spreadsheet CSV of the log — one row per logged day, oldest first,
 // with each slot's target in the header (handy to hand to a care team). Values
 // are mg/dL; a missing reading is left blank.
-export function glucoseToCSV(glucose, targets) {
+export function glucoseToCSV(glucose, targets, hours = 1) {
   const esc = (s) => (/[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
-  const header = ["Date", ...GLUCOSE_SLOTS.map((s) => `${s.label} (≤${targetFor(s.key, targets)})`)];
+  const header = ["Date", ...GLUCOSE_SLOTS.map((s) => `${slotLabel(s.key, hours)} (≤${targetFor(s.key, targets)})`)];
   const dates = Object.keys(glucose)
     .filter((d) => glucose[d] && Object.values(glucose[d]).some(Number.isFinite))
     .sort();

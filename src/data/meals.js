@@ -24,6 +24,7 @@ export const DEFAULT_SETTINGS = {
   // Blood-glucose targets (mg/dL) for the Log tab — common GD guidance, editable.
   // fasting on waking, ≤140 one hour after each main meal. NOT medical advice.
   glucoseTargets: { fastingMax: 95, postMealMax: 140 },
+  glucosePostMealHours: 1, // 1h (≤140) or 2h (≤120) post-meal check — set in Settings
 };
 
 export const QUIZ = {
