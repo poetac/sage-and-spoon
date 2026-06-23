@@ -4,10 +4,10 @@ Guidance for working in this repo.
 
 ## What this is
 
-**Sage & Spoon** — a client-side React PWA: a weekly meal planner for cooking for
-someone with **gestational diabetes (GD)**. No backend. Optional Claude API
-features call `api.anthropic.com` directly from the browser. Deployed as a static
-site to GitHub Pages.
+**Sage & Spoon** — a client-side React PWA: a weekly meal planner (plus a
+blood-sugar **Log**) for cooking for someone with **gestational diabetes (GD)**.
+No backend. Optional Claude API features call `api.anthropic.com` directly from
+the browser. Deployed as a static site to GitHub Pages.
 
 **Not medical advice.** Every meal must follow GD rules: low-GI carbs paired with
 protein/fat, per-meal carb caps (≤30g breakfast, ≤45g lunch/dinner, ≤20g snack —
@@ -49,15 +49,31 @@ src/
                            remote URLs), with CC attribution; rendered by components/RecipeImage
   data/coverage.test.js    CI-enforced coverage + integrity properties of the cookbook
   lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition,
-                           utils, dates, storage, image (canvas resize), userPhotos (IndexedDB), pwa
+                           utils, dates, storage, image (canvas resize), userPhotos (IndexedDB), pwa,
+                           glucose (reading classify/stats/labels/CSV — see Blood-sugar log below)
   components/              primitives, NutritionPills, RecipeImage, MealCard, MealDetail, Onboarding,
-                           PrefsFields, WeekHistory, ErrorBoundary, A2HSBanner, and the four tabs
+                           PrefsFields, WeekHistory, ErrorBoundary, A2HSBanner, Sparkline, and the tab
+                           components (Plan, Cookbook, Ingredients, Shopping, Log, Settings)
 scripts/                   recipe-library pipeline (see scripts/README.md)
 ```
 
 State persists to `localStorage` (`ss_*` keys) with an in-memory fallback;
 cook-supplied recipe photos live in IndexedDB (`ss_user_photos`, too big for
 localStorage).
+
+## Blood-sugar log
+
+A **Log** tab tracks the standard GD checks — fasting + post-meal (1h ≤140 or 2h
+≤120, picked in Settings) — in mg/dL, keyed by date in `ss_glucose`
+(`{ [dateIso]: { fasting, postBreakfast, postLunch, postDinner } }`; an emptied
+day is dropped, never stored as `{}`). All logic is pure in `lib/glucose.js`:
+`classifyReading` (low/in/high vs targets), `glucoseStats`, `slotSeries` (sparkline
+input), `slotLabel` (timing-aware), and `glucoseToCSV` (appointment export).
+Targets and timing live in `settings.glucoseTargets` + `glucosePostMealHours`
+(deep-merged in the App settings hydrate, so old installs gain the defaults). The
+log rides the same backup/restore/reset paths as everything else. Status cues are
+**text + colour, never colour alone**. **Not medical advice** — same framing as
+the meals; keep per-slot targets editable, don't hard-code clinical thresholds.
 
 ## Meal data model
 
