@@ -303,9 +303,11 @@ log with each slot's target in the header — for handing to a care team, separa
 from the JSON app backup. Each weekly-summary slot card also draws a small
 inline-SVG **trend sparkline** (target reference line + status-coloured points,
 no chart dependency; decorative/aria-hidden since the avg + in-range % carry the
-data textually). Follow-ups if wanted: optional 2-hour-post-meal mode, a bedtime
-reading, and meal↔reading insights (deferred — it needs a product call on
-sample-size/causation framing).
+data textually). A Settings **post-meal check-timing** toggle switches between the
+1-hour (≤140) and 2-hour (≤120) regimens — picking one resets the after-meals cap
+to that standard and re-labels the post-meal slots ("2h after lunch") everywhere,
+including the CSV header. Follow-ups if wanted: a bedtime reading, and meal↔reading
+insights (deferred — it needs a product call on sample-size/causation framing).
 
 **Strategic fork — backend proxy.** Sharing plans, real API-key security, and
 "feed user photos back into the shared library" (the original wishlist item) are

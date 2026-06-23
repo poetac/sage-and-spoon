@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   GLUCOSE_SLOTS, GLUCOSE_UNIT, STATUS_LABEL, MIN_READING, MAX_READING,
-  classifyReading, targetFor, glucoseStats, slotSeries,
+  classifyReading, targetFor, glucoseStats, slotSeries, slotLabel,
 } from "../lib/glucose.js";
 import { todayIso, dayDate, iso, fmtShort, weekdayShort } from "../lib/dates.js";
 import { Sparkline } from "./Sparkline.jsx";
@@ -19,7 +19,7 @@ const StatusPill = ({ status }) =>
 // Last n days, newest first, as ISO date strings.
 const recentDays = (n, from = todayIso()) => Array.from({ length: n }, (_, i) => iso(dayDate(from, -i)));
 
-export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = () => {} }) {
+export function GlucoseTab({ glucose = {}, onSetReading, targets, hours = 1, onExportCsv = () => {} }) {
   const today = todayIso();
   const [date, setDate] = useState(today);
   const day = glucose[date] || {};
@@ -62,14 +62,14 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = 
             return (
               <div key={s.key} className="flex items-center gap-3">
                 <label className="text-sm flex-1" htmlFor={`g-${s.key}`}>
-                  <span style={{ fontWeight: 600 }}>{s.label}</span>
+                  <span style={{ fontWeight: 600 }}>{slotLabel(s.key, hours)}</span>
                   <span className="t-soft"> · target ≤{targetFor(s.key, targets)}</span>
                 </label>
                 <input id={`g-${s.key}`} type="number" inputMode="numeric" className="input" style={{ maxWidth: 96 }}
                   min={MIN_READING} max={MAX_READING} placeholder="—"
                   value={Number.isFinite(v) ? v : ""}
                   onChange={(e) => onSetReading(date, s.key, e.target.value.trim() === "" ? null : Number(e.target.value))}
-                  aria-label={`${s.label} reading in ${GLUCOSE_UNIT}`} />
+                  aria-label={`${slotLabel(s.key, hours)} reading in ${GLUCOSE_UNIT}`} />
                 <div style={{ minWidth: 70 }}><StatusPill status={status} /></div>
               </div>
             );
@@ -124,7 +124,7 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = 
                       if (!Number.isFinite(v)) return null;
                       const status = classifyReading(v, s.key, targets);
                       return (
-                        <span key={s.key} className="pill" title={`${s.label}: ${STATUS_LABEL[status]}`}
+                        <span key={s.key} className="pill" title={`${slotLabel(s.key, hours)}: ${STATUS_LABEL[status]}`}
                           style={{ ...STATUS_STYLE[status], fontWeight: 700, fontSize: 11 }}>
                           {s.short[0]} {v}
                         </span>

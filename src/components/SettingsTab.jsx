@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Icon, ICONS, Spinner } from "./primitives.jsx";
 import { PrefsFields } from "./PrefsFields.jsx";
 import { AI_MODELS, DEFAULT_MODEL } from "../lib/claude.js";
+import { POST_MEAL_TARGETS } from "../lib/glucose.js";
 
 const POOL_LABELS = [["breakfast", "Breakfasts"], ["lunch", "Lunches"], ["dinner", "Dinners"], ["snack", "Snacks"]];
 // Caps comfortably above common GD per-meal guidance; crossing one shows a
@@ -15,6 +16,9 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
   const setTarget = (k, v) => setSettings({ ...settings, targets: { ...settings.targets, [k]: Math.max(5, Number(v) || 0) } });
   const glucoseTargets = settings.glucoseTargets || { fastingMax: 95, postMealMax: 140 };
   const setGlucoseTarget = (k, v) => setSettings({ ...settings, glucoseTargets: { ...glucoseTargets, [k]: Math.max(40, Number(v) || 0) } });
+  const postMealHours = settings.glucosePostMealHours || 1;
+  // Picking a timing also resets the after-meals cap to that regimen's usual value.
+  const setPostMealHours = (h) => setSettings({ ...settings, glucosePostMealHours: h, glucoseTargets: { ...glucoseTargets, postMealMax: POST_MEAL_TARGETS[h] } });
   return (
     <div className="max-w-2xl rise">
       <h2 className="font-display text-2xl mb-1" style={{ fontWeight: 600 }}>Settings</h2>
@@ -84,6 +88,18 @@ export function SettingsTab({ prefs, setPrefs, settings, setSettings, onRegenera
       <div className="card p-5 mb-4">
         <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Blood-sugar targets</h3>
         <p className="t-soft text-sm mb-4">The Log tab flags readings (mg/dL) against these. Defaults follow common GD guidance — set them to match her care team's plan. Not medical advice.</p>
+        <fieldset className="mb-4">
+          <legend className="t-soft text-sm mb-1.5">Post-meal check timing</legend>
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+            {[1, 2].map((h) => (
+              <label key={h} className="text-sm flex items-center gap-1.5">
+                <input type="radio" name="pmHours" checked={postMealHours === h} onChange={() => setPostMealHours(h)} />
+                {h} hour{h > 1 ? "s" : ""} after meals <span className="t-soft">(≤{POST_MEAL_TARGETS[h]})</span>
+              </label>
+            ))}
+          </div>
+          <p className="t-soft text-[11px] mt-1.5">Switching sets the after-meals cap to the usual value for that timing.</p>
+        </fieldset>
         <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 280 }}>
           {[["fastingMax", "Fasting ≤"], ["postMealMax", "After meals ≤"]].map(([k, label]) => (
             <label key={k} className="text-sm">

@@ -52,6 +52,11 @@ describe("GlucoseTab", () => {
     expect(screen.getByText(/No readings yet this week/)).toBeInTheDocument();
   });
 
+  it("labels post-meal slots with the configured check timing", () => {
+    render(<GlucoseTab glucose={{}} onSetReading={vi.fn()} targets={T} hours={2} onExportCsv={vi.fn()} />);
+    expect(screen.getByLabelText(/2h after breakfast reading/)).toBeInTheDocument();
+  });
+
   it("navigates to the previous day to backfill a reading", () => {
     const { onSetReading } = renderTab();
     fireEvent.click(screen.getByRole("button", { name: "Previous day" }));
