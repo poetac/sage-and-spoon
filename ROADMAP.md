@@ -306,8 +306,12 @@ no chart dependency; decorative/aria-hidden since the avg + in-range % carry the
 data textually). A Settings **post-meal check-timing** toggle switches between the
 1-hour (≤140) and 2-hour (≤120) regimens — picking one resets the after-meals cap
 to that standard and re-labels the post-meal slots ("2h after lunch") everywhere,
-including the CSV header. Follow-ups if wanted: a bedtime reading, and meal↔reading
-insights (deferred — it needs a product call on sample-size/causation framing).
+including the CSV header. A **Meal patterns** card joins each post-meal reading to
+the meal eaten in that slot (across the live plan + week history) and shows the
+average reading per meal — built **descriptive, not causal**: gated behind a
+minimum reading count, framed as "patterns to explore with her care team", no
+spike-blaming. Follow-ups if wanted: a bedtime reading; surfacing insights in the
+cookbook/planner (e.g. nudging steady meals up the pool) once enough data exists.
 
 **Strategic fork — backend proxy.** Sharing plans, real API-key security, and
 "feed user photos back into the shared library" (the original wishlist item) are

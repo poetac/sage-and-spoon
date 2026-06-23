@@ -11,7 +11,7 @@ import { loadRecipeImages } from "./data/recipe-image-store.js";
 import { todayIso, weekdayShort, dayDate, fmtShort } from "./lib/dates.js";
 import { capFor } from "./lib/utils.js";
 import { downloadFile } from "./lib/download.js";
-import { glucoseToCSV } from "./lib/glucose.js";
+import { glucoseToCSV, mealGlucoseInsights } from "./lib/glucose.js";
 import { generateLocalWeek, pickLocalSwap, violatesExclusions, candidatesFor, pickBest, mealAllowed, mealSafe } from "./lib/planner.js";
 import { gdRules, prefsSummary, MEAL_SHAPE, callClaude, normalizeAiMeal, vetNewMeals, gdCompliant } from "./lib/claude.js";
 import { Icon, ICONS, Toast, Modal, Spinner } from "./components/primitives.jsx";
@@ -192,6 +192,15 @@ export default function App() {
   const mealsById = useMemo(() => Object.fromEntries(allMeals.map((m) => [m.id, m])), [allMeals]);
   // Vocabulary for the "never include" picker, from the full loaded cookbook (ARCH-1).
   const ingredientNames = useMemo(() => namesOf(allMeals), [allMeals]);
+  // Per-meal glucose patterns (Log tab) — join logged post-meal readings with the
+  // meal eaten in that slot across the live plan + week history, then attach names.
+  // Drop any meal no longer in the loaded cookbook (a name we can't resolve).
+  const mealInsights = useMemo(
+    () => mealGlucoseInsights([plan, ...history].filter(Boolean), glucose, settings.glucoseTargets)
+      .map((m) => ({ ...m, name: mealsById[m.mealId]?.name }))
+      .filter((m) => m.name),
+    [plan, history, glucose, settings.glucoseTargets, mealsById],
+  );
   const favSet = useMemo(() => new Set(favorites), [favorites]);
   const inWeek = useMemo(() => new Set(plan ? plan.days.flatMap((d) => Object.values(d)).filter(Boolean) : []), [plan]);
   const notedIds = useMemo(() => new Set(Object.keys(notes)), [notes]);
@@ -566,7 +575,7 @@ export default function App() {
         {tab === "settings" ? (
           <SettingsTab prefs={prefs} setPrefs={setPrefs} settings={settings} setSettings={setSettings} onRegenerate={shuffleWeek} onResetAll={resetAll} poolHealth={poolHealth} poolNeed={POOL_NEED} onGrow={growCookbook} growing={growing} hasKey={hasKey} onExport={exportData} onImport={importData} ingredientNames={ingredientNames} />
         ) : tab === "log" ? (
-          <GlucoseTab glucose={glucose} onSetReading={setGlucoseReading} targets={settings.glucoseTargets} hours={settings.glucosePostMealHours} onExportCsv={exportGlucoseCsv} />
+          <GlucoseTab glucose={glucose} onSetReading={setGlucoseReading} targets={settings.glucoseTargets} hours={settings.glucosePostMealHours} insights={mealInsights} onExportCsv={exportGlucoseCsv} />
         ) : !cookbookReady ? (
           <div className="card p-8 text-center max-w-md mx-auto rise flex flex-col items-center gap-3" aria-busy="true">
             <Spinner size={20} />

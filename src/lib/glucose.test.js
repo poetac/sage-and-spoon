@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, slotSeries, slotLabel, POST_MEAL_TARGETS, LOW_THRESHOLD } from "./glucose.js";
+import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, slotSeries, slotLabel, mealGlucoseInsights, POST_MEAL_TARGETS, LOW_THRESHOLD } from "./glucose.js";
+import { iso, dayDate } from "./dates.js";
 
 const T = { fastingMax: 95, postMealMax: 140 };
 
@@ -95,6 +96,54 @@ describe("glucoseToCSV", () => {
   });
   it("returns just the header when nothing is logged", () => {
     expect(glucoseToCSV({}, T).split("\n")).toHaveLength(1);
+  });
+});
+
+describe("mealGlucoseInsights", () => {
+  const T = { fastingMax: 95, postMealMax: 140 };
+  const weekStart = "2026-06-01";
+  const D = (i) => iso(dayDate(weekStart, i));
+  const plan = {
+    weekStart,
+    days: [
+      { breakfast: "oats", lunch: "salad", dinner: "fish" },
+      { breakfast: "oats", lunch: "wrap", dinner: "fish" },
+      { breakfast: "oats" },
+    ],
+  };
+  const glucose = {
+    [D(0)]: { postBreakfast: 130, postLunch: 150, postDinner: 110 },
+    [D(1)]: { postBreakfast: 140, postDinner: 120 },
+    [D(2)]: { postBreakfast: 138 },
+  };
+
+  it("aggregates per meal and omits meals below the minimum (default 2)", () => {
+    const res = mealGlucoseInsights([plan], glucose, T);
+    expect(res.map((m) => m.mealId)).toEqual(["oats", "fish"]); // count desc; salad/wrap dropped
+    expect(res[0]).toEqual({ mealId: "oats", count: 3, avg: 136, inRange: 3, inRangePct: 100, status: "in" });
+    expect(res[1]).toMatchObject({ mealId: "fish", count: 2, avg: 115, status: "in" });
+  });
+
+  it("flags a meal whose average runs over target as high", () => {
+    const g = { [D(0)]: { postDinner: 160 }, [D(1)]: { postDinner: 170 } };
+    const [fish] = mealGlucoseInsights([plan], g, T);
+    expect(fish).toMatchObject({ mealId: "fish", count: 2, avg: 165, inRange: 0, status: "high" });
+  });
+
+  it("dedupes an overlapping plan + history snapshot (each date+slot counts once)", () => {
+    const res = mealGlucoseInsights([plan, { ...plan }], glucose, T);
+    expect(res.find((m) => m.mealId === "oats").count).toBe(3); // not 6
+  });
+
+  it("honours a custom minObs", () => {
+    const res = mealGlucoseInsights([plan], glucose, T, 1);
+    expect(res.find((m) => m.mealId === "salad")).toMatchObject({ count: 1, status: "high" });
+  });
+
+  it("is guard-safe for empty or malformed input", () => {
+    expect(mealGlucoseInsights(null, null, T)).toEqual([]);
+    expect(mealGlucoseInsights([], {}, T)).toEqual([]);
+    expect(mealGlucoseInsights([{ weekStart, days: [null, {}] }], {}, T)).toEqual([]);
   });
 });
 

@@ -68,7 +68,11 @@ A **Log** tab tracks the standard GD checks — fasting + post-meal (1h ≤140 o
 (`{ [dateIso]: { fasting, postBreakfast, postLunch, postDinner } }`; an emptied
 day is dropped, never stored as `{}`). All logic is pure in `lib/glucose.js`:
 `classifyReading` (low/in/high vs targets), `glucoseStats`, `slotSeries` (sparkline
-input), `slotLabel` (timing-aware), and `glucoseToCSV` (appointment export).
+input), `slotLabel` (timing-aware), `glucoseToCSV` (appointment export), and
+`mealGlucoseInsights` (joins post-meal readings to the meal eaten in that slot —
+across the live plan + week history — for the Log tab's "Meal patterns" averages;
+deliberately **descriptive, not causal**, gated behind a minimum reading count, and
+deduped by date+slot so an overlapping plan/history snapshot counts once).
 Targets and timing live in `settings.glucoseTargets` + `glucosePostMealHours`
 (deep-merged in the App settings hydrate, so old installs gain the defaults). The
 log rides the same backup/restore/reset paths as everything else. Status cues are

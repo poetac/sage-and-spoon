@@ -7,7 +7,7 @@ import App from "./App.jsx";
 import { store, K } from "./lib/storage.js";
 import { loadCookbook, EMPTY_PREFS, DEFAULT_SETTINGS } from "./data/meals.js";
 import { generateLocalWeek } from "./lib/planner.js";
-import { todayIso } from "./lib/dates.js";
+import { todayIso, iso, dayDate } from "./lib/dates.js";
 import { callClaude } from "./lib/claude.js";
 
 // App.jsx owns state, persistence, and composition; these exercise the offline
@@ -506,6 +506,19 @@ describe("App — glucose logging", () => {
       URL.createObjectURL = origCreate;
       URL.revokeObjectURL = origRevoke;
     }
+  });
+
+  it("surfaces a meal's average reading on the Log tab once it's been measured a few times", async () => {
+    seedPrefs();
+    const meal = MEAL_DB.find((m) => m.type === "breakfast" && !m.id.startsWith("g"));
+    const ws = todayIso();
+    store.set(K.plan, { weekStart: ws, days: [{ breakfast: meal.id }, { breakfast: meal.id }] });
+    store.set(K.glucose, { [ws]: { postBreakfast: 130 }, [iso(dayDate(ws, 1))]: { postBreakfast: 136 } });
+    render(<App />);
+    goTo(/^Log$/);
+    expect(await screen.findByText("Meal patterns")).toBeInTheDocument();
+    expect(screen.getByText(meal.name)).toBeInTheDocument();
+    expect(screen.getByText("avg 133")).toBeInTheDocument(); // (130 + 136) / 2
   });
 
   it("includes glucose in a backup and restores it", async () => {

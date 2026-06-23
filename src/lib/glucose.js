@@ -3,6 +3,8 @@
 // chosen at setup). NOT medical advice — targets are editable in Settings and
 // should match her care team's plan. The four daily checks below are the common
 // GD regimen: fasting on waking, plus one hour after each main meal.
+import { iso, dayDate } from "./dates.js";
+
 export const GLUCOSE_UNIT = "mg/dL";
 
 export const GLUCOSE_SLOTS = [
@@ -89,6 +91,54 @@ export function glucoseStats(glucose, dates, targets) {
 // (pass dates oldest-first for a left-to-right trend). Missing days are dropped.
 export function slotSeries(glucose, dates, slotKey) {
   return dates.map((d) => glucose?.[d]?.[slotKey]).filter(Number.isFinite);
+}
+
+// Which meal slot in a day's plan a given post-meal reading follows.
+const POST_TO_PLAN = { postBreakfast: "breakfast", postLunch: "lunch", postDinner: "dinner" };
+
+// Joins logged post-meal readings with the meal that was eaten in that slot —
+// drawing on the current plan plus saved week history — to surface, per meal, the
+// average reading that followed it. PURE and name-agnostic: the caller resolves
+// mealId → name. Observations are deduped by date+slot (so an overlapping current
+// plan and history[0] snapshot count once; earlier sources win, so pass the live
+// plan first). Meals with fewer than `minObs` readings are omitted — sparse home
+// data must not read as a pattern. This is descriptive, NOT causal: many things
+// move blood sugar, so the result is "what was logged after this meal", nothing
+// more. `sources` is an array of { weekStart, days } (days[i] keyed by SLOTS.key).
+export function mealGlucoseInsights(sources, glucose, targets, minObs = 2) {
+  const seen = new Set();
+  const byMeal = new Map();
+  for (const src of sources || []) {
+    if (!src || !Array.isArray(src.days)) continue;
+    src.days.forEach((day, i) => {
+      if (!day) return;
+      const date = iso(dayDate(src.weekStart, i));
+      for (const [post, planSlot] of Object.entries(POST_TO_PLAN)) {
+        const mealId = day[planSlot];
+        const reading = glucose?.[date]?.[post];
+        if (!mealId || !Number.isFinite(reading)) continue;
+        const k = `${date}|${post}`;
+        if (seen.has(k)) continue;
+        seen.add(k);
+        if (!byMeal.has(mealId)) byMeal.set(mealId, []);
+        byMeal.get(mealId).push(reading);
+      }
+    });
+  }
+  const out = [];
+  for (const [mealId, vals] of byMeal) {
+    if (vals.length < minObs) continue;
+    const avg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    const inRange = vals.filter((v) => classifyReading(v, "postBreakfast", targets) === "in").length;
+    out.push({
+      mealId, count: vals.length, avg, inRange,
+      inRangePct: Math.round((inRange / vals.length) * 100),
+      status: classifyReading(avg, "postBreakfast", targets),
+    });
+  }
+  // Most-logged first (most reliable), higher average as a tiebreak.
+  out.sort((a, b) => b.count - a.count || b.avg - a.avg);
+  return out;
 }
 
 // A printable/spreadsheet CSV of the log — one row per logged day, oldest first,

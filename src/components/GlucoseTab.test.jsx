@@ -57,6 +57,20 @@ describe("GlucoseTab", () => {
     expect(screen.getByLabelText(/2h after breakfast reading/)).toBeInTheDocument();
   });
 
+  it("surfaces meal patterns when insights are provided", () => {
+    render(<GlucoseTab glucose={{}} onSetReading={vi.fn()} targets={T} onExportCsv={vi.fn()}
+      insights={[{ mealId: "oats", name: "Overnight oats", count: 3, avg: 136, inRange: 3, inRangePct: 100, status: "in" }]} />);
+    expect(screen.getByText("Meal patterns")).toBeInTheDocument();
+    expect(screen.getByText("Overnight oats")).toBeInTheDocument();
+    expect(screen.getByText("avg 136")).toBeInTheDocument();
+    expect(screen.getByText(/3 readings · 3 in range/)).toBeInTheDocument();
+  });
+
+  it("hides meal patterns when there are none", () => {
+    renderTab();
+    expect(screen.queryByText("Meal patterns")).toBeNull();
+  });
+
   it("navigates to the previous day to backfill a reading", () => {
     const { onSetReading } = renderTab();
     fireEvent.click(screen.getByRole("button", { name: "Previous day" }));
