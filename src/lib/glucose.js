@@ -73,3 +73,19 @@ export function glucoseStats(glucose, dates, targets) {
   }
   return { perSlot, total, inRange: inCount, inRangePct: total ? Math.round((inCount / total) * 100) : null };
 }
+
+// A printable/spreadsheet CSV of the log — one row per logged day, oldest first,
+// with each slot's target in the header (handy to hand to a care team). Values
+// are mg/dL; a missing reading is left blank.
+export function glucoseToCSV(glucose, targets) {
+  const esc = (s) => (/[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
+  const header = ["Date", ...GLUCOSE_SLOTS.map((s) => `${s.label} (≤${targetFor(s.key, targets)})`)];
+  const dates = Object.keys(glucose)
+    .filter((d) => glucose[d] && Object.values(glucose[d]).some(Number.isFinite))
+    .sort();
+  const rows = dates.map((d) => [
+    d,
+    ...GLUCOSE_SLOTS.map((s) => (Number.isFinite(glucose[d][s.key]) ? String(glucose[d][s.key]) : "")),
+  ]);
+  return [header, ...rows].map((r) => r.map(esc).join(",")).join("\n");
+}

@@ -18,12 +18,13 @@ const StatusPill = ({ status }) =>
 // Last n days, newest first, as ISO date strings.
 const recentDays = (n, from = todayIso()) => Array.from({ length: n }, (_, i) => iso(dayDate(from, -i)));
 
-export function GlucoseTab({ glucose = {}, onSetReading, targets }) {
+export function GlucoseTab({ glucose = {}, onSetReading, targets, onExportCsv = () => {} }) {
   const today = todayIso();
   const [date, setDate] = useState(today);
   const day = glucose[date] || {};
   const isToday = date === today;
   const dObj = dayDate(date, 0);
+  const hasAny = Object.values(glucose).some((d) => d && Object.values(d).some(Number.isFinite));
 
   const week = recentDays(7);
   const stats = glucoseStats(glucose, week, targets);
@@ -31,9 +32,13 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets }) {
 
   return (
     <div className="max-w-3xl rise">
-      <div className="mb-4">
-        <h2 className="font-display text-2xl" style={{ fontWeight: 600 }}>Blood-sugar log</h2>
-        <p className="t-soft text-sm">Readings in {GLUCOSE_UNIT}, checked against her targets. Not medical advice — set targets to match her care team's plan in Settings.</p>
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-2xl" style={{ fontWeight: 600 }}>Blood-sugar log</h2>
+          <p className="t-soft text-sm">Readings in {GLUCOSE_UNIT}, checked against her targets. Not medical advice — set targets to match her care team's plan in Settings.</p>
+        </div>
+        <button className="btn btn-soft whitespace-nowrap" style={{ flexShrink: 0 }} disabled={!hasAny}
+          onClick={onExportCsv} title="Download readings as a CSV for appointments">Export CSV</button>
       </div>
 
       {/* entry for the selected day */}

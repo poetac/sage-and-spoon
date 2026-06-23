@@ -298,8 +298,11 @@ reading against editable targets (fasting ≤95, post-meal ≤140 — Settings) 
 text-and-colour cues, and shows a 7-day in-range trend plus recent days you can
 tap to backfill. Pure logic in `lib/glucose.js` (classification + stats); state
 persists to `ss_glucose` and rides the existing backup/restore/reset paths.
-Follow-ups if wanted: a sparkline/chart, CSV export for appointments, optional
-2-hour-post-meal mode, and a bedtime reading.
+A built-in **CSV export** (Log tab → "Export CSV") writes a printable, oldest-first
+log with each slot's target in the header — for handing to a care team, separate
+from the JSON app backup. Follow-ups if wanted: a sparkline/chart, optional
+2-hour-post-meal mode, a bedtime reading, and meal↔reading insights (which
+deferred — it needs a product call on sample-size/causation framing).
 
 **Strategic fork — backend proxy.** Sharing plans, real API-key security, and
 "feed user photos back into the shared library" (the original wishlist item) are

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { classifyReading, targetFor, summarizeDay, glucoseStats, LOW_THRESHOLD } from "./glucose.js";
+import { classifyReading, targetFor, summarizeDay, glucoseStats, glucoseToCSV, LOW_THRESHOLD } from "./glucose.js";
 
 const T = { fastingMax: 95, postMealMax: 140 };
 
@@ -63,5 +63,28 @@ describe("glucoseStats", () => {
     const s = glucoseStats({}, dates, T);
     expect(s.total).toBe(0);
     expect(s.inRangePct).toBeNull();
+  });
+});
+
+describe("glucoseToCSV", () => {
+  const glucose = {
+    "2026-06-21": { fasting: 100, postLunch: 130 },
+    "2026-06-20": { fasting: 90, postBreakfast: 150 },
+    "2026-06-22": {}, // an empty day is skipped
+  };
+  it("emits a header carrying each slot's target", () => {
+    const [header] = glucoseToCSV(glucose, T).split("\n");
+    expect(header).toBe("Date,Fasting (≤95),After breakfast (≤140),After lunch (≤140),After dinner (≤140)");
+  });
+  it("writes one row per logged day, oldest first, with blanks for missing slots", () => {
+    const lines = glucoseToCSV(glucose, T).split("\n");
+    expect(lines).toEqual([
+      "Date,Fasting (≤95),After breakfast (≤140),After lunch (≤140),After dinner (≤140)",
+      "2026-06-20,90,150,,",
+      "2026-06-21,100,,130,",
+    ]);
+  });
+  it("returns just the header when nothing is logged", () => {
+    expect(glucoseToCSV({}, T).split("\n")).toHaveLength(1);
   });
 });
