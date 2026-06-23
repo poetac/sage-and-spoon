@@ -19,7 +19,7 @@ const StatusPill = ({ status }) =>
 // Last n days, newest first, as ISO date strings.
 const recentDays = (n, from = todayIso()) => Array.from({ length: n }, (_, i) => iso(dayDate(from, -i)));
 
-export function GlucoseTab({ glucose = {}, onSetReading, targets, hours = 1, onExportCsv = () => {} }) {
+export function GlucoseTab({ glucose = {}, onSetReading, targets, hours = 1, insights = [], onExportCsv = () => {} }) {
   const today = todayIso();
   const [date, setDate] = useState(today);
   const day = glucose[date] || {};
@@ -103,6 +103,25 @@ export function GlucoseTab({ glucose = {}, onSetReading, targets, hours = 1, onE
           </>
         )}
       </div>
+
+      {/* meal patterns — observed, not causal (see lib/glucose mealGlucoseInsights) */}
+      {insights.length > 0 && (
+        <div className="card p-5 mb-4">
+          <h3 className="font-display text-lg mb-1" style={{ fontWeight: 600 }}>Meal patterns</h3>
+          <p className="t-soft text-sm mb-3">Average reading after meals you've logged a few times. Lots of things move blood sugar — these are patterns to explore with her care team, not conclusions. Not medical advice.</p>
+          <ul className="grid gap-2">
+            {insights.map((m) => (
+              <li key={m.mealId} className="flex items-center justify-between gap-3 pb-2" style={{ borderBottom: "1px solid var(--line)" }}>
+                <span className="text-sm" style={{ fontWeight: 600 }}>{m.name}</span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="pill" style={{ ...STATUS_STYLE[m.status], fontWeight: 700, fontSize: 11 }}>avg {m.avg}</span>
+                  <span className="t-soft text-[11px]">{m.count} readings · {m.inRange} in range</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* recent logged days — tap to edit */}
       {loggedDays.length > 0 && (
