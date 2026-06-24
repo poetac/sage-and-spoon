@@ -145,6 +145,16 @@ describe("mealGlucoseInsights", () => {
     expect(mealGlucoseInsights([], {}, T)).toEqual([]);
     expect(mealGlucoseInsights([{ weekStart, days: [null, {}] }], {}, T)).toEqual([]);
   });
+
+  it("breaks an equal-count tie by higher average first", () => {
+    const p = { weekStart, days: [{ breakfast: "calm", dinner: "spiky" }, { breakfast: "calm", dinner: "spiky" }] };
+    const g = {
+      [D(0)]: { postBreakfast: 120, postDinner: 160 },
+      [D(1)]: { postBreakfast: 122, postDinner: 162 },
+    };
+    const res = mealGlucoseInsights([p], g, T); // both count 2, so avg decides order
+    expect(res.map((m) => m.mealId)).toEqual(["spiky", "calm"]); // 161 avg before 121 avg
+  });
 });
 
 describe("slotSeries", () => {
