@@ -508,7 +508,10 @@ export default function App() {
       const asObj = (v) => (v && typeof v === "object" && !Array.isArray(v) ? v : null);
       const baseSettings = asObj(d.settings) || settings;
       const targets = { ...DEFAULT_SETTINGS.targets, ...(asObj(baseSettings.targets) || {}) };
-      setSettings({ ...DEFAULT_SETTINGS, ...baseSettings, targets });
+      // Deep-merge nested target objects (like the hydrate path) so a partial
+      // backup gains missing defaults instead of shallow-overwriting them.
+      const glucoseTargets = { ...DEFAULT_SETTINGS.glucoseTargets, ...(asObj(baseSettings.glucoseTargets) || {}) };
+      setSettings({ ...DEFAULT_SETTINGS, ...baseSettings, targets, glucoseTargets });
       // Re-vet restored custom meals against the restored caps/exclusions — a
       // backup made under looser settings could otherwise reintroduce an
       // over-cap or now-excluded meal. Drop any that no longer pass and tell the

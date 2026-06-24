@@ -521,6 +521,26 @@ describe("App — glucose logging", () => {
     expect(screen.getByText("avg 133")).toBeInTheDocument(); // (130 + 136) / 2
   });
 
+  it("drops a logged meal from patterns once it's no longer in the cookbook", async () => {
+    seedPrefs();
+    const meal = MEAL_DB.find((m) => m.type === "breakfast" && !m.id.startsWith("g"));
+    const ghost = "ghost-meal-not-in-db";
+    const ws = todayIso();
+    store.set(K.plan, { weekStart: ws, days: [
+      { breakfast: meal.id, dinner: ghost },
+      { breakfast: meal.id, dinner: ghost },
+    ] });
+    store.set(K.glucose, {
+      [ws]: { postBreakfast: 130, postDinner: 130 },
+      [iso(dayDate(ws, 1))]: { postBreakfast: 136, postDinner: 136 },
+    });
+    render(<App />);
+    goTo(/^Log$/);
+    expect(await screen.findByText("Meal patterns")).toBeInTheDocument();
+    expect(screen.getByText(meal.name)).toBeInTheDocument(); // resolvable meal shows
+    expect(screen.queryByText(ghost)).toBeNull();            // unresolvable id is dropped
+  });
+
   it("includes glucose in a backup and restores it", async () => {
     seedPrefs();
     seedPlan();
@@ -533,6 +553,21 @@ describe("App — glucose logging", () => {
     const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
     fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
     await waitFor(() => expect(store.get(K.glucose, {})["2026-06-20"]).toEqual({ fasting: 88, postDinner: 150 }));
+  });
+
+  it("restores a partial glucoseTargets backup without losing the postMealMax default", async () => {
+    seedPrefs();
+    seedPlan();
+    render(<App />);
+    goTo(/Settings/);
+    const backup = {
+      app: "sage-and-spoon", version: 1,
+      data: { prefs: { ...EMPTY_PREFS }, settings: { glucoseTargets: { fastingMax: 90 } } },
+    };
+    const file = new File([JSON.stringify(backup)], "backup.json", { type: "application/json" });
+    fireEvent.change(await screen.findByLabelText("Restore from backup"), { target: { files: [file] } });
+    await waitFor(() => expect(store.get(K.settings, {}).glucoseTargets)
+      .toEqual({ fastingMax: 90, postMealMax: DEFAULT_SETTINGS.glucoseTargets.postMealMax }));
   });
 });
 

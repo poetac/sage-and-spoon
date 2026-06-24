@@ -121,19 +121,23 @@ export function mealGlucoseInsights(sources, glucose, targets, minObs = 2) {
         if (seen.has(k)) continue;
         seen.add(k);
         if (!byMeal.has(mealId)) byMeal.set(mealId, []);
-        byMeal.get(mealId).push(reading);
+        byMeal.get(mealId).push({ v: reading, post });
       }
     });
   }
   const out = [];
-  for (const [mealId, vals] of byMeal) {
-    if (vals.length < minObs) continue;
-    const avg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-    const inRange = vals.filter((v) => classifyReading(v, "postBreakfast", targets) === "in").length;
+  for (const [mealId, obs] of byMeal) {
+    if (obs.length < minObs) continue;
+    const avg = Math.round(obs.reduce((a, o) => a + o.v, 0) / obs.length);
+    // Classify each reading against its own slot's target, not a fixed slot — today
+    // every post-meal slot shares postMealMax, but this stays correct if per-slot
+    // targets are ever introduced. A meal's obs are one slot in practice, so the
+    // average's status uses that slot.
+    const inRange = obs.filter((o) => classifyReading(o.v, o.post, targets) === "in").length;
     out.push({
-      mealId, count: vals.length, avg, inRange,
-      inRangePct: Math.round((inRange / vals.length) * 100),
-      status: classifyReading(avg, "postBreakfast", targets),
+      mealId, count: obs.length, avg, inRange,
+      inRangePct: Math.round((inRange / obs.length) * 100),
+      status: classifyReading(avg, obs[0].post, targets),
     });
   }
   // Most-logged first (most reliable), higher average as a tiebreak.
