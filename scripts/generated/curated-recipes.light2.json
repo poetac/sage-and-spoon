@@ -1,0 +1,1185 @@
+[
+ {
+  "name": "Ricotta Spinach Stuffed Portobellos",
+  "type": "dinner",
+  "carbsG": 14,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "portobello mushrooms",
+    "q": 4,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "ricotta cheese",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "spinach",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "italian herbs",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Wilt spinach with garlic; mix into ricotta.",
+   "Fill mushroom caps; dust with parmesan.",
+   "Bake at 200\u00b0C until caps are tender, ~20 min."
+  ]
+ },
+ {
+  "name": "Chunky Garden Minestrone",
+  "type": "dinner",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "cannellini beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "zucchini",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "diced tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "green beans",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "basil pesto",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer carrots in broth 5 min.",
+   "Add tomatoes, beans, zucchini, and green beans; simmer until tender.",
+   "Serve with a swirl of pesto and parmesan."
+  ]
+ },
+ {
+  "name": "Pesto White Bean Zucchini Noodles",
+  "type": "dinner",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cannellini beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "basil pesto",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 0.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Spiralize zucchini into noodles.",
+   "Warm beans and tomatoes in oil.",
+   "Toss noodles in just to soften, then off-heat with pesto and parmesan."
+  ]
+ },
+ {
+  "name": "Taco-Spiced Cabbage Skillet",
+  "type": "dinner",
+  "carbsG": 30,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "green cabbage",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "pinto beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "salsa",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "avocado",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "chili powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Char shredded cabbage in oil with chili powder.",
+   "Stir in beans and salsa; warm through.",
+   "Top with cheese, avocado, and lime."
+  ]
+ },
+ {
+  "name": "Crispy Tortilla Veggie Stacks",
+  "type": "dinner",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "low-carb whole wheat tortillas",
+    "q": 2,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "black beans",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "salsa verde",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "mixed greens",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Crisp tortillas in a dry skillet.",
+   "Fry eggs in oil; warm beans with salsa verde.",
+   "Stack tortilla, beans, egg, cheese; serve over greens."
+  ]
+ },
+ {
+  "name": "Sesame Ginger Eggplant & Tofu",
+  "type": "dinner",
+  "carbsG": 23,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "eggplant",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.5,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame seeds",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "broccoli",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Roast eggplant wedges until collapsed and silky.",
+   "Crisp tofu in sesame oil; add ginger and broccoli.",
+   "Glaze everything with soy; shower with scallions and sesame seeds."
+  ]
+ },
+ {
+  "name": "Cabbage Stir-Fry with Egg Ribbons",
+  "type": "dinner",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "green cabbage",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Make a thin egg omelette; slice into ribbons.",
+   "Stir-fry cabbage, carrots, and ginger hot and fast.",
+   "Toss with soy, ribbons, and scallions."
+  ]
+ },
+ {
+  "name": "Coconut Curry Noodle Soup",
+  "type": "dinner",
+  "carbsG": 30,
+  "gi": "Medium",
+  "prepMins": 25,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "rice noodles",
+    "q": 3,
+    "u": "oz",
+    "c": "Grains"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 1,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.4,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "bok choy",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer broth with coconut milk, curry powder, and ginger.",
+   "Add tofu and bok choy; simmer 5 min.",
+   "Drop in soaked noodles; finish with lime."
+  ]
+ },
+ {
+  "name": "Herbed Ricotta Stuffed Peppers",
+  "type": "dinner",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "bell peppers",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "ricotta cheese",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "eggs",
+    "q": 1,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "sun-dried tomatoes",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "arugula",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Whisk ricotta with egg, sun-dried tomatoes, and dill.",
+   "Fill pepper halves; bake at 190\u00b0C ~25 min.",
+   "Serve on arugula dressed with oil."
+  ]
+ },
+ {
+  "name": "Warm Lentil & Beet Salad with Feta",
+  "type": "dinner",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "green lentils",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cooked beets",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "arugula",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "walnuts",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "balsamic vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer lentils until just tender; drain.",
+   "Toss warm with beets, oil, and vinegar.",
+   "Plate over arugula; crumble feta and walnuts over."
+  ]
+ },
+ {
+  "name": "Shrimp & Asparagus Lemon Skillet",
+  "type": "dinner",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Shrimp",
+  "ingredients": [
+   {
+    "n": "shrimp",
+    "q": 4,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "asparagus",
+    "q": 1,
+    "u": "bunch",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "garlic",
+    "q": 3,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Sear asparagus and tomatoes in oil.",
+   "Add garlic and shrimp; cook until just pink.",
+   "Finish with lemon juice, zest, and parsley."
+  ]
+ },
+ {
+  "name": "Stuffed Acorn Squash with Wild Rice",
+  "type": "dinner",
+  "carbsG": 40,
+  "gi": "Medium",
+  "prepMins": 45,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "acorn squash",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "wild rice",
+    "q": 0.3,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "kale",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "dried cranberries",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "pecans",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sage",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roast squash halves cut-side down until tender.",
+   "Cook wild rice; fold in kale, cranberries, pecans, and sage.",
+   "Pile into squash halves and warm through."
+  ]
+ },
+ {
+  "name": "Sheet-Pan Chicken Sausage & Veg",
+  "type": "dinner",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Chicken",
+  "ingredients": [
+   {
+    "n": "chicken sausage",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "brussels sprouts",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "sweet potato",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "red onion",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "smoked paprika",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Toss everything with oil and paprika on a sheet pan.",
+   "Roast at 220\u00b0C ~25 min, turning once, until browned."
+  ]
+ },
+ {
+  "name": "Broccoli Cheddar Baked Potatoes",
+  "type": "dinner",
+  "carbsG": 34,
+  "gi": "Medium",
+  "prepMins": 40,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "baby potatoes",
+    "q": 10,
+    "u": "oz",
+    "c": "Produce"
+   },
+   {
+    "n": "broccoli",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "cheddar cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 0.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roast potatoes until crisp-skinned.",
+   "Steam broccoli; smash potatoes open.",
+   "Top with yogurt, cheddar, broccoli, and scallions."
+  ]
+ },
+ {
+  "name": "Spinach Coconut Dal",
+  "type": "dinner",
+  "carbsG": 19,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "red lentils",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 0.75,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "spinach",
+    "q": 4,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 2,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer lentils in broth with turmeric, cumin, and ginger until soft.",
+   "Stir in coconut milk and spinach until wilted.",
+   "Brighten with lime."
+  ]
+ },
+ {
+  "name": "Roasted Okra & Tomato Masala",
+  "type": "dinner",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "okra",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "diced tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "garam masala",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "almonds",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roast okra hot so it stays crisp, not slimy.",
+   "Simmer tomatoes with garlic and garam masala into a thick sauce.",
+   "Fold okra in; serve with yogurt and toasted almonds."
+  ]
+ },
+ {
+  "name": "Cabbage & Pea Sabzi",
+  "type": "dinner",
+  "carbsG": 27,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "green cabbage",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "green peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "cashews",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Sizzle ginger and spices in oil.",
+   "Add shredded cabbage; cook until sweet and soft.",
+   "Stir in peas; top with yogurt and cashews."
+  ]
+ },
+ {
+  "name": "Cauliflower Tabbouleh with Chickpeas",
+  "type": "dinner",
+  "carbsG": 32,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "cauliflower rice",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": 1,
+    "u": "bunch",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Pulse-steam cauliflower rice; cool slightly.",
+   "Toss with chopped cucumber, tomatoes, herbs, and chickpeas.",
+   "Dress generously with lemon and oil."
+  ]
+ },
+ {
+  "name": "Lemon Za'atar Chicken Thighs & Cauliflower",
+  "type": "dinner",
+  "carbsG": 14,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Chicken",
+  "ingredients": [
+   {
+    "n": "chicken thighs",
+    "q": 3.5,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "za'atar",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Rub chicken and cauliflower with za'atar, garlic, and oil.",
+   "Roast at 210\u00b0C until the chicken is cooked through, ~25 min.",
+   "Serve with lemony yogurt."
+  ]
+ },
+ {
+  "name": "Zucchini Boats with Bulgur & Feta",
+  "type": "dinner",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "bulgur",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Hollow zucchini halves; roast 10 min.",
+   "Soak bulgur; toss with tomatoes, mint, lemon, and oil.",
+   "Fill boats, crumble feta over, and bake 10 more min."
+  ]
+ }
+]

@@ -1,0 +1,1200 @@
+[
+ {
+  "name": "Zucchini Caprese Bake",
+  "type": "dinner",
+  "carbsG": 14,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mozzarella",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "fresh basil",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Layer sliced zucchini and tomatoes in a baking dish.",
+   "Whisk eggs with garlic and pour over.",
+   "Top with mozzarella and bake at 200\u00b0C until set and golden, ~25 min.",
+   "Scatter basil and drizzle oil to serve."
+  ]
+ },
+ {
+  "name": "Tuscan White Bean & Kale Soup",
+  "type": "dinner",
+  "carbsG": 30,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "cannellini beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "kale",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 4,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 3,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "rosemary",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Soften carrots and garlic in oil.",
+   "Add broth, beans, and rosemary; simmer 15 min.",
+   "Stir in kale until wilted.",
+   "Serve with parmesan."
+  ]
+ },
+ {
+  "name": "Eggplant Parmesan Skillet",
+  "type": "dinner",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggplant",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "marinara sauce",
+    "q": 1.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "mozzarella cheese",
+    "q": 3,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "italian herbs",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "spinach",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Brown eggplant rounds in oil.",
+   "Layer with marinara and spinach in the skillet.",
+   "Top with both cheeses; cover until melted.",
+   "Rest 5 min before serving."
+  ]
+ },
+ {
+  "name": "Zucchini Black Bean Tacos",
+  "type": "dinner",
+  "carbsG": 44,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "low-carb whole wheat tortillas",
+    "q": 3,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "black beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "zucchini",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "salsa",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "avocado",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Saut\u00e9 diced zucchini with cumin.",
+   "Warm beans; mash lightly.",
+   "Fill tortillas with beans, zucchini, salsa, avocado, and cheese."
+  ]
+ },
+ {
+  "name": "Salsa Verde Stuffed Peppers",
+  "type": "dinner",
+  "carbsG": 30,
+  "gi": "Low",
+  "prepMins": 40,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "bell peppers",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cauliflower rice",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "pinto beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "salsa verde",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "jack cheese",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Halve and seed peppers.",
+   "Mix cauliflower rice, beans, and salsa verde; stuff peppers.",
+   "Top with cheese and bake at 190\u00b0C ~25 min.",
+   "Finish with cilantro."
+  ]
+ },
+ {
+  "name": "Mexican Cauliflower Rice Skillet",
+  "type": "dinner",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "cauliflower rice",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "salsa",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "avocado",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "chili powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Saut\u00e9 cauliflower rice with chili powder.",
+   "Stir in salsa; make wells and crack in eggs.",
+   "Cover until eggs set; serve with avocado and lime."
+  ]
+ },
+ {
+  "name": "Ginger Egg Fried Cauliflower Rice",
+  "type": "dinner",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "cauliflower rice",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "frozen edamame in pods",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Protein"
+   },
+   {
+    "n": "carrots",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "snap peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Scramble eggs in sesame oil; set aside.",
+   "Stir-fry ginger, carrots, and snap peas.",
+   "Add cauliflower rice, edamame, and soy sauce; toss hot.",
+   "Fold eggs back in."
+  ]
+ },
+ {
+  "name": "Veggie Rice Noodle Stir-Fry",
+  "type": "dinner",
+  "carbsG": 28,
+  "gi": "Medium",
+  "prepMins": 25,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "rice noodles",
+    "q": 4,
+    "u": "oz",
+    "c": "Grains"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.5,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "broccoli",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Soak noodles per package.",
+   "Crisp tofu cubes in sesame oil; set aside.",
+   "Stir-fry ginger, broccoli, and peppers.",
+   "Toss everything with soy sauce and scallions."
+  ]
+ },
+ {
+  "name": "Bok Choy Mushroom Tofu Soup",
+  "type": "dinner",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "bok choy",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "mushrooms",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.5,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 4,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer ginger and mushrooms in broth 5 min.",
+   "Add tofu and bok choy; simmer until tender.",
+   "Season with soy sauce; finish with scallions and sesame oil."
+  ]
+ },
+ {
+  "name": "Greek Zucchini Fritters",
+  "type": "dinner",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "chickpea flour",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Grate and squeeze zucchini dry.",
+   "Mix with eggs, feta, and chickpea flour; form patties.",
+   "Pan-fry in oil until golden both sides.",
+   "Serve with yogurt, cucumber, and dill."
+  ]
+ },
+ {
+  "name": "Roasted Vegetable Farro Bowl",
+  "type": "dinner",
+  "carbsG": 40,
+  "gi": "Medium",
+  "prepMins": 40,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "farro",
+    "q": 0.75,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "zucchini",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "feta cheese",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "oregano",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Cook farro until chewy.",
+   "Roast zucchini, peppers, and chickpeas with oil and oregano.",
+   "Bowl up with feta and a big squeeze of lemon."
+  ]
+ },
+ {
+  "name": "Baked Cod with Fennel & Olives",
+  "type": "dinner",
+  "carbsG": 13,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "White fish",
+  "ingredients": [
+   {
+    "n": "cod fillets",
+    "q": 4.5,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "fennel",
+    "q": 1,
+    "u": "bulb",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "kalamata olives",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Roast sliced fennel and tomatoes with oil 15 min.",
+   "Nestle in cod and olives; bake until fish flakes, ~12 min.",
+   "Finish with lemon and parsley."
+  ]
+ },
+ {
+  "name": "Creamy Butternut Cauliflower Bake",
+  "type": "dinner",
+  "carbsG": 34,
+  "gi": "Medium",
+  "prepMins": 40,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "butternut squash",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "cheddar cheese",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "black pepper",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Steam squash and cauliflower until just tender.",
+   "Blend half the squash with yogurt and garlic into a sauce.",
+   "Toss all with sauce, top with cheddar, and bake until bubbling."
+  ]
+ },
+ {
+  "name": "Loaded Baby Potato Chowder",
+  "type": "dinner",
+  "carbsG": 38,
+  "gi": "Medium",
+  "prepMins": 35,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "baby potatoes",
+    "q": 10,
+    "u": "oz",
+    "c": "Produce"
+   },
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "cheddar cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer potatoes and cauliflower in broth until soft.",
+   "Mash roughly; stir in yogurt off heat.",
+   "Top bowls with cheddar and scallions."
+  ]
+ },
+ {
+  "name": "Green Bean Mushroom Skillet Supper",
+  "type": "dinner",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "green beans",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "mushrooms",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "whole grain bread",
+    "q": 2,
+    "u": "slice",
+    "c": "Grains"
+   }
+  ],
+  "steps": [
+   "Saut\u00e9 green beans and mushrooms in oil.",
+   "Make wells, crack in eggs, top with swiss; cover to set.",
+   "Serve on toasted bread halves."
+  ]
+ },
+ {
+  "name": "Vegetable Coconut Chickpea Curry",
+  "type": "dinner",
+  "carbsG": 32,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "chickpeas",
+    "q": 0.75,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 1,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "spinach",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "diced tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Bloom curry powder and ginger in a splash of coconut milk.",
+   "Add tomatoes, cauliflower, and chickpeas; simmer 15 min.",
+   "Stir in spinach and remaining coconut milk; warm through."
+  ]
+ },
+ {
+  "name": "Spiced Cauliflower & Pea Curry",
+  "type": "dinner",
+  "carbsG": 32,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "cauliflower",
+    "q": 1,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "green peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "diced tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "garam masala",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Sear cauliflower florets in oil with the spices.",
+   "Add tomatoes and ginger; simmer until tender.",
+   "Stir in peas, then yogurt off the heat so it stays creamy."
+  ]
+ },
+ {
+  "name": "Red Lentil Tomato Soup",
+  "type": "dinner",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "red lentils",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "crushed tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Soften carrots in oil with cumin and turmeric.",
+   "Add lentils, tomatoes, and broth; simmer 20 min.",
+   "Blend roughly; swirl each bowl with yogurt."
+  ]
+ },
+ {
+  "name": "Za'atar Roasted Eggplant Bowls",
+  "type": "dinner",
+  "carbsG": 38,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "eggplant",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "tahini",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "za'atar",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Roast eggplant cubes and chickpeas with oil and za'atar until crisp.",
+   "Whisk tahini with lemon and water into a sauce.",
+   "Bowl with cucumber and tomatoes; drizzle generously."
+  ]
+ },
+ {
+  "name": "Weeknight Eggplant Shakshuka",
+  "type": "dinner",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 4,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "eggplant",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "crushed tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "smoked paprika",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Brown eggplant and peppers in oil with paprika.",
+   "Pour in tomatoes; simmer to a thick sauce.",
+   "Crack eggs into wells; cover until just set.",
+   "Crumble feta and parsley over."
+  ]
+ }
+]

@@ -1,0 +1,1150 @@
+[
+ {
+  "name": "Tomato Ricotta Crispbread Lunch",
+  "type": "lunch",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "whole grain crispbread",
+    "q": 4,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "ricotta cheese",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "tomatoes",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh basil",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "black pepper",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Spread crispbread with ricotta.",
+   "Top with tomato slices and basil.",
+   "Drizzle with oil; crack pepper over."
+  ]
+ },
+ {
+  "name": "Marinated Bean & Fennel Salad",
+  "type": "lunch",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "cannellini beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "fennel",
+    "q": 0.5,
+    "u": "bulb",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "red onion",
+    "q": 0.25,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "balsamic vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   }
+  ],
+  "steps": [
+   "Shave fennel thin.",
+   "Toss with beans, tomatoes, and onion in the dressing.",
+   "Rest 10 min; finish with parsley and parmesan."
+  ]
+ },
+ {
+  "name": "Pesto Egg & Arugula Sandwich",
+  "type": "lunch",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "whole grain bread",
+    "q": 2,
+    "u": "slice",
+    "c": "Grains"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "basil pesto",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "arugula",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "tomatoes",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 0.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Fry eggs to your liking.",
+   "Toast bread; spread with pesto.",
+   "Stack with arugula, tomato, and eggs."
+  ]
+ },
+ {
+  "name": "Southwest Stuffed Avocados",
+  "type": "lunch",
+  "carbsG": 25,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "avocado",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "black beans",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "chili powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Halve avocados; scoop a little extra room.",
+   "Mix beans, tomatoes, lime, and chili powder.",
+   "Pile into the halves; top with cheese and cilantro."
+  ]
+ },
+ {
+  "name": "Pinto Salsa Lunch Bowl",
+  "type": "lunch",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "pinto beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "cauliflower rice",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "salsa",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "avocado",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Warm cauliflower rice and beans with salsa.",
+   "Bowl with yogurt and avocado.",
+   "Finish with lime and cilantro."
+  ]
+ },
+ {
+  "name": "Chilled Gazpacho with Shrimp",
+  "type": "lunch",
+  "carbsG": 19,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Shrimp",
+  "ingredients": [
+   {
+    "n": "tomatoes",
+    "q": 4,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "shrimp",
+    "q": 3,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "hot sauce",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Blend tomatoes, cucumber, pepper, oil, and lime; chill.",
+   "Poach shrimp until just pink.",
+   "Serve bowls topped with shrimp and hot sauce."
+  ]
+ },
+ {
+  "name": "Deconstructed Summer Roll Bowl",
+  "type": "lunch",
+  "carbsG": 28,
+  "gi": "Medium",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "rice noodles",
+    "q": 2,
+    "u": "oz",
+    "c": "Grains"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.33,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "butter lettuce",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "natural peanut butter",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Soak noodles; rinse cool.",
+   "Whisk peanut butter with lime and water.",
+   "Bowl noodles, tofu, and ribboned veg over lettuce; dress and add mint."
+  ]
+ },
+ {
+  "name": "Egg & Snap Pea Fried Quinoa",
+  "type": "lunch",
+  "carbsG": 17,
+  "gi": "Medium",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "quinoa",
+    "q": 0.4,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "snap peas",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Cook quinoa; spread to dry slightly.",
+   "Scramble eggs in sesame oil; add ginger and snap peas.",
+   "Fry quinoa in; season with soy and scallions."
+  ]
+ },
+ {
+  "name": "Smoked Salmon Cucumber Nori Bites",
+  "type": "lunch",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Asian",
+  "proteinTag": "Salmon",
+  "ingredients": [
+   {
+    "n": "brown rice cakes",
+    "q": 3,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "smoked salmon",
+    "q": 2,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "nori sheets",
+    "q": 1,
+    "u": "",
+    "c": "Pantry"
+   },
+   {
+    "n": "cream cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "sesame seeds",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Spread rice cakes with cream cheese.",
+   "Layer salmon and cucumber; snip nori over.",
+   "Scatter sesame seeds and press gently."
+  ]
+ },
+ {
+  "name": "Cucumber Yogurt Soup with Dill",
+  "type": "lunch",
+  "carbsG": 17,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "plain greek yogurt",
+    "q": 1,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "cucumber",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "garlic",
+    "q": 1,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "walnuts",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Blend yogurt, cucumber, garlic, and lemon with cold water to soup thickness.",
+   "Chill well.",
+   "Serve with dill, walnuts, and an oil drizzle."
+  ]
+ },
+ {
+  "name": "Roasted Red Pepper & Feta Toasts",
+  "type": "lunch",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "whole grain bread",
+    "q": 2,
+    "u": "slice",
+    "c": "Grains"
+   },
+   {
+    "n": "roasted red peppers",
+    "q": 0.75,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "arugula",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "oregano",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Toast bread; rub with oil.",
+   "Pile on peppers and crumbled feta.",
+   "Warm briefly; serve over arugula with oregano."
+  ]
+ },
+ {
+  "name": "Lemony Farro & Cucumber Salad",
+  "type": "lunch",
+  "carbsG": 32,
+  "gi": "Medium",
+  "prepMins": 30,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "farro",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "pistachios",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Cook farro; cool slightly.",
+   "Fold in cucumber, mint, lemon, and oil.",
+   "Serve over a swoosh of yogurt with pistachios."
+  ]
+ },
+ {
+  "name": "Cottage Cheese & Tomato Cracker Plate",
+  "type": "lunch",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "cottage cheese",
+    "q": 0.75,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "tomatoes",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "whole grain crackers",
+    "q": 8,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "cucumber",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "black pepper",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Bowl the cottage cheese.",
+   "Surround with tomato and cucumber.",
+   "Season boldly; scoop with crackers."
+  ]
+ },
+ {
+  "name": "Turkey & Swiss Roll-Ups with Slaw",
+  "type": "lunch",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Turkey",
+  "ingredients": [
+   {
+    "n": "sliced turkey breast",
+    "q": 3,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "swiss cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "green cabbage",
+    "q": 0.25,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "apple cider vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "dijon mustard",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roll turkey around swiss batons with a little mustard.",
+   "Toss shredded cabbage and carrot with yogurt and vinegar.",
+   "Plate roll-ups over the slaw."
+  ]
+ },
+ {
+  "name": "Apple Walnut Chopped Salad with Cheddar",
+  "type": "lunch",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "mixed greens",
+    "q": 4,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "apple",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "walnuts",
+    "q": 3,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cheddar cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "celery",
+    "q": 2,
+    "u": "stalk",
+    "c": "Produce"
+   },
+   {
+    "n": "apple cider vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "dijon mustard",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Chop apple, celery, and cheddar into even dice.",
+   "Whisk the mustard vinaigrette.",
+   "Toss everything with greens; top with toasted walnuts."
+  ]
+ },
+ {
+  "name": "Masala Egg Breakfast-for-Lunch Wrap",
+  "type": "lunch",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Indian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "low-carb whole wheat tortillas",
+    "q": 2,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "tomatoes",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "red onion",
+    "q": 0.25,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "garam masala",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 0.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Soft-scramble eggs with tomato, onion, and garam masala.",
+   "Warm tortillas.",
+   "Fill, add cilantro, and roll."
+  ]
+ },
+ {
+  "name": "Turmeric Cauliflower & Pea Salad",
+  "type": "lunch",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "green peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cashews",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roast cauliflower with turmeric and cumin.",
+   "Cool slightly; fold in peas.",
+   "Dress with lemony yogurt; top with cashews."
+  ]
+ },
+ {
+  "name": "Bombay-Style Veggie Toast",
+  "type": "lunch",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Indian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "whole grain bread",
+    "q": 2,
+    "u": "slice",
+    "c": "Grains"
+   },
+   {
+    "n": "cucumber",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "tomatoes",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "chili powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "butter lettuce",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Layer cucumber and tomato on bread; dust with chili powder.",
+   "Top with cheese; grill until melted.",
+   "Serve with minted lettuce."
+  ]
+ },
+ {
+  "name": "Za'atar Fried Eggs with Yogurt & Cucumber",
+  "type": "lunch",
+  "carbsG": 10,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "za'atar",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Swoosh yogurt onto plates; top with cucumber and mint.",
+   "Fry eggs crisp-edged in oil with za'atar.",
+   "Slide over the yogurt; drizzle the pan oil."
+  ]
+ },
+ {
+  "name": "Herbed Bulgur Lunch Salad",
+  "type": "lunch",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "bulgur",
+    "q": 0.4,
+    "u": "cup",
+    "c": "Grains"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh parsley",
+    "q": 1,
+    "u": "bunch",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Soak bulgur until tender; fluff.",
+   "Toss with chickpeas, tomatoes, and a mountain of herbs.",
+   "Dress sharply with lemon and oil."
+  ]
+ }
+]

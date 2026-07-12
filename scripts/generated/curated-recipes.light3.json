@@ -1,0 +1,1186 @@
+[
+ {
+  "name": "Italian Egg Drop Soup with Spinach",
+  "type": "dinner",
+  "carbsG": 10,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "chicken broth",
+    "q": 4,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "spinach",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 3,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "lemon",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "black pepper",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Bring broth to a bare simmer.",
+   "Whisk eggs with parmesan; stream in while stirring.",
+   "Wilt in spinach; finish with lemon and pepper."
+  ]
+ },
+ {
+  "name": "Rosemary White Bean & Delicata Sheet Pan",
+  "type": "dinner",
+  "carbsG": 36,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "delicata squash",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cannellini beans",
+    "q": 0.4,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "red onion",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "kale",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "rosemary",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   }
+  ],
+  "steps": [
+   "Roast delicata half-moons and onion with oil and rosemary.",
+   "Add beans and kale for the last 8 min.",
+   "Shave parmesan over to serve."
+  ]
+ },
+ {
+  "name": "Mushroom Ricotta Zucchini Lasagna Skillet",
+  "type": "dinner",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "mushrooms",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "ricotta cheese",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "marinara sauce",
+    "q": 1,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "mozzarella cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "italian herbs",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Brown mushrooms in oil.",
+   "Layer zucchini planks, marinara, ricotta, and mushrooms in the skillet.",
+   "Top with mozzarella; cover and simmer until tender."
+  ]
+ },
+ {
+  "name": "Shrimp Fajita Lettuce Wraps",
+  "type": "dinner",
+  "carbsG": 14,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Shrimp",
+  "ingredients": [
+   {
+    "n": "shrimp",
+    "q": 4,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "bell peppers",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "butter lettuce",
+    "q": 1,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "avocado",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fajita seasoning",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Sear peppers, then shrimp, with fajita seasoning.",
+   "Spoon into lettuce cups.",
+   "Top with avocado and lime."
+  ]
+ },
+ {
+  "name": "Baked Eggs in Salsa Verde",
+  "type": "dinner",
+  "carbsG": 15,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "salsa verde",
+    "q": 1,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "black beans",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "jack cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "mixed greens",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Warm salsa verde and beans in an ovenproof skillet.",
+   "Crack in eggs; scatter cheese.",
+   "Bake at 190\u00b0C until whites set; shower with cilantro, serve with greens."
+  ]
+ },
+ {
+  "name": "Fajita Veggie Bowl with Black Beans",
+  "type": "dinner",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "bell peppers",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cauliflower rice",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "black beans",
+    "q": 0.4,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "avocado",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fajita seasoning",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Sear peppers hard with fajita seasoning.",
+   "Warm cauliflower rice and beans.",
+   "Bowl it all up with avocado, lime, and cilantro."
+  ]
+ },
+ {
+  "name": "Snow Pea & Water Chestnut Egg Stir-Fry",
+  "type": "dinner",
+  "carbsG": 23,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "snow peas",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "water chestnuts",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "mushrooms",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Soft-scramble eggs; set aside.",
+   "Stir-fry ginger, mushrooms, snow peas, and water chestnuts.",
+   "Return eggs, splash with soy, and toss."
+  ]
+ },
+ {
+  "name": "Ginger-Soy Salmon with Bok Choy",
+  "type": "dinner",
+  "carbsG": 10,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Asian",
+  "proteinTag": "Salmon",
+  "ingredients": [
+   {
+    "n": "salmon fillets",
+    "q": 5,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "bok choy",
+    "q": 4,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame seeds",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Glaze salmon with soy and ginger; roast ~10 min.",
+   "Sear bok choy in sesame oil.",
+   "Plate with scallions and sesame seeds."
+  ]
+ },
+ {
+  "name": "Chilled Sesame Cucumber Tofu Bowl",
+  "type": "dinner",
+  "carbsG": 23,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "firm tofu",
+    "q": 0.5,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "cucumber",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cauliflower rice",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "tahini",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame seeds",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Steam cauliflower rice; cool.",
+   "Whisk tahini, soy, and lime into a dressing.",
+   "Bowl with smacked cucumbers and tofu cubes; top with sesame and scallions."
+  ]
+ },
+ {
+  "name": "Big Greek Chopped Dinner Salad",
+  "type": "dinner",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "romaine lettuce",
+    "q": 1,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.4,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "kalamata olives",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1.5,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "oregano",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Chop everything roughly even.",
+   "Toss with oil, oregano, and plenty of black pepper.",
+   "Top with feta and olives."
+  ]
+ },
+ {
+  "name": "Tilapia Piccata with Green Beans",
+  "type": "dinner",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "White fish",
+  "ingredients": [
+   {
+    "n": "tilapia fillets",
+    "q": 4,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "green beans",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "capers",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Pan-sear tilapia in oil; set aside.",
+   "Saut\u00e9 garlic and green beans; add capers and lemon juice.",
+   "Spoon the pan sauce over the fish with parsley."
+  ]
+ },
+ {
+  "name": "Baked Feta with Roasted Vegetables",
+  "type": "dinner",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 35,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "feta cheese",
+    "q": 3,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "zucchini",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "oregano",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "eggs",
+    "q": 2,
+    "u": "",
+    "c": "Protein"
+   }
+  ],
+  "steps": [
+   "Roast vegetables around a block of feta at 200\u00b0C.",
+   "When blistered, nestle in two cracked eggs; bake until set.",
+   "Mash the feta into everything and serve."
+  ]
+ },
+ {
+  "name": "Turkey Sausage & White Bean Stew",
+  "type": "dinner",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Turkey",
+  "ingredients": [
+   {
+    "n": "turkey sausage",
+    "q": 1,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "cannellini beans",
+    "q": 0.4,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "kale",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "chicken broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "thyme",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Brown sliced sausage in oil; add carrots.",
+   "Pour in broth and beans; simmer 15 min.",
+   "Wilt in kale with thyme."
+  ]
+ },
+ {
+  "name": "Smashed Pea & Ricotta Toasts",
+  "type": "dinner",
+  "carbsG": 36,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "whole grain bread",
+    "q": 3,
+    "u": "slice",
+    "c": "Grains"
+   },
+   {
+    "n": "green peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "ricotta cheese",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "arugula",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Smash warm peas with lemon, oil, and mint.",
+   "Toast bread; spread with ricotta, then peas.",
+   "Serve with a lemony arugula pile."
+  ]
+ },
+ {
+  "name": "Parsnip & Brussels Hash with Fried Eggs",
+  "type": "dinner",
+  "carbsG": 33,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "parsnips",
+    "q": 1.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "brussels sprouts",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "red onion",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "smoked paprika",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Crisp diced parsnips and shredded sprouts in oil with paprika.",
+   "Make wells and fry the eggs right in the hash.",
+   "Season boldly and serve from the pan."
+  ]
+ },
+ {
+  "name": "Bombay Potato & Green Bean Curry",
+  "type": "dinner",
+  "carbsG": 30,
+  "gi": "Medium",
+  "prepMins": 35,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "baby potatoes",
+    "q": 8,
+    "u": "oz",
+    "c": "Produce"
+   },
+   {
+    "n": "green beans",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "diced tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Parboil potatoes; crisp in oil with the spices.",
+   "Add tomatoes and ginger; simmer to a sauce.",
+   "Fold in green beans until tender; serve with yogurt."
+  ]
+ },
+ {
+  "name": "Tomato Ginger Egg Curry",
+  "type": "dinner",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Indian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 4,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "crushed tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "garam masala",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "spinach",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer tomatoes with ginger and garam masala into a rich gravy.",
+   "Stir in coconut milk and spinach.",
+   "Halve soft-boiled eggs into the sauce and warm gently."
+  ]
+ },
+ {
+  "name": "Coconut Cabbage & Pea Stir-Fry",
+  "type": "dinner",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "green cabbage",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "green peas",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "coconut flakes",
+    "q": 3,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "turmeric",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cashews",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Sizzle cumin in oil; add cabbage and turmeric.",
+   "Cook until just tender; fold in peas and coconut.",
+   "Finish with cashews and lime."
+  ]
+ },
+ {
+  "name": "Spiced Beef & Eggplant Skillet",
+  "type": "dinner",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beef",
+  "ingredients": [
+   {
+    "n": "ground beef",
+    "q": 3,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "eggplant",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "crushed tomatoes",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "cinnamon",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "fresh mint",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Brown beef with cumin and a whisper of cinnamon.",
+   "Add eggplant cubes and tomatoes; simmer until silky.",
+   "Serve with cool minted yogurt."
+  ]
+ },
+ {
+  "name": "Hummus Dinner Bowls with Spiced Cauliflower",
+  "type": "dinner",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 30,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "hummus",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "za'atar",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "pistachios",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Roast cauliflower with za'atar until deeply browned.",
+   "Swoosh hummus around bowls.",
+   "Pile in cauliflower, cucumber, and tomatoes; top with pistachios and lemon."
+  ]
+ }
+]
