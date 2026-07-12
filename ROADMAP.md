@@ -41,6 +41,15 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
 
 ## ✅ Done
 
+**Light-protein mains expansion** (497 → 597 recipes): +60 dinners and +40
+lunches with <20g est. protein per serving — the segment the library lacked
+(only 6 dinners / 22 lunches qualified before; now 66 / 62). Veg-, egg-, dairy-
+and legume-forward plates plus small-portion fish/meat, spread across all 7
+cuisines, all through the promote gates (carb caps, GI, pairing, exclusions,
+carb-calibration). Authored via `scripts/validate-drafts.mjs`, a dev harness
+that pre-checks drafts against the app's own nutrition estimator and vet rules.
+Coverage floors ratcheted up (lunch 149, dinner 174).
+
 **Original hardening pass** (231 tests): real Openverse photos for all 497
 recipes; expanded `ALLERGEN_MAP` synonyms (Shellfish→crab/…, Tree nuts→coconut/…,
 Dairy→ghee/whey/…); free-text allergy expansion (`expandToken`); `placeMeal`

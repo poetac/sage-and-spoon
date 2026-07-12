@@ -1,0 +1,1156 @@
+[
+ {
+  "name": "White Bean Tomato Basil Soup",
+  "type": "lunch",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 20,
+  "cuisineTag": "Italian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "cannellini beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "crushed tomatoes",
+    "q": 1,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 2,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh basil",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "parmesan cheese",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer tomatoes, broth, and garlic 10 min.",
+   "Add beans; warm through.",
+   "Blend half for body; finish with basil, oil, and parmesan."
+  ]
+ },
+ {
+  "name": "Antipasto Chopped Lunch Salad",
+  "type": "lunch",
+  "carbsG": 14,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "romaine lettuce",
+    "q": 1,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "salami",
+    "q": 1,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "fresh mozzarella",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "roasted red peppers",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "green olives",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "pepperoncini",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "balsamic vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Chop everything bite-sized.",
+   "Toss with oil and vinegar.",
+   "Rest 5 min so the flavours mingle."
+  ]
+ },
+ {
+  "name": "Marinated Zucchini & Mozzarella Plate",
+  "type": "lunch",
+  "carbsG": 12,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Italian",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "zucchini",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh mozzarella",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "balsamic vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh basil",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "whole grain crackers",
+    "q": 6,
+    "u": "",
+    "c": "Grains"
+   }
+  ],
+  "steps": [
+   "Ribbon zucchini; marinate in oil and vinegar 10 min.",
+   "Plate with torn mozzarella and tomatoes.",
+   "Scatter basil; serve with crackers."
+  ]
+ },
+ {
+  "name": "Avocado Egg Salad Lettuce Cups",
+  "type": "lunch",
+  "carbsG": 10,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "avocado",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "butter lettuce",
+    "q": 1,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "radishes",
+    "q": 4,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Hard-boil and chop eggs.",
+   "Mash with avocado, lime, and cilantro.",
+   "Spoon into lettuce cups; top with sliced radish."
+  ]
+ },
+ {
+  "name": "Quick Black Bean Lunch Soup",
+  "type": "lunch",
+  "carbsG": 28,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "black beans",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 2,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "salsa",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "avocado",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer beans, broth, salsa, and cumin 10 min.",
+   "Blend half.",
+   "Bowl with yogurt, avocado, and lime."
+  ]
+ },
+ {
+  "name": "Charred Pepper & Jack Quesadilla",
+  "type": "lunch",
+  "carbsG": 24,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Mexican",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "low-carb whole wheat tortillas",
+    "q": 2,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "jack cheese",
+    "q": 2,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "bell peppers",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "salsa",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "mixed greens",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 0.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Char pepper strips in a dry pan.",
+   "Fill tortillas with cheese and peppers; toast until melty.",
+   "Serve with salsa and dressed greens."
+  ]
+ },
+ {
+  "name": "Sesame Edamame Slaw Bowl",
+  "type": "lunch",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "shelled edamame",
+    "q": 0.75,
+    "u": "cup",
+    "c": "Protein"
+   },
+   {
+    "n": "green cabbage",
+    "q": 0.25,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "apple cider vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "sesame seeds",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Shred cabbage and carrots fine.",
+   "Whisk sesame oil and vinegar; toss everything.",
+   "Top with edamame, sesame seeds, and scallions."
+  ]
+ },
+ {
+  "name": "Ginger Carrot Soup with Silken Tofu",
+  "type": "lunch",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "carrots",
+    "q": 5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "firm tofu",
+    "q": 0.4,
+    "u": "block",
+    "c": "Protein"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "sesame oil",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer carrots and ginger in broth until soft; blend silky.",
+   "Stir in coconut milk.",
+   "Add tofu cubes; finish with scallions and sesame oil."
+  ]
+ },
+ {
+  "name": "Peanut Rice Noodle Salad",
+  "type": "lunch",
+  "carbsG": 30,
+  "gi": "Medium",
+  "prepMins": 20,
+  "cuisineTag": "Asian",
+  "proteinTag": "Tofu",
+  "ingredients": [
+   {
+    "n": "rice noodles",
+    "q": 2.5,
+    "u": "oz",
+    "c": "Grains"
+   },
+   {
+    "n": "natural peanut butter",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "carrots",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "low-sodium soy sauce",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "cilantro",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Soak noodles; rinse cool.",
+   "Whisk peanut butter, soy, and lime into a dressing.",
+   "Toss with ribboned cucumber and carrot; top with cilantro."
+  ]
+ },
+ {
+  "name": "Hummus & Veggie Whole Grain Wrap",
+  "type": "lunch",
+  "carbsG": 30,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "whole wheat tortillas",
+    "q": 2,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "hummus",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "roasted red peppers",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "mixed greens",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   }
+  ],
+  "steps": [
+   "Spread tortillas thickly with hummus.",
+   "Layer vegetables and feta.",
+   "Roll tight and halve."
+  ]
+ },
+ {
+  "name": "Herby Lentil Cucumber Salad",
+  "type": "lunch",
+  "carbsG": 20,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "green lentils",
+    "q": 0.4,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   }
+  ],
+  "steps": [
+   "Simmer lentils until just tender; cool.",
+   "Toss with chopped cucumber, tomatoes, and herbs.",
+   "Dress with lemon and oil; crumble feta over."
+  ]
+ },
+ {
+  "name": "Tuna & White Bean Picnic Salad",
+  "type": "lunch",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Mediterranean",
+  "proteinTag": "White fish",
+  "ingredients": [
+   {
+    "n": "canned tuna",
+    "q": 2,
+    "u": "oz",
+    "c": "Protein"
+   },
+   {
+    "n": "cannellini beans",
+    "q": 0.4,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "red onion",
+    "q": 0.25,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "capers",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "lemon",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "arugula",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Flake tuna over beans.",
+   "Add slivered onion and capers.",
+   "Dress with lemon and oil; pile onto arugula."
+  ]
+ },
+ {
+  "name": "Lighter Broccoli Cheddar Soup",
+  "type": "lunch",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "broccoli",
+    "q": 4,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "cheddar cheese",
+    "q": 1.5,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "carrots",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "garlic",
+    "q": 2,
+    "u": "clove",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Simmer broccoli, carrot, and garlic in broth until soft.",
+   "Blend most of it; stir in cheddar off heat.",
+   "Finish with yogurt for creaminess."
+  ]
+ },
+ {
+  "name": "Egg Salad Crispbread Stack",
+  "type": "lunch",
+  "carbsG": 16,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Eggs",
+  "ingredients": [
+   {
+    "n": "eggs",
+    "q": 3,
+    "u": "",
+    "c": "Protein"
+   },
+   {
+    "n": "whole grain crispbread",
+    "q": 4,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Dairy"
+   },
+   {
+    "n": "dijon mustard",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "celery",
+    "q": 1,
+    "u": "stalk",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh dill",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   },
+   {
+    "n": "radishes",
+    "q": 3,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Chop boiled eggs; bind with yogurt and mustard.",
+   "Fold in celery and dill.",
+   "Pile onto crispbread; top with radish coins."
+  ]
+ },
+ {
+  "name": "Roasted Sweet Potato & Kale Salad",
+  "type": "lunch",
+  "carbsG": 30,
+  "gi": "Medium",
+  "prepMins": 30,
+  "cuisineTag": "American comfort",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "sweet potato",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "kale",
+    "q": 3,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "pecans",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "chickpeas",
+    "q": 0.33,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "apple cider vinegar",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "dijon mustard",
+    "q": 1,
+    "u": "tsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Roast sweet potato cubes and chickpeas until crisp.",
+   "Massage kale with a little dressing.",
+   "Toss everything with the mustard vinaigrette; top with pecans."
+  ]
+ },
+ {
+  "name": "Curried Chickpea Salad Wraps",
+  "type": "lunch",
+  "carbsG": 30,
+  "gi": "Low",
+  "prepMins": 15,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "chickpeas",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "celery",
+    "q": 1,
+    "u": "stalk",
+    "c": "Produce"
+   },
+   {
+    "n": "low-carb whole wheat tortillas",
+    "q": 2,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "mixed greens",
+    "q": 2,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "lemon",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Smash chickpeas roughly with yogurt, curry powder, and lemon.",
+   "Fold in celery.",
+   "Wrap with plenty of greens."
+  ]
+ },
+ {
+  "name": "Creamy Curried Cauliflower Soup",
+  "type": "lunch",
+  "carbsG": 18,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Indian",
+  "proteinTag": "Greek yogurt",
+  "ingredients": [
+   {
+    "n": "cauliflower",
+    "q": 0.5,
+    "u": "head",
+    "c": "Produce"
+   },
+   {
+    "n": "vegetable broth",
+    "q": 3,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "light coconut milk",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "mild curry powder",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "fresh ginger",
+    "q": 1,
+    "u": "tbsp",
+    "c": "Produce"
+   },
+   {
+    "n": "pumpkin seeds",
+    "q": 2,
+    "u": "tbsp",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Simmer cauliflower with ginger and curry powder in broth.",
+   "Blend velvety; stir in coconut milk.",
+   "Serve with yogurt swirl and toasted pumpkin seeds."
+  ]
+ },
+ {
+  "name": "Spiced Chickpea & Cucumber Salad",
+  "type": "lunch",
+  "carbsG": 26,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Indian",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "chickpeas",
+    "q": 0.5,
+    "u": "can",
+    "c": "Pantry"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "tomatoes",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "red onion",
+    "q": 0.25,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "lime",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Dairy"
+   }
+  ],
+  "steps": [
+   "Dice cucumber, tomato, and onion small.",
+   "Toss with chickpeas, cumin, and lime.",
+   "Dollop with yogurt."
+  ]
+ },
+ {
+  "name": "Chickpea Flour Veggie Patties",
+  "type": "lunch",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 25,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "chickpea flour",
+    "q": 0.5,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "zucchini",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "scallions",
+    "q": 2,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "ground cumin",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   },
+   {
+    "n": "olive oil",
+    "q": 1.5,
+    "u": "tbsp",
+    "c": "Pantry"
+   },
+   {
+    "n": "plain greek yogurt",
+    "q": 0.33,
+    "u": "cup",
+    "c": "Dairy"
+   },
+   {
+    "n": "lemon",
+    "q": 0.5,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "fresh parsley",
+    "q": null,
+    "u": "to taste",
+    "c": "Produce"
+   }
+  ],
+  "steps": [
+   "Whisk chickpea flour with water to a thick batter.",
+   "Fold in grated zucchini, scallions, and cumin; pan-fry patties.",
+   "Serve with lemony yogurt and parsley."
+  ]
+ },
+ {
+  "name": "Mezze Lunch Plate",
+  "type": "lunch",
+  "carbsG": 22,
+  "gi": "Low",
+  "prepMins": 10,
+  "cuisineTag": "Middle Eastern",
+  "proteinTag": "Beans & lentils",
+  "ingredients": [
+   {
+    "n": "hummus",
+    "q": 0.4,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "feta cheese",
+    "q": 1,
+    "u": "oz",
+    "c": "Dairy"
+   },
+   {
+    "n": "cucumber",
+    "q": 1,
+    "u": "",
+    "c": "Produce"
+   },
+   {
+    "n": "cherry tomatoes",
+    "q": 1,
+    "u": "cup",
+    "c": "Produce"
+   },
+   {
+    "n": "kalamata olives",
+    "q": 0.25,
+    "u": "cup",
+    "c": "Pantry"
+   },
+   {
+    "n": "whole grain crispbread",
+    "q": 3,
+    "u": "",
+    "c": "Grains"
+   },
+   {
+    "n": "za'atar",
+    "q": null,
+    "u": "to taste",
+    "c": "Pantry"
+   }
+  ],
+  "steps": [
+   "Swoosh hummus onto plates; dust with za'atar.",
+   "Arrange feta, vegetables, and olives.",
+   "Serve with crispbread for scooping."
+  ]
+ }
+]

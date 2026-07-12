@@ -53,7 +53,15 @@ unsafe/duplicate recipes, but taste, realism, and step quality are human calls).
 Save the approved set as the next numbered batch, e.g.
 `scripts/generated/curated-recipes.batch9.json` (an array of meal objects; the
 `_gap` tag is ignored on promote). The existing `batch1`–`batch8` files are the
-provenance of the current library — see `generated/README.md`.
+provenance of the current library — see `generated/README.md`; the
+`curated-recipes.light*.json` files are the light-protein mains expansion.
+
+While curating (or hand-authoring), `node scripts/validate-drafts.mjs
+<file.json>` pre-checks a draft against promote's own gates plus the app's
+nutrition estimator: reject reasons, unrecognized ingredient names, computed
+macros (with a configurable `--max-protein` ceiling), the ≥12g-carb
+protein/fat-pairing rule, and drift between authored `carbsG` and the
+engine's estimate (which keeps the suite's carb-calibration stats healthy).
 
 ## 4. Promote — `recipes:promote`
 
