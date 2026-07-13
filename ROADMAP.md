@@ -308,8 +308,31 @@ dietitian fix. Edited in both `generated-meals.js` and its curated source
 ## P6 — Product direction (after hardening)
 
 Not defects — directions once P0–P2 land: ~~glucose logging + weekly trends~~
-(shipped — see below); meal ratings feeding the planner; richer print/export;
-raise cookbook coverage targets and add cuisines.
+(shipped — see below); ⭐ generated recipe photos (scoped, top priority — see
+below); cookbook growth to ~750–780 (scoped — see below); meal ratings feeding
+the planner; richer print/export.
+
+**⭐ Next up (top priority) — `IMAGE-GEN` generated recipe photos.** Users
+report the current fetched-photo pipeline (`scripts/fetch-images.mjs`, matching
+Openverse/Commons/Flickr photos by **keyword against title/tags, never the
+actual pixels**) is low quality and often irrelevant to the dish — plus 183
+recipes have no photo at all. **Decided:** replace it with AI-generated soft
+watercolor/illustration images (one per recipe, style deliberately chosen over
+pixel art to match the app's cream/sage/serif identity), QA'd by Claude vision
+via the Batch API before acceptance so relevance is verified, not assumed. Full
+architecture, phased plan, cost estimates, and the open decisions left
+(provider choice, exact prompt template) are in **`docs/IMAGE_GEN_PLAN.md`** —
+read that before starting. Also retires the CC attribution UI (no longer
+needed) and needs a `LOCAL_IMG_CACHE` SW cache-version bump (replacing bytes at
+existing ids, unlike prior growth batches which only added new ids).
+
+**Next up — cookbook growth to ~750–780.** A data-backed gap analysis found the
+binding constraint is the 161-ingredient nutrition-table vocabulary, not a lack
+of dish ideas (recent additions had to be named things like "Miso-less Tofu
+Bowl" for ingredients the table doesn't recognize). Full priority order —
+expand the vocabulary table first, then snacks (40% nut-based, the single
+biggest exclusion-pool hit in the library), then egg-free breakfasts — is in
+**`docs/LIBRARY_GROWTH_TARGETS.md`**.
 
 **Shipped — `GLUCOSE-1` blood-sugar log.** A new **Log** tab records the four
 standard GD checks (fasting + one hour after each main meal) in mg/dL, flags each
