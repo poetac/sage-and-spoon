@@ -22,16 +22,26 @@ over-cap / wrong-GI meal, or a misleading glucose reading) as worse than a
 false-positive in every trade-off.
 
 **⭐ TOP PRIORITY — read `docs/IMAGE_GEN_PLAN.md` first, before anything else
-below.** Users have reported that recipe photos (sourced from an automated
-Openverse/Commons/Flickr keyword-matching pipeline) are low quality and often
-don't match the dish they're attached to — the pipeline never actually looks
-at the pixels, just matches photo titles/tags. The fix is scoped and decided:
-replace fetched photos with **AI-generated soft watercolor/illustration
-images**, one per recipe, QA'd by Claude vision (via the Batch API) before
-acceptance. Style is locked (watercolor, not pixel art — matches the app's
-cream/sage/serif identity); architecture, phases, and open decisions (image
-provider, exact prompt template) are all in the plan doc. This is genuinely
-the next thing to build, not one option among several.
+below.** The old recipe photos (sourced from an automated Openverse/Commons/
+Flickr keyword-matching pipeline — it never actually looked at the pixels,
+just matched photo titles/tags) were low quality and often didn't match the
+dish they were attached to. Users complained, so **the whole curated photo
+set has already been removed** (`RECIPE_IMAGES` is now `{}`, all ~2,400
+self-hosted WebP files deleted): every recipe currently shows the app's
+built-in gradient + emoji placeholder, which needed zero code changes since
+`RecipeImage.jsx` already handled a photo-less recipe gracefully. The
+`images:fetch`/`images:self-host` pipeline is paused — don't re-run it, it
+would just reintroduce the same relevance problem.
+
+What's still open is the replacement: **AI-generated soft watercolor/
+illustration images**, one per recipe, QA'd by Claude vision (via the Batch
+API) before acceptance. Style is locked (watercolor, not pixel art — matches
+the app's cream/sage/serif identity); architecture, phases, and open
+decisions (image provider, exact prompt template) are all in the plan doc.
+It's blocked on an image-gen provider API key — deliberately not yet
+obtained, to keep this free until funded — so don't start it without
+confirming a key is available. This is genuinely the next thing to build,
+not one option among several.
 
 **Everything else — P6, product direction (do after the image work, or in
 parallel if you have bandwidth):**
@@ -76,8 +86,8 @@ targets, 1h/2h timing toggle, trend sparklines, CSV export, and **Meal
 patterns** — descriptive-only glucose↔meal correlation, gated behind a minimum
 sample size); a safe-command permission allowlist (`.claude/settings.json`) for
 smoother sessions; two cookbook growth passes (light-protein mains, breakfast
-cuisine diversity) with photos backfilled via the (soon-to-be-replaced)
-offline fetch pipeline.
+cuisine diversity); removal of the entire curated recipe-photo set (see top
+priority above) after quality complaints.
 
 Start by reading `docs/IMAGE_GEN_PLAN.md` (top priority, decided, ready to
 build), then `ROADMAP.md` and `CLAUDE.md` for everything else, confirm scope

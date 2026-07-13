@@ -29,8 +29,8 @@ npm run recipes:report     # recipe-library coverage vs targets
 npm run recipes:generate   # AI recipe drafts for gaps (needs ANTHROPIC_API_KEY)
 npm run recipes:promote     # validate curated recipes into the bundle
 
-npm run images:fetch       # resolve openly-licensed recipe photos (Openverse + Commons)
-npm run images:self-host   # download fetchable photos → local optimised WebP (offline)
+npm run images:fetch       # PAUSED — see "Recipe photos" below before running
+npm run images:self-host   # PAUSED — see "Recipe photos" below before running
 ```
 
 Always run `npm test` and `npm run lint` before committing.
@@ -45,8 +45,8 @@ src/
                            the generated chunk and assembles the macro-enriched MEAL_DB
   data/generated-meals.js  AUTO-GENERATED curated recipes (g-prefixed ids) — do not hand-edit;
                            a dynamic chunk (loadCookbook), kept off the first-paint critical path
-  data/recipe-images.js    per-recipe photo galleries: { id: Photo[] } (self-hosted WebP + a few
-                           remote URLs), with CC attribution; rendered by components/RecipeImage
+  data/recipe-images.js    per-recipe photo galleries: { id: Photo[] } — currently `{}`, all
+                           curated photos removed for quality; see "Recipe photos" below
   data/coverage.test.js    CI-enforced coverage + integrity properties of the cookbook
   lib/                     pure logic: planner (filtering/scoring), shopping, claude (API), nutrition,
                            utils, dates, storage, image (canvas resize), userPhotos (IndexedDB), pwa,
@@ -78,6 +78,27 @@ Targets and timing live in `settings.glucoseTargets` + `glucosePostMealHours`
 log rides the same backup/restore/reset paths as everything else. Status cues are
 **text + colour, never colour alone**. **Not medical advice** — same framing as
 the meals; keep per-slot targets editable, don't hard-code clinical thresholds.
+
+## Recipe photos
+
+`RECIPE_IMAGES` (`data/recipe-images.js`) is currently `{}` — **all curated
+photos were deliberately removed.** The old `images:fetch` pipeline matched
+Openverse/Commons/Flickr photos by keyword against title/tags, never the actual
+pixels, and the result was low quality and often didn't match the dish. Rather
+than ship known-bad photos, the whole set was pulled. `components/RecipeImage.jsx`
+was already built to degrade gracefully to a deterministic gradient + emoji
+placeholder when a recipe has no photo — that's what every recipe shows now, and
+it required no component changes. Cook-supplied photos (IndexedDB `ss_user_photos`)
+are unaffected.
+
+**Do not run `images:fetch`/`images:self-host` to backfill photos** — that
+would reintroduce the exact problem this removal fixed. The replacement is
+AI-generated illustrations (soft watercolor style, chosen over pixel art to match
+the app's cream/sage/serif identity), QA'd by Claude vision via the Batch API
+before acceptance so relevance is verified rather than assumed. Fully scoped,
+not yet built — see `docs/IMAGE_GEN_PLAN.md` (top ROADMAP priority) before
+starting that work. `docs/LIBRARY_GROWTH_TARGETS.md` covers the separate,
+lower-priority cookbook-growth project.
 
 ## Meal data model
 
