@@ -6,7 +6,7 @@ import { NutritionPills } from "./NutritionPills.jsx";
 import { RecipeImage } from "./RecipeImage.jsx";
 
 /* -------------------------------- cookbook ------------------------------- */
-// Browse the whole library (~500 recipes) with search, facet filters, and
+// Browse the whole library (~630 recipes) with search, facet filters, and
 // sort. The planner only ever surfaces a slot's worth of meals at a time, so
 // this is the one place to explore everything and drop a pick straight into
 // the week. Sorting by protein leans on the estimated macros (lib/nutrition).
