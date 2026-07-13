@@ -41,6 +41,16 @@ fail-closed, never clamps carbs). The remaining course-correction is to:
 
 ## ✅ Done
 
+**Breakfast cuisine diversity** (597 → 628 recipes): +31 breakfasts targeting
+the five cuisines the library barely touched at breakfast (Indian 4→11, Asian
+2→9, Middle Eastern 2→8, Mexican 5→10, Italian 0→6), leaving American comfort
+(79) and Mediterranean (26) untouched. Masala omelettes, besan chilla, tofu
+bhurji, shakshuka, huevos a la Mexicana, frittatas, and more — all through the
+same `validate-drafts.mjs` + `recipes:promote` gates (0 rejected, 0 duplicate
+flags on both checks). Coverage floor ratcheted (breakfast 149). This was the
+last clear, evidence-based gap; further growth risks contrived variations
+rather than real coverage, so the library growth pass stops here.
+
 **Light-protein mains expansion** (497 → 597 recipes): +60 dinners and +40
 lunches with <20g est. protein per serving — the segment the library lacked
 (only 6 dinners / 22 lunches qualified before; now 66 / 62). Veg-, egg-, dairy-

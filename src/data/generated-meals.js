@@ -24758,5 +24758,1624 @@ export const GENERATED_MEALS = [
       "Toss with chickpeas, tomatoes, and a mountain of herbs.",
       "Dress sharply with lemon and oil."
     ]
+  },
+  {
+    "id": "g521",
+    "name": "Masala Vegetable Omelette",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Whisk eggs with garam masala.",
+      "Soften diced tomato and pepper in oil.",
+      "Pour in eggs; fold as they set. Finish with cilantro."
+    ]
+  },
+  {
+    "id": "g522",
+    "name": "Besan Chilla with Spinach",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Whisk chickpea flour with water and cumin into a batter.",
+      "Fold in chopped spinach and tomato.",
+      "Pan-fry thin pancakes in oil; serve with yogurt."
+    ]
+  },
+  {
+    "id": "g523",
+    "name": "Spiced Tofu Bhurji",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 0.5,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "green peas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Crumble tofu; sauté in oil with turmeric and cumin.",
+      "Add tomato and peas; cook until soft.",
+      "Finish with cilantro."
+    ]
+  },
+  {
+    "id": "g524",
+    "name": "Savory Steel-Cut Oats with Cumin & Egg",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "steel-cut oats",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Simmer oats with cumin and turmeric until creamy.",
+      "Wilt spinach in.",
+      "Top each bowl with a soft-fried egg."
+    ]
+  },
+  {
+    "id": "g525",
+    "name": "Turmeric Yogurt Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Stir a pinch of turmeric and cumin through the yogurt.",
+      "Fold in diced cucumber.",
+      "Top with pumpkin seeds and cilantro."
+    ]
+  },
+  {
+    "id": "g526",
+    "name": "Masala Egg & Chickpea Skillet",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 3,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.4,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Sauté chickpeas and tomato with garam masala.",
+      "Wilt in spinach.",
+      "Make wells; crack in eggs and cover until set."
+    ]
+  },
+  {
+    "id": "g527",
+    "name": "Savory Tofu Scallion Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 0.5,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "scallions",
+        "q": 3,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bok choy",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Crumble tofu; sizzle in sesame oil.",
+      "Add bok choy and scallions until just wilted.",
+      "Season with soy; scatter sesame seeds."
+    ]
+  },
+  {
+    "id": "g528",
+    "name": "Japanese-Style Rolled Egg with Spinach",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Whisk eggs with soy and finely sliced scallion.",
+      "Wilt spinach; fold through.",
+      "Cook in thin layers, rolling each into a log."
+    ]
+  },
+  {
+    "id": "g529",
+    "name": "Sesame Oat Porridge with Edamame",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "steel-cut oats",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "shelled edamame",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 30,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Simmer oats savory-style until porridgey.",
+      "Stir in edamame and soy.",
+      "Top with scallions, sesame oil, and seeds."
+    ]
+  },
+  {
+    "id": "g530",
+    "name": "Ginger Scallion Tofu Rice Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 0.4,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.4,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "bok choy",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Warm cooked rice.",
+      "Sear tofu with ginger; wilt bok choy.",
+      "Bowl over rice; finish with scallions, soy, and sesame oil."
+    ]
+  },
+  {
+    "id": "g531",
+    "name": "Edamame Avocado Sesame Toast",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "sprouted grain bread",
+        "q": 2,
+        "u": "slice",
+        "c": "Grains"
+      },
+      {
+        "n": "shelled edamame",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Smash edamame and avocado with a little soy.",
+      "Pile onto toast.",
+      "Top with sesame seeds and scallions."
+    ]
+  },
+  {
+    "id": "g532",
+    "name": "Miso-less Tofu & Mushroom Breakfast Soup",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 0.4,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "mushrooms",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "vegetable broth",
+        "q": 3,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Simmer broth with ginger and mushrooms.",
+      "Add tofu cubes; warm through.",
+      "Season with soy; top with scallions."
+    ]
+  },
+  {
+    "id": "g533",
+    "name": "Shakshuka with Spinach & Feta",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "feta cheese",
+        "q": 1.5,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Simmer tomatoes with cumin in oil.",
+      "Wilt in spinach.",
+      "Crack in eggs; cover until set. Crumble feta over."
+    ]
+  },
+  {
+    "id": "g534",
+    "name": "Za'atar Labneh Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "za'atar",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "pumpkin seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Spread thick yogurt in bowls; dust with za'atar.",
+      "Top with cucumber and tomatoes.",
+      "Drizzle oil; scatter seeds."
+    ]
+  },
+  {
+    "id": "g535",
+    "name": "Warm Cumin Chickpea Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh parsley",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 19,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Warm chickpeas and tomato with cumin in oil.",
+      "Spoon over a swipe of yogurt.",
+      "Finish with parsley."
+    ]
+  },
+  {
+    "id": "g536",
+    "name": "Tahini Berry Yogurt Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "tahini",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "blueberries",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "walnuts",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Swirl tahini through the yogurt.",
+      "Top with blueberries and cinnamon.",
+      "Scatter walnuts."
+    ]
+  },
+  {
+    "id": "g537",
+    "name": "Sumac-less Egg & Tomato Menemen",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh parsley",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "feta cheese",
+        "q": 1,
+        "u": "oz",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Soften peppers, then tomatoes, in oil until jammy.",
+      "Push in whisked eggs; stir softly to a loose scramble.",
+      "Crumble feta and parsley over."
+    ]
+  },
+  {
+    "id": "g538",
+    "name": "Za'atar Chickpea Flour Flatbread with Egg",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.66,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "za'atar",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Whisk chickpea flour with water and za'atar; pan-fry a flatbread.",
+      "Fry the eggs alongside.",
+      "Top the flatbread with eggs and blistered tomatoes."
+    ]
+  },
+  {
+    "id": "g539",
+    "name": "Huevos a la Mexicana",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "tomatoes",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "hot sauce",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Sauté diced tomato and pepper in oil.",
+      "Add whisked eggs; scramble softly.",
+      "Finish with cilantro and hot sauce."
+    ]
+  },
+  {
+    "id": "g540",
+    "name": "Egg & Black Bean Breakfast Tacos",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "eggs",
+        "q": 3,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "black beans",
+        "q": 0.33,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "jack cheese",
+        "q": 1,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "salsa",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Scramble eggs; warm beans.",
+      "Fill tortillas with eggs, beans, and cheese.",
+      "Top with salsa and avocado."
+    ]
+  },
+  {
+    "id": "g541",
+    "name": "Sweet Potato & Black Bean Breakfast Hash",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "black beans",
+        "q": 0.33,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "eggs",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Crisp diced sweet potato and pepper in oil with cumin.",
+      "Fold in beans.",
+      "Make wells; fry in the eggs. Finish with cilantro."
+    ]
+  },
+  {
+    "id": "g542",
+    "name": "Avocado Black Bean Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Warm the beans.",
+      "Bowl with avocado, tomatoes, and a dollop of yogurt.",
+      "Squeeze lime; shower with cilantro."
+    ]
+  },
+  {
+    "id": "g543",
+    "name": "Chipotle-less Egg & Pepper Breakfast Wrap",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "eggs",
+        "q": 3,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "jack cheese",
+        "q": 1,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "salsa verde",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Sauté peppers; add whisked eggs.",
+      "Warm tortillas; fill with egg, cheese, and salsa verde.",
+      "Roll and toast seam-down."
+    ]
+  },
+  {
+    "id": "g544",
+    "name": "Baked Eggs with Ricotta & Spinach",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "ricotta cheese",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "parmesan cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Italian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Wilt spinach in oil; spread in a dish.",
+      "Dot with ricotta; crack eggs over.",
+      "Dust with parmesan; bake at 190°C until just set."
+    ]
+  },
+  {
+    "id": "g545",
+    "name": "Caprese Egg Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "fresh mozzarella",
+        "q": 1.5,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh basil",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Italian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Blister tomatoes in oil.",
+      "Add whisked eggs; scramble softly.",
+      "Fold in torn mozzarella and basil off the heat."
+    ]
+  },
+  {
+    "id": "g546",
+    "name": "Zucchini Parmesan Frittata",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "mushrooms",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "parmesan cheese",
+        "q": 3,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh basil",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Italian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Sauté zucchini and mushrooms in an ovenproof pan.",
+      "Pour over whisked eggs and parmesan.",
+      "Finish under the grill until puffed; scatter basil."
+    ]
+  },
+  {
+    "id": "g547",
+    "name": "Pesto Egg Breakfast Muffins",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 5,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "basil pesto",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "mozzarella cheese",
+        "q": 1.5,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Italian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Whisk eggs with pesto.",
+      "Fold in chopped spinach, tomato, and mozzarella.",
+      "Pour into a muffin tin; bake at 180°C until set."
+    ]
+  },
+  {
+    "id": "g548",
+    "name": "Ricotta & Berry Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "ricotta cheese",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "strawberries",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "almonds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Italian",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Whip ricotta with lemon zest.",
+      "Top with sliced strawberries and cinnamon.",
+      "Scatter toasted almonds."
+    ]
+  },
+  {
+    "id": "g549",
+    "name": "Tomato Basil Ricotta Breakfast Toast",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "sprouted grain bread",
+        "q": 2,
+        "u": "slice",
+        "c": "Grains"
+      },
+      {
+        "n": "ricotta cheese",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "eggs",
+        "q": 1,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "fresh basil",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Italian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Toast bread; spread with ricotta.",
+      "Top with tomatoes and a soft-fried egg.",
+      "Drizzle oil; finish with basil."
+    ]
+  },
+  {
+    "id": "g550",
+    "name": "Chai-Spiced Chia Pudding",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chia seeds",
+        "q": 3,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "unsweetened almond milk",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "almonds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Stir chia into almond milk with warm chai spices; chill to set.",
+      "Layer with yogurt.",
+      "Top with toasted almonds."
+    ]
+  },
+  {
+    "id": "g551",
+    "name": "Gochujang-less Spicy Tofu Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 0.4,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "hot sauce",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Crisp tofu in sesame oil; glaze with soy and hot sauce.",
+      "Wilt spinach.",
+      "Serve over rice with scallions."
+    ]
   }
 ];
