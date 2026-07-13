@@ -13,11 +13,11 @@ beforeAll(async () => { MEAL_DB = await loadCookbook(); });
 // meals" a CI-enforced property of the cookbook: any future meal edit that
 // re-thins a pool under a single common exclusion fails the build.
 //
-// The library now carries ~500 recipes with deep coverage, so NEED is raised
+// The library now carries ~630 recipes with deep coverage, so NEED is raised
 // well above the no-repeat-week minimum to lock that depth in: a regression
 // that thinned any single-exclusion pool below these floors would fail CI.
-// Floors stay comfortably under the current minimums (breakfast 78, lunch 91,
-// dinner 92, snack 129) so they protect coverage without being brittle.
+// Floors stay comfortably under the current minimums so they protect coverage
+// without being brittle (re-check them if you broaden an allergen/dislike map).
 const T = DEFAULT_SETTINGS.targets;
 const TYPES = ["breakfast", "lunch", "dinner", "snack"];
 const NEED = { breakfast: 40, lunch: 40, dinner: 40, snack: 60 };

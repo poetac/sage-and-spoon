@@ -4,14 +4,14 @@
 // what to ask Claude for. Tune these to grow or reshape the library — the
 // generator and reporter both read from here, so there is one source of truth.
 //
-// The library currently sits at ~597 recipes with full coverage across every
+// The library currently sits at ~628 recipes with full coverage across every
 // allergy, dislike, cuisine, and protein. These targets are set to the floors
 // we have actually achieved, so the report reads "complete" and instead acts as
 // a regression guard: if a future edit thins a pool below these numbers, the
 // gap resurfaces. Raise them to deliberately grow the library further.
 export const COVERAGE_TARGETS = {
   // Total recipes wanted per meal type (current achieved counts).
-  perType: { breakfast: 118, lunch: 149, dinner: 174, snack: 156 },
+  perType: { breakfast: 149, lunch: 149, dinner: 174, snack: 156 },
 
   // Each cuisine (from QUIZ.cuisines) should appear at least this many times
   // ACROSS ALL meal types. Overall rather than per-type on purpose: many

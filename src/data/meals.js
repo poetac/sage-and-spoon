@@ -267,7 +267,7 @@ const CORE_MEALS = [
 // Macros (protein/fat/fibre) are computed from ingredients, not authored, so
 // they track ingredient edits and pipeline recipes get them for free.
 //
-// The ~420 GENERATED_MEALS are the bulk of the bundle (~36KB gzip), but a saved
+// The ~550 GENERATED_MEALS are the bulk of the bundle (~38KB gzip), but a saved
 // plan only stores meal ids, so the full cookbook is needed to render. To keep
 // that weight off the first-paint critical path we split it into a dynamic
 // chunk: CORE_DB ships synchronously; loadCookbook() pulls the generated chunk
