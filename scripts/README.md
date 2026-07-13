@@ -96,6 +96,15 @@ npm run recipes:promote -- --in scripts/generated/curated-recipes.batch9.json
 
 ## Recipe images
 
+> **⏸ Paused.** `RECIPE_IMAGES` is currently `{}` — every curated photo was
+> removed after users reported the fetched set was low quality and often
+> mismatched to the dish (the pipeline below matches by keyword against a
+> photo's title/tags, never the actual pixels). **Do not run `images:fetch` /
+> `images:self-host`** — that would reintroduce the same problem. The
+> replacement (AI-generated, Claude-vision-QA'd illustrations) is scoped in
+> `docs/IMAGE_GEN_PLAN.md` but not yet built. The mechanics below describe the
+> old (paused) pipeline, kept for reference.
+
 Per-recipe preview photos live in `src/data/recipe-images.js` as a 1–3 photo
 gallery per recipe (`{ id: [{ src, credit, creditUrl, license }, …] }`) — the
 detail modal browses them, cards show the first. Two offline-authoring steps
