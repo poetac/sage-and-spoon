@@ -33121,5 +33121,755 @@ export const GENERATED_MEALS = [
       "Stir in kale and italian herbs; simmer 10 minutes until kale is tender.",
       "Season to taste and serve hot."
     ]
+  },
+  {
+    "id": "g670",
+    "name": "Chicken Shawarma Bowl with Cauliflower Rice",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Season chicken thighs with cumin, salt, and black pepper.",
+      "Sear chicken in olive oil over medium-high heat until golden and cooked through, about 6-7 minutes per side.",
+      "Warm cauliflower rice with a squeeze of lemon until just tender, 3-4 minutes.",
+      "Slice chicken and serve over cauliflower rice with chickpeas, cucumber, and cherry tomatoes.",
+      "Finish with remaining lemon juice and a drizzle of olive oil."
+    ]
+  },
+  {
+    "id": "g671",
+    "name": "Turkey Picadillo with Bell Peppers",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "green olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Heat olive oil in a skillet and sauté onion, garlic, and bell peppers until softened, about 5 minutes.",
+      "Add ground turkey and cook, breaking it up, until browned, 6-8 minutes.",
+      "Stir in diced tomatoes, green olives, and cumin; simmer 10 minutes until thickened.",
+      "Season with salt and pepper to taste and serve warm."
+    ]
+  },
+  {
+    "id": "g672",
+    "name": "Beef and Broccoli Stir-Fry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "broccoli",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Beef",
+    "steps": [
+      "Slice steak thinly against the grain and toss with a splash of soy sauce.",
+      "Heat sesame oil in a wok over high heat; sear steak 2-3 minutes until browned. Remove and set aside.",
+      "Add broccoli, carrots, garlic, and ginger to the wok; stir-fry 4-5 minutes until crisp-tender.",
+      "Return steak to the wok, add remaining soy sauce, and toss to combine.",
+      "Garnish with scallions and serve."
+    ]
+  },
+  {
+    "id": "g673",
+    "name": "Pork Tenderloin with Roasted Root Vegetables",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "parsnips",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh rosemary",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Medium",
+    "prepMins": 40,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Pork",
+    "steps": [
+      "Preheat oven to 400F. Toss parsnips, carrots, and cubed sweet potato with half the olive oil, garlic, and rosemary.",
+      "Roast vegetables for 15 minutes.",
+      "Rub pork tenderloin with remaining olive oil, rosemary, salt, and pepper.",
+      "Push vegetables to the side, add pork to the pan, and roast 20-25 minutes more until pork reaches 145F internally.",
+      "Rest pork 5 minutes, slice, and serve with vegetables."
+    ]
+  },
+  {
+    "id": "g674",
+    "name": "Blackened Cod Tacos with Salsa Verde",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "cod fillets",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "cabbage",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "salsa verde",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "smoked paprika",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "White fish",
+    "steps": [
+      "Season cod with smoked paprika, salt, and pepper.",
+      "Sear cod in olive oil over medium-high heat, 3-4 minutes per side, until it flakes easily.",
+      "Warm tortillas and flake cod into them.",
+      "Top with shredded cabbage and salsa verde, and finish with a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g675",
+    "name": "Greek Chicken Souvlaki Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "romaine lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "kalamata olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "red onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Season chicken breast with salt, pepper, and a drizzle of olive oil.",
+      "Grill or pan-sear chicken 6-7 minutes per side until cooked through; slice.",
+      "Toss romaine, cucumber, cherry tomatoes, olives, and red onion in a bowl.",
+      "Top salad with sliced chicken.",
+      "Whisk remaining olive oil with lemon juice and drizzle over the salad."
+    ]
+  },
+  {
+    "id": "g676",
+    "name": "Italian Turkey Meatball Zucchini Skillet",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "zucchini",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "italian herbs",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Italian",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Mix ground turkey with garlic, italian herbs, salt, and pepper; form into small meatballs.",
+      "Heat olive oil in a skillet and brown meatballs on all sides, about 6 minutes.",
+      "Add onion and cook 3 minutes, then stir in crushed tomatoes; simmer 10 minutes.",
+      "Add sliced zucchini and cook 5 minutes more until tender.",
+      "Serve meatballs and zucchini in the sauce."
+    ]
+  },
+  {
+    "id": "g677",
+    "name": "Salmon with Lemon Dill and Asparagus",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "salmon fillets",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "asparagus",
+        "q": 1,
+        "u": "bunch",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh dill",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Salmon",
+    "steps": [
+      "Preheat oven to 400F. Place salmon and asparagus on a sheet pan.",
+      "Drizzle with olive oil, minced garlic, salt, and pepper.",
+      "Top salmon with lemon slices and fresh dill.",
+      "Roast 12-15 minutes until salmon flakes easily and asparagus is tender."
+    ]
+  },
+  {
+    "id": "g678",
+    "name": "Pork Chops with Sweet Potato Mash and Green Beans",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork chops",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "sweet potato",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "green beans",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh thyme",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 34,
+    "gi": "Medium",
+    "prepMins": 35,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Pork",
+    "steps": [
+      "Boil sweet potatoes until fork-tender, about 15 minutes; mash with 1 tablespoon olive oil, salt, and pepper.",
+      "Season pork chops with garlic powder, thyme, salt, and pepper.",
+      "Sear pork chops in remaining olive oil over medium-high heat, 4-5 minutes per side, until cooked through.",
+      "Steam green beans until crisp-tender, about 5 minutes.",
+      "Serve pork chops with sweet potato mash and green beans."
+    ]
+  },
+  {
+    "id": "g679",
+    "name": "Tuna Salad Lettuce Wraps",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "tuna",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "celery",
+        "q": 2,
+        "u": "stalk",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 0.25,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 11,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "American comfort",
+    "proteinTag": "White fish",
+    "steps": [
+      "Flake tuna into a bowl and mix with diced celery and red onion.",
+      "Mash half the avocado with olive oil and lemon juice to bind.",
+      "Dice remaining avocado and fold in gently.",
+      "Season with salt and pepper, then spoon into lettuce leaves to serve."
+    ]
+  },
+  {
+    "id": "g680",
+    "name": "Jerk Chicken with Black Beans and Mango Salsa",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "black beans",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "mango",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "jerk seasoning",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Medium",
+    "prepMins": 30,
+    "cuisineTag": "Caribbean",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Rub chicken thighs with jerk seasoning and olive oil.",
+      "Grill or pan-sear chicken 6-7 minutes per side until cooked through.",
+      "Dice mango and bell pepper; toss with lime juice and cilantro to make salsa.",
+      "Warm black beans and serve alongside chicken, topped with mango salsa."
+    ]
+  },
+  {
+    "id": "g681",
+    "name": "Bulgogi-Style Beef Lettuce Wraps",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "romaine lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Beef",
+    "steps": [
+      "Slice steak thin against the grain and marinate in soy sauce, sesame oil, garlic, and ginger for 10 minutes.",
+      "Heat a skillet over high heat and sear steak 2-3 minutes until browned and cooked to preference.",
+      "Fill lettuce leaves with steak and top with scallions and sesame seeds.",
+      "Serve immediately while warm."
+    ]
   }
 ];

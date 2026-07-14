@@ -310,9 +310,10 @@ dietitian fix. Edited in both `generated-meals.js` and its curated source
 Not defects — directions once P0–P2 land: ~~glucose logging + weekly trends~~
 (shipped — see below); ✅ recipe photos removed pending quality replacement
 (done — see below); ⭐ generated recipe photos (scoped, top priority — see
-below); ✅ cookbook vocabulary expansion + non-nut snack batch (done — see
-below); cookbook growth to ~730–760 (scoped — see below); meal ratings
-feeding the planner; richer print/export.
+below); ✅ cookbook growth pass — vocabulary expansion, non-nut snacks,
+egg-free breakfasts, vocabulary-unlocked mains, dairy-free mains (done, 628 →
+758 recipes — see below); meal ratings feeding the planner; richer
+print/export.
 
 **✅ Done — recipe photos removed.** Users reported the fetched-photo pipeline
 (`scripts/fetch-images.mjs`, matching Openverse/Commons/Flickr photos by
@@ -336,24 +337,34 @@ obtained — keeping this free until funded). Will also need a
 `LOCAL_IMG_CACHE` SW cache-version bump when photos return (replacing bytes at
 existing ids, unlike prior growth batches which only added new ids).
 
-**✅ Done — vocabulary expansion + non-nut snack batch (628 → 673 recipes).**
-A data-backed gap analysis found the binding constraint on further growth was
+**✅ Done — full cookbook growth pass (628 → 758 recipes, +130).** A
+data-backed gap analysis found the binding constraint on further growth was
 the 161-ingredient nutrition-table vocabulary, not a lack of dish ideas
 (recent additions had to be named things like "Miso-less Tofu Bowl" for
-ingredients the table didn't recognize). Fixed: `src/lib/nutrition.js` gained
-9 real ingredient entries (paneer, miso, cotija/queso fresco, tamarind, corn,
-rice paper, puffed rice, fox nuts/makhana, mung bean sprouts) plus 6 seasoning
-keywords, each audited against `ALLERGEN_MAP`/`DISLIKE_MAP`. That vocabulary
-fed 45 non-nut Indian/Asian/Mexican snacks, closing the library's single
-biggest single-exclusion gap: the Tree-nuts-excluded snack pool grew from
-121/156 (78%) to 166/201 (83%). Full detail in
-**`docs/LIBRARY_GROWTH_TARGETS.md`**.
+ingredients the table didn't recognize). Five sequential batches, each
+targeting the library's then-tightest single-exclusion cell, re-measuring
+after every round:
+1. Vocabulary expansion — 9 real ingredient entries (paneer, miso, cotija/
+   queso fresco, tamarind, corn, rice paper, puffed rice, fox nuts/makhana,
+   mung bean sprouts) + 6 seasoning keywords, each audited against
+   `ALLERGEN_MAP`/`DISLIKE_MAP`.
+2. 45 non-nut Indian/Asian/Mexican snacks — Tree-nuts-excluded snack pool
+   121/156 (78%) → 166/201 (83%).
+3. 20 egg-free breakfasts — Egg-excluded breakfast pool 96/149 (64%) →
+   116/169 (69%).
+4. 41 vocabulary-unlocked lunch/dinner mains (paneer, corn/cotija/tamarind
+   Mexican, miso/rice-paper/gochugaru Asian) using the new vocabulary.
+5. 24 dairy-free lunch/dinner mains, closing the gap the prior rounds
+   opened up — Dairy-excluded lunch 116/169 (69%) → 127/180 (71%); dinner
+   143/195 (73%) → 156/208 (75%).
 
-**Next up — cookbook growth to ~730–760.** Egg-free breakfasts (an Eggs
-allergy leaves only 96/149 breakfasts — the thinnest single cell in the whole
-exclusion matrix) and vocabulary-unlocked authentic dishes across breakfast/
-lunch/dinner. Priority order and targets in
-**`docs/LIBRARY_GROWTH_TARGETS.md`**.
+Stopped at 758 (within the ~800 ceiling identified up front) once marginal
+impact per batch dropped to 1–2 percentage points, down from 5+ in the early
+rounds — the standard diminishing-returns signal for this kind of gap-closing
+work. Every batch was hand-authored and validated through the real pipeline
+(`validate-drafts.mjs`, exclusion checks, near-duplicate detection) rather
+than the Claude API. Full history, current tightest cells, and how to resume
+if warranted are in **`docs/LIBRARY_GROWTH_TARGETS.md`**.
 
 **Shipped — `GLUCOSE-1` blood-sugar log.** A new **Log** tab records the four
 standard GD checks (fasting + one hour after each main meal) in mg/dL, flags each

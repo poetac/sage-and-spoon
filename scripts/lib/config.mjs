@@ -11,7 +11,7 @@
 // gap resurfaces. Raise them to deliberately grow the library further.
 export const COVERAGE_TARGETS = {
   // Total recipes wanted per meal type (current achieved counts).
-  perType: { breakfast: 169, lunch: 175, dinner: 201, snack: 201 },
+  perType: { breakfast: 169, lunch: 180, dinner: 208, snack: 201 },
 
   // Each cuisine (from QUIZ.cuisines) should appear at least this many times
   // ACROSS ALL meal types. Overall rather than per-type on purpose: many
