@@ -22,12 +22,18 @@ until you re-run `recipes:promote` against it.
   exclusion gap (63/156 snacks were nut-based — the single biggest single-
   exclusion hit in the library); grew 628 to 673 and the Tree-nuts-excluded
   snack pool from 121/156 to 166/201. See `docs/LIBRARY_GROWTH_TARGETS.md`.
+- `curated-recipes.eggfree-breakfasts1.json` — 20 hand-authored egg-free
+  breakfasts (dairy-based + tofu/legume/grain-based, 10 each) targeting the
+  Eggs-allergy breakfast gap, the thinnest single-exclusion cell in the app
+  (96/149); grew 673 to 693 and the Egg-excluded breakfast pool from 96/149
+  to 116/169.
 - `pending-recipes.json` — raw `recipes:generate` output (gitignored); a working
   file you curate down into a `curated-recipes.*.json` before promoting.
 
-The `light*`, `breakfasts1`, and `snacks-nonnut1` batches were hand-authored
-rather than run through `recipes:generate` (no API key needed) and iterated to
-clean through `node scripts/validate-drafts.mjs <file>` — see `scripts/README.md`.
+The `light*`, `breakfasts1`, `snacks-nonnut1`, and `eggfree-breakfasts1`
+batches were hand-authored rather than run through `recipes:generate` (no API
+key needed) and iterated to clean through `node scripts/validate-drafts.mjs
+<file>` — see `scripts/README.md`.
 
 To add a new batch: generate or author candidates, save the approved set as
 `curated-recipes.batch9.json`, then `npm run recipes:promote -- --in
