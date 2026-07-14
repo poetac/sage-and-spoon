@@ -27,13 +27,21 @@ until you re-run `recipes:promote` against it.
   Eggs-allergy breakfast gap, the thinnest single-exclusion cell in the app
   (96/149); grew 673 to 693 and the Egg-excluded breakfast pool from 96/149
   to 116/169.
+- `curated-recipes.vocab-mains1.json` — 29 hand-authored lunch/dinner mains
+  using the vocabulary added for the snack batch (paneer, fox nuts/makhana,
+  chaat masala, curry leaves, asafoetida, sweet corn, cotija/queso fresco,
+  tamarind, chipotle powder) — real Indian paneer mains (palak paneer, paneer
+  tikka masala, mattar paneer, kadai/shahi paneer) and corn/cotija/tamarind-
+  forward Mexican mains (chicken tinga, carne asada, chile verde, elote-style
+  dishes); grew 693 to 722. The Asian half of this batch (miso, rice paper,
+  gochugaru) is a follow-up — see `docs/LIBRARY_GROWTH_TARGETS.md`.
 - `pending-recipes.json` — raw `recipes:generate` output (gitignored); a working
   file you curate down into a `curated-recipes.*.json` before promoting.
 
-The `light*`, `breakfasts1`, `snacks-nonnut1`, and `eggfree-breakfasts1`
-batches were hand-authored rather than run through `recipes:generate` (no API
-key needed) and iterated to clean through `node scripts/validate-drafts.mjs
-<file>` — see `scripts/README.md`.
+The `light*`, `breakfasts1`, `snacks-nonnut1`, `eggfree-breakfasts1`, and
+`vocab-mains1` batches were hand-authored rather than run through
+`recipes:generate` (no API key needed) and iterated to clean through
+`node scripts/validate-drafts.mjs <file>` — see `scripts/README.md`.
 
 To add a new batch: generate or author candidates, save the approved set as
 `curated-recipes.batch9.json`, then `npm run recipes:promote -- --in

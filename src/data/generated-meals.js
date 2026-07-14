@@ -29964,5 +29964,1700 @@ export const GENERATED_MEALS = [
       "Stir in black beans, cumin, and smoked paprika.",
       "Cook 5 more minutes, stirring occasionally, until heated through."
     ]
+  },
+  {
+    "id": "g617",
+    "name": "Palak Paneer",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 10,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "baby spinach",
+        "q": 6,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Blanch the spinach briefly, then puree until smooth.",
+      "Saute onion, garlic, and ginger in olive oil until golden.",
+      "Stir in the spinach puree and garam masala; simmer 5 minutes.",
+      "Fold in cubed paneer and warm through before serving."
+    ]
+  },
+  {
+    "id": "g618",
+    "name": "Paneer Tikka Masala",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 10,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Marinate cubed paneer in greek yogurt and garam masala for 15 minutes.",
+      "Sear the marinated paneer in olive oil until lightly charred; set aside.",
+      "Saute onion, garlic, and ginger, then add crushed tomatoes and simmer 10 minutes.",
+      "Return paneer to the sauce and simmer 5 more minutes before serving."
+    ]
+  },
+  {
+    "id": "g619",
+    "name": "Mattar Paneer",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 8,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "green peas",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Saute onion, garlic, and ginger in olive oil until soft.",
+      "Add tomatoes and cook down into a thick sauce.",
+      "Stir in green peas and garam masala; simmer 8 minutes.",
+      "Add cubed paneer and simmer gently until warmed through."
+    ]
+  },
+  {
+    "id": "g620",
+    "name": "Paneer Jalfrezi",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 8,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Slice paneer and bell peppers into thick strips.",
+      "Pan-fry paneer in olive oil until lightly golden; set aside.",
+      "Stir-fry onion, garlic, and bell peppers over high heat until just tender-crisp.",
+      "Add tomatoes and chili powder, then return paneer and toss to combine."
+    ]
+  },
+  {
+    "id": "g621",
+    "name": "Kadai Paneer",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 9,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 13,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Cut paneer and bell peppers into cubes.",
+      "Saute onion and garlic in olive oil until fragrant.",
+      "Add tomatoes and garam masala; cook into a thick masala base.",
+      "Fold in bell peppers and paneer, cooking until peppers are just tender."
+    ]
+  },
+  {
+    "id": "g622",
+    "name": "Shahi Paneer",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 9,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "milk",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Saute onion, garlic, and ginger in olive oil until soft and golden.",
+      "Add tomatoes and simmer until reduced, then blend into a smooth sauce.",
+      "Return the sauce to the pan, stir in milk and garam masala, and simmer gently.",
+      "Add cubed paneer and warm through without boiling."
+    ]
+  },
+  {
+    "id": "g623",
+    "name": "Paneer Bhurji",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 10,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Crumble the paneer with your hands or a fork.",
+      "Saute onion and bell peppers in olive oil until softened.",
+      "Add tomatoes and turmeric, cooking until the tomatoes break down.",
+      "Stir in crumbled paneer and cook 3 minutes; finish with cilantro."
+    ]
+  },
+  {
+    "id": "g624",
+    "name": "Makhane ki Sabzi",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "fox nuts",
+        "q": 1.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Fox nuts",
+    "steps": [
+      "Dry-roast fox nuts in a dry pan until crisp, then set aside.",
+      "Saute onion, garlic, and ginger in olive oil until golden.",
+      "Add tomatoes and garam masala, simmering into a thick gravy.",
+      "Fold in the roasted fox nuts and simmer 3 minutes so they soften slightly."
+    ]
+  },
+  {
+    "id": "g625",
+    "name": "Makai Palak Sabzi",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "corn",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 4,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "paneer",
+        "q": 4,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Wilt the spinach in a dry pan, then puree or roughly chop.",
+      "Saute onion and garlic in olive oil with cumin until fragrant.",
+      "Add corn kernels and cook 4 minutes, then stir in the spinach.",
+      "Fold in cubed paneer and simmer until heated through."
+    ]
+  },
+  {
+    "id": "g626",
+    "name": "Curry Leaf Tempered Moong Dal with Corn",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "red lentils",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "corn",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "curry leaves",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "asafoetida",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 32,
+    "gi": "Medium",
+    "prepMins": 35,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer the lentils with turmeric in water until soft, about 15 minutes.",
+      "Stir in corn kernels and cook 5 more minutes.",
+      "Warm olive oil in a small pan, then sizzle curry leaves, garlic, and asafoetida until fragrant.",
+      "Pour the tempering over the dal and stir to combine."
+    ]
+  },
+  {
+    "id": "g627",
+    "name": "Paneer Chaat Salad",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 8,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Pan-sear cubed paneer in olive oil until golden on all sides.",
+      "Dice cucumber, tomatoes, and onion into a bowl.",
+      "Add the seared paneer and toss with chaat masala.",
+      "Finish with a squeeze of lemon juice just before serving."
+    ]
+  },
+  {
+    "id": "g628",
+    "name": "Masala Corn Chaat",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "corn",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 25,
+    "gi": "Medium",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Steam or boil the corn kernels until just tender; cool slightly.",
+      "Combine corn, chickpeas, cucumber, tomatoes, and onion in a bowl.",
+      "Drizzle with olive oil and toss with chaat masala.",
+      "Finish with a squeeze of fresh lime juice before serving."
+    ]
+  },
+  {
+    "id": "g629",
+    "name": "Paneer Pulao",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 6,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "green peas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 31,
+    "gi": "Medium",
+    "prepMins": 40,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Cook the brown rice according to package directions; set aside.",
+      "Saute onion and diced carrots in olive oil until softened.",
+      "Pan-sear cubed paneer separately until lightly golden.",
+      "Fold the cooked rice, peas, paneer, and garam masala together and warm through."
+    ]
+  },
+  {
+    "id": "g630",
+    "name": "Curry Leaf Rasam with Corn and Lentils",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "red lentils",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "corn",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "curry leaves",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "asafoetida",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "black pepper",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Medium",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer lentils and tomatoes in water until the lentils are soft.",
+      "Mash the mixture lightly and stir in corn kernels; simmer 5 minutes.",
+      "Warm olive oil in a small pan and sizzle curry leaves, garlic, and asafoetida.",
+      "Pour the tempering into the soup, season with black pepper, and simmer briefly."
+    ]
+  },
+  {
+    "id": "g631",
+    "name": "Chicken Tinga Skillet with Corn & Queso Fresco",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 8,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "queso fresco",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Simmer chicken breast with diced tomatoes, onion, and chipotle powder until cooked through, then shred.",
+      "Return shredded chicken to the skillet and stir in corn kernels; warm through.",
+      "Divide between bowls and top with crumbled queso fresco.",
+      "Finish with a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g632",
+    "name": "Carne Asada Bowls with Elote Corn",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beef",
+    "steps": [
+      "Season sirloin steak with chili powder and grill or sear to desired doneness; rest, then slice thin.",
+      "Char corn kernels in a hot pan until lightly blistered.",
+      "Divide sliced steak and corn between bowls with sliced avocado.",
+      "Top with crumbled cotija cheese, cilantro, and a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g633",
+    "name": "Chile Verde Pork with Queso Fresco",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "salsa verde",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "queso fresco",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Pork",
+    "steps": [
+      "Cube pork tenderloin and sear with chopped onion and garlic until browned.",
+      "Pour in salsa verde and cumin, cover, and simmer until pork is tender.",
+      "Ladle into bowls and top with crumbled queso fresco."
+    ]
+  },
+  {
+    "id": "g634",
+    "name": "Shrimp Tacos with Tamarind Salsa",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 3,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "tamarind paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cabbage",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 30,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Whisk tamarind paste with lime juice and chipotle powder to make a tangy salsa.",
+      "Season shrimp with a pinch of chipotle powder and saute until pink and opaque.",
+      "Warm tortillas and fill with shrimp and shredded cabbage.",
+      "Drizzle with tamarind salsa before serving."
+    ]
+  },
+  {
+    "id": "g635",
+    "name": "Black Bean & Corn Enchilada-Style Skillet",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "black beans",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "jack cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 1.5,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 35,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Tear tortillas into strips and toast lightly in a dry skillet.",
+      "Add black beans, corn kernels, crushed tomatoes, and chipotle powder; simmer until thickened.",
+      "Stir in half the jack cheese until melted.",
+      "Scatter remaining cheese on top and serve warm."
+    ]
+  },
+  {
+    "id": "g636",
+    "name": "Chipotle Chicken Tinga Tostadas",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "cooked chicken breast",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "queso fresco",
+        "q": 2,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "lettuce",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Toast tortillas in a dry skillet until crisp to make tostada bases.",
+      "Shred cooked chicken breast and simmer with tomatoes and chipotle powder until saucy.",
+      "Pile chicken tinga onto tostadas and top with shredded lettuce and crumbled queso fresco."
+    ]
+  },
+  {
+    "id": "g637",
+    "name": "Tamarind-Glazed Pork Tenderloin",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 14,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "tamarind paste",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Pork",
+    "steps": [
+      "Whisk tamarind paste, minced garlic, chipotle powder, and lime juice into a glaze.",
+      "Sear pork tenderloin on all sides, then brush generously with the tamarind glaze.",
+      "Roast or continue cooking until pork reaches a safe internal temperature, basting once more.",
+      "Rest, slice, and garnish with sliced scallions."
+    ]
+  },
+  {
+    "id": "g638",
+    "name": "Elote Street Corn & Black Bean Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "sweet corn kernels",
+        "q": 1.1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "black beans",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 32,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Char corn kernels in a hot dry skillet until lightly browned.",
+      "Warm black beans and combine with the charred corn.",
+      "Spoon into bowls and top with crumbled cotija cheese, chili powder, and cilantro.",
+      "Finish with a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g639",
+    "name": "Cotija-Topped Zucchini and Corn Tacos",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "zucchini",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 1.5,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 27,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Saute diced zucchini and corn kernels with chipotle powder until tender.",
+      "Warm black beans and stir into the vegetable mixture.",
+      "Fill warmed tortillas with the zucchini-corn mixture.",
+      "Top with crumbled cotija cheese before serving."
+    ]
+  },
+  {
+    "id": "g640",
+    "name": "Chipotle Shrimp and Corn Skillet",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.6,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 2,
+        "u": "oz",
+        "c": "Dairy"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 18,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Saute sliced bell peppers until just softened.",
+      "Add shrimp and chipotle powder; cook until shrimp are pink and opaque.",
+      "Stir in corn kernels and warm through.",
+      "Squeeze lime over the skillet and finish with crumbled cotija cheese."
+    ]
+  },
+  {
+    "id": "g641",
+    "name": "Turkey Picadillo with Tamarind",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tamarind paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Brown ground turkey with diced onion and cumin.",
+      "Stir in tomatoes and tamarind paste, then simmer until thickened.",
+      "Fold in corn kernels and cook until heated through."
+    ]
+  },
+  {
+    "id": "g642",
+    "name": "Chicken Chilaquiles-Style Skillet with Queso Fresco",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "cooked chicken breast",
+        "q": 8,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 3,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "salsa verde",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "queso fresco",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 33,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Cut tortillas into strips and toast in a dry skillet until crisp.",
+      "Warm salsa verde with sliced onion, then add shredded chicken breast and toasted tortilla strips.",
+      "Simmer briefly, tossing gently so the strips soften slightly but keep some bite.",
+      "Top with crumbled queso fresco and cilantro."
+    ]
+  },
+  {
+    "id": "g643",
+    "name": "Steak Fajita Bowls with Corn & Cotija",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "sirloin steak",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "fajita seasoning",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beef",
+    "steps": [
+      "Season sliced sirloin steak with fajita seasoning and sear until cooked to preference.",
+      "Saute bell peppers until just tender, then add corn kernels to warm through.",
+      "Divide steak and vegetables between bowls.",
+      "Top with crumbled cotija cheese and a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g644",
+    "name": "Tamarind Tilapia Tacos with Cabbage Slaw",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "tilapia fillets",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 3,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "tamarind paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cabbage",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 2,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 29,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Fish",
+    "steps": [
+      "Whisk tamarind paste with lime juice to make a glaze and brush onto tilapia fillets.",
+      "Pan-sear tilapia until it flakes easily, then break into large pieces.",
+      "Toss cabbage with a squeeze of lime for a quick slaw.",
+      "Fill warmed tortillas with tilapia and slaw, then top with crumbled cotija cheese."
+    ]
+  },
+  {
+    "id": "g645",
+    "name": "Cauliflower Rice Chile Verde Chicken Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken thighs",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "salsa verde",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "queso fresco",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Simmer chicken thighs in salsa verde until cooked through, then shred.",
+      "Saute cauliflower rice until tender and stir in corn kernels.",
+      "Spoon cauliflower rice into bowls and top with shredded chile verde chicken.",
+      "Finish with crumbled queso fresco and cilantro."
+    ]
   }
 ];

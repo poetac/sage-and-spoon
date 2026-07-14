@@ -1,11 +1,12 @@
 # Cookbook growth — next targets
 
-**Status:** vocabulary expansion, the snack batch, and the egg-free breakfast
-batch are done (see below). The remaining vocabulary-unlocked dishes are still
-open. Lower priority than `IMAGE_GEN_PLAN.md` — do that first unless told
-otherwise.
+**Status:** vocabulary expansion, the snack batch, the egg-free breakfast
+batch, and the Indian + Mexican vocabulary-unlocked mains are done (see
+below). Only the Asian vocabulary-unlocked batch (miso, rice paper, tamarind,
+gochugaru) remains — a small, well-scoped final piece. Lower priority than
+`IMAGE_GEN_PLAN.md` — do that first unless told otherwise.
 
-Current library: **693 recipes** (77 hand-written `CORE_MEALS` + ~616
+Current library: **722 recipes** (77 hand-written `CORE_MEALS` + ~645
 generated). Coverage targets in `scripts/lib/config.mjs` are ratcheted to
 current achieved counts, so `npm run recipes:report` reads "complete" — it
 will not surface these gaps on its own; they come from the analysis below.
@@ -52,14 +53,20 @@ there.
 
 1. ~~**Snacks — structural priority.**~~ **Done above.**
 2. ~~**Egg-free breakfasts.**~~ **Done above.**
-3. **Vocabulary-unlocked authentic dishes** across breakfast/lunch/dinner
-   (the snack batch already used the new vocabulary for snacks) — real miso
-   soup, paneer-based Indian mains, corn-based Mexican dishes, proper
-   Korean/Thai flavor profiles. Target: **+40–60**.
+3. ~~**Vocabulary-unlocked authentic dishes — Indian + Mexican.**~~ **Done.**
+   29 lunch/dinner recipes: paneer mains (palak paneer, paneer tikka masala,
+   mattar paneer, kadai paneer, shahi paneer, paneer jalfrezi/bhurji/pulao),
+   fox nuts/makhana and curry-leaf-tempered dals, and corn/cotija/tamarind-
+   forward Mexican mains (chicken tinga, carne asada bowls, chile verde,
+   tamarind-glazed pork/tilapia, elote-style dishes). Library: 693 → 722.
+   `COVERAGE_TARGETS.perType` ratcheted (lunch 149→163, dinner 174→189).
+4. **Vocabulary-unlocked authentic dishes — Asian (still open).** Real miso
+   soup/glazes, fresh rice-paper rolls as a light meal, tamarind-based Thai/
+   Vietnamese sauces, proper Korean gochugaru dishes. Target: **+10–15**.
 
-Net target for the remaining growth pass: **693 → ~730–760 (+40–65)**, all
-in the newly-unlocked authentic dishes. Past ~800 total, further growth mostly
-pads cuisines that are already deep rather than closing real coverage gaps — don't
+Net target for the remaining growth pass: **722 → ~735–740 (+10–15)**, the
+Asian vocabulary-unlocked batch. Past ~800 total, further growth mostly pads
+cuisines that are already deep rather than closing real coverage gaps — don't
 chase a bigger number past that point without a fresh gap analysis.
 
 ## Explicitly not gaps
