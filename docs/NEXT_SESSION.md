@@ -45,15 +45,18 @@ not one option among several.
 
 **Everything else — P6, product direction (do after the image work, or in
 parallel if you have bandwidth):**
-1. **Cookbook growth — see `docs/LIBRARY_GROWTH_TARGETS.md`.** The library is
-   at **~673 recipes**. The ingredient-vocabulary bottleneck is fixed (9 new
-   real entries + 6 seasonings in `src/lib/nutrition.js`) and the snack pool's
-   nut-heavy exclusion gap is closed (a 45-recipe non-nut batch grew the
-   Tree-nuts-excluded snack pool from 121/156 to 166/201). What's left: egg-free
-   breakfasts (thinnest exclusion cell in the app — only 96/149 breakfasts
-   survive an Eggs allergy) and vocabulary-unlocked authentic dishes across
-   breakfast/lunch/dinner. Target: ~730–760. Use `node scripts/validate-drafts.mjs <file>` to pre-check
-   hand-authored batches before promoting (see `scripts/README.md`).
+1. **Cookbook growth — done for now, see `docs/LIBRARY_GROWTH_TARGETS.md`.**
+   The library grew 628 → **758 recipes** across five batches (ingredient
+   vocabulary expansion, non-nut snacks, egg-free breakfasts, vocabulary-
+   unlocked mains, dairy-free mains), each targeting the then-tightest
+   single-exclusion cell and re-measured after every round. Stopped once
+   marginal impact per batch dropped to 1–2 percentage points (down from 5+
+   early on) and the total approached the ~800 ceiling identified up front —
+   the standard diminishing-returns signal. Current tightest cells: breakfast
+   Eggs 69%, lunch/dinner Dairy 71–75%. Don't restart this without re-running
+   the gap-analysis query in `docs/LIBRARY_GROWTH_TARGETS.md` first — it has
+   the exact query and the mechanics (`node scripts/validate-drafts.mjs
+   <file>` to pre-check hand-authored batches before promoting).
 2. **Meal ratings feeding the planner.** Let the cook rate a meal after cooking
    it; use ratings to bias future swaps/generation toward what's actually liked.
 3. **Richer print/export.** The shopping list already prints/shares/downloads;
@@ -87,10 +90,11 @@ parallel if you have bandwidth):**
 targets, 1h/2h timing toggle, trend sparklines, CSV export, and **Meal
 patterns** — descriptive-only glucose↔meal correlation, gated behind a minimum
 sample size); a safe-command permission allowlist (`.claude/settings.json`) for
-smoother sessions; three cookbook growth passes (light-protein mains,
-breakfast cuisine diversity, non-nut Indian/Asian/Mexican snacks) plus the
-ingredient-vocabulary expansion that unblocked the third; removal of the
-entire curated recipe-photo set (see top priority above) after quality
+smoother sessions; a full cookbook growth arc (light-protein mains, breakfast
+cuisine diversity, ingredient-vocabulary expansion, non-nut snacks, egg-free
+breakfasts, vocabulary-unlocked mains, dairy-free mains — 628 → 758 recipes,
+see `docs/LIBRARY_GROWTH_TARGETS.md` for why it stopped there); removal of
+the entire curated recipe-photo set (see top priority above) after quality
 complaints.
 
 Start by reading `docs/IMAGE_GEN_PLAN.md` (top priority, decided, ready to
