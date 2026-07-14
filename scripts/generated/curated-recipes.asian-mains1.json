@@ -1,0 +1,292 @@
+[
+  {
+    "name": "Miso Soup with Tofu and Mushrooms",
+    "type": "lunch",
+    "carbsG": 12,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "ingredients": [
+      { "n": "firm tofu", "q": 6, "u": "oz", "c": "Protein" },
+      { "n": "miso paste", "q": 2, "u": "tbsp", "c": "Pantry" },
+      { "n": "mushrooms", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tsp", "c": "Pantry" },
+      { "n": "vegetable broth", "q": 3, "u": "cup", "c": "Pantry" }
+    ],
+    "steps": [
+      "Bring vegetable broth to a gentle simmer in a saucepan.",
+      "Whisk a ladle of hot broth into the miso paste until smooth, then stir it back into the pot.",
+      "Add cubed tofu and sliced mushrooms; warm through without letting it boil.",
+      "Drizzle with sesame oil and top with scallions before serving."
+    ]
+  },
+  {
+    "name": "Nasu Dengaku (Miso-Glazed Eggplant)",
+    "type": "dinner",
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "ingredients": [
+      { "n": "eggplant", "q": 3, "u": "cup", "c": "Produce" },
+      { "n": "miso paste", "q": 2, "u": "tbsp", "c": "Pantry" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame seeds", "q": 1, "u": "tbsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Slice eggplant into thick rounds and brush with sesame oil.",
+      "Broil or pan-sear the eggplant until golden and tender, a few minutes per side.",
+      "Whisk miso paste with a splash of water into a thick glaze.",
+      "Brush the glaze over the eggplant and broil briefly until bubbling.",
+      "Scatter with scallions and sesame seeds before serving."
+    ]
+  },
+  {
+    "name": "Miso-Ginger Salmon Donburi",
+    "type": "dinner",
+    "carbsG": 28,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Salmon",
+    "ingredients": [
+      { "n": "salmon fillets", "q": 2, "u": "", "c": "Protein" },
+      { "n": "miso paste", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "fresh ginger", "q": 1, "u": "tbsp", "c": "Produce" },
+      { "n": "brown rice", "q": 1, "u": "cup", "c": "Grains" },
+      { "n": "bok choy", "q": 2, "u": "cup", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tsp", "c": "Pantry" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" }
+    ],
+    "steps": [
+      "Cook brown rice according to package directions.",
+      "Whisk miso paste with grated ginger and a little water into a glaze.",
+      "Brush salmon with the glaze and broil 8-10 minutes until cooked through.",
+      "Saute bok choy in sesame oil until just wilted.",
+      "Serve salmon and bok choy over brown rice, topped with scallions."
+    ]
+  },
+  {
+    "name": "Dubu Jorim (Korean Braised Tofu and Zucchini)",
+    "type": "dinner",
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "ingredients": [
+      { "n": "firm tofu", "q": 12, "u": "oz", "c": "Protein" },
+      { "n": "zucchini", "q": 1.5, "u": "cup", "c": "Produce" },
+      { "n": "gochugaru", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "garlic", "q": 2, "u": "clove", "c": "Produce" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "vegetable broth", "q": 0.5, "u": "cup", "c": "Pantry" }
+    ],
+    "steps": [
+      "Slice tofu into thick planks, pat dry, and sear in sesame oil until golden.",
+      "Add garlic, gochugaru, and broth to the pan and bring to a simmer.",
+      "Nestle sliced zucchini around the tofu and simmer, spooning sauce over, until tender.",
+      "Top with scallions before serving."
+    ]
+  },
+  {
+    "name": "Daegu-Jorim (Gochugaru-Braised Cod)",
+    "type": "dinner",
+    "carbsG": 5,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "White fish",
+    "ingredients": [
+      { "n": "cod fillets", "q": 2, "u": "", "c": "Protein" },
+      { "n": "gochugaru", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "garlic", "q": 2, "u": "clove", "c": "Produce" },
+      { "n": "fresh ginger", "q": 1, "u": "tbsp", "c": "Produce" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "vegetable broth", "q": 0.5, "u": "cup", "c": "Pantry" }
+    ],
+    "steps": [
+      "Whisk garlic, ginger, gochugaru, and broth into a braising sauce.",
+      "Warm sesame oil in a skillet and lay in the cod fillets.",
+      "Pour the sauce over the fish, cover, and simmer 8-10 minutes until it flakes easily.",
+      "Garnish with scallions and serve."
+    ]
+  },
+  {
+    "name": "Gochugaru Chicken and Corn Rice Bowl",
+    "type": "lunch",
+    "carbsG": 31,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Chicken",
+    "ingredients": [
+      { "n": "chicken thighs", "q": 10, "u": "oz", "c": "Protein" },
+      { "n": "sweet corn kernels", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "brown rice", "q": 0.5, "u": "cup", "c": "Grains" },
+      { "n": "gochugaru", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "green cabbage", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tsp", "c": "Pantry" },
+      { "n": "garlic", "q": 2, "u": "clove", "c": "Produce" }
+    ],
+    "steps": [
+      "Cook brown rice according to package directions.",
+      "Season diced chicken thighs with gochugaru and garlic; sear in sesame oil until cooked through.",
+      "Add corn and cabbage to the pan and stir-fry until just tender.",
+      "Serve over brown rice."
+    ]
+  },
+  {
+    "name": "Goong Pad Makham Wan (Thai Tamarind Shrimp Stir-Fry)",
+    "type": "dinner",
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "ingredients": [
+      { "n": "shrimp", "q": 12, "u": "oz", "c": "Protein" },
+      { "n": "tamarind paste", "q": 1.5, "u": "tbsp", "c": "Pantry" },
+      { "n": "bell peppers", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "garlic", "q": 2, "u": "clove", "c": "Produce" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Whisk tamarind paste with a splash of water into a tangy sauce.",
+      "Heat sesame oil in a wok and stir-fry garlic until fragrant.",
+      "Add shrimp and bell peppers; stir-fry until the shrimp turn pink.",
+      "Pour in the tamarind sauce and toss to coat; garnish with scallions."
+    ]
+  },
+  {
+    "name": "Tamarind Turkey Stir-Fry with Green Beans",
+    "type": "lunch",
+    "carbsG": 19,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Turkey",
+    "ingredients": [
+      { "n": "ground turkey", "q": 12, "u": "oz", "c": "Protein" },
+      { "n": "tamarind paste", "q": 1.5, "u": "tbsp", "c": "Pantry" },
+      { "n": "green beans", "q": 2, "u": "cup", "c": "Produce" },
+      { "n": "garlic", "q": 2, "u": "clove", "c": "Produce" },
+      { "n": "fresh ginger", "q": 1, "u": "tbsp", "c": "Produce" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Heat sesame oil in a skillet and brown the ground turkey, breaking it up as it cooks.",
+      "Stir in garlic and ginger and cook until fragrant.",
+      "Add green beans and stir-fry until crisp-tender.",
+      "Whisk tamarind paste with a splash of water and toss through to coat."
+    ]
+  },
+  {
+    "name": "Nam Khao Tod (Crispy Rice Salad with Pork)",
+    "type": "lunch",
+    "carbsG": 16,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Pork",
+    "ingredients": [
+      { "n": "pork tenderloin", "q": 10, "u": "oz", "c": "Protein" },
+      { "n": "puffed rice", "q": 1.5, "u": "cup", "c": "Grains" },
+      { "n": "lime", "q": 1, "u": "", "c": "Produce" },
+      { "n": "green cabbage", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "fresh mint", "q": null, "u": "to taste", "c": "Produce" },
+      { "n": "red pepper flakes", "q": null, "u": "to taste", "c": "Pantry" }
+    ],
+    "steps": [
+      "Sear pork tenderloin until cooked through, then rest and slice thin.",
+      "Toss puffed rice with shredded cabbage, scallions, and mint.",
+      "Add the sliced pork and squeeze lime juice over the top.",
+      "Sprinkle with red pepper flakes and toss just before serving so the puffed rice stays crisp."
+    ]
+  },
+  {
+    "name": "Shrimp & Herb Rice Paper Rolls with Tamarind Dipping Sauce",
+    "type": "lunch",
+    "carbsG": 36,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "ingredients": [
+      { "n": "shrimp", "q": 10, "u": "oz", "c": "Protein" },
+      { "n": "rice paper wrappers", "q": 6, "u": "", "c": "Grains" },
+      { "n": "rice noodles", "q": 0.25, "u": "cup", "c": "Grains" },
+      { "n": "lettuce", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "carrots", "q": 1, "u": "", "c": "Produce" },
+      { "n": "cucumber", "q": 0.5, "u": "cup", "c": "Produce" },
+      { "n": "fresh mint", "q": null, "u": "to taste", "c": "Produce" },
+      { "n": "tamarind paste", "q": 1, "u": "tbsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Cook rice noodles according to package directions, then drain and cool.",
+      "Dip a rice paper sheet in warm water until pliable.",
+      "Layer lettuce, shrimp, noodles, carrots, cucumber, and mint near one edge.",
+      "Fold in the sides and roll tightly; repeat with the remaining wrappers.",
+      "Whisk tamarind paste with a little warm water into a dipping sauce and serve alongside."
+    ]
+  },
+  {
+    "name": "Edamame & Herb Rice Paper Rolls with Miso-Sesame Dipping Sauce",
+    "type": "lunch",
+    "carbsG": 35,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Beans & lentils",
+    "ingredients": [
+      { "n": "shelled edamame", "q": 1.25, "u": "cup", "c": "Protein" },
+      { "n": "rice paper wrappers", "q": 6, "u": "", "c": "Grains" },
+      { "n": "carrots", "q": 1, "u": "", "c": "Produce" },
+      { "n": "cucumber", "q": 0.5, "u": "cup", "c": "Produce" },
+      { "n": "lettuce", "q": 1, "u": "cup", "c": "Produce" },
+      { "n": "fresh mint", "q": null, "u": "to taste", "c": "Produce" },
+      { "n": "miso paste", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "sesame oil", "q": 1, "u": "tsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Steam or thaw shelled edamame until tender.",
+      "Dip a rice paper sheet in warm water until pliable.",
+      "Layer lettuce, edamame, carrots, cucumber, and mint near one edge.",
+      "Fold in the sides and roll tightly; repeat with the remaining wrappers.",
+      "Whisk miso paste with sesame oil and a little warm water into a dipping sauce."
+    ]
+  },
+  {
+    "name": "Cantonese-Style Crab and Sesame Rice Noodle Bowl with Crispy Fox Nuts",
+    "type": "dinner",
+    "carbsG": 26,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Crab",
+    "ingredients": [
+      { "n": "lump crab meat", "q": 8, "u": "oz", "c": "Protein" },
+      { "n": "rice noodles", "q": 0.75, "u": "cup", "c": "Grains" },
+      { "n": "cucumber", "q": 0.5, "u": "cup", "c": "Produce" },
+      { "n": "carrots", "q": 1, "u": "", "c": "Produce" },
+      { "n": "fox nuts", "q": 0.5, "u": "cup", "c": "Pantry" },
+      { "n": "sesame oil", "q": 1, "u": "tbsp", "c": "Pantry" },
+      { "n": "scallions", "q": 2, "u": "", "c": "Produce" },
+      { "n": "sesame seeds", "q": 1, "u": "tbsp", "c": "Pantry" }
+    ],
+    "steps": [
+      "Cook rice noodles according to package directions, then drain and cool.",
+      "Toast fox nuts in a dry pan until crisp, then set aside.",
+      "Toss noodles with julienned cucumber and carrots, sesame oil, and scallions.",
+      "Top with crab meat, toasted fox nuts, and sesame seeds before serving."
+    ]
+  }
+]

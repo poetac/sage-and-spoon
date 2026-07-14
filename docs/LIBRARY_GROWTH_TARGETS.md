@@ -59,15 +59,42 @@ there.
    fox nuts/makhana and curry-leaf-tempered dals, and corn/cotija/tamarind-
    forward Mexican mains (chicken tinga, carne asada bowls, chile verde,
    tamarind-glazed pork/tilapia, elote-style dishes). Library: 693 → 722.
-   `COVERAGE_TARGETS.perType` ratcheted (lunch 149→163, dinner 174→189).
-4. **Vocabulary-unlocked authentic dishes — Asian (still open).** Real miso
-   soup/glazes, fresh rice-paper rolls as a light meal, tamarind-based Thai/
-   Vietnamese sauces, proper Korean gochugaru dishes. Target: **+10–15**.
+4. ~~**Vocabulary-unlocked authentic dishes — Asian.**~~ **Done.** 12
+   lunch/dinner recipes: miso soup/glazes (tofu, eggplant, salmon donburi),
+   Korean gochugaru-braised dishes (tofu, cod, chicken), Thai/Vietnamese
+   tamarind stir-fries, fresh (unfried) rice-paper rolls with dipping sauces,
+   a crispy-rice Lao salad, fox nuts as a noodle-bowl topping. Library:
+   722 → 734. `COVERAGE_TARGETS.perType` ratcheted (lunch 149→169,
+   dinner 174→195) across both mains batches.
 
-Net target for the remaining growth pass: **722 → ~735–740 (+10–15)**, the
-Asian vocabulary-unlocked batch. Past ~800 total, further growth mostly pads
-cuisines that are already deep rather than closing real coverage gaps — don't
-chase a bigger number past that point without a fresh gap analysis.
+This growth pass (vocabulary expansion + snacks + egg-free breakfasts +
+vocabulary-unlocked mains) landed the library at 628 → 734 recipes (+106),
+inside the originally-estimated ~730–760 range — but a fresh gap analysis at
+734 surfaced a new tightest cell, so growth continues below rather than
+stopping here.
+
+## Where this leaves the library — fresh gap analysis at 734
+
+Re-running the per-type/exclusion/cuisine/protein pool-size analysis
+(`mealAllowed` against every `QUIZ.allergies`/`QUIZ.dislikes` value) at 734
+recipes:
+
+- **Dairy-free lunch is now the single tightest cell in the library: 69%
+  (116/169)** — tighter than breakfast Eggs was before that round started.
+  Dinner Dairy is second-tightest at 73% (143/195). Neither snacks (Dairy
+  82%) nor breakfast (Eggs 69%, tied with lunch Dairy) are far behind.
+- Every cuisine and protein comfortably clears `cuisineMin`(25)/`proteinMin`
+  (18) — Italian (63) and Middle Eastern (54) are the thinnest cuisines but
+  both 2×+ over target, not a structural gap.
+- Dinner's quick-recipe count (38, <20min) is thin relative to other types
+  even though it clears the `quickPerType` target (20) — a real UX texture
+  worth knowing about, not a hard gap.
+
+**Next priority: dairy-free lunch/dinner mains** (tofu, legumes, lean
+meats/fish prepared without cheese/yogurt/milk/butter/cream), sized similarly
+to the egg-free breakfast batch (+20–25). Past ~800 total, further growth
+mostly pads cuisines that are already deep rather than closing real coverage
+gaps — don't chase a bigger number without first re-running this analysis.
 
 ## Explicitly not gaps
 
