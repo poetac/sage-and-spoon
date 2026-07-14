@@ -310,8 +310,9 @@ dietitian fix. Edited in both `generated-meals.js` and its curated source
 Not defects — directions once P0–P2 land: ~~glucose logging + weekly trends~~
 (shipped — see below); ✅ recipe photos removed pending quality replacement
 (done — see below); ⭐ generated recipe photos (scoped, top priority — see
-below); cookbook growth to ~750–780 (scoped — see below); meal ratings feeding
-the planner; richer print/export.
+below); ✅ cookbook vocabulary expansion + non-nut snack batch (done — see
+below); cookbook growth to ~730–760 (scoped — see below); meal ratings
+feeding the planner; richer print/export.
 
 **✅ Done — recipe photos removed.** Users reported the fetched-photo pipeline
 (`scripts/fetch-images.mjs`, matching Openverse/Commons/Flickr photos by
@@ -335,12 +336,23 @@ obtained — keeping this free until funded). Will also need a
 `LOCAL_IMG_CACHE` SW cache-version bump when photos return (replacing bytes at
 existing ids, unlike prior growth batches which only added new ids).
 
-**Next up — cookbook growth to ~750–780.** A data-backed gap analysis found the
-binding constraint is the 161-ingredient nutrition-table vocabulary, not a lack
-of dish ideas (recent additions had to be named things like "Miso-less Tofu
-Bowl" for ingredients the table doesn't recognize). Full priority order —
-expand the vocabulary table first, then snacks (40% nut-based, the single
-biggest exclusion-pool hit in the library), then egg-free breakfasts — is in
+**✅ Done — vocabulary expansion + non-nut snack batch (628 → 673 recipes).**
+A data-backed gap analysis found the binding constraint on further growth was
+the 161-ingredient nutrition-table vocabulary, not a lack of dish ideas
+(recent additions had to be named things like "Miso-less Tofu Bowl" for
+ingredients the table didn't recognize). Fixed: `src/lib/nutrition.js` gained
+9 real ingredient entries (paneer, miso, cotija/queso fresco, tamarind, corn,
+rice paper, puffed rice, fox nuts/makhana, mung bean sprouts) plus 6 seasoning
+keywords, each audited against `ALLERGEN_MAP`/`DISLIKE_MAP`. That vocabulary
+fed 45 non-nut Indian/Asian/Mexican snacks, closing the library's single
+biggest single-exclusion gap: the Tree-nuts-excluded snack pool grew from
+121/156 (78%) to 166/201 (83%). Full detail in
+**`docs/LIBRARY_GROWTH_TARGETS.md`**.
+
+**Next up — cookbook growth to ~730–760.** Egg-free breakfasts (an Eggs
+allergy leaves only 96/149 breakfasts — the thinnest single cell in the whole
+exclusion matrix) and vocabulary-unlocked authentic dishes across breakfast/
+lunch/dinner. Priority order and targets in
 **`docs/LIBRARY_GROWTH_TARGETS.md`**.
 
 **Shipped — `GLUCOSE-1` blood-sugar log.** A new **Log** tab records the four

@@ -46,11 +46,13 @@ not one option among several.
 **Everything else — P6, product direction (do after the image work, or in
 parallel if you have bandwidth):**
 1. **Cookbook growth — see `docs/LIBRARY_GROWTH_TARGETS.md`.** The library is
-   at **~630 recipes**; that doc has a full data-backed analysis of where to
-   grow next (short version: expand the 161-ingredient vocabulary table first —
-   it's the actual bottleneck — then snacks, which skew 40% nut-based and are
-   the biggest single exclusion hit in the library, then egg-free breakfasts).
-   Target: ~750–780. Use `node scripts/validate-drafts.mjs <file>` to pre-check
+   at **~673 recipes**. The ingredient-vocabulary bottleneck is fixed (9 new
+   real entries + 6 seasonings in `src/lib/nutrition.js`) and the snack pool's
+   nut-heavy exclusion gap is closed (a 45-recipe non-nut batch grew the
+   Tree-nuts-excluded snack pool from 121/156 to 166/201). What's left: egg-free
+   breakfasts (thinnest exclusion cell in the app — only 96/149 breakfasts
+   survive an Eggs allergy) and vocabulary-unlocked authentic dishes across
+   breakfast/lunch/dinner. Target: ~730–760. Use `node scripts/validate-drafts.mjs <file>` to pre-check
    hand-authored batches before promoting (see `scripts/README.md`).
 2. **Meal ratings feeding the planner.** Let the cook rate a meal after cooking
    it; use ratings to bias future swaps/generation toward what's actually liked.
@@ -85,9 +87,11 @@ parallel if you have bandwidth):**
 targets, 1h/2h timing toggle, trend sparklines, CSV export, and **Meal
 patterns** — descriptive-only glucose↔meal correlation, gated behind a minimum
 sample size); a safe-command permission allowlist (`.claude/settings.json`) for
-smoother sessions; two cookbook growth passes (light-protein mains, breakfast
-cuisine diversity); removal of the entire curated recipe-photo set (see top
-priority above) after quality complaints.
+smoother sessions; three cookbook growth passes (light-protein mains,
+breakfast cuisine diversity, non-nut Indian/Asian/Mexican snacks) plus the
+ingredient-vocabulary expansion that unblocked the third; removal of the
+entire curated recipe-photo set (see top priority above) after quality
+complaints.
 
 Start by reading `docs/IMAGE_GEN_PLAN.md` (top priority, decided, ready to
 build), then `ROADMAP.md` and `CLAUDE.md` for everything else, confirm scope

@@ -1,69 +1,63 @@
 # Cookbook growth — next targets
 
-**Status:** analysis complete, not yet built. Lower priority than
-`IMAGE_GEN_PLAN.md` — do that first unless told otherwise.
+**Status:** vocabulary expansion and the snack batch are done (see below).
+Egg-free breakfasts and the remaining vocabulary-unlocked dishes are still
+open. Lower priority than `IMAGE_GEN_PLAN.md` — do that first unless told
+otherwise.
 
-Current library: **628 recipes** (77 hand-written `CORE_MEALS` + ~551
-generated). Coverage targets in `scripts/lib/config.mjs` are ratcheted to
-current achieved counts, so `npm run recipes:report` reads "complete" — it
-will not surface these gaps on its own; they come from the analysis below.
+Current library: **673 recipes** (77 hand-written `CORE_MEALS` + ~596
+generated, including the 45-recipe non-nut snack batch below). Coverage
+targets in `scripts/lib/config.mjs` are ratcheted to current achieved counts,
+so `npm run recipes:report` reads "complete" — it will not surface these gaps
+on its own; they come from the analysis below.
 
-## The real ceiling: ~750–800, and the bottleneck is the ingredient vocabulary
+## ✅ Done — ingredient vocabulary expanded, nut-heavy snack gap closed
 
-The binding constraint on further growth is **not** running out of dish ideas
-— it's `src/lib/nutrition.js`'s ingredient table, which recognizes exactly
-**161 ingredients**. CI (`src/data/coverage.test.js`) requires every recipe's
-ingredients to resolve against that table (0 unmatched names tolerated), so
-every new recipe must be built from that fixed word list.
+`src/lib/nutrition.js`'s ingredient table gained 9 real entries (paneer, miso
+paste, cotija cheese/queso fresco, tamarind paste, sweet corn kernels, rice
+paper wrappers, puffed rice, fox nuts/makhana, mung bean sprouts) and 6
+seasoning keywords (sumac, chipotle powder, gochugaru, chaat masala, curry
+leaves, asafoetida), each audited against `ALLERGEN_MAP`/`DISLIKE_MAP` (paneer
+→ Dairy, miso → Soy, gochugaru → Spicy food dislike; cheese/queso keywords
+already covered cotija/queso fresco). That vocabulary fed a 45-recipe batch of
+**non-nut** snacks (15 each Indian/Asian/Mexican — `scripts/generated/
+curated-recipes.snacks-nonnut1.json`), validated through the real pipeline
+gates (`vetMeals`, carb-drift calibration, exclusion checks) before promotion.
 
-This is not theoretical — it already bit the last growth batch. Recipes in
-`scripts/generated/curated-recipes.breakfasts1.json` are literally named
-*"Miso-less Tofu & Mushroom Soup," "Gochujang-less Spicy Tofu Bowl,"
-"Sumac-less Menemen," "Chipotle-less Egg Wrap"* — because miso, gochujang,
-sumac, chipotle, corn, paneer, halloumi, and dozens of other cuisine-defining
-ingredients aren't in the table, so recipes had to be authored *around* their
-absence. Without expanding the table, authentic growth is close to tapped —
-maybe +60 more before new recipes become contrived rearrangements of the same
-161 words.
+Result: snacks grew 156 → 201, and the Tree-nuts-excluded snack pool — the
+single biggest single-exclusion gap in the library — grew from **121/156
+(78%) to 166/201 (83%)**, with the raw excluded-count floor also up (121→166).
+`COVERAGE_TARGETS.perType.snack` and `.exclusionRemaining.snack` in
+`scripts/lib/config.mjs` are ratcheted to match, so this won't silently regress.
 
-**Expanding the table is the actual unlock.** Each new entry needs: per-100g
-macros (protein/fat/fiber/carbs), a unit→gram-weight map (a cup of paneer and
-a cup of miso paste weigh very differently), *and* an allergen/dislike-map
-audit — paneer must land under Dairy, miso under Soy, or it's a silent safety
-gap (the same class of bug as `FISH-1` in `ROADMAP.md`, where an allergy chip
-technically existed but didn't actually catch every affected recipe). Budget
-~30–40 new entries as roughly a day of careful work; that unlocks maybe 40–60
-genuinely new dishes across cuisines that are currently vocabulary-starved.
+## The remaining ceiling: ~750–800
+
+With the vocabulary unlocked, further authentic growth (real miso soup,
+paneer-based Indian dishes, corn-based Mexican dishes, proper Korean/Thai
+flavor profiles) is no longer bottlenecked on ingredient names — see
+`src/lib/nutrition.js`'s `TABLE` for the current recognized set before adding
+more recipes; extend it the same way (per-100g macros + unit→gram weights +
+allergen/dislike-map audit) if a new dish needs an ingredient that still isn't
+there.
 
 ## Where the data says growth pays off, in priority order
 
-Measured against the live 628-recipe library (see the queries in git history
-of this session, or re-run: filter `MEAL_DB` by `type`/`cuisineTag`/
-`proteinTag`, and `mealAllowed` against each `ALLERGEN_MAP`/`DISLIKE_MAP` key
-to find exclusion-pool thinness):
-
-1. **Snacks — structural priority, not just a nice-to-have.** Snacks fill 3 of
-   6 daily slots (3× the exposure of any single main), yet the pool is
-   lopsided: **68/156 American comfort**, **63/156 (40%) nut-based** (a
-   Tree-nuts allergy alone drops the snack pool 156→121, the single biggest
-   exclusion hit anywhere in the library), and only **4 Indian**, **5
-   egg-based**. Target: **+40–45** non-nut, Indian/Asian/Mexican-leaning
-   snacks.
+1. ~~**Snacks — structural priority.**~~ **Done above.**
 2. **Egg-free breakfasts.** An Eggs allergy leaves only 96/149 breakfasts —
-   the thinnest single cell in the whole exclusion matrix. The breakfast batch
-   just added made this *worse* (16 of the 31 new recipes were egg-based).
-   Target: **+15–20**, deliberately non-egg (tofu, yogurt, legume, grain
-   protein bases).
-3. **Vocabulary-unlocked authentic dishes**, once the table above is
-   expanded: real miso soup, paneer-based Indian dishes, corn-based Mexican
-   dishes, proper Korean/Thai flavor profiles — spread across all four meal
-   types rather than concentrated in one. Target: **+40–60**.
+   the thinnest single cell in the whole exclusion matrix (unaffected by the
+   snack work above; still open). The breakfast batch before this made it
+   *worse* (16 of 31 new recipes were egg-based). Target: **+15–20**,
+   deliberately non-egg (tofu, yogurt, legume, grain protein bases).
+3. **Vocabulary-unlocked authentic dishes** across breakfast/lunch/dinner
+   (the snack batch already used the new vocabulary for snacks) — real miso
+   soup, paneer-based Indian mains, corn-based Mexican dishes, proper
+   Korean/Thai flavor profiles. Target: **+40–60**.
 
-Net target for the next growth pass: **628 → ~750–780 (+120–150)**, sequenced
-**vocabulary expansion first**, then snacks, then egg-free breakfasts, then
-the newly-unlocked authentic dishes. Past ~800 total, further growth mostly
-pads cuisines that are already deep rather than closing real coverage gaps —
-don't chase a bigger number past that point without a fresh gap analysis.
+Net target for the remaining growth pass: **673 → ~730–760 (+60–85)**,
+sequenced egg-free breakfasts first (thinnest exclusion cell), then the
+newly-unlocked authentic dishes. Past ~800 total, further growth mostly pads
+cuisines that are already deep rather than closing real coverage gaps — don't
+chase a bigger number past that point without a fresh gap analysis.
 
 ## Explicitly not gaps
 
