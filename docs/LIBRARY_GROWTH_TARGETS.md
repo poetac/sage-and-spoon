@@ -1,15 +1,23 @@
 # Cookbook growth — next targets
 
-**Status:** vocabulary expansion and the snack batch are done (see below).
-Egg-free breakfasts and the remaining vocabulary-unlocked dishes are still
+**Status:** vocabulary expansion, the snack batch, and the egg-free breakfast
+batch are done (see below). The remaining vocabulary-unlocked dishes are still
 open. Lower priority than `IMAGE_GEN_PLAN.md` — do that first unless told
 otherwise.
 
-Current library: **673 recipes** (77 hand-written `CORE_MEALS` + ~596
-generated, including the 45-recipe non-nut snack batch below). Coverage
-targets in `scripts/lib/config.mjs` are ratcheted to current achieved counts,
-so `npm run recipes:report` reads "complete" — it will not surface these gaps
-on its own; they come from the analysis below.
+Current library: **693 recipes** (77 hand-written `CORE_MEALS` + ~616
+generated). Coverage targets in `scripts/lib/config.mjs` are ratcheted to
+current achieved counts, so `npm run recipes:report` reads "complete" — it
+will not surface these gaps on its own; they come from the analysis below.
+
+## ✅ Done — egg-free breakfasts (673 → 693 recipes)
+
+20 hand-authored non-egg breakfasts (10 dairy-based, 10 tofu/legume/grain-
+based, spanning Italian/Indian/Middle Eastern/Mediterranean/Mexican/American
+comfort/Asian) — `scripts/generated/curated-recipes.eggfree-breakfasts1.json`.
+The Eggs-excluded breakfast pool — the thinnest single-exclusion cell in the
+whole app — grew from 96/149 (64%) to 116/169 (69%). `COVERAGE_TARGETS.
+perType.breakfast` ratcheted 149 → 169.
 
 ## ✅ Done — ingredient vocabulary expanded, nut-heavy snack gap closed
 
@@ -43,20 +51,15 @@ there.
 ## Where the data says growth pays off, in priority order
 
 1. ~~**Snacks — structural priority.**~~ **Done above.**
-2. **Egg-free breakfasts.** An Eggs allergy leaves only 96/149 breakfasts —
-   the thinnest single cell in the whole exclusion matrix (unaffected by the
-   snack work above; still open). The breakfast batch before this made it
-   *worse* (16 of 31 new recipes were egg-based). Target: **+15–20**,
-   deliberately non-egg (tofu, yogurt, legume, grain protein bases).
+2. ~~**Egg-free breakfasts.**~~ **Done above.**
 3. **Vocabulary-unlocked authentic dishes** across breakfast/lunch/dinner
    (the snack batch already used the new vocabulary for snacks) — real miso
    soup, paneer-based Indian mains, corn-based Mexican dishes, proper
    Korean/Thai flavor profiles. Target: **+40–60**.
 
-Net target for the remaining growth pass: **673 → ~730–760 (+60–85)**,
-sequenced egg-free breakfasts first (thinnest exclusion cell), then the
-newly-unlocked authentic dishes. Past ~800 total, further growth mostly pads
-cuisines that are already deep rather than closing real coverage gaps — don't
+Net target for the remaining growth pass: **693 → ~730–760 (+40–65)**, all
+in the newly-unlocked authentic dishes. Past ~800 total, further growth mostly
+pads cuisines that are already deep rather than closing real coverage gaps — don't
 chase a bigger number past that point without a fresh gap analysis.
 
 ## Explicitly not gaps

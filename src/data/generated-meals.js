@@ -28836,5 +28836,1133 @@ export const GENERATED_MEALS = [
       "Sprinkle with chili powder and sea salt.",
       "Garnish with chopped cilantro and serve chilled."
     ]
+  },
+  {
+    "id": "g597",
+    "name": "Whipped Ricotta Toast with Berries",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "ricotta cheese",
+        "q": 6,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "whole grain bread",
+        "q": 2,
+        "u": "slice",
+        "c": "Grains"
+      },
+      {
+        "n": "strawberries",
+        "q": 0.66,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "blueberries",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Medium",
+    "prepMins": 8,
+    "cuisineTag": "Italian",
+    "proteinTag": "Ricotta",
+    "steps": [
+      "Whip ricotta with a pinch of cinnamon until light and fluffy.",
+      "Toast the bread slices until golden.",
+      "Spread whipped ricotta generously over toast.",
+      "Top with sliced strawberries and blueberries, and a little lemon zest."
+    ]
+  },
+  {
+    "id": "g598",
+    "name": "Paneer Bhurji Breakfast Skillet",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 6,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Heat olive oil in a skillet and saute onion and bell pepper until soft.",
+      "Add diced tomato and cook until it breaks down slightly.",
+      "Crumble in the paneer, add turmeric and garam masala, and stir to warm through.",
+      "Garnish with cilantro and serve hot."
+    ]
+  },
+  {
+    "id": "g599",
+    "name": "Za'atar Labneh Breakfast Plate",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "za'atar",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "whole grain crispbread",
+        "q": 1,
+        "u": "slice",
+        "c": "Grains"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Greek yogurt (labneh-style)",
+    "steps": [
+      "Spread the thick greek yogurt over a shallow plate like labneh.",
+      "Drizzle with olive oil and sprinkle generously with za'atar.",
+      "Arrange sliced cucumber and cherry tomatoes alongside.",
+      "Serve with whole grain crispbread for scooping."
+    ]
+  },
+  {
+    "id": "g600",
+    "name": "Cottage Cheese & Sweet Potato Hash",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "cottage cheese",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.25,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "smoked paprika",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Cottage cheese",
+    "steps": [
+      "Dice the sweet potato small and saute in olive oil until tender, about 10 minutes.",
+      "Add onion and bell pepper, cooking until softened.",
+      "Season with smoked paprika.",
+      "Spoon hash into bowls and top each with a scoop of cottage cheese."
+    ]
+  },
+  {
+    "id": "g601",
+    "name": "Mexican-Style Cottage Cheese Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "cottage cheese",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "corn kernels",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Cottage cheese & beans",
+    "steps": [
+      "Spoon cottage cheese into bowls as the base.",
+      "Top with black beans, corn kernels, diced tomato, and sliced avocado.",
+      "Squeeze fresh lime juice over the top.",
+      "Finish with chili powder and cilantro."
+    ]
+  },
+  {
+    "id": "g602",
+    "name": "Quinoa Yogurt Porridge with Dates & Walnuts",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "milk",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "dates",
+        "q": 1.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "walnuts",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 28,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Greek yogurt & quinoa",
+    "steps": [
+      "Simmer quinoa in milk until tender and most liquid is absorbed.",
+      "Let cool slightly, then fold in the greek yogurt.",
+      "Top with chopped dates and walnuts.",
+      "Finish with a dusting of cinnamon."
+    ]
+  },
+  {
+    "id": "g603",
+    "name": "Swiss Cheese & Mushroom Breakfast Skillet",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "swiss cheese",
+        "q": 4,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "mushrooms",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.25,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "black pepper",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Swiss cheese",
+    "steps": [
+      "Heat olive oil and saute onion and mushrooms until browned.",
+      "Add baby spinach and cook until wilted.",
+      "Remove from heat and scatter shredded swiss cheese over the top until melted.",
+      "Season with black pepper and serve."
+    ]
+  },
+  {
+    "id": "g604",
+    "name": "Bulgur & Feta Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "bulgur",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "feta cheese",
+        "q": 3,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh mint",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Feta cheese",
+    "steps": [
+      "Cook bulgur according to package directions and let cool slightly.",
+      "Toss with diced cucumber and halved cherry tomatoes.",
+      "Crumble feta cheese over the top.",
+      "Dress with olive oil, a squeeze of lemon, and fresh mint."
+    ]
+  },
+  {
+    "id": "g605",
+    "name": "Mango Chia Yogurt Pudding",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chia seeds",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "milk",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "mango",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Greek yogurt & chia",
+    "steps": [
+      "Whisk chia seeds into the milk and greek yogurt until well combined.",
+      "Refrigerate at least 2 hours, or overnight, until thickened to a pudding consistency.",
+      "Top with diced mango just before serving.",
+      "Finish with a light dusting of cinnamon."
+    ]
+  },
+  {
+    "id": "g606",
+    "name": "String Cheese & Apple Breakfast Plate with Hummus",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "string cheese",
+        "q": 2,
+        "u": "",
+        "c": "Dairy"
+      },
+      {
+        "n": "apple",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "hummus",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "whole grain crackers",
+        "q": 8,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 5,
+    "cuisineTag": "American comfort",
+    "proteinTag": "String cheese",
+    "steps": [
+      "Slice the apple into wedges and sprinkle lightly with cinnamon.",
+      "Arrange apple wedges, string cheese, and whole grain crackers on a plate.",
+      "Spoon hummus into a small dish alongside for dipping.",
+      "Serve immediately."
+    ]
+  },
+  {
+    "id": "g607",
+    "name": "Turmeric Tofu Breakfast Scramble",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 8,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "baby spinach",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "nutritional yeast",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Heat olive oil in a skillet over medium heat.",
+      "Crumble tofu into the skillet and sprinkle with turmeric.",
+      "Add diced bell pepper and cook 5 minutes, stirring often.",
+      "Fold in baby spinach and nutritional yeast; cook until wilted, about 2 minutes."
+    ]
+  },
+  {
+    "id": "g608",
+    "name": "Besan Chilla (Savory Indian Chickpea Flour Pancake)",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.55,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 21,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Chickpea flour",
+    "steps": [
+      "Whisk chickpea flour with water until a smooth, pourable batter forms.",
+      "Stir in finely chopped onion, tomato, cilantro, and cumin.",
+      "Heat a lightly oiled skillet and pour a thin layer of batter.",
+      "Cook 2-3 minutes per side until golden and set."
+    ]
+  },
+  {
+    "id": "g609",
+    "name": "Egyptian-Style Bean Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "cannellini beans",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "parsley",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Warm cannellini beans in a small pot with minced garlic and ground cumin.",
+      "Mash lightly with a fork, leaving some beans whole.",
+      "Stir in chopped tomato and a squeeze of lemon.",
+      "Drizzle with olive oil and top with parsley."
+    ]
+  },
+  {
+    "id": "g610",
+    "name": "Savory Lentil Oatmeal with Garlicky Kale",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "steel-cut oats",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "red lentils",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "kale",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "broth",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "black pepper",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 27,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Simmer steel-cut oats and red lentils in broth for 15 minutes, stirring occasionally.",
+      "In a separate pan, sauté garlic and kale in olive oil until wilted.",
+      "Fold the kale into the oat-lentil mixture.",
+      "Season with black pepper and serve hot."
+    ]
+  },
+  {
+    "id": "g611",
+    "name": "Mexican Black Bean Quinoa Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "quinoa",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "black beans",
+        "q": 1,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "avocado",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 29,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Quinoa/grain",
+    "steps": [
+      "Warm cooked quinoa and black beans together in a pot.",
+      "Stir in chili powder and diced tomato.",
+      "Spoon into a bowl and top with sliced avocado and cilantro.",
+      "Finish with a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g612",
+    "name": "Japanese Miso Tofu Breakfast Bowl",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 10,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "miso paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "bok choy",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Whisk miso paste with a splash of warm water to loosen it.",
+      "Pan-sear cubed tofu in sesame oil until lightly golden.",
+      "Add bok choy and cook until just tender.",
+      "Toss with the miso mixture and serve over warm brown rice, topped with scallions."
+    ]
+  },
+  {
+    "id": "g613",
+    "name": "Mediterranean Chickpea Breakfast Bowl with Tahini",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "za'atar",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Warm chickpeas gently in a small pan with olive oil and za'atar.",
+      "Whisk tahini with lemon juice and a little water into a drizzle-able sauce.",
+      "Spoon chickpeas into a bowl with cucumber and cherry tomatoes.",
+      "Drizzle with the tahini sauce."
+    ]
+  },
+  {
+    "id": "g614",
+    "name": "Buckwheat Galette with Mushrooms and Spinach",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "buckwheat flour",
+        "q": 0.4,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "mushrooms",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "baby spinach",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Whole grain",
+    "steps": [
+      "Whisk buckwheat flour with water into a thin, smooth batter and let rest 10 minutes.",
+      "Sauté sliced mushrooms and garlic in half the olive oil until browned; wilt in spinach.",
+      "Pour a thin layer of batter into an oiled skillet and cook until edges lift, about 2 minutes per side.",
+      "Fill the galette with the mushroom-spinach mixture, fold, and season with sea salt."
+    ]
+  },
+  {
+    "id": "g615",
+    "name": "Savory Brown Rice Congee with Tofu",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "firm tofu",
+        "q": 8,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "broth",
+        "q": 3,
+        "u": "cup",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Simmer brown rice in broth with sliced ginger for 20 minutes, stirring occasionally, until porridge-like.",
+      "Cube tofu and stir into the congee during the last 5 minutes to warm through.",
+      "Drizzle with sesame oil.",
+      "Top with sliced scallions before serving."
+    ]
+  },
+  {
+    "id": "g616",
+    "name": "Southwestern Sweet Potato and Black Bean Hash",
+    "type": "breakfast",
+    "ingredients": [
+      {
+        "n": "sweet potato",
+        "q": 0.75,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "black beans",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "smoked paprika",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 26,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Dice sweet potato and pan-fry in olive oil over medium heat until tender, about 10 minutes.",
+      "Add diced onion and bell pepper; cook until softened.",
+      "Stir in black beans, cumin, and smoked paprika.",
+      "Cook 5 more minutes, stirring occasionally, until heated through."
+    ]
   }
 ];
