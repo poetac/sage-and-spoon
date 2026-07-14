@@ -26377,5 +26377,2464 @@ export const GENERATED_MEALS = [
       "Wilt spinach.",
       "Serve over rice with scallions."
     ]
+  },
+  {
+    "id": "g552",
+    "name": "Lemon Chickpea Sundal",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "curry leaves",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "asafoetida",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Indian",
+    "proteinTag": "Chickpeas",
+    "steps": [
+      "Drain and rinse the chickpeas well.",
+      "Warm olive oil in a skillet and sizzle curry leaves and asafoetida for 30 seconds.",
+      "Add chickpeas and toss 3-4 minutes until heated through.",
+      "Off heat, squeeze in lemon juice and stir in cilantro before serving."
+    ]
+  },
+  {
+    "id": "g553",
+    "name": "Sprouted Moong Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "mung bean sprouts",
+        "q": 1.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "tomatoes",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Sprouted mung beans",
+    "steps": [
+      "Blanch mung bean sprouts in boiling water 2 minutes, then drain and cool.",
+      "Combine sprouts, chickpeas, tomato, cucumber, and red onion in a bowl.",
+      "Squeeze lemon juice over the top and sprinkle with chaat masala.",
+      "Toss well and serve chilled."
+    ]
+  },
+  {
+    "id": "g554",
+    "name": "Tandoori Paneer Tikka Skewers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 4,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Whisk yogurt with garam masala and chili powder.",
+      "Cube paneer and bell pepper, then toss in the marinade for 15 minutes.",
+      "Thread onto skewers and pan-sear or grill 5-6 minutes, turning, until lightly charred.",
+      "Squeeze lemon over the skewers before serving."
+    ]
+  },
+  {
+    "id": "g555",
+    "name": "Cucumber Carrot Raita",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "plain greek yogurt",
+        "q": 1,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh mint",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Indian",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Grate cucumber and carrot, then squeeze out excess liquid.",
+      "Whisk yogurt smooth in a bowl.",
+      "Fold in the grated vegetables and season with cumin and chaat masala.",
+      "Garnish with mint and chill before serving."
+    ]
+  },
+  {
+    "id": "g556",
+    "name": "Chatpata Roasted Makhana",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "fox nuts",
+        "q": 2,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Indian",
+    "proteinTag": "Fox nuts (makhana)",
+    "steps": [
+      "Heat olive oil in a pan over medium heat.",
+      "Add fox nuts and roast, stirring often, 8-10 minutes until crisp.",
+      "Sprinkle with turmeric, chili powder, and chaat masala, tossing to coat.",
+      "Cool slightly before serving."
+    ]
+  },
+  {
+    "id": "g557",
+    "name": "Besan Chilla Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "milk",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "onion",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Chickpea flour",
+    "steps": [
+      "Whisk chickpea flour with milk and turmeric into a smooth, thin batter.",
+      "Stir in onion, tomato, and cilantro.",
+      "Heat olive oil in a nonstick pan and pour small rounds of batter.",
+      "Cook 2-3 minutes per side until golden and set, then cut into bite-sized wedges."
+    ]
+  },
+  {
+    "id": "g558",
+    "name": "Steamed Besan Dhokla",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpea flour",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "baking powder",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "curry leaves",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Indian",
+    "proteinTag": "Chickpea flour & yogurt",
+    "steps": [
+      "Whisk chickpea flour, yogurt, turmeric, and a splash of water into a thick batter.",
+      "Stir in baking powder and pour into a greased steaming dish.",
+      "Steam 15-18 minutes until a toothpick comes out clean.",
+      "Warm olive oil with curry leaves and drizzle over the top, then cut into squares.",
+      "Finish with a squeeze of lemon before serving."
+    ]
+  },
+  {
+    "id": "g559",
+    "name": "Bhel-Style Puffed Rice Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "puffed rice",
+        "q": 2,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "tomatoes",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 19,
+    "gi": "Medium",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Legumes",
+    "steps": [
+      "Toss puffed rice with chickpeas in a large bowl.",
+      "Add tomato, cucumber, and red onion.",
+      "Squeeze lemon juice over the top and sprinkle with chaat masala.",
+      "Toss quickly and serve immediately so the puffed rice stays crisp."
+    ]
+  },
+  {
+    "id": "g560",
+    "name": "Chatpata Roasted Pumpkin Seeds",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "pumpkin seeds",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 5,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Pumpkin seeds",
+    "steps": [
+      "Toast pumpkin seeds in a dry pan over medium heat 3-4 minutes until they begin to pop.",
+      "Drizzle with olive oil and toss with chili powder, chaat masala, and salt.",
+      "Roast another 1-2 minutes, stirring, until fragrant.",
+      "Cool before serving."
+    ]
+  },
+  {
+    "id": "g561",
+    "name": "Beet and Chickpea Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cooked beets",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Medium",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Beets & chickpeas",
+    "steps": [
+      "Dice cooked beets and combine with chickpeas and cucumber in a bowl.",
+      "Squeeze lemon juice over the top and sprinkle with chaat masala.",
+      "Toss gently so the beets don't bleed too much color.",
+      "Garnish with cilantro before serving."
+    ]
+  },
+  {
+    "id": "g562",
+    "name": "Curried Egg Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "red onion",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "mild curry powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 7,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Indian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Hard-boil eggs, then cool, peel, and chop.",
+      "Toss chopped egg with red onion and tomato.",
+      "Sprinkle with curry powder and squeeze lemon over the top.",
+      "Finish with cilantro and serve chilled or at room temperature."
+    ]
+  },
+  {
+    "id": "g563",
+    "name": "Masala Steamed Edamame",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "frozen edamame in pods",
+        "q": 1.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Edamame",
+    "steps": [
+      "Steam or boil edamame pods 5 minutes until tender.",
+      "Drain well and toss with olive oil while hot.",
+      "Sprinkle with chaat masala and chili powder.",
+      "Squeeze lime over the top and toss again before serving."
+    ]
+  },
+  {
+    "id": "g564",
+    "name": "Paneer and Cucumber Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "paneer",
+        "q": 5,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomatoes",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Indian",
+    "proteinTag": "Paneer",
+    "steps": [
+      "Cube paneer and pan-sear in a dry nonstick skillet 2-3 minutes until lightly golden.",
+      "Cool slightly, then toss with cucumber and tomato.",
+      "Sprinkle with chaat masala and squeeze lemon over the top.",
+      "Garnish with cilantro and serve."
+    ]
+  },
+  {
+    "id": "g565",
+    "name": "Chatpata Baby Potato Chaat",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "baby potatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "chaat masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Potato & yogurt",
+    "steps": [
+      "Boil baby potatoes until fork-tender, then cool and halve.",
+      "Toss with yogurt, chaat masala, and chili powder.",
+      "Squeeze lemon juice over the top and toss again.",
+      "Garnish with cilantro before serving."
+    ]
+  },
+  {
+    "id": "g566",
+    "name": "Tofu Tikka Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 7,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "turmeric",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Indian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Press and cube tofu, then pat dry.",
+      "Whisk yogurt with garam masala, turmeric, and a squeeze of lemon.",
+      "Toss tofu in the marinade for 10 minutes.",
+      "Heat olive oil in a skillet and sear tofu 4-5 minutes per side until golden."
+    ]
+  },
+  {
+    "id": "g567",
+    "name": "Vietnamese Shrimp & Herb Summer Rolls (Goi Cuon)",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "rice paper wrappers",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "shrimp",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "lettuce",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "rice noodles",
+        "q": 0.15,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "fresh mint",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Medium",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Cook rice noodles according to package directions, then drain and cool.",
+      "Dip one rice paper sheet in warm water until just pliable.",
+      "Layer lettuce, shrimp, cucumber, carrots, noodles, and mint near one edge.",
+      "Fold in the sides and roll tightly; repeat with remaining wrappers.",
+      "Serve with lime wedges for squeezing over the rolls."
+    ]
+  },
+  {
+    "id": "g568",
+    "name": "Ginger-Sesame Shio Edamame",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "frozen edamame in pods",
+        "q": 2,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "red pepper flakes",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Asian",
+    "proteinTag": "Edamame",
+    "steps": [
+      "Boil or steam edamame pods 5 minutes until bright green and tender.",
+      "Drain well and toss with sesame oil and grated ginger.",
+      "Season with sea salt and red pepper flakes; serve warm."
+    ]
+  },
+  {
+    "id": "g569",
+    "name": "Japanese Cucumber Sesame Sunomono",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cucumber",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "apple cider vinegar",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 7,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Toss cucumber slices with a pinch of salt and let sit 5 minutes.",
+      "Squeeze out excess liquid from the cucumbers.",
+      "Whisk vinegar and sesame oil, then toss with the cucumbers.",
+      "Sprinkle with sesame seeds and chill before serving."
+    ]
+  },
+  {
+    "id": "g570",
+    "name": "Korean Spicy Cucumber Banchan (Oi Muchim)",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cucumber",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "gochugaru",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Toss cucumber with a pinch of salt and let drain 10 minutes.",
+      "Combine cucumber with scallions, garlic, and gochugaru.",
+      "Drizzle with sesame oil and toss well.",
+      "Sprinkle with sesame seeds and chill before serving."
+    ]
+  },
+  {
+    "id": "g571",
+    "name": "Quick Korean Radish Kkakdugi",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "radishes",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 0.5,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "gochugaru",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "apple cider vinegar",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Toss diced radish with salt and let rest 10 minutes, then drain.",
+      "Combine radish with scallions, garlic, ginger, and gochugaru.",
+      "Stir in vinegar and toss to coat evenly.",
+      "Chill at least 30 minutes before serving."
+    ]
+  },
+  {
+    "id": "g572",
+    "name": "Miso-Glazed Broccoli Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "broccoli",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "miso paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Steam or roast broccoli florets until tender-crisp.",
+      "Whisk miso paste, sesame oil, and garlic into a glaze.",
+      "Toss warm broccoli in the glaze until coated.",
+      "Sprinkle with sesame seeds and serve."
+    ]
+  },
+  {
+    "id": "g573",
+    "name": "Ginger-Soy Tofu Jerky Strips",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 7,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "black pepper",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Press tofu well, then slice into thin strips.",
+      "Marinate strips in soy sauce, ginger, garlic, sesame oil, and pepper for 10 minutes.",
+      "Arrange on a lined baking sheet and bake at 350F for 20-25 minutes, flipping once, until chewy.",
+      "Cool completely before serving."
+    ]
+  },
+  {
+    "id": "g574",
+    "name": "Nori-Wrapped Tuna & Brown Rice Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "canned tuna",
+        "q": 0.75,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.33,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "nori sheets",
+        "q": 2,
+        "u": "",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 14,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tuna",
+    "steps": [
+      "Mix tuna, brown rice, scallions, and sesame oil in a bowl.",
+      "Form the mixture into small bite-sized balls.",
+      "Wrap each bite with a strip of nori.",
+      "Sprinkle with sesame seeds and serve."
+    ]
+  },
+  {
+    "id": "g575",
+    "name": "Sesame-Ginger Chicken Skewers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 4,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 4,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Marinate chicken cubes in soy sauce, sesame oil, ginger, and garlic for 15 minutes.",
+      "Thread chicken onto skewers.",
+      "Grill or pan-sear over medium-high heat until cooked through.",
+      "Sprinkle with sesame seeds before serving."
+    ]
+  },
+  {
+    "id": "g576",
+    "name": "Steamed Chicken & Cabbage Rice Paper Dumplings",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "ground chicken",
+        "q": 0.25,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "cabbage",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "rice paper wrappers",
+        "q": 4,
+        "u": "",
+        "c": "Grains"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Asian",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Combine ground chicken, cabbage, scallions, ginger, garlic, and soy sauce.",
+      "Dip a rice paper sheet in warm water until pliable.",
+      "Spoon filling onto the center and fold into a small parcel; repeat.",
+      "Steam dumplings 12-15 minutes until the filling is cooked through."
+    ]
+  },
+  {
+    "id": "g577",
+    "name": "Miso Tofu & Scallion Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 7,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "miso paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 5,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Whisk miso paste and sesame oil into a thin glaze.",
+      "Toss tofu cubes in the glaze to coat.",
+      "Broil or pan-sear until edges caramelize, about 8-10 minutes.",
+      "Top with scallions and sesame seeds."
+    ]
+  },
+  {
+    "id": "g578",
+    "name": "Japanese Tamagoyaki Egg Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 3,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Asian",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Whisk eggs with soy sauce, scallions, and a pinch of salt.",
+      "Heat sesame oil in a pan and pour in a thin layer of egg.",
+      "As it sets, roll it to one side and pour in more egg, repeating to build layers.",
+      "Slice the rolled omelet into bite-sized pieces."
+    ]
+  },
+  {
+    "id": "g579",
+    "name": "Thai Turkey Larb Lettuce Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 0.25,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "lettuce",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "scallions",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh mint",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "red pepper flakes",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 8,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Cook ground turkey in a skillet over medium heat until browned.",
+      "Toss the cooked turkey with lime juice, scallions, mint, red pepper flakes, and salt.",
+      "Spoon the mixture into lettuce leaves and serve immediately."
+    ]
+  },
+  {
+    "id": "g580",
+    "name": "Korean Sesame Spinach Namul",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "baby spinach",
+        "q": 4,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 5,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Asian",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Blanch spinach in boiling water 30 seconds, then plunge into cold water.",
+      "Drain and squeeze out excess water.",
+      "Toss with garlic, sesame oil, and salt.",
+      "Sprinkle with sesame seeds before serving."
+    ]
+  },
+  {
+    "id": "g581",
+    "name": "Crab & Cucumber Rice Paper Rolls",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "lump crab meat",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "rice paper wrappers",
+        "q": 2,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lettuce",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh mint",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 12,
+    "gi": "Medium",
+    "prepMins": 18,
+    "cuisineTag": "Asian",
+    "proteinTag": "Crab",
+    "steps": [
+      "Dip a rice paper sheet in warm water until pliable.",
+      "Layer lettuce, crab, cucumber, carrots, and mint near one edge.",
+      "Fold in the sides and roll tightly; repeat with remaining wrappers.",
+      "Slice in half and serve with lime wedges."
+    ]
+  },
+  {
+    "id": "g582",
+    "name": "Classic Guacamole with Jicama Dippers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "avocado",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "jicama",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Healthy fats",
+    "steps": [
+      "Mash avocado in a bowl until mostly smooth.",
+      "Stir in lime juice, diced red onion, and diced tomato.",
+      "Season with sea salt and chopped cilantro.",
+      "Cut jicama into rounds or sticks and serve alongside for dipping."
+    ]
+  },
+  {
+    "id": "g583",
+    "name": "Pico de Gallo Cucumber Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 10,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Slice cucumber into thick rounds and scoop a small well in each with a spoon.",
+      "Dice tomato and red onion; toss with lime juice.",
+      "Spoon the pico de gallo into the cucumber cups.",
+      "Top with crumbled cotija cheese and chopped cilantro."
+    ]
+  },
+  {
+    "id": "g584",
+    "name": "Elote-Style Greek Yogurt Corn Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "sweet corn kernels",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 19,
+    "gi": "Medium",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Greek yogurt",
+    "steps": [
+      "Char or sauté corn kernels in a dry skillet until lightly browned.",
+      "Stir in greek yogurt and half the cotija cheese.",
+      "Spoon into small cups and top with remaining cotija cheese.",
+      "Squeeze lime juice over the top and dust with chili powder and cilantro."
+    ]
+  },
+  {
+    "id": "g585",
+    "name": "Black Bean & Corn Fiesta Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "black beans",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "sweet corn kernels",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "jicama",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Drain and rinse black beans; combine with corn and diced red onion.",
+      "Toss with lime juice and chopped cilantro.",
+      "Spoon into jicama rounds or small cups to serve."
+    ]
+  },
+  {
+    "id": "g586",
+    "name": "Queso Fresco & Tomato Bites",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "queso fresco",
+        "q": 4,
+        "u": "oz",
+        "c": "Dairy"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "black pepper",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 7,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Cheese",
+    "steps": [
+      "Cut queso fresco into small cubes.",
+      "Halve cherry tomatoes and toss with diced red onion and lime juice.",
+      "Skewer or layer the cheese and tomato together.",
+      "Season with black pepper and top with cilantro."
+    ]
+  },
+  {
+    "id": "g587",
+    "name": "Lime Shrimp Ceviche Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 0.3,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 13,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Cook shrimp until opaque, then cool and chop.",
+      "Combine with diced tomato, cucumber, and red onion.",
+      "Toss with lime juice and chopped cilantro.",
+      "Chill 10 minutes and spoon into small cups to serve."
+    ]
+  },
+  {
+    "id": "g588",
+    "name": "Chicken Tinga Lettuce Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "cooked chicken breast",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Protein"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "tomato paste",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "chicken broth",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "chipotle powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "romaine lettuce",
+        "q": 0.25,
+        "u": "head",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Simmer shredded cooked chicken with diced tomatoes, onion, garlic, tomato paste, and broth.",
+      "Season with chipotle powder and cook until the sauce thickens, about 10 minutes.",
+      "Spoon warm chicken tinga into romaine lettuce leaves.",
+      "Serve immediately."
+    ]
+  },
+  {
+    "id": "g589",
+    "name": "Cotija-Stuffed Mini Peppers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "mini bell peppers",
+        "q": 8,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cotija cheese",
+        "q": 3,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "cream cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "garlic powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 6,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Cheese",
+    "steps": [
+      "Halve mini bell peppers lengthwise and remove seeds.",
+      "Mix cotija cheese, cream cheese, garlic powder, and a squeeze of lime juice.",
+      "Fill pepper halves with the cheese mixture.",
+      "Top with chopped cilantro and serve chilled or lightly broiled."
+    ]
+  },
+  {
+    "id": "g590",
+    "name": "Pinto Bean Dip with Vegetable Dippers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "pinto beans",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "jack cheese",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "garlic",
+        "q": 1,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "chicken broth",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "carrots",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "celery",
+        "q": 1,
+        "u": "stalk",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 16,
+    "gi": "Low",
+    "prepMins": 12,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Blend pinto beans, jack cheese, garlic, cumin, and broth until smooth.",
+      "Taste and adjust seasoning with lime juice.",
+      "Cut carrots and celery into sticks.",
+      "Serve the dip with the vegetable dippers."
+    ]
+  },
+  {
+    "id": "g591",
+    "name": "Lime Tuna Ceviche Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "canned tuna",
+        "q": 0.75,
+        "u": "can",
+        "c": "Protein"
+      },
+      {
+        "n": "tomato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cucumber",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "red onion",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      },
+      {
+        "n": "hot sauce",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 11,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Tuna",
+    "steps": [
+      "Drain tuna and flake with a fork.",
+      "Combine with diced tomato, cucumber, and red onion.",
+      "Toss with lime juice and a dash of hot sauce.",
+      "Spoon into small cups and top with cilantro."
+    ]
+  },
+  {
+    "id": "g592",
+    "name": "Chickpea & Salsa Verde Smash Cups",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "salsa verde",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "jicama",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 17,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Drain chickpeas and lightly smash with a fork, leaving some texture.",
+      "Stir in salsa verde, lime juice, and garlic powder.",
+      "Spoon onto jicama rounds or into small cups.",
+      "Top with chopped cilantro."
+    ]
+  },
+  {
+    "id": "g593",
+    "name": "Turkey & Black Bean Mini Tostadas",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "low-carb whole wheat tortillas",
+        "q": 1,
+        "u": "",
+        "c": "Grains"
+      },
+      {
+        "n": "black beans",
+        "q": 0.25,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "sliced turkey breast",
+        "q": 3,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "jack cheese",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "salsa",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lime",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Medium",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Cut the tortilla into small rounds and bake or toast until crisp.",
+      "Warm black beans and spread onto each crisp round.",
+      "Top with turkey breast, jack cheese, and a spoonful of salsa.",
+      "Finish with a squeeze of lime and serve."
+    ]
+  },
+  {
+    "id": "g594",
+    "name": "Cottage Cheese & Salsa Stuffed Peppers",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "mini bell peppers",
+        "q": 6,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cottage cheese",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Dairy"
+      },
+      {
+        "n": "salsa",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "scallions",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 7,
+    "gi": "Low",
+    "prepMins": 10,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Cottage cheese",
+    "steps": [
+      "Halve mini bell peppers and remove seeds.",
+      "Mix cottage cheese with salsa and chopped scallions.",
+      "Spoon the mixture into the pepper halves.",
+      "Dust with chili powder and serve chilled."
+    ]
+  },
+  {
+    "id": "g595",
+    "name": "Mexican-Style Deviled Eggs with Salsa",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "eggs",
+        "q": 4,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "plain greek yogurt",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Dairy"
+      },
+      {
+        "n": "salsa",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 3,
+    "gi": "Low",
+    "prepMins": 15,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Eggs",
+    "steps": [
+      "Hard boil eggs, cool, peel, and halve.",
+      "Scoop yolks into a bowl and mash with greek yogurt and a spoonful of salsa.",
+      "Spoon the yolk mixture back into the egg whites.",
+      "Top with a little extra salsa, chili powder, and cilantro."
+    ]
+  },
+  {
+    "id": "g596",
+    "name": "Tajín-Style Jicama Spears",
+    "type": "snack",
+    "ingredients": [
+      {
+        "n": "jicama",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "chili powder",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "sea salt",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 9,
+    "gi": "Low",
+    "prepMins": 8,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Vegetables",
+    "steps": [
+      "Peel jicama and cut into thin sticks.",
+      "Squeeze lime juice over the sticks.",
+      "Sprinkle with chili powder and sea salt.",
+      "Garnish with chopped cilantro and serve chilled."
+    ]
   }
 ];

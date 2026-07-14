@@ -52,6 +52,9 @@ const TABLE = [
   e(["sesame seeds"], 18, 48, 12, 23, { tbsp: 9, cup: 144 }),
   e(["coconut flakes"], 7, 65, 16, 24, { cup: 80, tbsp: 7 }),
   e(["coconut flour"], 18, 13, 39, 60, { cup: 112, tbsp: 7 }),
+  // fox nuts (makhana / popped lotus seed) are botanically a seed, not a tree
+  // nut — correctly absent from ALLERGEN_MAP's Tree nuts list.
+  e(["fox nuts", "makhana"], 9.7, 0.1, 14.5, 77, { cup: 20, oz: 28 }),
   // coconut liquids
   e(["coconut cream"], 2, 24, 2, 6, { cup: 240, tbsp: 15, can: 400 }),
   e(["light coconut milk", "coconut milk"], 1, 7, 0, 3, { cup: 240, can: 400, tbsp: 15 }),
@@ -68,6 +71,8 @@ const TABLE = [
   e(["swiss cheese"], 27, 28, 0, 1, { slice: 28, oz: 28, cup: 110 }),
   e(["monterey jack cheese", "jack cheese"], 24, 30, 0, 1, { slice: 28, oz: 28, cup: 113 }),
   e(["string cheese"], 24, 22, 0, 2, { "": 28, oz: 28 }),
+  e(["paneer"], 18, 21, 0, 1.2, { cup: 150, oz: 28, block: 400 }),
+  e(["cotija cheese", "queso fresco"], 21, 28, 0, 2, { cup: 132, oz: 28, tbsp: 8 }),
   e(["unsweetened almond milk", "almond milk"], 0.5, 1.1, 0, 1, { cup: 240 }),
   e(["milk"], 3.4, 1, 0, 5, { cup: 240 }),
   e(["nutritional yeast"], 50, 5, 20, 36, { tbsp: 5, cup: 60 }),
@@ -116,6 +121,7 @@ const TABLE = [
   e(["green lentils", "red lentils", "lentils"], 9, 0.4, 8, 20, { cup: 200, can: 240 }, { net: true }),
   e(["beans"], 8, 1, 7, 24, { can: 240, cup: 170 }, { net: true }),
   e(["hummus"], 8, 10, 6, 14, { cup: 240, tbsp: 15 }),
+  e(["mung bean sprouts", "bean sprouts"], 3, 0.2, 1.8, 6.4, { cup: 104 }),
   // grains & starches
   e(["quinoa"], 4.4, 1.9, 2.8, 21, { cup: 185 }),
   e(["brown rice cakes", "rice cakes"], 8, 3, 4, 80, { "": 9 }),
@@ -131,6 +137,8 @@ const TABLE = [
   e(["whole grain crackers", "crackers"], 10, 12, 8, 66, { "": 3 }),
   e(["low-carb whole wheat tortillas", "whole wheat tortillas", "tortilla"], 10, 5, 12, 35, { "": 40 }),
   e(["nori sheets", "nori"], 6, 0.3, 0.3, 5, { "": 3, slice: 3 }),
+  e(["rice paper wrappers", "rice paper"], 0.5, 0.2, 1, 83, { "": 8, oz: 28 }),
+  e(["puffed rice"], 7, 1, 1, 80, { cup: 15, oz: 28 }),
   e(["baking powder"], 0, 0, 0, 28, { tsp: 5, tbsp: 14 }),
   // leafy greens & cruciferous
   e(["baby spinach", "spinach"], 2.9, 0.4, 2.2, 3.6, { cup: 30, bunch: 340 }),
@@ -165,6 +173,7 @@ const TABLE = [
   e(["pumpkin puree", "pumpkin"], 1, 0.1, 2.8, 8, { cup: 245, can: 425 }),
   e(["sugar snap peas", "snap peas", "snow peas"], 2.8, 0.1, 2.6, 7, { cup: 63 }),
   e(["green peas"], 5, 0.4, 5, 14, { cup: 145 }),
+  e(["sweet corn kernels", "corn kernels", "corn"], 3.4, 1.5, 2, 19, { cup: 150, "": 90 }),
   e(["eggplant"], 1, 0.2, 3, 6, { "": 450, cup: 80 }),
   e(["okra"], 1.9, 0.2, 3.2, 7, { cup: 100 }),
   e(["fennel"], 1.2, 0.2, 3, 7, { bulb: 230, cup: 87 }),
@@ -193,6 +202,8 @@ const TABLE = [
   e(["medjool dates", "dates"], 1.8, 0.2, 6.7, 75, { "": 24, cup: 178 }),
   // condiments, sauces & broths
   e(["low-sodium soy sauce", "soy sauce"], 8, 0, 1, 5, { tbsp: 16, cup: 255 }),
+  e(["miso paste", "miso"], 12, 6, 5, 26, { tbsp: 17, cup: 275 }),
+  e(["tamarind paste", "tamarind concentrate", "tamarind"], 3, 0.4, 5, 62, { tbsp: 20, cup: 240 }),
   e(["dijon mustard", "mustard"], 4, 4, 3, 5, { tbsp: 15, tsp: 5 }),
   e(["balsamic vinegar", "apple cider vinegar", "vinegar"], 0.5, 0, 0, 10, { tbsp: 15, cup: 240 }),
   e(["basil pesto", "pesto"], 4, 45, 2, 6, { tbsp: 15, cup: 240 }),
@@ -214,7 +225,8 @@ const TABLE = [
     "italian herbs", "everything bagel seasoning", "za'atar", "red pepper flakes",
     "black pepper", "sea salt", "salt", "fresh dill", "dill", "fresh parsley", "parsley",
     "fresh basil", "cilantro", "fresh mint", "fresh rosemary", "rosemary", "fresh thyme",
-    "thyme", "fresh sage", "sage", "herbs",
+    "thyme", "fresh sage", "sage", "herbs", "sumac", "chipotle powder", "gochugaru",
+    "chaat masala", "curry leaves", "asafoetida",
   ]),
 ];
 

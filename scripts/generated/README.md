@@ -17,12 +17,17 @@ until you re-run `recipes:promote` against it.
 - `curated-recipes.breakfasts1.json` — hand-authored breakfasts targeting the
   five cuisines (Indian, Asian, Middle Eastern, Mexican, Italian) that were
   barely represented at breakfast; grew 597 to 628.
+- `curated-recipes.snacks-nonnut1.json` — 45 hand-authored non-nut snacks
+  (Indian/Asian/Mexican, 15 each) targeting the snack pool's Tree-nuts
+  exclusion gap (63/156 snacks were nut-based — the single biggest single-
+  exclusion hit in the library); grew 628 to 673 and the Tree-nuts-excluded
+  snack pool from 121/156 to 166/201. See `docs/LIBRARY_GROWTH_TARGETS.md`.
 - `pending-recipes.json` — raw `recipes:generate` output (gitignored); a working
   file you curate down into a `curated-recipes.*.json` before promoting.
 
-The `light*` and `breakfasts1` batches were hand-authored rather than run
-through `recipes:generate` (no API key needed) and iterated to clean through
-`node scripts/validate-drafts.mjs <file>` — see `scripts/README.md`.
+The `light*`, `breakfasts1`, and `snacks-nonnut1` batches were hand-authored
+rather than run through `recipes:generate` (no API key needed) and iterated to
+clean through `node scripts/validate-drafts.mjs <file>` — see `scripts/README.md`.
 
 To add a new batch: generate or author candidates, save the approved set as
 `curated-recipes.batch9.json`, then `npm run recipes:promote -- --in

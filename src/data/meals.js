@@ -83,7 +83,7 @@ export const DISLIKE_MAP = {
   "Cilantro": ["cilantro"],
   "Onions": ["onion", "scallion", "shallot", "leek", "chive"],
   "Fish": FISH,
-  "Spicy food": ["chili", "curry", "red pepper flakes", "jalapeno", "jalapeño", "sriracha", "harissa", "cayenne", "chipotle", "hot sauce"],
+  "Spicy food": ["chili", "curry", "red pepper flakes", "jalapeno", "jalapeño", "sriracha", "harissa", "cayenne", "chipotle", "hot sauce", "gochugaru"],
   "Cottage cheese": ["cottage cheese"],
   "Tofu": ["tofu"],
 };
