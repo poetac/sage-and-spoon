@@ -90,9 +90,23 @@ recipes:
   even though it clears the `quickPerType` target (20) — a real UX texture
   worth knowing about, not a hard gap.
 
-**Next priority: dairy-free lunch/dinner mains** (tofu, legumes, lean
-meats/fish prepared without cheese/yogurt/milk/butter/cream), sized similarly
-to the egg-free breakfast batch (+20–25). Past ~800 total, further growth
+## ✅ In progress — dairy-free lunch/dinner mains (734 → 746 recipes so far)
+
+12 hand-authored, zero-dairy lunch/dinner recipes (Mediterranean chickpea
+stew, baked cod with farro, tofu chickpea curry, Moroccan lentil tagine,
+Cuban black bean bowl, turkey picadillo, shrimp fajitas, Tuscan cannellini
+bean soup, tahini chickpea bowl, chicken shawarma bowl, herb-roasted pork
+tenderloin, ginger sesame tofu lettuce wraps) —
+`scripts/generated/curated-recipes.dairyfree-mains1.json`. A companion
+meat/fish-forward batch was dropped for one near-duplicate (88% ingredient
+overlap with the already-merged miso salmon donburi) and is tracked as a
+follow-up. Dairy-excluded pool: lunch 69%→70%, dinner 73%→74% so far — modest
+because a 12-recipe batch is a small fraction of a 175/201-recipe pool;
+`COVERAGE_TARGETS.perType` ratcheted (lunch 169→175, dinner 195→201).
+
+**Next priority: a second dairy-free mains batch** (meat/fish-forward, +10–15
+more) to push the Dairy-excluded lunch/dinner pools further before this cell
+stops being the tightest in the library. Past ~800 total, further growth
 mostly pads cuisines that are already deep rather than closing real coverage
 gaps — don't chase a bigger number without first re-running this analysis.
 

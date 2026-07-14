@@ -38,14 +38,19 @@ until you re-run `recipes:promote` against it.
   completing the vocabulary-unlocked batch: miso soup/glazes, Korean
   gochugaru-braised dishes, Thai/Vietnamese tamarind stir-fries, fresh
   (unfried) rice-paper rolls, fox nuts as a noodle-bowl topping; grew 722 to
-  734. See `docs/LIBRARY_GROWTH_TARGETS.md`.
+  734.
+- `curated-recipes.dairyfree-mains1.json` — 12 hand-authored zero-dairy
+  lunch/dinner recipes (tofu/legume/fish-forward) targeting the library's
+  tightest single-exclusion cell (Dairy at lunch, 69%); grew 734 to 746. See
+  `docs/LIBRARY_GROWTH_TARGETS.md`.
 - `pending-recipes.json` — raw `recipes:generate` output (gitignored); a working
   file you curate down into a `curated-recipes.*.json` before promoting.
 
 The `light*`, `breakfasts1`, `snacks-nonnut1`, `eggfree-breakfasts1`,
-`vocab-mains1`, and `asian-mains1` batches were hand-authored rather than run
-through `recipes:generate` (no API key needed) and iterated to clean through
-`node scripts/validate-drafts.mjs <file>` — see `scripts/README.md`.
+`vocab-mains1`, `asian-mains1`, and `dairyfree-mains1` batches were
+hand-authored rather than run through `recipes:generate` (no API key needed)
+and iterated to clean through `node scripts/validate-drafts.mjs <file>` — see
+`scripts/README.md`.
 
 To add a new batch: generate or author candidates, save the approved set as
 `curated-recipes.batch9.json`, then `npm run recipes:promote -- --in

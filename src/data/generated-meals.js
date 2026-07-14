@@ -32371,5 +32371,755 @@ export const GENERATED_MEALS = [
       "Toss noodles with julienned cucumber and carrots, sesame oil, and scallions.",
       "Top with crab meat, toasted fox nuts, and sesame seeds before serving."
     ]
+  },
+  {
+    "id": "g658",
+    "name": "Mediterranean Chickpea & Spinach Stew",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 1.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "baby spinach",
+        "q": 3,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "vegetable broth",
+        "q": 2,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1.5,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 34,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Heat olive oil in a large pot and saute onion until soft.",
+      "Add garlic and ground cumin; cook until fragrant.",
+      "Stir in chickpeas, diced tomatoes, and vegetable broth; simmer 15 minutes.",
+      "Fold in baby spinach and cook until wilted; serve hot."
+    ]
+  },
+  {
+    "id": "g659",
+    "name": "Lemon Herb Baked Cod with Farro",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "cod fillets",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "farro",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "asparagus",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh parsley",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 24,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mediterranean",
+    "proteinTag": "White fish",
+    "steps": [
+      "Preheat oven to 400F and cook farro in a pot of water until tender.",
+      "Season cod fillets with garlic and lay over asparagus on a baking sheet.",
+      "Drizzle with olive oil and lemon juice; bake 15-18 minutes until fish flakes easily.",
+      "Serve cod and asparagus over farro, garnished with fresh parsley."
+    ]
+  },
+  {
+    "id": "g660",
+    "name": "Spiced Tofu & Chickpea Curry",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 1,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "chickpeas",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 3,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "garam masala",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 27,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Indian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Press and cube tofu; sear in olive oil until lightly golden, then set aside.",
+      "Saute onion, garlic, and ginger until softened.",
+      "Stir in garam masala, crushed tomatoes, and chickpeas; simmer 10 minutes.",
+      "Return tofu to the pan and simmer until heated through and the sauce thickens."
+    ]
+  },
+  {
+    "id": "g661",
+    "name": "Moroccan Lentil Tagine",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "green lentils",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "sweet potato",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "crushed tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cinnamon",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 39,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Heat olive oil and saute onion and garlic until fragrant.",
+      "Stir in cinnamon, crushed tomatoes, and green lentils; add water to cover and simmer 10 minutes.",
+      "Add sweet potato and carrots; simmer 20 minutes until vegetables and lentils are tender.",
+      "Season to taste and serve warm."
+    ]
+  },
+  {
+    "id": "g662",
+    "name": "Cuban-Style Black Bean & Rice Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "black beans",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "brown rice",
+        "q": 0.5,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "cilantro",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 35,
+    "gi": "Medium",
+    "prepMins": 25,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Cook brown rice according to package instructions.",
+      "Saute onion and bell peppers in olive oil until softened.",
+      "Add black beans and warm through; season to taste.",
+      "Serve over brown rice with a squeeze of lime and fresh cilantro."
+    ]
+  },
+  {
+    "id": "g663",
+    "name": "Turkey Picadillo Skillet",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "ground turkey",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "diced tomatoes",
+        "q": 1,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "bell peppers",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "green olives",
+        "q": 0.25,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "capers",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 15,
+    "gi": "Low",
+    "prepMins": 30,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Turkey",
+    "steps": [
+      "Brown ground turkey in olive oil over medium heat.",
+      "Add onion and bell peppers; cook until softened.",
+      "Stir in diced tomatoes, green olives, capers, and ground cumin; simmer 15 minutes.",
+      "Season to taste and serve."
+    ]
+  },
+  {
+    "id": "g664",
+    "name": "Shrimp Fajita Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "shrimp",
+        "q": 1,
+        "u": "lb",
+        "c": "Protein"
+      },
+      {
+        "n": "bell peppers",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "onion",
+        "q": 0.5,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "cauliflower rice",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lime",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "fajita seasoning",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 19,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Mexican",
+    "proteinTag": "Shrimp",
+    "steps": [
+      "Season shrimp with fajita seasoning.",
+      "Saute onion and bell peppers in olive oil until charred at the edges.",
+      "Add shrimp and cook 3-4 minutes until opaque.",
+      "Serve over cauliflower rice with a squeeze of lime."
+    ]
+  },
+  {
+    "id": "g665",
+    "name": "Tahini Chickpea Grain Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chickpeas",
+        "q": 0.75,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "quinoa",
+        "q": 0.4,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "tahini",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 31,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Cook quinoa according to package instructions and let cool slightly.",
+      "Whisk tahini with lemon juice and a splash of water to make a dressing.",
+      "Toss chickpeas, cucumber, and cherry tomatoes with olive oil.",
+      "Assemble bowls with quinoa and the chickpea mixture, then drizzle with tahini dressing."
+    ]
+  },
+  {
+    "id": "g666",
+    "name": "Chicken Shawarma Grain Bowl",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "chicken breast",
+        "q": 2,
+        "u": "",
+        "c": "Protein"
+      },
+      {
+        "n": "bulgur",
+        "q": 0.66,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "cucumber",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "cherry tomatoes",
+        "q": 1,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "lemon",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "ground cumin",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 20,
+    "gi": "Low",
+    "prepMins": 25,
+    "cuisineTag": "Middle Eastern",
+    "proteinTag": "Chicken",
+    "steps": [
+      "Season chicken breast with ground cumin and sear until cooked through; slice thin.",
+      "Cook bulgur according to package instructions.",
+      "Toss cucumber and cherry tomatoes with olive oil and lemon juice.",
+      "Assemble bowls with bulgur, sliced chicken, and the cucumber-tomato salad."
+    ]
+  },
+  {
+    "id": "g667",
+    "name": "Herb-Roasted Pork Tenderloin with Root Vegetables",
+    "type": "dinner",
+    "ingredients": [
+      {
+        "n": "pork tenderloin",
+        "q": 12,
+        "u": "oz",
+        "c": "Protein"
+      },
+      {
+        "n": "parsnips",
+        "q": 0.75,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 2,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "wild rice",
+        "q": 0.4,
+        "u": "cup",
+        "c": "Grains"
+      },
+      {
+        "n": "olive oil",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh rosemary",
+        "q": null,
+        "u": "to taste",
+        "c": "Produce"
+      }
+    ],
+    "carbsG": 22,
+    "gi": "Low",
+    "prepMins": 40,
+    "cuisineTag": "American comfort",
+    "proteinTag": "Pork",
+    "steps": [
+      "Preheat oven to 400F. Season pork tenderloin with rosemary and sear in olive oil until browned on all sides.",
+      "Transfer pork to a roasting pan with parsnips and carrots; roast 20-25 minutes until pork reaches 145F.",
+      "Meanwhile, cook wild rice according to package instructions.",
+      "Slice pork and serve with the roasted vegetables over wild rice."
+    ]
+  },
+  {
+    "id": "g668",
+    "name": "Ginger Sesame Tofu Lettuce Wraps",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "firm tofu",
+        "q": 1,
+        "u": "block",
+        "c": "Protein"
+      },
+      {
+        "n": "lettuce",
+        "q": 1,
+        "u": "head",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "water chestnuts",
+        "q": 0.5,
+        "u": "can",
+        "c": "Pantry"
+      },
+      {
+        "n": "low-sodium soy sauce",
+        "q": 2,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "sesame oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "fresh ginger",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Produce"
+      },
+      {
+        "n": "sesame seeds",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 18,
+    "gi": "Low",
+    "prepMins": 20,
+    "cuisineTag": "Asian",
+    "proteinTag": "Tofu",
+    "steps": [
+      "Press and cube tofu, then pan-sear in sesame oil until golden.",
+      "Add fresh ginger, carrots, and water chestnuts; stir-fry 3-4 minutes.",
+      "Stir in low-sodium soy sauce and toss to coat.",
+      "Spoon the filling into lettuce leaves and top with sesame seeds."
+    ]
+  },
+  {
+    "id": "g669",
+    "name": "Tuscan Cannellini Bean & Kale Soup",
+    "type": "lunch",
+    "ingredients": [
+      {
+        "n": "cannellini beans",
+        "q": 1,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "kale",
+        "q": 2,
+        "u": "cup",
+        "c": "Produce"
+      },
+      {
+        "n": "carrots",
+        "q": 1,
+        "u": "",
+        "c": "Produce"
+      },
+      {
+        "n": "celery",
+        "q": 2,
+        "u": "stalk",
+        "c": "Produce"
+      },
+      {
+        "n": "vegetable broth",
+        "q": 3,
+        "u": "cup",
+        "c": "Pantry"
+      },
+      {
+        "n": "garlic",
+        "q": 2,
+        "u": "clove",
+        "c": "Produce"
+      },
+      {
+        "n": "olive oil",
+        "q": 1,
+        "u": "tbsp",
+        "c": "Pantry"
+      },
+      {
+        "n": "italian herbs",
+        "q": null,
+        "u": "to taste",
+        "c": "Pantry"
+      }
+    ],
+    "carbsG": 31,
+    "gi": "Low",
+    "prepMins": 35,
+    "cuisineTag": "Italian",
+    "proteinTag": "Beans & lentils",
+    "steps": [
+      "Heat olive oil and saute carrots, celery, and garlic until softened.",
+      "Add vegetable broth and cannellini beans; bring to a simmer.",
+      "Stir in kale and italian herbs; simmer 10 minutes until kale is tender.",
+      "Season to taste and serve hot."
+    ]
   }
 ];
