@@ -16,30 +16,36 @@ toward caution.
 
 ---
 
-## Where things stand (2026-06-19)
+## Where things stand — v1.0.0 (2026-09-28)
 
-The original six-angle audit's **P0 (safety)** is complete, and most of **P1
-(images/perf)** has shipped. A second audit (this one) verified those, then
-found one **live exclusion failure** (fish) and a few correctness gaps; the
-safety subset of that is now fixed (Phase 1 below). The codebase is well
--architected and the *runtime AI safety* is genuinely strong (layered,
-fail-closed, never clamps carbs). The remaining course-correction is to:
+**v1.0.0 is released** (see `CHANGELOG.md`). Every P0 (safety), P1
+(performance/PWA), P2 (accessibility), P3 (testing/CI), P4 (architecture) and P5
+(security) item is resolved; 452 tests, lint, coverage gate and `npm audit` (0
+vulnerabilities) are green, and the offline library stands at 758 recipes with
+zero open coverage gaps. The runtime AI safety is layered and fail-closed (an
+over-cap or GD-breaking AI meal is rejected and replaced from the cookbook, never
+clamped), and the local/bundled/import path enforces the same GD rules as the AI
+path.
 
-1. make the **local/bundled/import path** enforce the GD rules as strictly as the
-   AI path (Phase 1 — ✅ done);
-2. **offline + load-time** — photos persist in a permanent SW cache
-   (`OFFLINE-CACHE` ✅), the image table is split out of the main chunk
-   (`PERF-3` ✅, 124→96 KB gzip), and Settings no longer waits on the cookbook
-   (`PERF-6` ✅);
-3. ✅ **architecture & perf paydown landed** — `usePersistentState` (`ARCH-2`),
-   the ingredient-names prop (`ARCH-1`), and card-render perf via the React
-   Compiler (`PERF-7`, app-wide auto-memoization);
-4. decide the **backend-proxy** fork (blocks sharing, key security, and feeding
-   user photos back into the shared library) — see P6.
+What v1 deliberately does **not** include — all tracked in P6 below, none are
+defects:
+
+1. **Generated recipe photos** (`IMAGE-GEN`) — the curated photo set was removed
+   for quality; cards show a gradient + icon. Blocked on an image-generation API
+   key that isn't planned soon (`docs/IMAGE_GEN_PLAN.md`).
+2. **Meal ratings feeding the planner**, a **weekly-plan print view**, and
+   **glucose insights in the planner** — self-contained follow-ups.
+3. **Backend proxy** (sharing, real key security) — a product decision that would
+   break the "no backend, fully private" identity; decide deliberately.
 
 ---
 
 ## ✅ Done
+
+**v1.0.0 release** (452 tests): version bump, `CHANGELOG.md`, README/roadmap
+refresh, and a dev-tooling dependency refresh (vitest 4.1.11 + lockfile update via
+npm 11 — npm 10's `audit fix` crashes in arborist on this peer graph) that took
+`npm audit` from 10 advisories (dev/build-only; prod was already clean) to 0.
 
 **Breakfast cuisine diversity** (597 → 628 recipes): +31 breakfasts targeting
 the five cuisines the library barely touched at breakfast (Indian 4→11, Asian
