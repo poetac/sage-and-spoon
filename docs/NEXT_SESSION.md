@@ -13,6 +13,11 @@ carbs paired with protein/fat, no added sugar/juice/white rice/bread) are
 **load-bearing safety rules**, not cosmetic, and the same care applies to the
 blood-sugar log (editable targets, text+colour status, never causal language).
 
+**Status: v1.0.0 is released** (`CHANGELOG.md` lists what's in it and what's
+deliberately not). Everything below is post-v1 work. The image-gen key is not
+expected soon, so if it's still unavailable the practical next item is #2
+(meal ratings) — self-contained, no product decision needed.
+
 **Your backlog is `ROADMAP.md`** — a prioritized, status-tagged list (✅ done /
 🔶 partial / ⬜ open). **P0 (safety), P1 (performance/PWA), P2 (accessibility),
 P3 (testing/CI), P4 (architecture), and P5 (security hardening) are all fully
@@ -73,7 +78,7 @@ parallel if you have bandwidth):**
    product call on when "enough data" is enough.
 
 **Guardrails / how to work here:**
-- Run `npm test` (452 currently), `npm run lint`, `npm run build` before every
+- Run `npm test` (452 at v1), `npm run lint`, `npm run build` before every
   commit; keep `src/data/coverage.test.js` and `src/lib/glucose.test.js` green.
   Re-check single-exclusion pool floors if you broaden an allergen/dislike map.
 - Don't hand-edit `src/data/generated-meals.js`; change the curated input in
